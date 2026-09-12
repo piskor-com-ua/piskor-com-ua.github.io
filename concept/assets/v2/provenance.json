@@ -1,0 +1,50 @@
+[
+  {
+    "name": "model",
+    "reference": "house-concept.png",
+    "prompt": "Generate a refined architectural study of this SAME fictional single-storey L-shaped forest villa. Axonometric high three-quarter view of a physical matte ivory clay architectural model on an infinite dark blue-green graphite background #16232a. Same flat cantilever roofs, lower left wing, taller glazed right living volume, terrace steps. Minimal ghosted trees around site, crisp tactile miniature edges, museum-quality studio lighting, long subtle shadows. Building centered with much negative space, no text, no dimensions, no UI, no logos, no people. Wide 3:2. Not a construction drawing.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  },
+  {
+    "name": "facade",
+    "reference": "house-concept.png",
+    "prompt": "Photoreal cinematic architectural detail photograph of this SAME fictional villa, closer view looking along its dark textured stone facade toward the glass living corner with timber roof soffit. Tall vertical dark stone wall at left, fine bronze sliding glass frame center, roof overhang above, pale travertine terrace below, subtle warm light. Trees reflected in glass. Refined contemporary European luxury architectural editorial. Sharp stone grain and precision material joins, natural daylight. Landscape 3:2, no people no text no logos.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  },
+  {
+    "name": "kitchen",
+    "reference": "interior-concept.png",
+    "prompt": "Create a different architectural interior camera view inside the SAME fictional home as reference: adjacent minimalist kitchen and dining space consistent with its dark stone, smoked oak ceiling and full-height forest glazing. Sculptural pale travertine island, thin bronze tap, seamless dark timber cabinetry, large oak dining table and six simple low chairs, generous forest view. Exceptional restrained European luxury, natural daylight, believable detailing. Wide landscape 3:2, no people no text no logos.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  },
+  {
+    "name": "materials",
+    "reference": "interior-concept.png",
+    "prompt": "Create an exquisite editorial close-up still life of this interior's actual material palette: large rough charcoal stone slab, warm smoked oak sample with visible end grain, pale ivory travertine, folded oatmeal linen and small brushed dark bronze profile. Overlapping tactile material planes on a graphite studio surface, raking soft natural light, luxurious minimalist architectural materials photography, abstract sculptural composition, all materials easy to distinguish, generous negative space. Landscape 3:2. No text, no labels, no UI, no people.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  },
+  {
+    "name": "night",
+    "reference": "interior-concept.png",
+    "prompt": "Change ONLY the lighting and time of day in this image. Preserve EXACT camera, architecture, furniture positions, geometry, glazing, forest and all material details. It is now deep blue evening outdoors, warm indirect amber architectural lighting washes wood ceiling and stone fireplace, subtle low light along floor, fireplace softly glowing, cozy elegant evening atmosphere with excellent visible shadow detail. Do not add objects. No text no people. Landscape same composition.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  },
+  {
+    "name": "privacy",
+    "reference": "v2/night.png",
+    "prompt": "Edit this exact fictional interior image. Preserve EXACT camera, framing, room geometry, sofa, chair, table, stone, wood and every object position. Close elegant full-height warm oatmeal curtains across ALL floor-to-ceiling windows, completely concealing the glass and forest. Curtains hang precisely on the actual glazing planes behind all furniture, with natural vertical folds, from ceiling tracks down to the floor. Keep warm subtle evening architectural lighting, extinguish the fireplace flame. Photoreal luxury architectural photograph. No new furniture, no text, no logos. Same landscape composition.",
+    "tool": "OpenAI built-in Imagegen",
+    "date": "2026-09-12",
+    "type": "fictional concept"
+  }
+]

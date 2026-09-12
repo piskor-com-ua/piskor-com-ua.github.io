@@ -47,7 +47,7 @@ let activeFrame=-1, activeChapter=-1, scrollTick=false, dialogOpener, imageTicke
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
 const L=values=>values[locale==='uk'?0:1];
-const assets={house:'assets/house-concept.webp',interior:'assets/interior-concept.webp',model:'assets/v2/model.webp',facade:'assets/v2/facade.webp',kitchen:'assets/v2/kitchen.webp',materials:'assets/v2/materials.webp',night:'assets/v2/night.webp'};
+const assets={climate:'assets/automation/climate.webp',entry:'assets/automation/entry.webp',entryOpen:'assets/automation/entry-open.webp',privacy:'assets/v2/privacy.webp',house:'assets/house-concept.webp',interior:'assets/interior-concept.webp',model:'assets/v2/model.webp',facade:'assets/v2/facade.webp',kitchen:'assets/v2/kitchen.webp',materials:'assets/v2/materials.webp',night:'assets/v2/night.webp'};
 const frames=chapters.flatMap((chapter,c)=>chapter.beats.map((beat,b)=>({...beat,chapter:c,beat:b})));
 let automation={preset:0,asset:"interior",light:75,temp:22,curtains:false,armed:false};
 const presets=[{asset:"interior",light:75,temp:22,curtains:false,armed:false},{asset:"night",light:40,temp:23,curtains:false,armed:false},{asset:"night",light:12,temp:22,curtains:true,armed:false},{asset:"night",light:0,temp:18,curtains:true,armed:true}];
@@ -165,7 +165,7 @@ function setFrame(index, animate=true){
   document.querySelector('.mobile-automation-trigger').hidden=f.chapter!==4;
   document.querySelector('.previous-beat').disabled=index===0;
   document.querySelector('.next-beat').disabled=index===frames.length-1;
-  if(f.chapter===4){systemState.group=['light','climate','security','home'][f.beat];if(changedChapter)renderAutomation();updateAutomation();}
+  if(f.chapter===4){systemState.group=['light','climate','security','home'][f.beat];systemState.focus='';if(changedChapter)renderAutomation();updateAutomation();}
   else{const effects=document.querySelector('.device-effects');if(effects)effects.style.display='none';stage.style.removeProperty('--light');stage.style.removeProperty('--warmth');stage.classList.remove('curtains-closed','away');showImage(f.asset,animate);}
   poseFrame(0);
   requestAnimationFrame(()=>positionHotspots(0));
@@ -234,7 +234,7 @@ function updateAutomation(){
   panel.querySelector('.security-state').textContent=ui.security+' · '+(automation.armed?ui.armed:ui.home);
   stage.style.setProperty('--light',String(.32+automation.light*.0068));
   stage.style.setProperty('--warmth',String((automation.temp-16)/12*.18));
-  stage.classList.toggle('curtains-closed',automation.curtains&&automationVisualBeat()===0);stage.classList.toggle('away',automation.armed);
+  stage.classList.remove('curtains-closed');stage.classList.toggle('away',automation.armed);
   showImage(automationSceneAsset());
   updateSystems();
 }
@@ -287,7 +287,7 @@ function bindControls(){
       panel.hidden=!open;panel.innerHTML=`<strong>${point[locale==='uk'?2:3]}</strong><p>${L(frames[activeFrame].text)}</p>`;
     }
     if(b.dataset.preset!==undefined){const i=Number(b.dataset.preset);automation={preset:i,...presets[i]};updateAutomation();}
-    if(b.hasAttribute('data-curtains')){automation.curtains=!automation.curtains;automation.preset=-1;updateAutomation();}
+    if(b.hasAttribute('data-curtains')){systemState.focus='curtains';automation.curtains=!automation.curtains;automation.preset=-1;updateAutomation();}
     if(b.hasAttribute('data-reset')){automation={preset:0,...presets[0]};updateAutomation();}
   });
   document.querySelector('.automation-panel').addEventListener('input',e=>{if(e.target.dataset.control){automation[e.target.dataset.control]=Number(e.target.value);automation.preset=-1;updateAutomation();}if(e.target.dataset.systemRange){systemState[e.target.dataset.systemRange]=Number(e.target.value);automation.preset=-1;updateAutomation();}});

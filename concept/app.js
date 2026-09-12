@@ -83,7 +83,9 @@ function render() {
         <div class="hotspots" role="group" aria-label="${storyUI[locale].points}"></div>
         <div class="hotspot-note" hidden></div>
         <div class="chapter-copy"><div class="eyebrow chapter-label"></div><h2></h2><p></p><div class="chapter-actions"><button class="stage-details">${storyUI[locale].detail} <span aria-hidden="true">+</span></button><a href="tel:+380974781005">${storyUI[locale].call} ↗</a></div></div>
+        <button class="mobile-automation-trigger" hidden>${locale==='uk'?'Керувати сценаріями':'Control scenarios'} <span aria-hidden="true">↗</span></button>
         <div class="automation-panel" hidden></div>
+        <dialog class="mobile-control-sheet" aria-label="${locale==='uk'?'Керування простором':'Space controls'}"><button class="sheet-close" aria-label="${t.close}">×</button><div class="sheet-content"></div></dialog>
         <div class="story-bottom"><div class="story-hint">${storyUI[locale].hint}</div><div class="story-controls"><button class="previous-beat" aria-label="${storyUI[locale].previous}">←</button><div class="chapter-dock" role="group" aria-label="${t.storyLabel}">${chapters.map((c,i)=>`<button data-chapter="${i}" aria-pressed="false">${c.name[locale==='uk'?0:1]}</button>`).join('')}</div><button class="next-beat" aria-label="${storyUI[locale].next}">→</button></div><div class="narrative-progress" aria-hidden="true"><i></i></div></div>
       </div>
     </section>
@@ -153,16 +155,18 @@ function setFrame(index, animate=true){
   caption.querySelector('p').textContent=L(f.text);
   if(animate&&!reduced.matches){caption.getAnimations().forEach(a=>a.cancel());caption.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,easing:'cubic-bezier(.22,.61,.36,1)'});}
   document.querySelectorAll('[data-chapter]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===f.chapter)));
+  if(innerWidth<=700){const dock=document.querySelector('.chapter-dock'),selected=dock.querySelector('[aria-pressed=true]');dock.scrollTo({left:selected.offsetLeft-dock.offsetLeft-(dock.clientWidth-selected.offsetWidth)/2,behavior:reduced.matches?'instant':'smooth'});}
   document.querySelector('.beat-nav').innerHTML=c.beats.map((b,i)=>`<button data-beat="${i}" aria-pressed="${i===f.beat}"><i aria-hidden="true"></i>${L(b.label)}</button>`).join('');
   document.querySelector('.technical-layer').innerHTML=technicalArt(f.layer);
   const hs=document.querySelector('.hotspots');
   hs.innerHTML=f.points.map((p,i)=>`<button class="hotspot" data-point="${i}" style="--x:${p[0]}%;--y:${p[1]}%" aria-expanded="false" aria-label="${p[locale==='uk'?2:3]}"><span aria-hidden="true">+</span><b>${p[locale==='uk'?2:3]}</b></button>`).join('');
   document.querySelector('.hotspot-note').hidden=true;
   document.querySelector('.automation-panel').hidden=f.chapter!==4;
+  document.querySelector('.mobile-automation-trigger').hidden=f.chapter!==4;
   document.querySelector('.previous-beat').disabled=index===0;
   document.querySelector('.next-beat').disabled=index===frames.length-1;
   if(f.chapter===4){if(changedChapter)renderAutomation();updateAutomation();}
-  else{stage.style.removeProperty('--light');stage.style.removeProperty('--warmth');stage.classList.remove('curtains-closed','away');showImage(f.asset,animate);}
+  else{const effects=document.querySelector('.device-effects');if(effects)effects.style.display='none';stage.style.removeProperty('--light');stage.style.removeProperty('--warmth');stage.classList.remove('curtains-closed','away');showImage(f.asset,animate);}
   poseFrame(0);
   document.querySelector('.narrative-progress i').style.width=((index+1)/frames.length*100)+'%';
   for(const neighbor of [frames[index+1],frames[index-1]])if(neighbor){const image=new Image();image.src=assets[neighbor.asset];}
@@ -212,7 +216,7 @@ function updateScroll(){
 
 function renderAutomation(){
   const ui=storyUI[locale];
-  document.querySelector('.automation-panel').innerHTML=`<div class="automation-heading"><div><span class="eyebrow">${ui.preset}</span><h3 class="preset-name"></h3></div><span class="status-dot" aria-hidden="true"></span></div><div class="preset-tabs" role="group" aria-label="${ui.preset}">${ui.presets.map((p,i)=>`<button data-preset="${i}" aria-pressed="false">${p}</button>`).join('')}</div><label class="range-label" for="light-control">${ui.light}<output id="light-output" for="light-control"></output></label><input id="light-control" aria-label="${ui.light}" data-control="light" type="range" min="0" max="100" step="5" value="${automation.light}"><label class="range-label" for="climate-control">${ui.climate}<output id="climate-output" for="climate-control"></output></label><input id="climate-control" aria-label="${ui.climate}" data-control="temp" type="range" min="16" max="28" step="1" value="${automation.temp}"><div class="curtain-control"><span>${ui.curtains}</span><button data-curtains aria-pressed="false"></button></div><div class="security-state"></div><div class="automation-foot"><span>${ui.demo}</span><button data-reset>${ui.reset} ↺</button></div>`;
+  document.querySelector('.automation-panel').innerHTML=automationPanelHTML(ui);
 }
 
 function updateAutomation(){
@@ -230,6 +234,7 @@ function updateAutomation(){
   stage.style.setProperty('--warmth',String((automation.temp-16)/12*.18));
   stage.classList.toggle('curtains-closed',automation.curtains);stage.classList.toggle('away',automation.armed);
   showImage(automation.asset||'interior');
+  updateSystems();
 }
 
 function toggleMenu(open){
@@ -266,11 +271,14 @@ function bindControls(){
   }));
   document.querySelector('.story').addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;
+    systemClick(b);
     if(b.dataset.chapter!==undefined)jumpFrame(Number(b.dataset.chapter)*4);
     if(b.dataset.beat!==undefined){const selected=Number(b.dataset.beat);jumpFrame(activeChapter*4+selected);document.querySelectorAll('[data-beat]')[selected].focus({preventScroll:true});}
     if(b.classList.contains('next-beat'))jumpFrame(activeFrame+1);
     if(b.classList.contains('previous-beat'))jumpFrame(activeFrame-1);
     if(b.classList.contains('stage-details'))showDetail(activeChapter,b);
+    if(b.classList.contains('mobile-automation-trigger')){const sheet=document.querySelector('.mobile-control-sheet');sheet.querySelector('.sheet-content').append(document.querySelector('.automation-panel'));sheet.showModal();document.body.classList.add('locked');}
+    if(b.classList.contains('sheet-close'))document.querySelector('.mobile-control-sheet').close();
     if(b.dataset.point!==undefined){
       const panel=document.querySelector('.hotspot-note'),point=frames[activeFrame].points[Number(b.dataset.point)],open=b.getAttribute('aria-expanded')!=='true';
       document.querySelectorAll('[data-point]').forEach(p=>p.setAttribute('aria-expanded','false'));b.setAttribute('aria-expanded',String(open));
@@ -280,8 +288,11 @@ function bindControls(){
     if(b.hasAttribute('data-curtains')){automation.curtains=!automation.curtains;automation.preset=-1;updateAutomation();}
     if(b.hasAttribute('data-reset')){automation={preset:0,...presets[0]};updateAutomation();}
   });
-  document.querySelector('.automation-panel').addEventListener('input',e=>{if(e.target.dataset.control){automation[e.target.dataset.control]=Number(e.target.value);automation.preset=-1;updateAutomation();}});
+  document.querySelector('.automation-panel').addEventListener('input',e=>{if(e.target.dataset.control){automation[e.target.dataset.control]=Number(e.target.value);automation.preset=-1;updateAutomation();}if(e.target.dataset.systemRange){systemState[e.target.dataset.systemRange]=Number(e.target.value);automation.preset=-1;updateAutomation();}});
   document.querySelectorAll('[data-service]').forEach(b=>b.addEventListener('click',()=>showDetail(Number(b.dataset.service)+1,b)));
+  const sheet=document.querySelector('.mobile-control-sheet');
+  sheet.addEventListener('close',()=>{document.querySelector('.story-sticky').append(document.querySelector('.automation-panel'));document.body.classList.remove('locked');document.querySelector('.mobile-automation-trigger').focus({preventScroll:true});});
+  sheet.addEventListener('click',e=>{if(e.target===sheet){const r=sheet.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)sheet.close();}});
   const dialog=document.querySelector('.detail');
   dialog.querySelector('.detail-close').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
@@ -289,7 +300,7 @@ function bindControls(){
 }
 
 addEventListener('scroll',()=>{if(!scrollTick){scrollTick=true;requestAnimationFrame(()=>{updateScroll();scrollTick=false;});}},{passive:true});
-addEventListener('resize',()=>{if(innerWidth>700&&!document.querySelector('dialog[open]'))toggleMenu(false);updateScroll();});
+addEventListener('resize',()=>{if(innerWidth>700){const sheet=document.querySelector('.mobile-control-sheet');if(sheet.open)sheet.close();if(!document.querySelector('dialog[open]'))toggleMenu(false);}updateScroll();});
 addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelector('.hotspot-note').hidden=true;document.querySelectorAll('[data-point]').forEach(b=>b.setAttribute('aria-expanded','false'));if(document.querySelector('.mobile-menu.open')){toggleMenu(false);document.querySelector('.menu-button').focus();}}});
 reduced.addEventListener('change',()=>{const index=activeFrame;document.querySelectorAll('.story *').forEach(e=>e.getAnimations().forEach(a=>a.cancel()));document.body.classList.toggle('reduced',reduced.matches);activeFrame=-1;setFrame(index,false);if(!reduced.matches)jumpFrame(index);});
 addEventListener('wheel',()=>{manualUntil=0;},{passive:true});

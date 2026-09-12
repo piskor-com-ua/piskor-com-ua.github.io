@@ -4,3 +4,29 @@
 @media(prefers-reduced-motion:reduce){.device-effects *,.system-map *{animation:none!important;transition:none!important}}
 .device-gas .water-alert{opacity:1}
 .map-lock{fill:none;stroke:#7d9c8a;stroke-width:1.5;opacity:.4}.system-lock .map-lock{stroke:#cee8c8;opacity:1}.system-gate .map-gate{transform:rotate(-25deg);transform-origin:260px 135px;transition:transform .6s}
+/* Each chapter has its own spatial illustration, mirrored inside the mobile controls. */
+.scene-preview{position:relative;height:210px;overflow:hidden;border:1px solid #92b8a84a;border-radius:12px;margin-bottom:18px;background:#10231f;isolation:isolate}
+.scene-photo{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(var(--scene-light,1));transition:filter .6s,background-image .6s}
+.scene-preview .scene-photo{opacity:.45}
+.scene-diagram{position:absolute;inset:0;color:#c3e8d6;filter:drop-shadow(0 0 8px #92c3b455)}
+.scene-diagram svg{width:100%;height:100%;overflow:visible}
+.scene-readout{position:absolute;bottom:10px;left:12px;right:12px;padding:8px 10px;background:#102b28df;color:#e1eadf;font-size:11px;line-height:1.4;border-radius:6px}
+.device-effects .scene-photo{display:none}.device-effects .scene-diagram{left:40%;right:25%;top:18%;bottom:18%;opacity:.9}.device-effects .scene-readout{left:42%;right:27%;bottom:19%}
+.scene-air{stroke:#9de0ef;opacity:.2;stroke-dasharray:12 9}.scene-ventilation .scene-air,.scene-window .scene-air{opacity:1;animation:flow-system 2s linear infinite}
+.scene-heat{stroke:#ffc18a;opacity:calc(.12 + var(--scene-temp)*.45)}.scene-floor .scene-heat{opacity:1;stroke-width:5;filter:drop-shadow(0 0 8px #ec9b69)}
+.scene-sound{opacity:0;stroke:#bfe9c9}.scene-music .scene-sound{opacity:calc(.2 + var(--scene-volume));transform-origin:185px 208px;animation:audio-wave 3s infinite}
+.scene-furniture{fill:#b6cdbc22}.scene-lit .scene-furniture,.scene-lit .scene-counter{fill:#efcf9355}.scene-biodynamic .scene-photo{filter:brightness(var(--scene-light)) sepia(.3)}
+.scene-presence .scene-furniture{animation:presence-glow 4s infinite}.scene-curtains .scene-furniture{fill:#988e7955}
+.scene-perimeter{stroke:#77bba3;stroke-dasharray:8 7;opacity:.2}.scene-armed .scene-perimeter{opacity:1;stroke-width:4;animation:flow-system 3s linear infinite}
+.scene-sensors{fill:#83bd9866}.scene-leak .scene-valve,.scene-smoke .scene-sensors,.scene-gas .scene-sensors{stroke:#ffba83;fill:#e9904c66;stroke-width:5}
+.scene-door{transform-origin:93px 199px;transition:transform .7s;transform:skewY(-15deg)}.scene-locked .scene-door{transform:none;fill:#83bd9833}
+.scene-network{stroke:#9cbdad;stroke-dasharray:6 5}.scene-tariff .scene-network{stroke:#e8ca8a;stroke-width:4;animation:flow-system 3s linear infinite}
+.scene-diagram .scene-window{fill:#8bc3d133;transform-origin:355px 220px;transition:transform .7s}.scene-window.scene-window .scene-window{transform:scaleX(.6) skewY(12deg)}
+.scene-diagram .scene-gate{stroke-width:7;transform-origin:45px 265px;transition:transform .7s}.scene-gate.scene-gate .scene-gate{transform:rotate(-55deg)}
+.scene-diagram .scene-robot{fill:#cadfcf;opacity:.25}.scene-robot.scene-robot .scene-robot{opacity:1;animation:map-clean 6s infinite}
+.scene-irrigation .scene-diagram{background:radial-gradient(ellipse at 25% 80%,#82d4ca55,transparent 30%)}
+.scene-preview[data-scene="1"] .scene-photo{opacity:calc(.2 + var(--scene-humidity)*.35)}
+@media(max-width:700px){.device-effects .scene-diagram{inset:0 10%;opacity:.85}.device-effects .scene-readout{left:10px;right:10px;bottom:0;font-size:10px;padding:5px 8px}.scene-preview{height:190px;position:sticky;top:0;z-index:2}.mobile-control-sheet .scene-preview{background:#10231f}.scene-preview .scene-diagram{inset:0 15%}}
+@media(prefers-reduced-motion:reduce){.scene-preview *{animation:none!important;transition:none!important}}
+
+.scene-preview.scene-curtains[data-scene="0"] .scene-photo{background-blend-mode:multiply;background-color:#746550}.scene-preview.scene-curtains[data-scene="0"] .scene-photo:after{content:"";position:absolute;inset:0 0 0 55%;background:repeating-linear-gradient(90deg,#b7aa8bdd 0 4px,#746b59dd 6px 9px)}

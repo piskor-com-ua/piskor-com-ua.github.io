@@ -147,7 +147,7 @@ function setFrame(index, animate=true){
   activeFrame=index;
   const f=frames[index], c=chapters[f.chapter], ui=storyUI[locale];
   const stage=document.querySelector('.story-sticky');
-  stage.dataset.stage=String(f.chapter);stage.dataset.layer=f.layer;
+  stage.dataset.stage=String(f.chapter);stage.dataset.layer=f.layer;stage.dataset.automationBeat=String(f.beat);
   const changedChapter=activeChapter!==f.chapter;activeChapter=f.chapter;
   const caption=document.querySelector('.chapter-copy');
   caption.querySelector('.chapter-label').textContent=L(c.name)+' / '+L(f.label);
@@ -165,9 +165,10 @@ function setFrame(index, animate=true){
   document.querySelector('.mobile-automation-trigger').hidden=f.chapter!==4;
   document.querySelector('.previous-beat').disabled=index===0;
   document.querySelector('.next-beat').disabled=index===frames.length-1;
-  if(f.chapter===4){if(changedChapter)renderAutomation();updateAutomation();}
+  if(f.chapter===4){systemState.group=['light','climate','security','home'][f.beat];if(changedChapter)renderAutomation();updateAutomation();}
   else{const effects=document.querySelector('.device-effects');if(effects)effects.style.display='none';stage.style.removeProperty('--light');stage.style.removeProperty('--warmth');stage.classList.remove('curtains-closed','away');showImage(f.asset,animate);}
   poseFrame(0);
+  requestAnimationFrame(()=>positionHotspots(0));
   document.querySelector('.narrative-progress i').style.width=((index+1)/frames.length*100)+'%';
   for(const neighbor of [frames[index+1],frames[index-1]])if(neighbor){const image=new Image();image.src=assets[neighbor.asset];}
 }
@@ -176,6 +177,7 @@ function poseFrame(amount){
   if(activeFrame<0)return;
   const f=frames[activeFrame], stage=document.querySelector('.stage-visual');
   const scale=reduced.matches?f.view[0]:f.view[0]+amount*.09;
+  positionHotspots(amount,scale);
   stage.style.setProperty('--zoom',scale);
   stage.style.setProperty('--position',`${f.view[1]}% ${f.view[2]}%`);
   document.querySelector('.technical-layer').style.setProperty('--phase',amount);
@@ -232,8 +234,8 @@ function updateAutomation(){
   panel.querySelector('.security-state').textContent=ui.security+' · '+(automation.armed?ui.armed:ui.home);
   stage.style.setProperty('--light',String(.32+automation.light*.0068));
   stage.style.setProperty('--warmth',String((automation.temp-16)/12*.18));
-  stage.classList.toggle('curtains-closed',automation.curtains);stage.classList.toggle('away',automation.armed);
-  showImage(automation.asset||'interior');
+  stage.classList.toggle('curtains-closed',automation.curtains&&automationVisualBeat()===0);stage.classList.toggle('away',automation.armed);
+  showImage(automationSceneAsset());
   updateSystems();
 }
 
@@ -306,3 +308,16 @@ reduced.addEventListener('change',()=>{const index=activeFrame;document.querySel
 addEventListener('wheel',()=>{manualUntil=0;},{passive:true});
 addEventListener('touchmove',()=>{manualUntil=0;},{passive:true});
 render();
+
+// Anchors are source-image coordinates, projected through the same fit and zoom as the photo.
+function positionHotspots(amount=0,zoom=frames[activeFrame]?.view[0]||1){
+ if(activeFrame<0)return;
+ const f=frames[activeFrame],root=document.querySelector('.story-sticky'),visual=root.querySelector('.stage-visual'),mobile=innerWidth<=700;
+ if(mobile){const top=f.chapter===4?180:136,height=Math.max(40,root.querySelector('.chapter-copy').offsetTop-top-20);visual.style.top=top+'px';visual.style.height=height+'px';visual.style.bottom='auto';}else{visual.style.top='';visual.style.height='';visual.style.bottom='';}
+ const technical=root.querySelector('.technical-layer');technical.style.top=mobile?visual.style.top:'';technical.style.height=mobile?visual.style.height:'';
+ const w=visual.clientWidth,h=visual.clientHeight,iw=1536,ih=1024,fit=(mobile?Math.min:Math.max)(w/iw,h/ih),rw=iw*fit,rh=ih*fit;
+ const px=mobile?.5:f.view[1]/100,py=mobile?.5:f.view[2]/100,top=visual.offsetTop;
+ root.querySelectorAll('[data-point]').forEach((b,i)=>{const p=f.points[i],x=((w-rw)*px+rw*p[0]/100-w/2)*zoom+w/2,y=((h-rh)*py+rh*p[1]/100-h/2)*zoom+h/2+top;
+ b.style.left=x+'px';b.style.top=y+'px';b.hidden=x<22||x>w-22||y<top+18||y>top+h-18||(!mobile&&y>root.querySelector('.chapter-copy').offsetTop&&x<root.querySelector('.chapter-copy').offsetWidth+70)||(!reduced.matches&&amount>.55);
+ });
+}

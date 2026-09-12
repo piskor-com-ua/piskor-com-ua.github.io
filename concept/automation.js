@@ -24,22 +24,13 @@ function systemClick(b){if(b.dataset.preset!==undefined){const i=Number(b.datase
 
 function automationVisualBeat(){const beat=frames[activeFrame].beat;return {climate:1,security:2,drives:3,home:3,media:0}[systemState.group]??(beat===0?0:1);}
 function automationSceneAsset(){return [automation.asset||'interior','kitchen','facade','model'][automationVisualBeat()];}
-function sceneDiagram(){const b=automationVisualBeat();
- const room='<path d="M65 130L185 60L420 105L320 210Z M65 130V245L320 325L420 220V105 M320 210V325"/><path d="M185 60V175L65 245M185 175L320 210"/>';
- const scenes=[
- room+'<g class="scene-furniture"><path d="M130 190L220 215V250L130 225Z M220 215L265 189V224L220 250 M130 190L175 164L265 189"/><path d="M270 267l45-26 42 12-46 30Z"/></g><g class="scene-sound"><circle cx="185" cy="208" r="36"/><circle cx="185" cy="208" r="55"/></g>',
- room+'<path class="scene-counter" d="M105 145l68-38 15 5v63l-68 38-15-5Z M220 232l53-30 39 12-53 30Z"/><g class="scene-air"><path d="M215 107q80 10 50 70t60 65 M240 110q80 10 50 70t60 65 M265 113q80 10 50 70t60 65"/></g><g class="scene-heat"><path d="M130 242l110 35 85-47M150 230l90 29 68-38M171 220l69 22 49-27"/></g>',
- '<path d="M60 175L180 100L400 145V250L275 330L60 270Z M60 175L275 240L400 145 M275 240V330"/><path class="scene-perimeter" d="M25 190L170 55L460 145V280L285 370L25 285Z"/><g class="scene-door"><path d="M93 199l40 12v77l-40-12Z"/><circle cx="124" cy="250" r="3"/></g><g class="scene-sensors"><circle cx="177" cy="205" r="12"/><circle cx="314" cy="236" r="12"/><circle cx="360" cy="205" r="12"/></g><path class="scene-valve" d="M182 277h42m-21-18v36m-12-31 23 22m0-22-23 22"/>',
- '<path d="M45 130L180 55L455 140L325 235Z M45 130V265L325 350L455 270V140M325 235V350M180 55V180L45 265M180 180L325 235"/><g class="scene-network"><path d="M110 195L180 155L345 208L365 255L285 300L180 265L110 195"/><circle cx="110" cy="195" r="9"/><circle cx="180" cy="155" r="9"/><circle cx="345" cy="208" r="9"/><circle cx="365" cy="255" r="9"/><circle cx="285" cy="300" r="9"/></g><path class="scene-gate" d="M45 265L125 290"/><path class="scene-window" d="M355 220L420 180V247L355 287Z"/><circle class="scene-robot" cx="240" cy="275" r="10"/>'
- ];return `<svg viewBox="0 0 500 400" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2">${scenes[b]}</g></svg>`;
-}
 function updateScenePreview(){
  const root=document.querySelector('.story-sticky'),panel=document.querySelector('.automation-panel'),b=automationVisualBeat(),t=systemCopy[locale];
  let preview=panel.querySelector('.scene-preview');if(!preview){preview=document.createElement('div');preview.className='scene-preview';panel.querySelector('.system-map').replaceWith(preview);}
  for(const host of [preview,root.querySelector('.device-effects')]){
-  if(host.dataset.scene!==String(b)){host.dataset.scene=b;host.innerHTML=`<div class="scene-photo"></div><div class="scene-diagram">${sceneDiagram()}</div><div class="scene-readout" role="status"></div>`;}
+  if(host.dataset.scene!==String(b)){host.dataset.scene=b;host.innerHTML=`<div class="scene-photo"></div><div class="scene-readout" role="status"></div>`;}
   host.setAttribute('aria-label',L(chapters[4].beats[b].label)+' · '+storyUI[locale].demo);
-  host.querySelector('.scene-photo').style.backgroundImage=`url("${assets[automationSceneAsset()]}")`;
+  host.querySelector('.scene-photo').style.backgroundImage=`url("${b===0&&automation.curtains?"assets/v2/privacy.webp":assets[automationSceneAsset()]}")`;
   const flags={...systemState,lit:automation.light>0,curtains:automation.curtains};Object.entries(flags).forEach(([k,v])=>{if(typeof v==='boolean')host.classList.toggle('scene-'+k,v);});
   host.style.setProperty('--scene-light',.35+automation.light*.0065);host.style.setProperty('--scene-temp',(automation.temp-16)/12);host.style.setProperty('--scene-humidity',systemState.humidity/100);host.style.setProperty('--scene-volume',systemState.volume/100);
   const readouts=[`${storyUI[locale].light} ${automation.light}% · ${automation.temp} °C`,`${automation.temp} °C · ${systemState.humidity}% · ${systemState.ventilation?t.on:t.off}`, [systemState.leak?t.valve:'',systemState.smoke?t.alarm:'',systemState.gas?t.gasOff:'',systemState.armed?storyUI[locale].armed:t.normal].filter(Boolean).join(' · '),[systemState.gate?t.gate+' '+t.open:'',systemState.window?t.window:'',systemState.robot?t.robotRun:'',systemState.irrigation?t.watering:'',systemState.tariff?t.night:''].filter(Boolean).join(' · ')||t.idle];

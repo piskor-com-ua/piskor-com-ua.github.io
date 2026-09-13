@@ -113,25 +113,30 @@ function technicalArt(layer) {
   return content?`<svg viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1.5">${content}</g></svg>`:'';
 }
 
+const decodedImages=new Map();
+let sceneLayoutTimer;
+function prepareImage(key){
+ if(!decodedImages.has(key)){const image=new Image();image.src=assets[key];decodedImages.set(key,image.decode().catch(()=>{}));}
+ return decodedImages.get(key);
+}
 function showImage(key, animate=true) {
-  const src=assets[key];
-  const stage=document.querySelector('.stage-visual');
-  if(stage.dataset.asset===key){const incoming=stage.querySelector('.incoming');++imageTicket;incoming.getAnimations().forEach(a=>a.cancel());incoming.style.opacity='0';stage.querySelector('.current').src=src;return;}
-  stage.dataset.asset=key;
-  const token=++imageTicket;
-  const current=stage.querySelector('.current'), incoming=stage.querySelector('.incoming');
-  incoming.getAnimations().forEach(a=>a.cancel());
-  incoming.style.opacity='0';
-  incoming.style.objectPosition='';
-  if(!animate||reduced.matches){current.src=src;incoming.style.transform='none';incoming.style.objectPosition='';return;}
-  const preload=new Image();preload.src=src;
-  preload.decode().catch(()=>{}).then(()=>{
-    if(token!==imageTicket)return;
-    incoming.src=src;
-    if(reduced.matches||!animate){current.src=src;return;}
-    const a=incoming.animate([{opacity:0,transform:'scale(1.055)'},{opacity:1,transform:'scale(1)'}],{duration:850,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'});
-    a.finished.then(()=>{if(token!==imageTicket)return;current.src=src;a.cancel();incoming.style.opacity='0';}).catch(()=>{});
-  });
+ const stage=document.querySelector('.stage-visual');
+ if(stage.dataset.asset===key)return;
+ stage.dataset.asset=key;
+ const token=++imageTicket,current=stage.querySelector('.current'),incoming=stage.querySelector('.incoming');
+ // Finish the previous dissolve before a new explicit navigation request.
+ if(stage.classList.contains('image-transition'))current.src=incoming.src;
+ incoming.getAnimations().forEach(a=>a.cancel());incoming.style.opacity='0';stage.classList.remove('image-transition');
+ const apply=()=>{
+  if(token!==imageTicket)return;
+  incoming.src=assets[key];incoming.style.objectPosition=current.style.objectPosition;
+  incoming.style.transform=innerWidth<=700?'scale('+frames[activeFrame].view[0]+')':'none';
+  if(!animate||reduced.matches){current.src=assets[key];incoming.style.opacity='0';return;}
+  stage.classList.add('image-transition');
+  const a=incoming.animate([{opacity:0},{opacity:1}],{duration:1000,easing:'cubic-bezier(.25,.1,.25,1)',fill:'forwards'});
+  a.finished.then(()=>{if(token!==imageTicket)return;current.src=assets[key];a.cancel();incoming.style.opacity='0';stage.classList.remove('image-transition');}).catch(()=>{});
+ };
+ if(!animate)apply();else prepareImage(key).then(apply);
 }
 
 function initStory(){
@@ -147,6 +152,8 @@ function setFrame(index, animate=true){
   activeFrame=index;
   const f=frames[index], c=chapters[f.chapter], ui=storyUI[locale];
   const stage=document.querySelector('.story-sticky');
+  clearTimeout(sceneLayoutTimer);stage.classList.toggle('scene-changing',animate&&!reduced.matches);
+  sceneLayoutTimer=setTimeout(()=>{positionHotspots(0);stage.classList.remove('scene-changing');},animate&&!reduced.matches?1050:0);
   stage.dataset.stage=String(f.chapter);stage.dataset.layer=f.layer;stage.dataset.automationBeat=String(f.beat);
   const changedChapter=activeChapter!==f.chapter;activeChapter=f.chapter;
   const caption=document.querySelector('.chapter-copy');
@@ -170,30 +177,17 @@ function setFrame(index, animate=true){
   poseFrame(0);
   requestAnimationFrame(()=>positionHotspots(0));
   document.querySelector('.narrative-progress i').style.width=((index+1)/frames.length*100)+'%';
-  for(const neighbor of [frames[index+1],frames[index-1]])if(neighbor){const image=new Image();image.src=assets[neighbor.asset];}
+  for(const neighbor of [frames[index+1],frames[index-1]])if(neighbor)prepareImage(neighbor.chapter===4?['interior','climate','entry','house'][neighbor.beat]:neighbor.asset);
 }
 
-function poseFrame(amount){
-  if(activeFrame<0)return;
-  const f=frames[activeFrame], stage=document.querySelector('.stage-visual');
-  const scale=reduced.matches?f.view[0]:f.view[0]+amount*.09;
-  positionHotspots(amount,scale);
-  stage.style.setProperty('--zoom',scale);
-  stage.style.setProperty('--position',`${f.view[1]}% ${f.view[2]}%`);
-  document.querySelector('.technical-layer').style.setProperty('--phase',amount);
-  if(!reduced.matches&&performance.now()>=manualUntil&&f.chapter!==4){
-    ++imageTicket;stage.querySelector('.current').src=assets[f.asset];
-    const next=frames[Math.min(frames.length-1,activeFrame+1)];
-    const blend=clamp((amount-.55)/.45),mix=blend*blend*(3-2*blend);
-    const incoming=stage.querySelector('.incoming');
-    incoming.getAnimations().forEach(a=>a.cancel());
-    incoming.src=assets[next.asset];
-    incoming.style.opacity=mix;
-    incoming.style.objectPosition=next.view[1]+'% '+next.view[2]+'%';
-    incoming.style.transform='scale('+(next.view[0]/scale*(1.035-mix*.035))+')';
-    document.querySelector('.technical-layer').style.opacity=String(.75*(1-mix));
-  }else{document.querySelector('.technical-layer').style.opacity='.75';}
-
+function poseFrame(){
+ if(activeFrame<0)return;
+ const f=frames[activeFrame],stage=document.querySelector('.stage-visual');
+ positionHotspots(0,f.view[0]);
+ stage.style.setProperty('--zoom',f.view[0]);
+ stage.style.setProperty('--position',`${f.view[1]}% ${f.view[2]}%`);
+ document.querySelector('.technical-layer').style.setProperty('--phase',0);
+ document.querySelector('.technical-layer').style.opacity='.75';
 }
 
 function jumpFrame(index){
@@ -212,8 +206,7 @@ function updateScroll(){
   const story=document.querySelector('.story');if(!story)return;
   const travel=Math.max(1,story.offsetHeight-document.querySelector('.story-sticky').offsetHeight);
   const position=clamp(-story.getBoundingClientRect().top/travel)*frames.length;
-  setFrame(Math.min(frames.length-1,Math.floor(position)),performance.now()<manualUntil);
-  poseFrame(position%1);
+  setFrame(Math.min(frames.length-1,Math.floor(position)),true);
 }
 
 function renderAutomation(){
@@ -305,8 +298,7 @@ addEventListener('scroll',()=>{if(!scrollTick){scrollTick=true;requestAnimationF
 addEventListener('resize',()=>{if(innerWidth>700){const sheet=document.querySelector('.mobile-control-sheet');if(sheet.open)sheet.close();if(!document.querySelector('dialog[open]'))toggleMenu(false);}updateScroll();});
 addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelector('.hotspot-note').hidden=true;document.querySelectorAll('[data-point]').forEach(b=>b.setAttribute('aria-expanded','false'));if(document.querySelector('.mobile-menu.open')){toggleMenu(false);document.querySelector('.menu-button').focus();}}});
 reduced.addEventListener('change',()=>{const index=activeFrame;document.querySelectorAll('.story *').forEach(e=>e.getAnimations().forEach(a=>a.cancel()));document.body.classList.toggle('reduced',reduced.matches);activeFrame=-1;setFrame(index,false);if(!reduced.matches)jumpFrame(index);});
-addEventListener('wheel',()=>{manualUntil=0;},{passive:true});
-addEventListener('touchmove',()=>{manualUntil=0;},{passive:true});
+
 render();
 
 // Anchors are source-image coordinates, projected through the same fit and zoom as the photo.
@@ -321,3 +313,44 @@ function positionHotspots(amount=0,zoom=frames[activeFrame]?.view[0]||1){
  b.style.left=x+'px';b.style.top=y+'px';b.hidden=x<22||x>w-22||y<top+18||y>top+h-18||(!mobile&&y>root.querySelector('.chapter-copy').offsetTop&&x<root.querySelector('.chapter-copy').offsetWidth+70)||(!reduced.matches&&amount>.55);
  });
 }
+
+// One complete input gesture advances one scene. Momentum is consumed, never queued.
+let gestureUntil=0,wheelLast=0,wheelLatched=false,wheelTotal=0,touchStart=null;
+function storyInputTarget(target){return !document.querySelector('dialog[open]')&&!target.closest('input,.automation-panel,.hotspot-note');}
+function storyPinned(){const r=document.querySelector('.story').getBoundingClientRect();return r.top<=2&&r.bottom>=innerHeight-2;}
+function stepStory(direction){
+ if(performance.now()<gestureUntil)return;
+ const next=activeFrame+direction;
+ if(next<0||next>=frames.length){
+  const story=document.querySelector('.story'),top=scrollY+story.getBoundingClientRect().top;
+  window.scrollTo({top:direction<0?Math.max(0,top-innerHeight):top+story.offsetHeight,behavior:reduced.matches?'instant':'smooth'});
+ }else jumpFrame(next);
+ gestureUntil=performance.now()+1100;
+}
+addEventListener('wheel',e=>{
+ if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY)||!storyInputTarget(e.target)||!storyPinned())return;
+ e.preventDefault();
+ const now=performance.now();
+ if(now-wheelLast>220){wheelLatched=false;wheelTotal=0;}
+ wheelLast=now;
+ if(wheelLatched||now<gestureUntil){wheelLatched=true;return;}
+ wheelTotal+=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
+ if(Math.abs(wheelTotal)>=24){wheelLatched=true;stepStory(Math.sign(wheelTotal));}
+},{passive:false});
+addEventListener('touchstart',e=>{
+ touchStart=e.touches.length===1&&storyInputTarget(e.target)&&storyPinned()?{x:e.touches[0].clientX,y:e.touches[0].clientY,done:false}:null;
+},{passive:true});
+addEventListener('touchmove',e=>{
+ if(!touchStart||e.touches.length!==1)return;
+ const dx=e.touches[0].clientX-touchStart.x,dy=touchStart.y-e.touches[0].clientY;
+ if(Math.abs(dx)>Math.abs(dy)&&!touchStart.done)return;
+ e.preventDefault();
+ if(!touchStart.done&&Math.abs(dy)>35){touchStart.done=true;stepStory(Math.sign(dy));}
+},{passive:false});
+addEventListener('touchend',()=>touchStart=null,{passive:true});
+addEventListener('touchcancel',()=>touchStart=null,{passive:true});
+addEventListener('keydown',e=>{
+ if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('button,a,input,textarea,select')||!storyPinned()||!storyInputTarget(e.target))return;
+ const direction=['ArrowDown','PageDown',' '].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
+ if(!direction)return;e.preventDefault();if(!e.repeat)stepStory(e.shiftKey&&e.key===' '?-1:direction);
+});

@@ -23,3 +23,11 @@ html{scroll-behavior:auto;scroll-padding-top:0}
 .privacy-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--position,center);z-index:3;opacity:0;transition:opacity 1.3s cubic-bezier(.22,.61,.36,1);pointer-events:none}.curtains-closed .privacy-image{opacity:1}
 .service-scope{margin:38px 0 20px}.service-scope h3{font-size:27px}.service-scope ul{margin-top:18px}
 @media(max-width:700px) and (max-height:740px){.story-sticky[data-stage="4"] .chapter-copy>p{display:none}}
+/* Stable source framing and a single timed dissolve for each scene. */
+.stage-visual{transition:transform 1s cubic-bezier(.25,.1,.25,1),filter .8s,top 1s,height 1s}
+.visual-image,.privacy-image{transition:object-position 1s cubic-bezier(.25,.1,.25,1)}
+.stage-visual.image-transition~.hotspots{visibility:hidden}
+@media(max-width:700px){.stage-visual .visual-image.current,.stage-visual .privacy-image{transition:transform 1s cubic-bezier(.25,.1,.25,1)} }
+@media(prefers-reduced-motion:reduce){.stage-visual,.visual-image,.privacy-image{transition:none!important}}
+
+.story-sticky.scene-changing .hotspots{visibility:hidden}

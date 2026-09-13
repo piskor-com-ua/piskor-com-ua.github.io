@@ -14,7 +14,7 @@
 @media(prefers-reduced-motion:reduce){.scene-preview *{animation:none!important;transition:none!important}}
 /* No colored frame or filter on the empty area around a contained photograph. */
 .story-sticky[data-stage="4"]{background:#08151d}
-.story-sticky[data-stage="4"] .stage-visual{background:transparent;filter:none;transition:none}
+.story-sticky[data-stage="4"] .stage-visual{background:transparent;filter:none;transition:transform 1s,top 1s,height 1s}
 .story-sticky[data-stage="4"] .visual-image{filter:brightness(var(--light));transition:filter .6s}
 .story-sticky[data-stage="4"] .visual-light{display:none}
 .scene-preview{height:auto;aspect-ratio:3/2;border:0;border-radius:0;background:transparent}

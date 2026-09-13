@@ -114,7 +114,7 @@ function technicalArt(layer) {
 }
 
 const decodedImages=new Map();
-let sceneLayoutTimer;
+let sceneLayoutTimer,lastStoryScrollY=scrollY,nativeTouchUntil=0;
 function prepareImage(key){
  if(!decodedImages.has(key)){const image=new Image();image.src=assets[key];decodedImages.set(key,image.decode().catch(()=>{}));}
  return decodedImages.get(key);
@@ -191,6 +191,7 @@ function poseFrame(){
 }
 
 function jumpFrame(index){
+  nativeTouchUntil=0;
   index=clamp(index,0,frames.length-1);
   manualUntil=performance.now()+1000;
   setFrame(index);
@@ -205,6 +206,13 @@ function updateScroll(){
   if(reduced.matches)return;
   const story=document.querySelector('.story');if(!story)return;
   const travel=Math.max(1,story.offsetHeight-document.querySelector('.story-sticky').offsetHeight);
+  const y=scrollY,top=y+story.getBoundingClientRect().top,bottom=top+travel,previous=lastStoryScrollY;
+  lastStoryScrollY=y;
+  // Catch native touch inertia that enters after the finger has already lifted.
+  if(performance.now()<nativeTouchUntil){
+    if(previous>bottom&&y<=bottom){jumpFrame(frames.length-1);return;}
+    if(previous<top&&y>=top){jumpFrame(0);return;}
+  }
   const position=clamp(-story.getBoundingClientRect().top/travel)*frames.length;
   setFrame(Math.min(frames.length-1,Math.floor(position)),true);
 }
@@ -314,43 +322,59 @@ function positionHotspots(amount=0,zoom=frames[activeFrame]?.view[0]||1){
  });
 }
 
-// One complete input gesture advances one scene. Momentum is consumed, never queued.
-let gestureUntil=0,wheelLast=0,wheelLatched=false,wheelTotal=0,touchStart=null;
+// Wheel and touch share the same entry/step behavior; one gesture owns one change.
+let wheelLast=0,wheelLatched=false,wheelTotal=0,wheelDirection=0,touchStart=null;
 function storyInputTarget(target){return !document.querySelector('dialog[open]')&&!target.closest('input,.automation-panel,.hotspot-note');}
 function storyPinned(){const r=document.querySelector('.story').getBoundingClientRect();return r.top<=2&&r.bottom>=innerHeight-2;}
+function storyEntry(direction){
+ const r=document.querySelector('.story').getBoundingClientRect();
+ if(direction<0&&r.bottom>=-2&&r.bottom<innerHeight-2)return frames.length-1;
+ if(direction>0&&r.top>2&&r.top<=innerHeight)return 0;
+ return null;
+}
 function stepStory(direction){
- if(performance.now()<gestureUntil)return;
+ const entry=storyEntry(direction);
+ if(entry!==null){jumpFrame(entry);return;}
  const next=activeFrame+direction;
  if(next<0||next>=frames.length){
   const story=document.querySelector('.story'),top=scrollY+story.getBoundingClientRect().top;
-  window.scrollTo({top:direction<0?Math.max(0,top-innerHeight):top+story.offsetHeight,behavior:reduced.matches?'instant':'smooth'});
+  // A native smooth scroll can re-enter and traverse scenes while exiting.
+  window.scrollTo({top:direction<0?Math.max(0,top-innerHeight):top+story.offsetHeight,behavior:'instant'});
  }else jumpFrame(next);
- gestureUntil=performance.now()+1100;
 }
 addEventListener('wheel',e=>{
- if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY)||!storyInputTarget(e.target)||!storyPinned())return;
+ if(e.ctrlKey||!e.deltaY||Math.abs(e.deltaX)>Math.abs(e.deltaY)||!storyInputTarget(e.target))return;
+ const direction=Math.sign(e.deltaY),now=performance.now();
+ if(now-wheelLast>180||direction!==wheelDirection){wheelLatched=false;wheelTotal=0;}
+ wheelLast=now;wheelDirection=direction;
+ const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
+ const r=document.querySelector('.story').getBoundingClientRect();
+ const crossing=direction<0&&r.bottom<0&&r.bottom-delta>=0?frames.length-1:direction>0&&r.top>innerHeight&&r.top-delta<=innerHeight?0:null;
+ if(!storyPinned()&&storyEntry(direction)===null&&crossing===null)return;
  e.preventDefault();
- const now=performance.now();
- if(now-wheelLast>220){wheelLatched=false;wheelTotal=0;}
- wheelLast=now;
- if(wheelLatched||now<gestureUntil){wheelLatched=true;return;}
- wheelTotal+=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
- if(Math.abs(wheelTotal)>=24){wheelLatched=true;stepStory(Math.sign(wheelTotal));}
+ if(wheelLatched)return;
+ wheelTotal+=delta;
+ if(Math.abs(wheelTotal)>=24){wheelLatched=true;if(crossing!==null)jumpFrame(crossing);else stepStory(direction);}
 },{passive:false});
 addEventListener('touchstart',e=>{
- touchStart=e.touches.length===1&&storyInputTarget(e.target)&&storyPinned()?{x:e.touches[0].clientX,y:e.touches[0].clientY,done:false}:null;
+ touchStart=e.touches.length===1&&storyInputTarget(e.target)?{x:e.touches[0].clientX,y:e.touches[0].clientY,done:false}:null;
 },{passive:true});
 addEventListener('touchmove',e=>{
  if(!touchStart||e.touches.length!==1)return;
  const dx=e.touches[0].clientX-touchStart.x,dy=touchStart.y-e.touches[0].clientY;
  if(Math.abs(dx)>Math.abs(dy)&&!touchStart.done)return;
+ nativeTouchUntil=performance.now()+2000;
+ const direction=Math.sign(dy);
+ if(!touchStart.done&&!storyPinned()&&storyEntry(direction)===null)return;
  e.preventDefault();
- if(!touchStart.done&&Math.abs(dy)>35){touchStart.done=true;stepStory(Math.sign(dy));}
+ if(!touchStart.done&&Math.abs(dy)>35){touchStart.done=true;stepStory(direction);}
 },{passive:false});
 addEventListener('touchend',()=>touchStart=null,{passive:true});
 addEventListener('touchcancel',()=>touchStart=null,{passive:true});
 addEventListener('keydown',e=>{
- if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('button,a,input,textarea,select')||!storyPinned()||!storyInputTarget(e.target))return;
- const direction=['ArrowDown','PageDown',' '].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
- if(!direction)return;e.preventDefault();if(!e.repeat)stepStory(e.shiftKey&&e.key===' '?-1:direction);
+ if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('button,a,input,textarea,select')||!storyInputTarget(e.target))return;
+ let direction=['ArrowDown','PageDown',' '].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
+ if(e.shiftKey&&e.key===' ')direction=-1;
+ if(!direction||!storyPinned()&&storyEntry(direction)===null)return;
+ e.preventDefault();if(!e.repeat)stepStory(direction);
 });

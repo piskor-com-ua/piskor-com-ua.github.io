@@ -1,4 +1,5 @@
 title: PISKOR Architect
+indexing_enabled: false
 url: https://piskor-com-ua.github.io
 baseurl: ""
 source: concept
@@ -7,6 +8,9 @@ encoding: utf-8
 timezone: Europe/Kyiv
 theme: null
 plugins: []
+collections:
+  projects:
+    output: true
 strict_front_matter: true
 liquid:
   error_mode: strict

@@ -1,0 +1,64 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": {{ '/#organization' | absolute_url | jsonify }},
+      "name": "PISKOR Architect",
+      "url": {{ '/' | absolute_url | jsonify }},
+      "logo": {{ '/assets/piskor-logo.png' | absolute_url | jsonify }},
+      "telephone": "+380974781005",
+      "email": "info@piskor.com.ua",
+      "sameAs": ["https://www.instagram.com/piskor.com.ua/", "https://www.behance.net/piskor_com_ua", "https://www.facebook.com/piskor.com.ua/"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": {{ '/#website' | absolute_url | jsonify }},
+      "name": "PISKOR Architect",
+      "url": {{ '/' | absolute_url | jsonify }},
+      "inLanguage": ["uk", "en"],
+      "publisher": {"@id": {{ '/#organization' | absolute_url | jsonify }}}
+    }
+    {% unless page.home %},
+    {% if page.catalog %}
+    {
+      "@type": "CollectionPage",
+      "@id": {{ page.url | absolute_url | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "inLanguage": {{ page.lang | jsonify }},
+      "mainEntity": {"@type": "ItemList", "itemListElement": [
+        {% include portfolio-projects.html %}
+        {% for project in projects %}{% unless forloop.first %},{% endunless %}
+        {"@type":"ListItem", "position":{{ forloop.index }}, "name":{{ project.card_title | jsonify }}, "url":{{ project.url | absolute_url | jsonify }}}
+        {% endfor %}
+      ]}
+    },
+    {% else %}
+    {
+      "@type": "CreativeWork",
+      "@id": {{ page.url | absolute_url | append: '#project' | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "description": {{ page.description | jsonify }},
+      "inLanguage": {{ page.lang | jsonify }},
+      "creator": {"@id": {{ '/#organization' | absolute_url | jsonify }}},
+      "contentLocation": {"@type": "City", "name": "Lviv"},
+      "genre": "Interior design"
+    },
+    {% endif %}
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": {% if page.lang == 'en' %}"Home"{% else %}"Головна"{% endif %}, "item": {% if page.lang == 'en' %}{{ '/en/' | absolute_url | jsonify }}{% else %}{{ '/' | absolute_url | jsonify }}{% endif %}},
+        {"@type": "ListItem", "position": 2, "name": {% if page.lang == 'en' %}"Portfolio"{% else %}"Портфоліо"{% endif %}, "item": {% if page.lang == 'en' %}{{ '/en/portfolio/' | absolute_url | jsonify }}{% else %}{{ '/portfolio/' | absolute_url | jsonify }}{% endif %}}
+        {% unless page.catalog %},
+        {"@type": "ListItem", "position": 3, "name": {{ page.card_title | default: page.title | jsonify }}, "item": {{ page.url | absolute_url | jsonify }}}
+        {% endunless %}
+      ]
+    }
+    {% endunless %}
+  ]
+}
+</script>

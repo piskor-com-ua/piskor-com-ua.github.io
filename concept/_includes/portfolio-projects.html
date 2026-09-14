@@ -1,0 +1,4 @@
+{%- assign localized_projects = site.projects | where: 'lang', page.lang -%}
+{%- assign dated_projects = localized_projects | where_exp: 'project', 'project.project_year != nil' | sort: 'project_id' | sort: 'project_year' | reverse -%}
+{%- assign undated_projects = localized_projects | where_exp: 'project', 'project.project_year == nil' | sort: 'project_id' -%}
+{%- assign projects = dated_projects | concat: undated_projects -%}

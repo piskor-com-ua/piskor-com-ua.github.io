@@ -42,41 +42,53 @@ const copy = {
     ],detailNote:'We will discuss the scope and format of our work during your call.',approachLabel:'Care for the original vision',approachTitle:'Your vision.<br>Our attention.<br>At every step.',approachText:'We are there for the decisions that matter, from the first conversation to completion. Choose full guidance or our involvement at the stages you need.',steps:['We get to know you and your vision','We develop a coherent concept','We guide its realization'],contactLabel:'Start with a conversation',geography:'Lviv · Ukraine · Europe',contactTitle:'How do you imagine<br>your space?',contactText:'Tell us about your idea.<br>We will find the next step together.',email:'Write us an email ↗',copyright:'© 2026 PISKOR Architect',version:'Design concept 02 · for discussion',houseAlt:'Concept house in dark stone and glass among pine trees',interiorAlt:'Concept interior with natural stone, timber and forest views'
   }
 };
-let locale = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'uk';
+const homeSEO = JSON.parse(document.querySelector('#home-seo').textContent);
+let locale = document.documentElement.lang;
+if (new URLSearchParams(location.search).get('lang') === 'en' && locale !== 'en') location.replace('/en/' + location.hash);
 let activeFrame=-1, activeChapter=-1, scrollTick=false, dialogOpener, imageTicket=0;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
 const L=values=>values[locale==='uk'?0:1];
-const assets={climate:'assets/automation/climate.webp',entry:'assets/automation/entry.webp',entryOpen:'assets/automation/entry-open.webp',privacy:'assets/v2/privacy.webp',house:'assets/house-concept.webp',interior:'assets/interior-concept.webp',model:'assets/v2/model.webp',facade:'assets/v2/facade.webp',kitchen:'assets/v2/kitchen.webp',materials:'assets/v2/materials.webp',night:'assets/v2/night.webp'};
+const assets={climate:'/assets/automation/climate.webp',entry:'/assets/automation/entry.webp',entryOpen:'/assets/automation/entry-open.webp',privacy:'/assets/v2/privacy.webp',house:'/assets/house-concept.webp',interior:'/assets/interior-concept.webp',model:'/assets/v2/model.webp',facade:'/assets/v2/facade.webp',kitchen:'/assets/v2/kitchen.webp',materials:'/assets/v2/materials.webp',night:'/assets/v2/night.webp'};
 const frames=chapters.flatMap((chapter,c)=>chapter.beats.map((beat,b)=>({...beat,chapter:c,beat:b})));
 let automation={preset:0,asset:"interior",light:75,temp:22,curtains:false,armed:false};
 const presets=[{asset:"interior",light:75,temp:22,curtains:false,armed:false},{asset:"night",light:40,temp:23,curtains:false,armed:false},{asset:"night",light:12,temp:22,curtains:true,armed:false},{asset:"night",light:0,temp:18,curtains:true,armed:true}];
-const logo='<img src="assets/piskor-logo.png" width="924" height="234" alt="PISKOR Architect">';
+const logo='<img src="/assets/piskor-logo.png" width="924" height="234" alt="PISKOR Architect">';
 const arrow='<span aria-hidden="true">↗</span>';
 function render() {
   const t=copy[locale];
   document.documentElement.lang=locale;
-  document.title=locale==='uk'?'PISKOR Architect — Концепт 02':'PISKOR Architect — Concept 02';
+  const meta=homeSEO[locale];
+  document.title=meta.title;
+  document.querySelector('meta[name="description"]').content=meta.description;
+  for(const key of ['title','description']){
+    document.querySelector('meta[property="og:'+key+'"]').content=meta[key];
+    document.querySelector('meta[name="twitter:'+key+'"]').content=meta[key];
+  }
+  const canonical=new URL(meta.path,document.querySelector('link[rel="canonical"]').href).href;
+  document.querySelector('link[rel="canonical"]').href=canonical;
+  document.querySelector('meta[property="og:url"]').content=canonical;
+  document.querySelector('meta[property="og:locale"]').content=meta.locale;
   document.body.classList.toggle('reduced',reduced.matches);
   document.querySelector('#app').innerHTML=`
   <a class="skip" href="#main">${t.skip}</a>
   <header class="header">
     <a class="logo" href="#" aria-label="PISKOR Architect">${logo}</a>
-    <nav class="nav" aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a></nav>
+    <nav class="nav" aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a></nav>
     <div class="header-right"><div class="language" aria-label="Language"><button data-lang="uk" aria-pressed="${locale==='uk'}" aria-label="Українська">UA</button><span>/</span><button data-lang="en" aria-pressed="${locale==='en'}" aria-label="English">EN</button></div><a class="header-call" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><button class="menu-button" aria-label="${t.menu}" aria-expanded="false" aria-controls="mobile-menu"><i></i><i></i></button></div>
   </header>
-  <nav class="mobile-menu" id="mobile-menu" inert aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
+  <nav class="mobile-menu" id="mobile-menu" inert aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-picture"><img src="assets/house-concept.webp" width="1536" height="1024" alt="${t.houseAlt}" fetchpriority="high"></div>
+      <div class="hero-picture"><img src="/assets/house-concept.webp" width="1536" height="1024" alt="${t.houseAlt}" fetchpriority="high"></div>
       <div class="hero-copy"><div class="eyebrow">${t.place}</div><h1 id="hero-title">${t.hero}</h1><p>${t.heroText}</p><a class="text-link" href="tel:+380974781005">${t.cta}${arrow}</a></div>
-      <div class="hero-bottom"><a href="#story" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a></div>
+      <div class="hero-bottom"><a href="#design-process" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a></div>
     </section>
-    <section class="story-intro"><div class="eyebrow">${t.introLabel}</div><h2>${storyUI[locale].title}<br><span>${storyUI[locale].subtitle}</span></h2><p>${storyUI[locale].intro}</p><a class="text-link" href="#story">${storyUI[locale].explore}<span aria-hidden="true">↓</span></a></section>
-    <section class="story" id="story" aria-label="${t.storyLabel}">
+    <section class="story-intro"><div class="eyebrow">${t.introLabel}</div><h2>${storyUI[locale].title}<br><span>${storyUI[locale].subtitle}</span></h2><p>${storyUI[locale].intro}</p><a class="text-link" href="#design-process">${storyUI[locale].explore}<span aria-hidden="true">↓</span></a></section>
+    <section class="story" id="design-process" aria-label="${t.storyLabel}">
       <div class="story-sticky">
-        <div class="story-top"><a href="#story" class="story-brand">${storyUI[locale].title} <span>${storyUI[locale].subtitle}</span></a><a href="tel:+380974781005" class="story-call">${t.cta} ↗</a></div>
-        <div class="stage-visual" aria-hidden="true"><img class="visual-image current" alt="" src="assets/v2/model.webp"><img class="visual-image incoming" alt=""><div class="visual-light"></div><img class="privacy-image" src="assets/v2/privacy.webp" alt=""></div>
+        <div class="story-top"><a href="#design-process" class="story-brand">${storyUI[locale].title} <span>${storyUI[locale].subtitle}</span></a><a href="tel:+380974781005" class="story-call">${t.cta} ↗</a></div>
+        <div class="stage-visual" aria-hidden="true"><img class="visual-image current" alt="" src="/assets/v2/model.webp"><img class="visual-image incoming" alt=""><div class="visual-light"></div><img class="privacy-image" src="/assets/v2/privacy.webp" alt=""></div>
         <div class="technical-layer" aria-hidden="true"></div><div class="cinematic-shade"></div>
         <div class="concept-label">${storyUI[locale].concept}</div>
         <div class="beat-nav" role="group" aria-label="${storyUI[locale].points}"></div>
@@ -89,9 +101,9 @@ function render() {
         <div class="story-bottom"><div class="story-hint">${storyUI[locale].hint}</div><div class="story-controls"><button class="previous-beat" aria-label="${storyUI[locale].previous}">←</button><div class="chapter-dock" role="group" aria-label="${t.storyLabel}">${chapters.map((c,i)=>`<button data-chapter="${i}" aria-pressed="false">${c.name[locale==='uk'?0:1]}</button>`).join('')}</div><button class="next-beat" aria-label="${storyUI[locale].next}">→</button></div><div class="narrative-progress" aria-hidden="true"><i></i></div></div>
       </div>
     </section>
-    <section class="services" id="services"><div class="section-head"><div class="eyebrow">${t.serviceLabel}</div><h2>${t.servicesTitle}</h2></div>${t.services.map((s,i)=>`<div class="service-row"><div class="service-mark" aria-hidden="true">↗</div><button data-service="${i}" aria-haspopup="dialog" aria-label="${s.title}"><div><h3>${s.title}</h3><p>${s.sub}</p></div><span class="arrow-circle" aria-hidden="true">↗</span></button></div>`).join('')}</section>
-    <section class="portfolio" id="portfolio"><div class="portfolio-heading"><div><p class="eyebrow">${locale==='uk'?'Портфоліо · PISKOR Architect':'Portfolio · PISKOR Architect'}</p><h2>${locale==='uk'?'Ідеї набувають форми.':'Ideas take shape.'}</h2></div></div><a class="portfolio-card" href="${locale==='uk'?'lviv-apartment.html':'lviv-apartment-en.html'}"><div class="portfolio-card-image"><img src="assets/portfolio/lviv-apartment/bedroom-1440.webp" srcset="assets/portfolio/lviv-apartment/bedroom-640.webp 640w, assets/portfolio/lviv-apartment/bedroom-1440.webp 1440w" sizes="(max-width:700px) 100vw, 55vw" width="2970" height="2100" loading="lazy" alt="${locale==='uk'?'Дизайн-проєкт квартири у Львові: спальня у синіх та деревних тонах':'Lviv apartment design: bedroom in blue and timber tones'}"></div><div><p class="eyebrow project-eyebrow">${locale==='uk'?'Львів · 97,72 м² · Дизайн-проєкт':'Lviv · 97.72 m² · Interior design'}</p><h3>${locale==='uk'?'Тепло дерева.<br>Глибина кольору.':'The warmth of wood.<br>The depth of colour.'}</h3><p>${locale==='uk'?'Квартира з власним характером. Синьо-сірі тони, виразні фактури та увага до щоденних звичок.':'An apartment with a character of its own. Blue-grey tones, expressive textures and attention to everyday routines.'}</p><span class="text-link">${locale==='uk'?'Переглянути проєкт':'Explore the project'} <span aria-hidden="true">↗</span></span></div></a></section>
-    <section class="approach" id="approach"><div class="approach-image"><img src="assets/interior-concept.webp" alt="${t.interiorAlt}" width="1536" height="1024" loading="lazy"><div class="image-caption">${t.concept}</div></div><div class="approach-content"><div class="eyebrow">${t.approachLabel}</div><h2>${t.approachTitle}</h2><p>${t.approachText}</p><div class="approach-steps">${t.steps.map((s,i)=>`<div><span aria-hidden="true">—</span>${s}</div>`).join('')}</div></div></section>
+    <section class="services" id="architecture-services"><div class="section-head"><div class="eyebrow">${t.serviceLabel}</div><h2>${t.servicesTitle}</h2></div>${t.services.map((s,i)=>`<div class="service-row"><div class="service-mark" aria-hidden="true">↗</div><button data-service="${i}" aria-haspopup="dialog" aria-label="${s.title}"><div><h3>${s.title}</h3><p>${s.sub}</p></div><span class="arrow-circle" aria-hidden="true">↗</span></button></div>`).join('')}</section>
+    <section class="portfolio" id="portfolio"><div class="portfolio-heading"><div><p class="eyebrow">${locale==='uk'?'Портфоліо · PISKOR Architect':'Portfolio · PISKOR Architect'}</p><h2>${locale==='uk'?'Ідеї набувають форми.':'Ideas take shape.'}</h2></div><a class="text-link" href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Усі проєкти':'All projects'} <span aria-hidden="true">↗</span></a></div><a class="portfolio-card" href="${locale==='uk'?'/portfolio/lviv-apartment/':'/en/portfolio/lviv-apartment/'}"><div class="portfolio-card-image"><img src="/assets/portfolio/lviv-apartment/bedroom-1440.webp" srcset="/assets/portfolio/lviv-apartment/bedroom-640.webp 640w, /assets/portfolio/lviv-apartment/bedroom-1440.webp 1440w" sizes="(max-width:700px) 100vw, 55vw" width="2970" height="2100" loading="lazy" alt="${locale==='uk'?'Дизайн-проєкт квартири у Львові: спальня у синіх та деревних тонах':'Lviv apartment design: bedroom in blue and timber tones'}"></div><div><p class="eyebrow project-eyebrow">${locale==='uk'?'Львів · 97,72 м² · Дизайн-проєкт':'Lviv · 97.72 m² · Interior design'}</p><h3>${locale==='uk'?'Тепло дерева.<br>Глибина кольору.':'The warmth of wood.<br>The depth of colour.'}</h3><p>${locale==='uk'?'Квартира з власним характером. Синьо-сірі тони, виразні фактури та увага до щоденних звичок.':'An apartment with a character of its own. Blue-grey tones, expressive textures and attention to everyday routines.'}</p><span class="text-link">${locale==='uk'?'Переглянути проєкт':'Explore the project'} <span aria-hidden="true">↗</span></span></div></a></section>
+    <section class="approach" id="our-approach"><div class="approach-image"><img src="/assets/interior-concept.webp" alt="${t.interiorAlt}" width="1536" height="1024" loading="lazy"><div class="image-caption">${t.concept}</div></div><div class="approach-content"><div class="eyebrow">${t.approachLabel}</div><h2>${t.approachTitle}</h2><p>${t.approachText}</p><div class="approach-steps">${t.steps.map((s,i)=>`<div><span aria-hidden="true">—</span>${s}</div>`).join('')}</div></div></section>
     <section class="contact" id="contact"><div class="contact-top"><div class="eyebrow">${t.contactLabel}</div><div class="eyebrow">${t.geography}</div></div><h2>${t.contactTitle}</h2><div class="contact-main"><a class="contact-phone" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><p>${t.contactText}</p></div><div class="contact-other"><a href="https://wa.me/380974781005" target="_blank" rel="noopener">WhatsApp ↗</a><a href="viber://chat?number=%2B380974781005">Viber ↗</a><a href="mailto:info@piskor.com.ua">${t.email}</a></div></section>
   </main>
   <footer class="footer"><div class="footer-top"><a class="logo" href="#">${logo}</a><div class="footer-social"><a href="https://www.instagram.com/piskor.com.ua/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.behance.net/piskor_com_ua" target="_blank" rel="noopener">Behance ↗</a><a href="https://www.facebook.com/piskor.com.ua/" target="_blank" rel="noopener">Facebook ↗</a></div></div><div class="footer-bottom"><span>${t.copyright}</span><span>${t.version}</span></div></footer>
@@ -274,7 +286,7 @@ function bindControls(){
   document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{
     if(locale===b.dataset.lang)return;
     const y=scrollY,frame=activeFrame,inStory=document.querySelector('.story').getBoundingClientRect().top<=0&&document.querySelector('.story').getBoundingClientRect().bottom>innerHeight;
-    locale=b.dataset.lang;const url=new URL(location.href);url.searchParams.set('lang',locale);history.replaceState(null,'',url);
+    locale=b.dataset.lang;const url=new URL(location.href);url.pathname=homeSEO[locale].path;url.searchParams.delete('lang');history.replaceState(null,'',url);
     document.body.classList.remove('locked');render();window.scrollTo({top:y,behavior:'instant'});if(inStory)jumpFrame(frame);
     document.querySelector(`[data-lang="${locale}"]`).focus({preventScroll:true});
   }));
@@ -282,7 +294,7 @@ function bindControls(){
   // Anchor navigation skips the intervening narrative; manual scrolling still plays it.
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
     e.preventDefault();finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;wheelLatched=false;toggleMenu(false);const hash=a.getAttribute('href');
-    if(hash==='#story'){jumpFrame(0);if(reduced.matches)document.querySelector('#story').scrollIntoView({behavior:'instant'});}
+    if(hash==='#design-process'){jumpFrame(0);if(reduced.matches)document.querySelector('#design-process').scrollIntoView({behavior:'instant'});}
     else{const target=hash==='#'?document.body:document.querySelector(hash);if(target)window.scrollTo({top:hash==='#'?0:scrollY+target.getBoundingClientRect().top,behavior:'instant'});}
     history.replaceState(null,'',location.pathname+location.search+hash);
   }));
@@ -370,7 +382,7 @@ function finishStoryExit(){
 }
 function exitStory(direction){
  const story=document.querySelector('.story'),top=scrollY+story.getBoundingClientRect().top;
- const target=direction<0?Math.max(0,top-innerHeight):scrollY+document.querySelector('#services').getBoundingClientRect().top;
+ const target=direction<0?Math.max(0,top-innerHeight):scrollY+document.querySelector('#architecture-services').getBoundingClientRect().top;
  const exit={target,start:scrollY,time:performance.now(),touch:!!touchStart,raf:0};
  storyExit=exit;
  const draw=now=>{

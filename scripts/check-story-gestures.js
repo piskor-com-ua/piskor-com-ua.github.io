@@ -7,7 +7,7 @@ async page => {
   finishStoryExit();touchAnchor=null;nativeTouchUntil=0;wheelLast=0;wheelDirection=0;wheelLatched=false;wheelTotal=0;wheelPeak=0;wheelTrough=Infinity;jumpFrame(index);
  },index);
  const wheel=async delta=>page.evaluate(delta=>document.querySelector(".story").dispatchEvent(new WheelEvent("wheel",{deltaY:delta,bubbles:true,cancelable:true})),delta);
- const state=()=>page.evaluate(()=>({frame:activeFrame,y:scrollY,services:document.querySelector("#services").getBoundingClientRect().top}));
+ const state=()=>page.evaluate(()=>({frame:activeFrame,y:scrollY,services:document.querySelector("#architecture-services").getBoundingClientRect().top}));
  await reset(3);await wheel(100);await wheel(70);await wheel(30);await wheel(8);
  assert((await state()).frame===4,"One wheel burst advances one scene");
  await page.waitForTimeout(90);await wheel(5);await page.waitForTimeout(80);await wheel(60);

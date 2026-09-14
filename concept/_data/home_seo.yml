@@ -1,0 +1,10 @@
+uk:
+  title: Архітектура та дизайн інтер’єру у Львові | PISKOR Architect
+  description: Архітектурне проєктування та дизайн інтер’єру у Львові. PISKOR Architect — планування, інженерія, авторський супровід та автоматизація простору.
+  path: /
+  locale: uk_UA
+en:
+  title: Architecture & Interior Design in Lviv | PISKOR Architect
+  description: Architecture and interior design in Lviv, Ukraine. PISKOR Architect brings together space planning, engineering, project supervision and home automation.
+  path: /en/
+  locale: en_GB

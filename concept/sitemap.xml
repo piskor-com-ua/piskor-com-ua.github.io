@@ -1,0 +1,19 @@
+---
+layout: null
+permalink: /sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{% if site.indexing_enabled == true %}
+{% assign public_pages = site.pages | concat: site.projects | sort: 'url' %}
+{% for item in public_pages %}{% if item.uk_url and item.en_url and item.sitemap != false %}
+  <url>
+    <loc>{{ item.url | absolute_url | xml_escape }}</loc>
+    {% if item.last_modified_at %}<lastmod>{{ item.last_modified_at | date_to_xmlschema }}</lastmod>{% endif %}
+    <xhtml:link rel="alternate" hreflang="uk" href="{{ item.uk_url | absolute_url | xml_escape }}" />
+    <xhtml:link rel="alternate" hreflang="en" href="{{ item.en_url | absolute_url | xml_escape }}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ item.uk_url | absolute_url | xml_escape }}" />
+  </url>
+{% endif %}{% endfor %}
+{% endif %}
+</urlset>

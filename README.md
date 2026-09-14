@@ -32,3 +32,13 @@ Dependabot checks gems daily. Review updates in PRs; CI uses `Gemfile.lock`, inc
 The preview remains `noindex,nofollow`. Migration does not authorize enabling indexing, changing domains, merging or deploying.
 
 See [migration evidence](docs/jekyll-migration.md).
+
+## Search metadata and URLs
+
+Public routes include `/`, `/en/`, `/portfolio/`, `/en/portfolio/` and the corresponding `lviv-apartment/` project pages. Old project `.html` URLs are intentionally removed. Jekyll generates localized metadata, canonical/hreflang links, JSON-LD, robots.txt and sitemap.xml. See [SEO configuration and indexing safeguards](docs/seo-urls.md). Indexing remains disabled; the normal build enforces noindex on every page.
+
+## Adding a portfolio project
+
+Add Ukrainian and English HTML documents to `concept/_projects/` using the existing apartment documents as templates. Keep a shared `project_id` and numeric `project_year` (the year the project was made, not its upload date) in both translations. Set the language, explicit clean permalink, reciprocal uk_url/en_url, SEO title/description, card_title, card_summary, cover and cover_alt. Images must use published assets. Set `published: false` on unfinished documents.
+
+Both catalogs and their structured ItemList populate automatically from the localized collection. Projects sort by year descending; documents with a missing project_year appear last without a displayed year. The apartment year is awaiting user confirmation. The sitemap includes collection documents automatically when indexing is eventually approved. The curated homepage feature card remains separate from the complete catalog.

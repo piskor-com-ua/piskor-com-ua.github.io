@@ -1,0 +1,2 @@
+.catalog-projects{padding-top:0}.catalog-projects article+article{margin-top:80px}.catalog-projects .portfolio-card h2{font-size:clamp(30px,3vw,48px);line-height:1.15;margin:20px 0;font-weight:300}.catalog-page .project-title h1{font-size:clamp(36px,5.4vw,80px)}
+@media(max-width:700px){.catalog-projects article+article{margin-top:48px}.catalog-projects .portfolio-card h2{font-size:32px}.catalog-page .project-title h1{font-size:39px}}

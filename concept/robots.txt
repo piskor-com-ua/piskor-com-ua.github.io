@@ -1,0 +1,11 @@
+---
+layout: null
+permalink: /robots.txt
+---
+# Crawling is allowed so search engines can read the page-level noindex rule.
+# Indexing policy is controlled by indexing_enabled in _config.yml.
+User-agent: *
+Allow: /
+{% if site.indexing_enabled == true %}
+Sitemap: {{ '/sitemap.xml' | absolute_url }}
+{% endif %}

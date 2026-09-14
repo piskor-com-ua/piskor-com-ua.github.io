@@ -1,22 +1,13 @@
-"""Build the public concept artifact without internal notes or source PNG masters."""
+"""Build with locked Jekyll, fingerprint resources and validate the public artifact."""
 from pathlib import Path
 import re
-import shutil
+import subprocess
 import hashlib
 
 source = Path('concept')
 out = Path('_site')
-if out.exists():
-    shutil.rmtree(out)
-out.mkdir()
-for path in source.rglob('*'):
-    if not path.is_file():
-        continue
-    relative = path.relative_to(source)
-    if path.suffix in {'.html', '.css', '.js', '.webp', '.ttf'} or path.name in {'piskor-logo.png', 'Roboto-LICENSE.txt'}:
-        destination = out / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(path, destination)
+subprocess.run(['bundle', 'exec', 'jekyll', 'build', '--trace'], check=True)
+# Pages receives an already generated artifact; it must not build it a second time.
 (out / '.nojekyll').touch()
 # A changed stylesheet or script must not reuse the previous browser cache entry.
 for page in out.rglob('*.html'):
@@ -41,4 +32,7 @@ for path in out.glob('*'):
         assert (out / reference.split('#')[0].split('?')[0]).is_file(), f'Missing resource: {reference}'
 assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noindex'
 assert not list(out.rglob('*.md'))
+for path in out.rglob('*'):
+    if path.is_file():
+        assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf'} or path.name in {'piskor-logo.png', 'Roboto-LICENSE.txt', '.nojekyll'}, f'Non-public file: {path}'
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')

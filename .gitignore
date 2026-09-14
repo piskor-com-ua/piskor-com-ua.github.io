@@ -3,6 +3,8 @@ tmp/
 .playwright-cli/
 output/
 _site/
+concept/.jekyll-cache/
+.jekyll-metadata
 .jekyll-cache/
 vendor/
 .bundle/

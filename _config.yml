@@ -1,0 +1,19 @@
+title: PISKOR Architect
+url: https://piskor-com-ua.github.io
+baseurl: ""
+source: concept
+destination: _site
+encoding: utf-8
+timezone: Europe/Kyiv
+theme: null
+plugins: []
+strict_front_matter: true
+liquid:
+  error_mode: strict
+exclude:
+  - assets/house-concept.png
+  - assets/interior-concept.png
+  - "*.md"
+  - "assets/**/*.md"
+  - "assets/**/*.json"
+  - "assets/v2/*.png"

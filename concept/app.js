@@ -43,7 +43,7 @@ const copy = {
   }
 };
 let locale = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'uk';
-let activeFrame=-1, activeChapter=-1, scrollTick=false, dialogOpener, imageTicket=0, manualUntil=0;
+let activeFrame=-1, activeChapter=-1, scrollTick=false, dialogOpener, imageTicket=0;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
 const L=values=>values[locale==='uk'?0:1];
@@ -62,15 +62,15 @@ function render() {
   <a class="skip" href="#main">${t.skip}</a>
   <header class="header">
     <a class="logo" href="#" aria-label="PISKOR Architect">${logo}</a>
-    <nav class="nav" aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#contact">${t.nav[2]}</a></nav>
+    <nav class="nav" aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a></nav>
     <div class="header-right"><div class="language" aria-label="Language"><button data-lang="uk" aria-pressed="${locale==='uk'}" aria-label="Українська">UA</button><span>/</span><button data-lang="en" aria-pressed="${locale==='en'}" aria-label="English">EN</button></div><a class="header-call" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><button class="menu-button" aria-label="${t.menu}" aria-expanded="false" aria-controls="mobile-menu"><i></i><i></i></button></div>
   </header>
-  <nav class="mobile-menu" id="mobile-menu" inert aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
+  <nav class="mobile-menu" id="mobile-menu" inert aria-label="${t.menu}"><a href="#approach">${t.nav[0]}</a><a href="#story">${t.nav[1]}</a><a href="#portfolio">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-picture"><img src="assets/house-concept.webp" width="1536" height="1024" alt="${t.houseAlt}" fetchpriority="high"></div>
       <div class="hero-copy"><div class="eyebrow">${t.place}</div><h1 id="hero-title">${t.hero}</h1><p>${t.heroText}</p><a class="text-link" href="tel:+380974781005">${t.cta}${arrow}</a></div>
-      <div class="hero-bottom"><a href="#story" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a><div class="hero-caption"><b>${t.concept}</b>${t.conceptSub}</div></div>
+      <div class="hero-bottom"><a href="#story" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a></div>
     </section>
     <section class="story-intro"><div class="eyebrow">${t.introLabel}</div><h2>${storyUI[locale].title}<br><span>${storyUI[locale].subtitle}</span></h2><p>${storyUI[locale].intro}</p><a class="text-link" href="#story">${storyUI[locale].explore}<span aria-hidden="true">↓</span></a></section>
     <section class="story" id="story" aria-label="${t.storyLabel}">
@@ -90,6 +90,7 @@ function render() {
       </div>
     </section>
     <section class="services" id="services"><div class="section-head"><div class="eyebrow">${t.serviceLabel}</div><h2>${t.servicesTitle}</h2></div>${t.services.map((s,i)=>`<div class="service-row"><div class="service-mark" aria-hidden="true">↗</div><button data-service="${i}" aria-haspopup="dialog" aria-label="${s.title}"><div><h3>${s.title}</h3><p>${s.sub}</p></div><span class="arrow-circle" aria-hidden="true">↗</span></button></div>`).join('')}</section>
+    <section class="portfolio" id="portfolio"><div class="portfolio-heading"><div><p class="eyebrow">${locale==='uk'?'Портфоліо · PISKOR Architect':'Portfolio · PISKOR Architect'}</p><h2>${locale==='uk'?'Ідеї набувають форми.':'Ideas take shape.'}</h2></div></div><a class="portfolio-card" href="${locale==='uk'?'lviv-apartment.html':'lviv-apartment-en.html'}"><div class="portfolio-card-image"><img src="assets/portfolio/lviv-apartment/bedroom-1440.webp" srcset="assets/portfolio/lviv-apartment/bedroom-640.webp 640w, assets/portfolio/lviv-apartment/bedroom-1440.webp 1440w" sizes="(max-width:700px) 100vw, 55vw" width="2970" height="2100" loading="lazy" alt="${locale==='uk'?'Дизайн-проєкт квартири у Львові: спальня у синіх та деревних тонах':'Lviv apartment design: bedroom in blue and timber tones'}"></div><div><p class="eyebrow project-eyebrow">${locale==='uk'?'Львів · 97,72 м² · Дизайн-проєкт':'Lviv · 97.72 m² · Interior design'}</p><h3>${locale==='uk'?'Тепло дерева.<br>Глибина кольору.':'The warmth of wood.<br>The depth of colour.'}</h3><p>${locale==='uk'?'Квартира з власним характером. Синьо-сірі тони, виразні фактури та увага до щоденних звичок.':'An apartment with a character of its own. Blue-grey tones, expressive textures and attention to everyday routines.'}</p><span class="text-link">${locale==='uk'?'Переглянути проєкт':'Explore the project'} <span aria-hidden="true">↗</span></span></div></a></section>
     <section class="approach" id="approach"><div class="approach-image"><img src="assets/interior-concept.webp" alt="${t.interiorAlt}" width="1536" height="1024" loading="lazy"><div class="image-caption">${t.concept}</div></div><div class="approach-content"><div class="eyebrow">${t.approachLabel}</div><h2>${t.approachTitle}</h2><p>${t.approachText}</p><div class="approach-steps">${t.steps.map((s,i)=>`<div><span aria-hidden="true">—</span>${s}</div>`).join('')}</div></div></section>
     <section class="contact" id="contact"><div class="contact-top"><div class="eyebrow">${t.contactLabel}</div><div class="eyebrow">${t.geography}</div></div><h2>${t.contactTitle}</h2><div class="contact-main"><a class="contact-phone" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><p>${t.contactText}</p></div><div class="contact-other"><a href="https://wa.me/380974781005" target="_blank" rel="noopener">WhatsApp ↗</a><a href="viber://chat?number=%2B380974781005">Viber ↗</a><a href="mailto:info@piskor.com.ua">${t.email}</a></div></section>
   </main>
@@ -114,7 +115,7 @@ function technicalArt(layer) {
 }
 
 const decodedImages=new Map();
-let sceneLayoutTimer,lastStoryScrollY=scrollY,nativeTouchUntil=0;
+let sceneLayoutTimer,lastStoryScrollY=scrollY,nativeTouchUntil=0,touchAnchor=null,storyExit=null,wheelAnchor=null,nativeWheelEntry=null;
 function prepareImage(key){
  if(!decodedImages.has(key)){const image=new Image();image.src=assets[key];decodedImages.set(key,image.decode().catch(()=>{}));}
  return decodedImages.get(key);
@@ -191,27 +192,40 @@ function poseFrame(){
 }
 
 function jumpFrame(index){
+  finishStoryExit();
+  touchAnchor=null;
+  wheelAnchor=null;nativeWheelEntry=null;
   nativeTouchUntil=0;
   index=clamp(index,0,frames.length-1);
-  manualUntil=performance.now()+1000;
   setFrame(index);
   if(!reduced.matches){
     const story=document.querySelector('.story');
     const travel=story.offsetHeight-document.querySelector('.story-sticky').offsetHeight;
     window.scrollTo({top:scrollY+story.getBoundingClientRect().top+(index+.05)/frames.length*travel,behavior:'instant'});
+    lastStoryScrollY=scrollY;
   }
 }
 
 function updateScroll(){
   if(reduced.matches)return;
+  if(storyExit)return;
+  if(wheelAnchor!==null){
+    if(Math.abs(scrollY-wheelAnchor)>1)window.scrollTo({top:wheelAnchor,behavior:'instant'});
+    lastStoryScrollY=scrollY;return;
+  }
+  if(captureNativeWheelEntry())return;
+  if(touchAnchor!==null){
+    if(Math.abs(scrollY-touchAnchor)>1)window.scrollTo({top:touchAnchor,behavior:'instant'});
+    lastStoryScrollY=scrollY;return;
+  }
   const story=document.querySelector('.story');if(!story)return;
   const travel=Math.max(1,story.offsetHeight-document.querySelector('.story-sticky').offsetHeight);
   const y=scrollY,top=y+story.getBoundingClientRect().top,bottom=top+travel,previous=lastStoryScrollY;
   lastStoryScrollY=y;
   // Catch native touch inertia that enters after the finger has already lifted.
   if(performance.now()<nativeTouchUntil){
-    if(previous>bottom&&y<=bottom){jumpFrame(frames.length-1);return;}
-    if(previous<top&&y>=top){jumpFrame(0);return;}
+    if(previous>bottom&&y<=bottom){jumpFrame(frames.length-1);touchAnchor=scrollY;if(touchStart)touchStart.done=true;return;}
+    if(previous<top&&y>=top){jumpFrame(0);touchAnchor=scrollY;if(touchStart)touchStart.done=true;return;}
   }
   const position=clamp(-story.getBoundingClientRect().top/travel)*frames.length;
   setFrame(Math.min(frames.length-1,Math.floor(position)),true);
@@ -267,7 +281,7 @@ function bindControls(){
   document.querySelector('.menu-button').addEventListener('click',()=>toggleMenu(!document.querySelector('.mobile-menu').classList.contains('open')));
   // Anchor navigation skips the intervening narrative; manual scrolling still plays it.
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();toggleMenu(false);const hash=a.getAttribute('href');
+    e.preventDefault();finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;wheelLatched=false;toggleMenu(false);const hash=a.getAttribute('href');
     if(hash==='#story'){jumpFrame(0);if(reduced.matches)document.querySelector('#story').scrollIntoView({behavior:'instant'});}
     else{const target=hash==='#'?document.body:document.querySelector(hash);if(target)window.scrollTo({top:hash==='#'?0:scrollY+target.getBoundingClientRect().top,behavior:'instant'});}
     history.replaceState(null,'',location.pathname+location.search+hash);
@@ -324,57 +338,118 @@ function positionHotspots(amount=0,zoom=frames[activeFrame]?.view[0]||1){
 
 // Wheel and touch share the same entry/step behavior; one gesture owns one change.
 let wheelLast=0,wheelLatched=false,wheelTotal=0,wheelDirection=0,touchStart=null;
-function storyInputTarget(target){return !document.querySelector('dialog[open]')&&!target.closest('input,.automation-panel,.hotspot-note');}
+function storyInputTarget(target){return !document.querySelector('dialog[open]')&&!document.body.classList.contains('locked')&&!target.closest('input,textarea,select,.automation-panel,.hotspot-note,.chapter-dock');}
 function storyPinned(){const r=document.querySelector('.story').getBoundingClientRect();return r.top<=2&&r.bottom>=innerHeight-2;}
+function captureNativeWheelEntry(){
+ if(nativeWheelEntry===null)return false;
+ const r=document.querySelector('.story').getBoundingClientRect();
+ if(nativeWheelEntry===0?r.top>2:r.bottom<innerHeight-2)return false;
+ const entry=nativeWheelEntry;
+ jumpFrame(entry);
+ wheelAnchor=scrollY;wheelLatched=true;wheelConsumedAt=performance.now();wheelTrough=wheelMagnitude;
+ return true;
+}
 function storyEntry(direction){
  const r=document.querySelector('.story').getBoundingClientRect();
  if(direction<0&&r.bottom>=-2&&r.bottom<innerHeight-2)return frames.length-1;
  if(direction>0&&r.top>2&&r.top<=innerHeight)return 0;
  return null;
 }
+function crossingFrame(delta){
+ const r=document.querySelector('.story').getBoundingClientRect();
+ if(delta<0&&r.bottom<0&&r.bottom-delta>=0)return frames.length-1;
+ if(delta>0&&r.top>innerHeight&&r.top-delta<=innerHeight)return 0;
+ return null;
+}
+function finishStoryExit(){
+ if(!storyExit)return;
+ const exit=storyExit;cancelAnimationFrame(exit.raf);storyExit=null;
+ window.scrollTo({top:exit.target,behavior:'instant'});lastStoryScrollY=scrollY;
+ if(exit.touch)touchAnchor=scrollY;
+ else wheelAnchor=scrollY;
+}
+function exitStory(direction){
+ const story=document.querySelector('.story'),top=scrollY+story.getBoundingClientRect().top;
+ const target=direction<0?Math.max(0,top-innerHeight):scrollY+document.querySelector('#services').getBoundingClientRect().top;
+ const exit={target,start:scrollY,time:performance.now(),touch:!!touchStart,raf:0};
+ storyExit=exit;
+ const draw=now=>{
+  if(storyExit!==exit)return;
+  const progress=Math.min(1,(now-exit.time)/360),ease=1-Math.pow(1-progress,3);
+  window.scrollTo({top:exit.start+(target-exit.start)*ease,behavior:'instant'});
+  lastStoryScrollY=scrollY;
+  if(progress<1)exit.raf=requestAnimationFrame(draw);else finishStoryExit();
+ };
+ exit.raf=requestAnimationFrame(draw);
+}
 function stepStory(direction){
  const entry=storyEntry(direction);
  if(entry!==null){jumpFrame(entry);return;}
  const next=activeFrame+direction;
- if(next<0||next>=frames.length){
-  const story=document.querySelector('.story'),top=scrollY+story.getBoundingClientRect().top;
-  // A native smooth scroll can re-enter and traverse scenes while exiting.
-  window.scrollTo({top:direction<0?Math.max(0,top-innerHeight):top+story.offsetHeight,behavior:'instant'});
- }else jumpFrame(next);
+ if(next<0||next>=frames.length)exitStory(direction);else jumpFrame(next);
 }
+// WheelEvent has no gesture-start marker. A pause, reversal, or a renewed
+// impulse after a decaying tail starts another gesture; tail events stay owned.
+let wheelMagnitude=0,wheelPeak=0,wheelTrough=Infinity,wheelConsumedAt=0;
 addEventListener('wheel',e=>{
- if(e.ctrlKey||!e.deltaY||Math.abs(e.deltaX)>Math.abs(e.deltaY)||!storyInputTarget(e.target))return;
- const direction=Math.sign(e.deltaY),now=performance.now();
- if(now-wheelLast>180||direction!==wheelDirection){wheelLatched=false;wheelTotal=0;}
- wheelLast=now;wheelDirection=direction;
+ if(reduced.matches||e.ctrlKey||!e.deltaY||Math.abs(e.deltaX)>Math.abs(e.deltaY)||!storyInputTarget(e.target))return;
  const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
- const r=document.querySelector('.story').getBoundingClientRect();
- const crossing=direction<0&&r.bottom<0&&r.bottom-delta>=0?frames.length-1:direction>0&&r.top>innerHeight&&r.top-delta<=innerHeight?0:null;
- if(!storyPinned()&&storyEntry(direction)===null&&crossing===null)return;
- e.preventDefault();
- if(wheelLatched)return;
- wheelTotal+=delta;
- if(Math.abs(wheelTotal)>=24){wheelLatched=true;if(crossing!==null)jumpFrame(crossing);else stepStory(direction);}
+ const direction=Math.sign(delta),magnitude=Math.abs(delta),now=performance.now();
+ const renewed=wheelLatched&&now-wheelConsumedAt>140&&wheelTrough<wheelPeak*.55&&magnitude>=Math.max(12,wheelTrough*2.5)&&magnitude>wheelMagnitude*1.5;
+ const fresh=now-wheelLast>120||direction!==wheelDirection||renewed;
+ // Native scrolling can reach the section between wheel callbacks. Capture
+ // that entry before treating this event as an in-section step.
+ if(captureNativeWheelEntry()){wheelLast=now;e.preventDefault();return;}
+ if(fresh){finishStoryExit();wheelAnchor=null;wheelLatched=false;wheelTotal=0;wheelPeak=0;wheelTrough=Infinity;}
+ wheelLast=now;wheelDirection=direction;wheelMagnitude=magnitude;
+ wheelPeak=Math.max(wheelPeak,magnitude);
+ if(wheelLatched)wheelTrough=Math.min(wheelTrough,magnitude);
+ touchAnchor=null;nativeTouchUntil=0;
+ // Keep ownership even after leaving the sticky section, so momentum cannot
+ // crop the services heading or carry the same gesture back into the story.
+ if(wheelLatched){e.preventDefault();return;}
+ const crossing=crossingFrame(delta);
+ if(!storyPinned()&&storyEntry(direction)===null&&crossing===null){
+  const r=document.querySelector('.story').getBoundingClientRect();
+  nativeWheelEntry=direction>0&&r.top>0?0:direction<0&&r.bottom<innerHeight?frames.length-1:null;
+  return;
+ }
+ e.preventDefault();wheelTotal+=delta;
+ if(Math.abs(wheelTotal)>=24){
+  wheelLatched=true;wheelConsumedAt=now;wheelTrough=magnitude;
+  if(crossing!==null)jumpFrame(crossing);else stepStory(direction);
+  if(!storyExit)wheelAnchor=scrollY;
+ }
 },{passive:false});
 addEventListener('touchstart',e=>{
- touchStart=e.touches.length===1&&storyInputTarget(e.target)?{x:e.touches[0].clientX,y:e.touches[0].clientY,done:false}:null;
+ finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;
+ touchStart=!reduced.matches&&e.touches.length===1&&storyInputTarget(e.target)?{x:e.touches[0].clientX,y:e.touches[0].clientY,lastY:e.touches[0].clientY,done:false}:null;
 },{passive:true});
 addEventListener('touchmove',e=>{
  if(!touchStart||e.touches.length!==1)return;
  const dx=e.touches[0].clientX-touchStart.x,dy=touchStart.y-e.touches[0].clientY;
+ const delta=touchStart.lastY-e.touches[0].clientY;touchStart.lastY=e.touches[0].clientY;
  if(Math.abs(dx)>Math.abs(dy)&&!touchStart.done)return;
- nativeTouchUntil=performance.now()+2000;
- const direction=Math.sign(dy);
- if(!touchStart.done&&!storyPinned()&&storyEntry(direction)===null)return;
- e.preventDefault();
- if(!touchStart.done&&Math.abs(dy)>35){touchStart.done=true;stepStory(direction);}
+ nativeTouchUntil=Infinity;
+ const direction=Math.sign(dy),crossing=crossingFrame(delta);
+ if(!touchStart.done&&!storyPinned()&&storyEntry(direction)===null&&crossing===null)return;
+ if(e.cancelable)e.preventDefault();
+ if(!touchStart.done&&Math.abs(dy)>35){
+  touchStart.done=true;
+  if(crossing!==null)jumpFrame(crossing);else stepStory(direction);
+  if(!storyExit)touchAnchor=scrollY;
+ }
 },{passive:false});
 addEventListener('touchend',()=>touchStart=null,{passive:true});
-addEventListener('touchcancel',()=>touchStart=null,{passive:true});
+addEventListener('touchcancel',()=>{touchStart=null;nativeTouchUntil=0;},{passive:true});
+// Switching from touch to mouse/scrollbar must release the momentum guard.
+addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;}},{passive:true});
 addEventListener('keydown',e=>{
  if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('button,a,input,textarea,select')||!storyInputTarget(e.target))return;
  let direction=['ArrowDown','PageDown',' '].includes(e.key)?1:['ArrowUp','PageUp'].includes(e.key)?-1:0;
  if(e.shiftKey&&e.key===' ')direction=-1;
- if(!direction||!storyPinned()&&storyEntry(direction)===null)return;
+ if(!direction||reduced.matches)return;
+ if(!e.repeat){finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;wheelLatched=false;}
+ if(!storyPinned()&&storyEntry(direction)===null)return;
  e.preventDefault();if(!e.repeat)stepStory(direction);
 });

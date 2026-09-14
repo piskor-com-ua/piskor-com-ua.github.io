@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import shutil
+import hashlib
 
 source = Path('concept')
 out = Path('_site')
@@ -17,6 +18,16 @@ for path in source.rglob('*'):
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, destination)
 (out / '.nojekyll').touch()
+# A changed stylesheet or script must not reuse the previous browser cache entry.
+for page in out.rglob('*.html'):
+    def version_resource(match):
+        prefix, reference, quote = match.groups()
+        resource = page.parent / reference
+        if resource.suffix not in {'.css', '.js'} or not resource.is_file():
+            return match.group(0)
+        digest = hashlib.sha256(resource.read_bytes()).hexdigest()[:12]
+        return f'{prefix}{reference}?v={digest}{quote}'
+    page.write_text(re.sub(r'''((?:src|href)=["'])([^"'?]+)(["'])''', version_resource, page.read_text()))
 for path in out.glob('*'):
     if path.suffix not in {'.html', '.css', '.js'}:
         continue
@@ -27,7 +38,7 @@ for path in out.glob('*'):
         if reference.startswith(('http:', 'https:', '#', 'tel:', 'mailto:', 'viber:', 'data:')):
             continue
         assert not reference.startswith('/'), f'Root-relative URL breaks project Pages: {reference}'
-        assert (out / reference.split('?')[0]).is_file(), f'Missing resource: {reference}'
+        assert (out / reference.split('#')[0].split('?')[0]).is_file(), f'Missing resource: {reference}'
 assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noindex'
 assert not list(out.rglob('*.md'))
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')

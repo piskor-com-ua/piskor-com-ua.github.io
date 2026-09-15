@@ -27,6 +27,7 @@ class Page(HTMLParser):
             self.titles[-1] += value
 
 routes = {'/': 'uk', '/en/': 'en', '/portfolio/': 'uk', '/en/portfolio/': 'en', '/portfolio/lviv-apartment/': 'uk', '/en/portfolio/lviv-apartment/': 'en'}
+routes.update({'/portfolio/briukhovychi-house/': 'uk', '/en/portfolio/briukhovychi-house/': 'en'})
 titles = set()
 for route, lang in routes.items():
     page = Page((Path('_site') / route.lstrip('/') / 'index.html').read_text())

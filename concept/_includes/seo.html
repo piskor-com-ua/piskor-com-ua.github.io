@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ meta.title | escape }}">
 <meta name="twitter:description" content="{{ meta.description | escape }}">
-{% if page.home %}{% assign social_image = '/assets/house-concept.webp' %}{% else %}{% assign social_image = '/assets/portfolio/lviv-apartment/bedroom-1440.webp' %}{% endif %}
+{% if page.home %}{% assign social_image = '/assets/house-concept.webp' %}{% else %}{% assign social_image = page.cover | default: '/assets/portfolio/lviv-apartment/bedroom-1440.webp' %}{% endif %}
 <meta property="og:image" content="{{ social_image | absolute_url }}">
 <meta name="twitter:image" content="{{ social_image | absolute_url }}">
 {% include structured-data.html %}

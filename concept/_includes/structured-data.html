@@ -44,7 +44,7 @@
       "description": {{ page.description | jsonify }},
       "inLanguage": {{ page.lang | jsonify }},
       "creator": {"@id": {{ '/#organization' | absolute_url | jsonify }}},
-      "contentLocation": {"@type": "City", "name": "Lviv"},
+      "contentLocation": {"@type": "Place", "name": {{ page.content_location | default: 'Lviv' | jsonify }}},
       "genre": "Interior design"
     },
     {% endif %}

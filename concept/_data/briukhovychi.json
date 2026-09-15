@@ -1,0 +1,238 @@
+{
+  "uk": {
+    "intro_title": "Простір для життя.<br>Комфорт у деталях.",
+    "intro": "Будинок у Брюховичах об’єднує спільні простори, окремі кімнати для роботи й відпочинку та продумане зберігання на трьох поверхах. Теплі фактури й стримані кольори задають характер інтер’єру. Встановлена автоматизація пов’язує освітлення, клімат і безпеку зі щоденними діями мешканців.",
+    "chapters": [
+      {
+        "id": "shared-spaces",
+        "nav": "Спільний простір",
+        "title": "Місце зустрічі.<br>Власна атмосфера.",
+        "context": "Кухня, їдальня та вітальня мають залишатися цілісним простором, хоча вимоги до них змінюються протягом дня. Робочій поверхні потрібне виразне світло, обідньому столу свій акцент, зоні відпочинку спокійніший фон.",
+        "decision": "Острів, обідня група та м’які меблі задають межі зон. Дерево, світлі кам’яні фактури й теракотові акценти об’єднують композицію. Вбудовані шафи впорядковують зберігання, а підвіси та локальне світло виділяють місця, якими користуються найчастіше.",
+        "benefit": "Можна готувати, спілкуватися за столом або відпочивати у вітальні, обираючи освітлення для свого заняття.",
+        "scenario": "Вечеря",
+        "automation": "Світлові групи об’єднані у сценарії «Готування», «Вечеря» та «Відпочинок». Димування змінює яскравість світла, а потрібну сцену мешканці обирають клавішею. Кожною групою також можна керувати окремо.",
+        "images": [
+          [
+            "kitchen",
+            "Кухня з островом, дерев’яними фасадами та підвісами над обідньою зоною",
+            "Острів поєднує робочу поверхню й місце для короткої розмови."
+          ],
+          [
+            "living-detail",
+            "Світла вітальня з великим склінням, м’яким диваном і теракотовими кріслами",
+            "Фактурні стіни та м’яка група формують спокійнішу частину спільного простору."
+          ]
+        ]
+      },
+      {
+        "id": "personal-comfort",
+        "nav": "Особистий комфорт",
+        "title": "Кожній кімнаті<br>свій ритм.",
+        "context": "Спальня й кабінет потребують різної атмосфери. Завдання полягає в тому, щоб надати кімнатам власний характер і водночас зберегти цілісність інтер’єру.",
+        "decision": "У спальні світлі поверхні й м’яке узголів’я доповнює локальне світло. У кабінеті темніші меблі, робочий стіл і відкриті полиці створюють окреме середовище для зосередження. Зберігання інтегроване в композицію кожної кімнати.",
+        "benefit": "Робочі справи мають своє місце, а спальня залишається простором відпочинку. Налаштування комфорту можна пристосувати до використання конкретної зони.",
+        "scenario": "Ранок",
+        "automation": "Опалення й тепла підлога працюють за температурними налаштуваннями окремих зон і розкладом з урахуванням інерції нагрівання. Електроприводи штор і сонцезахисту реагують на час доби та показники датчиків освітленості. Ручна команда має пріоритет над розкладом.",
+        "images": [
+          [
+            "bedroom",
+            "Спальня з теракотовим текстилем, круглою світловою композицією та шторами",
+            "М’які фактури й світло біля ліжка підтримують приватну атмосферу."
+          ],
+          [
+            "study",
+            "Домашній кабінет із письмовим столом, темними шафами та підвісними світильниками",
+            "Окремий кабінет дозволяє залишати робоче місце за межами спальні."
+          ]
+        ]
+      },
+      {
+        "id": "night-lighting",
+        "nav": "Нічне світло",
+        "title": "Зручний маршрут<br>навіть уночі.",
+        "context": "У триповерховому будинку переходи між кімнатами є частиною щоденного досвіду. Уночі важливо бачити шлях, не вмикаючи яскраве світло в усьому просторі.",
+        "decision": "Сходи та вхідна зона продовжують спільну палітру матеріалів. Світло виділяє площини й допомагає читати простір. Маршрутне освітлення відокремлене від загального й працює за власним сценарієм.",
+        "benefit": "Для короткого нічного переходу можна використати делікатне світло, а повну яскравість увімкнути за потреби.",
+        "scenario": "Ніч",
+        "automation": "Датчики активують маршрутне освітлення з урахуванням часу доби й рівня природного світла. Затримки вимкнення налаштовані під пересування будинком, а логіка присутності враховує спокійне читання та відпочинок.",
+        "images": [
+          [
+            "stairs",
+            "Сходи з дерев’яними деталями та озелененням під маршем",
+            "Матеріали сходової зони пов’язують поверхи в єдиний інтер’єр."
+          ],
+          [
+            "entrance",
+            "Передпокій зі скляними перегородками, дзеркалом і прихованим зберіганням",
+            "Вхідна зона поєднує зберігання, місце для перевзування та зрозумілий прохід."
+          ]
+        ]
+      },
+      {
+        "id": "home-protection",
+        "nav": "Спокій поза домом",
+        "title": "Менше перевірок<br>перед виходом.",
+        "context": "Перед виходом із великого будинку доводиться перевіряти світло, доступи та інженерні системи. Єдина логіка керування спрощує ці дії й чітко повідомляє, що потребує уваги.",
+        "decision": "Сценарій «Вихід» об’єднує вимкнення обраного освітлення, погоджений режим опалення та перевірка стану доступів. Постановка під охорону потребує явної команди й підтвердження сигналізації.",
+        "benefit": "Користувач отримує зрозумілий стан будинку. Тривожні події та несправності відрізняються від звичайних інформаційних повідомлень.",
+        "scenario": "Вихід",
+        "automation": "Контроль доступу, сигналізація та сповіщення працюють узгоджено. У зонах ризику датчики протікання запускають перекриття відповідного водопостачання й повідомляють мешканців про подію. Статуси доступів і тривожні повідомлення допомагають визначити, що потребує уваги.",
+        "images": [
+          [
+            "perimeter",
+            "Огорожа та освітлений периметр будинку у Брюховичах увечері",
+            "Периметр будинку: огорожа, озеленення та вечірнє освітлення вздовж межі ділянки."
+          ],
+          [
+            "gate",
+            "В’їзна зона ввечері з воротами та зовнішнім освітленням",
+            "Керування воротами доповнює контроль їхнього положення."
+          ]
+        ]
+      },
+      {
+        "id": "outdoor-living",
+        "nav": "Життя надворі",
+        "title": "Вечір продовжується<br>на терасі.",
+        "context": "Територія має залишатися зручною після заходу сонця. Освітлення потрібне для руху й відпочинку, а догляд за озелененням має враховувати умови на ділянці.",
+        "decision": "Тераса, зона басейну та озеленення формують різні місця відпочинку. Увечері світлові акценти біля доріжок і вертикальних поверхонь продовжують атмосферу будинку.",
+        "benefit": "Зовнішнім простором можна користуватися відповідно до заняття: пройти до входу, провести час біля басейну або залишитися на терасі.",
+        "scenario": "Вечір надворі",
+        "automation": "Зовнішнє освітлення розділене на функціональні групи й працює за сутінками, розкладом або присутністю. Зональний полив враховує вологість ґрунту чи опади. Керування воротами поєднане з контролем положення та блокуваннями безпеки.",
+        "images": [
+          [
+            "garden",
+            "Ділянка ввечері з басейном, терасою та озелененням",
+            "Басейн і тераса продовжують житловий простір за межами будинку."
+          ],
+          [
+            "terrace",
+            "Крита зона відпочинку на терасі з м’якими кріслами, столом і каміном",
+            "Крита тераса: місце для вечері й відпочинку з локальним настінним освітленням."
+          ]
+        ]
+      }
+    ],
+    "outcome_title": "Цілісний інтер’єр.<br>Зрозуміле керування.",
+    "outcome": "На 397,88 м² реалізовано інтер’єр зі спільними зонами, приватними кімнатами й індивідуальними меблями. Освітлення, опалення, штори та системи захисту працюють у щоденних сценаріях. Тераса й облаштована територія продовжують простір будинку, а автоматизація спрощує керування ним."
+  },
+  "en": {
+    "intro_title": "Room for everyday life.<br>Comfort in the details.",
+    "intro": "This completed home in Briukhovychi brings together shared spaces, separate rooms for work and rest, and integrated storage across three floors. Warm textures and restrained colours shape the interior. Installed automation connects lighting, climate and security with everyday routines.",
+    "chapters": [
+      {
+        "nav": "Shared spaces",
+        "title": "A place to gather.<br>A change of atmosphere.",
+        "context": "The kitchen, dining area and living room need to feel connected while supporting different activities. Worktops need focused light, the dining table its own accent and the lounge a softer background.",
+        "decision": "The island, dining furniture and seating define distinct areas. Timber, pale stone textures and terracotta accents connect them. Built-in cabinetry organises storage, while pendants and local lighting highlight the places used most often.",
+        "benefit": "Cooking, conversation and relaxation each have their own setting, with lighting chosen to suit the activity.",
+        "scenario": "Dinner",
+        "automation": "Lighting groups are combined into Cooking, Dinner and Relax scenes. Dimming adjusts brightness, and residents select the scene with a wall control. Each group can also be controlled individually.",
+        "id": "shared-spaces",
+        "images": [
+          [
+            "kitchen",
+            "Kitchen island, timber cabinetry and pendant lights above the dining area",
+            "The island combines a working surface with a place for a short conversation."
+          ],
+          [
+            "living-detail",
+            "Light living room with large windows, a soft sofa and terracotta armchairs",
+            "Textured walls and generous seating establish the quieter part of the shared space."
+          ]
+        ]
+      },
+      {
+        "nav": "Personal comfort",
+        "title": "Each room.<br>Its own rhythm.",
+        "context": "A bedroom and a study call for different atmospheres. The design challenge is to give each its own character while keeping the house visually coherent.",
+        "decision": "Pale surfaces and a soft headboard in the bedroom are complemented by local lighting. Darker cabinetry, a desk and open shelves give the study a separate setting for concentration. Storage forms part of each room’s composition.",
+        "benefit": "Work has a dedicated place outside the bedroom. Comfort settings can follow the way each zone is used.",
+        "scenario": "Morning",
+        "automation": "Heating and underfloor heating follow individual zone temperatures and schedules that account for thermal inertia. Motorised curtains and shading respond to the time of day and light sensor readings. Manual commands take priority over schedules.",
+        "id": "personal-comfort",
+        "images": [
+          [
+            "bedroom",
+            "Bedroom with terracotta bedding, a circular illuminated wall feature and curtains",
+            "Soft textures and bedside light support a private, restful atmosphere."
+          ],
+          [
+            "study",
+            "Home study with a desk, dark cabinetry and pendant lighting",
+            "A separate study keeps the workspace outside the bedroom."
+          ]
+        ]
+      },
+      {
+        "nav": "Night lighting",
+        "title": "A clear route<br>after dark.",
+        "context": "Moving between rooms is part of everyday life in a three-storey home. At night, the route should be visible without switching on bright general lighting throughout the space.",
+        "decision": "The stairs and entrance continue the house’s material palette. Light defines surfaces and makes the space easier to read. Route lighting is separate from general lighting and follows its own scene.",
+        "benefit": "A short night-time journey can use gentle illumination, with full brightness available when needed.",
+        "scenario": "Night",
+        "automation": "Sensors activate route lighting according to the time of day and ambient light. Switch-off delays follow movement through the house, while presence logic accounts for quiet reading and rest.",
+        "id": "night-lighting",
+        "images": [
+          [
+            "stairs",
+            "Stairs with timber details and planting beneath the flight",
+            "The staircase materials connect the floors into a coherent interior."
+          ],
+          [
+            "entrance",
+            "Entrance hall with glazed partitions, a mirror and integrated storage",
+            "The entrance brings storage, a seat and a clear passage together."
+          ]
+        ]
+      },
+      {
+        "nav": "Peace of mind",
+        "title": "Fewer checks<br>before leaving.",
+        "context": "Leaving a large house can mean checking lights, access points and building systems. Shared control logic simplifies these actions and clearly identifies anything needing attention.",
+        "decision": "The Away scene coordinates the home: selected lights switch off, heating follows an agreed setting and access states are checked. Arming the alarm requires an explicit user command and confirmation from the security system.",
+        "benefit": "The user receives a clear view of the home’s state. Alarms and faults are distinguished from routine information.",
+        "scenario": "Away",
+        "automation": "Access control, the alarm and notifications work together. In risk areas, leak sensors trigger shut-off of the relevant water supply and notify residents. Access states and alarm notifications identify events that need attention.",
+        "id": "home-protection",
+        "images": [
+          [
+            "perimeter",
+            "Fence and illuminated perimeter of the house in Briukhovychi at dusk",
+            "The house perimeter: fencing, planting and evening lighting along the boundary."
+          ],
+          [
+            "gate",
+            "Evening view of the entrance gate and exterior lighting",
+            "Gate control is complemented by position monitoring."
+          ]
+        ]
+      },
+      {
+        "nav": "Outdoor living",
+        "title": "The evening continues<br>on the terrace.",
+        "context": "The grounds should remain comfortable after sunset. Lighting supports circulation and relaxation, while irrigation needs to respond to conditions on the site.",
+        "decision": "The terrace, pool area and planting create different places to spend time. Evening lighting accents along paths and vertical surfaces continue the atmosphere of the house.",
+        "benefit": "Outdoor spaces can support a walk to the entrance, time by the pool or an evening on the terrace.",
+        "scenario": "Evening outdoors",
+        "automation": "Exterior lighting is divided into functional groups controlled by dusk, schedules or presence. Zoned irrigation responds to soil moisture or rainfall. Gate control includes position monitoring and safety interlocks.",
+        "id": "outdoor-living",
+        "images": [
+          [
+            "garden",
+            "Evening view of the pool, terrace and landscaped garden",
+            "The pool and terrace extend the living space beyond the house."
+          ],
+          [
+            "terrace",
+            "Covered terrace seating area with upholstered chairs, a table and a fireplace",
+            "The covered terrace offers a place to dine and relax, with local wall lighting."
+          ]
+        ]
+      }
+    ],
+    "outcome_title": "A coherent interior.<br>Intuitive control.",
+    "outcome": "The completed 397.88 m² interior combines shared spaces, private rooms and bespoke furniture. Lighting, heating, curtains and protection systems work through everyday scenes. The terrace and landscaped grounds extend the living space, while automation simplifies control of the home."
+  }
+}

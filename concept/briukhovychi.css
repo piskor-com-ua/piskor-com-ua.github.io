@@ -1,0 +1,2 @@
+/* Project-specific image treatment only. Layout lives in the shared portfolio styles. */
+.briukhovychi-page #home-protection .case-images img{aspect-ratio:16/9;object-fit:cover}

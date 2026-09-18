@@ -1,0 +1,82 @@
+{
+  "troyanda": {
+    "uk": {
+      "eyebrow": "Завершений дизайн-проєкт · Комерційний інтер’єр",
+      "title": "Маркет квітів<br><span>«Троянда».</span>",
+      "summary": "Комерційний інтер’єр у Вінниці: виразна зона флористів, робоче місце касира та продумане обладнання для щоденної роботи магазину.",
+      "location": "Вінниця, Україна",
+      "area": "близько 62 м²",
+      "property": "Маркет гуртової та роздрібної торгівлі",
+      "cover": "troyanda-01",
+      "cover_alt": "Зона флористів і касова стійка магазину «Троянда»",
+      "intro_title": "Квітковий магазин.<br>Виразний з першого погляду.",
+      "intro": "Альбом показує дизайн-проєкт магазину гуртової та роздрібної торгівлі «Троянда flower» у Вінниці. Простір організований навколо відкритої зони флористів, касової стійки та робочого місця для консультацій.",
+      "chapters": [
+        {"nav":"Зона флористів","title":"Рослини стають<br>частиною архітектури.","context":"Основна торгова зона має одночасно демонструвати рослини, залишати вільний прохід і працювати як впізнаваний образ магазину.","decision":"По периметру та в центральній частині передбачені металеві стелажі з відкритими полицями. Симетрична композиція, круглі прорізи та червона вертикальна площина формують сильний центр простору.","benefit":"Рослини залишаються видимими з різних точок, а покупець отримує зрозумілий маршрут між стелажами й касою.","images":[{"file":"troyanda-01","alt":"Фронтальна візуалізація зони флористів","caption":"Симетрична композиція стелажів, круглих прорізів і червоного акценту."},{"file":"troyanda-03","alt":"Візуалізація зони флористів з робочою поверхнею","caption":"Рослини, пакування та робоча поверхня зібрані в одну функціональну систему."}]},
+        {"nav":"Каса та бренд","title":"Стійка, яку<br>неможливо не помітити.","context":"Каса має бути одночасно робочим місцем і головним елементом ідентичності магазину.","decision":"Стійка спроєктована як окремий меблевий об’єм із білою стільницею, логотипом TROyANDA flowers і контурним червоним LED-підсвічуванням по нижньому краю. Темний фон і світла стійка підсилюють контраст бренду.","benefit":"Касова зона легко зчитується, а підсвічений цоколь додає легкості масивному об’єму та працює як вечірній акцент.","images":[{"file":"troyanda-02","alt":"Касова стійка з логотипом магазину «Троянда»","caption":"Касова стійка поєднує функцію обслуговування з фірмовою подачею."},{"file":"troyanda-04","alt":"Касова зона та стелажі магазину","caption":"Брендована стійка є візуальним орієнтиром у просторі."}]},
+        {"nav":"Матеріали та робота","title":"Глибокий фон.<br>Яскравий акцент.","context":"У проєкті потрібен був контрастний, але зібраний інтер’єр, який не конкурує з квітами й водночас підтримує характер бренду.","decision":"Матеріальна палітра поєднує темно-сірі поверхні, червону фарбовану площину, світлий штучний камінь, ЛДСП і металеві конструкції. Робоче місце доповнене столом, кріслом і стелажами для рослин та пакування.","benefit":"Нейтральний фон залишає головну роль рослинам, а червоні деталі підтримують впізнаваність у всіх зонах.","images":[{"file":"troyanda-05","alt":"Робочий стіл у зоні флористів","caption":"Робоче місце флориста інтегроване в торгову композицію."},{"file":"troyanda-06","alt":"Деталь робочої зони магазину","caption":"Стелажі та робочий стіл забезпечують окреме місце для консультацій і підготовки замовлень."}]}
+      ],
+      "outcome": "Альбом містить обміри, перепланування, плани меблів, розгортки, робочі креслення стійки, столу, шаф і стелажів, плани освітлення, специфікації матеріалів, освітлювальних приладів та обладнання. Автоматизація або smart-home сценарії в матеріалах не підтверджені.",
+      "source_note": "Усі зображення на сторінці — 3D-візуалізації дизайн-проєкту за наданим альбомом. Дані про реалізацію, фактичну площу, рік і замовника в PDF не зазначені."
+    },
+    "en": {
+      "eyebrow": "Completed design project · Commercial space",
+      "title": "Flower market<br><span>“Troyanda”.</span>",
+      "summary": "A commercial interior in Vinnytsia: a distinctive florist area, cashier workstation and considered equipment for the daily life of the shop.",
+      "location": "Vinnytsia, Ukraine",
+      "area": "approximately 62 m²",
+      "property": "Wholesale and retail flower market",
+      "cover": "troyanda-01",
+      "cover_alt": "Florist area and cashier counter at the Troyanda flower market",
+      "intro_title": "A flower market.<br>Distinctive at first sight.",
+      "intro": "The album presents the interior design project for the Troyanda flower wholesale and retail market in Vinnytsia. The space is organised around an open florist area, a cashier counter and a consultation workstation.",
+      "chapters": [
+        {"nav":"Florist area","title":"Plants become<br>part of the architecture.","context":"The main retail area needs to display plants, keep circulation clear and work as a recognisable image for the shop.","decision":"Metal shelving with open shelves is arranged around the perimeter and at the centre. Symmetry, circular openings and a red vertical plane create a strong spatial centre.","benefit":"Plants remain visible from different viewpoints, while the route between shelves and the counter stays clear.","images":[{"file":"troyanda-01","alt":"Front view of the florist area","caption":"A symmetrical composition of shelving, circular openings and a red accent."},{"file":"troyanda-03","alt":"Florist area with a work surface","caption":"Plants, packaging and a work surface form one functional system."}]},
+        {"nav":"Counter and brand","title":"A counter<br>you cannot miss.","context":"The counter needs to be both a working station and the main expression of the shop identity.","decision":"The counter is designed as a separate furniture volume with a white top, the TROyANDA flowers logo and red contour LED lighting along the base. A dark background and light counter strengthen the brand contrast.","benefit":"The service point is easy to read, while the illuminated plinth makes the volume feel lighter and adds an evening accent.","images":[{"file":"troyanda-02","alt":"Cashier counter with the Troyanda logo","caption":"The cashier counter combines service with a clear branded presence."},{"file":"troyanda-04","alt":"Cashier area and shelving","caption":"The branded counter acts as a visual landmark in the space."}]},
+        {"nav":"Materials and work","title":"A deep background.<br>A vivid accent.","context":"The project calls for a contrasting yet composed interior that does not compete with the flowers while supporting the character of the brand.","decision":"The palette combines dark grey surfaces, a red painted plane, light engineered stone, melamine board and metal structures. The workstation adds a desk, chair and shelving for plants and packaging.","benefit":"The neutral background lets the plants lead, while red details keep the identity recognisable throughout the shop.","images":[{"file":"troyanda-05","alt":"Work desk in the florist area","caption":"The florist workstation is integrated into the retail composition."},{"file":"troyanda-06","alt":"Detail of the shop work area","caption":"Shelving and desk provide a dedicated place for consultations and order preparation."}]}
+      ],
+      "outcome": "The album includes survey drawings, planning, furniture layouts, elevations, working drawings for the counter, desk, cabinets and shelving, lighting plans, and material, lighting and equipment schedules. Automation or smart-home scenarios are not confirmed by the supplied material.",
+      "source_note": "All images on this page are 3D visualisations from the supplied design album. Completion status, exact area, year and client are not stated in the PDF."
+    }
+  },
+  "nevelychuka": {
+    "uk": {
+      "eyebrow": "Завершений дизайн-проєкт · Приватний будинок",
+      "title": "Будинок<br><span>у Брюховичах.</span>",
+      "summary": "Дизайн-проєкт приватного будинку в Брюховичах: перепланування, інтер’єри двох поверхів, мансардний рівень та індивідуальні меблі.",
+      "location": "Брюховичі, Львів",
+      "area": "151 м²",
+      "property": "Приватний будинок",
+      "cover": "nevelychuka-01",
+      "cover_alt": "Вітальня та кухня приватного будинку у Брюховичах",
+      "intro_title": "Будинок для родини.<br>Продуманий на кожному рівні.",
+      "intro": "Дизайн-проєкт будинку площею 151 м² у Брюховичах. Планування, світло, оздоблення та індивідуальні меблі зібрані в цілісну історію для щоденного життя родини.",
+      "chapters": [
+        {"nav":"Планування","title":"Три рівні.<br>Одна логіка дому.","context":"Перший поверх відкритий для спільного життя. Другий зосереджений на приватних кімнатах. Мансардний рівень +5,400 доповнює будинок окремим функціональним простором.","decision":"На першому поверсі об’єднані коридор, вітальня-кухня, санвузол, гараж і сходова клітка. Другий поверх відведений під спальні, дитячу, вітальню, санвузол і гардероб.","benefit":"Сходи пов’язують рівні, а розподіл функцій залишає спільним зонам свободу, а приватним кімнатам тишу.","images":[{"file":"nevelychuka-01","alt":"Світла вітальня з кухнею та обідньою зоною","caption":"Спільний простір першого поверху об’єднує кухню, їдальню та вітальню."},{"file":"nevelychuka-02","alt":"Вітальня та кухня з видом у глибину будинку","caption":"Планування тримає щоденні зони в одному візуальному полі."}]},
+        {"nav":"Спільний простір","title":"Світла основа.<br>Точні акценти.","context":"Вітальня-кухня поєднує місця для готування, обіду та відпочинку, не втрачаючи відчуття простору.","decision":"Світлі площини, деревна підлога та синьо-сірі акценти формують спокійну основу. Кухня, меблі та освітлення узгоджені в планах, розгортках і робочих кресленнях.","benefit":"Кожна зона має власну функцію, але разом вони працюють як одна кімната для життя, розмов і відпочинку.","images":[{"file":"nevelychuka-03","alt":"Обідня зона з кухнею та вітальнею","caption":"Матеріали й меблі пов’язують різні функції спільної кімнати."},{"file":"nevelychuka-04","alt":"Вітальня з м’якими меблями та телевізійною зоною","caption":"Вітальня зібрана навколо м’якої групи та спокійної телевізійної композиції."}]},
+        {"nav":"Приватні кімнати","title":"Кожному мешканцю<br>власний ритм.","context":"Спальня та дитяча мають різний настрій, але обидві побудовані навколо чітких щоденних потреб.","decision":"У спальні поєднані деревна панель за узголів’ям, м’які текстильні поверхні та локальне світло. У дитячій передбачені робоче місце, відкриті полиці та індивідуальна композиція зберігання.","benefit":"Спальня залишає простір для відпочинку, а дитяча поєднує навчання, особисті речі та місце для власного характеру.","images":[{"file":"nevelychuka-05","alt":"Спальня з деревною панеллю та м’яким узголів’ям","caption":"Деревна панель і локальне світло створюють спокійну атмосферу спальні."},{"file":"nevelychuka-06","alt":"Дитяча кімната з робочим місцем і відкритими полицями","caption":"Дитяча поєднує робоче місце, зберігання та виразні деталі."}]}
+      ],
+      "outcome": "Завершений комплект охоплює перепланування, меблювання, освітлення, сантехнічні прив’язки, стелі, підлоги, двері, розгортки кімнат і санвузлів, робочі креслення меблів та специфікації. Проєкт послідовно переходить від планування будинку до деталей, які можна передати в роботу.",
+      "source_note": ""
+    },
+    "en": {
+      "eyebrow": "Completed interior design · Private house",
+      "title": "A house<br><span>in Briukhovychi.</span>",
+      "summary": "Interior design for a private house in Briukhovychi: replanning, interiors across two floors, an attic level and bespoke furniture.",
+      "location": "Briukhovychi, Lviv",
+      "area": "151 m²",
+      "property": "Private house",
+      "cover": "nevelychuka-01",
+      "cover_alt": "Living room and kitchen in a private house in Briukhovychi",
+      "intro_title": "A family home.<br>Considered on every level.",
+      "intro": "An interior design project for a 151 m² house in Briukhovychi. Planning, light, finishes and bespoke furniture come together as one setting for family life.",
+      "chapters": [
+        {"nav":"Planning","title":"Three levels.<br>One logic for the home.","context":"The ground floor is open to shared life. The upper floor is private. The +5.400 attic level adds a separate functional space.","decision":"The ground floor brings together the hall, living-kitchen, bathroom, garage and stair. The upper floor is arranged around bedrooms, a child’s room, living room, bathroom and wardrobe.","benefit":"The stair connects the levels, while the distribution gives shared rooms room to breathe and private rooms a quieter rhythm.","images":[{"file":"nevelychuka-01","alt":"Light living room with kitchen and dining area","caption":"The shared ground-floor space combines kitchen, dining and living."},{"file":"nevelychuka-02","alt":"Living room and kitchen looking through the house","caption":"The plan keeps everyday zones within one visual field."}]},
+        {"nav":"Shared space","title":"A light base.<br>Precise accents.","context":"The living-kitchen combines cooking, dining and relaxing without losing its sense of openness.","decision":"Light surfaces, timber flooring and blue-grey accents form a calm base. Kitchen, furniture and lighting are resolved in plans, elevations and working drawings.","benefit":"Each zone has a clear role, while the room works as one setting for everyday life, conversation and rest.","images":[{"file":"nevelychuka-03","alt":"Dining area with kitchen and living room","caption":"Materials and furniture connect the different functions of the shared room."},{"file":"nevelychuka-04","alt":"Living room with seating and media composition","caption":"The living room is organised around soft seating and a calm media wall."}]},
+        {"nav":"Private rooms","title":"A rhythm<br>for every resident.","context":"The bedroom and child’s room have different atmospheres, but both are built around clear everyday needs.","decision":"The bedroom combines a timber headboard wall, soft textiles and local lighting. The child’s room includes a desk, open shelving and an individual storage composition.","benefit":"The bedroom leaves room for rest, while the child’s room combines study, personal storage and space for character.","images":[{"file":"nevelychuka-05","alt":"Bedroom with timber headboard wall and upholstered bed","caption":"Timber and local light create a calm bedroom atmosphere."},{"file":"nevelychuka-06","alt":"Child’s room with desk and open shelving","caption":"The child’s room combines a study area, storage and expressive details."}]}
+      ],
+      "outcome": "The completed set covers replanning, furniture, lighting, plumbing layouts, ceilings, flooring, doors, room and bathroom elevations, working furniture drawings and schedules. The project moves clearly from the house plan to the details ready for production.",
+      "source_note": ""
+    }
+  }
+}

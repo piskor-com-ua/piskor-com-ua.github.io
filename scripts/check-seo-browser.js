@@ -1,7 +1,16 @@
 async page => {
   await page.setViewportSize({width:1440,height:900});
   const origin='http://127.0.0.1:4173';
-  const routes=[['/','uk'],['/en/','en'],['/portfolio/lviv-apartment/','uk'],['/en/portfolio/lviv-apartment/','en']];
+  const routes=[
+    ['/','uk'],['/en/','en'],['/portfolio/','uk'],['/en/portfolio/','en'],
+    ['/portfolio/2025/lviv-apartment/','uk'],['/en/portfolio/2025/lviv-apartment/','en'],
+    ['/portfolio/2026/briukhovychi-house/','uk'],['/en/portfolio/2026/briukhovychi-house/','en'],
+    ['/portfolio/2023/troyanda/','uk'],['/en/portfolio/2023/troyanda/','en'],
+    ['/portfolio/2023/private-house-briukhovychi/','uk'],['/en/portfolio/2023/private-house-briukhovychi/','en'],
+    ['/portfolio/2023/','uk'],['/en/portfolio/2023/','en'],
+    ['/portfolio/2025/','uk'],['/en/portfolio/2025/','en'],
+    ['/portfolio/2026/','uk'],['/en/portfolio/2026/','en']
+  ];
   const titles=new Set(), results=[];
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   for(const [route,lang] of routes){
@@ -25,10 +34,15 @@ async page => {
   if(await page.locator('html').getAttribute('lang')!=='en')throw Error('English refresh');
   await page.locator('[data-lang="uk"]').click();
   if(page.url().slice(origin.length).split(/[?#]/)[0]!=='/')throw Error('Ukrainian switch');
+  for(const [catalog, expected] of [['/portfolio/',['/portfolio/2023/private-house-briukhovychi/','/portfolio/2023/troyanda/','/portfolio/2026/briukhovychi-house/','/portfolio/2025/lviv-apartment/']],['/en/portfolio/',['/en/portfolio/2023/private-house-briukhovychi/','/en/portfolio/2023/troyanda/','/en/portfolio/2026/briukhovychi-house/','/en/portfolio/2025/lviv-apartment/']]]){
+    await page.goto(origin+catalog);
+    const links=await page.locator('.portfolio-card').evaluateAll(cards=>cards.map(card=>card.getAttribute('href')));
+    if(links.length!==expected.length||expected.some(route=>!links.includes(route)))throw Error('Portfolio project links '+catalog+': '+links.join(', '));
+  }
   for(const old of ['/lviv-apartment.html','/lviv-apartment-en.html']){
     if((await page.request.get(origin+old)).status()!==404)throw Error('Old route still exists: '+old);
   }
-  for(const [old,expected] of [['/portfolio/lviv-apartment/#chapter-2','/portfolio/lviv-apartment/#space-planning'],['/en/portfolio/lviv-apartment/#chapter-5','/en/portfolio/lviv-apartment/#design-result'],['/?lang=en#story','/en/#design-process']]){
+  for(const [old,expected] of [['/portfolio/2025/lviv-apartment/#space-planning','/portfolio/2025/lviv-apartment/#space-planning'],['/en/portfolio/2025/lviv-apartment/#design-result','/en/portfolio/2025/lviv-apartment/#design-result'],['/?lang=en#story','/en/#design-process']]){
     await page.goto(origin+old);
     await page.waitForURL(origin+expected);
     await page.waitForFunction(()=>Math.abs(document.getElementById(location.hash.slice(1)).getBoundingClientRect().top)<180);

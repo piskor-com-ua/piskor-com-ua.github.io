@@ -8,8 +8,20 @@ Local implementation, 2026-09-14. Not yet published.
 | `/en/` | Architecture & Interior Design in Lviv · PISKOR Architect |
 | `/portfolio/` | Портфоліо архітектури та дизайну інтер’єру · PISKOR Architect |
 | `/en/portfolio/` | Architecture & Interior Design Portfolio · PISKOR Architect |
-| `/portfolio/lviv-apartment/` | Дизайн квартири у Львові, 98 м² · PISKOR Architect |
-| `/en/portfolio/lviv-apartment/` | Apartment Interior Design in Lviv, 98 m² · PISKOR Architect |
+| `/portfolio/2025/lviv-apartment/` | Дизайн квартири у Львові, 98 м² · PISKOR Architect |
+| `/en/portfolio/2025/lviv-apartment/` | Apartment Interior Design in Lviv, 98 m² · PISKOR Architect |
+| `/portfolio/2026/briukhovychi-house/` | Будинок у Брюховичах · PISKOR Architect |
+| `/en/portfolio/2026/briukhovychi-house/` | House in Briukhovychi · PISKOR Architect |
+| `/portfolio/2023/troyanda/` | Маркет «Троянда» · PISKOR Architect |
+| `/en/portfolio/2023/troyanda/` | Troyanda flower market · PISKOR Architect |
+| `/portfolio/2023/private-house-briukhovychi/` | Будинок у Брюховичах, 151 м² · PISKOR Architect |
+| `/en/portfolio/2023/private-house-briukhovychi/` | House in Briukhovychi, 151 m² · PISKOR Architect |
+| `/portfolio/2023/` | Проєкти 2023 року · PISKOR Architect |
+| `/en/portfolio/2023/` | Projects from 2023 · PISKOR Architect |
+| `/portfolio/2025/` | Проєкти 2025 року · PISKOR Architect |
+| `/en/portfolio/2025/` | Projects from 2025 · PISKOR Architect |
+| `/portfolio/2026/` | Проєкти 2026 року · PISKOR Architect |
+| `/en/portfolio/2026/` | Projects from 2026 · PISKOR Architect |
 
 Actual title tags use a vertical bar before the brand. Titles describe the service, location and project rather than the design-concept status. The project title rounds 97.72 m² to 98 m²; the exact area remains in the content.
 
@@ -25,7 +37,7 @@ Homepage metadata lives in `concept/_data/home_seo.yml`. Project metadata is in 
 
 ## Verification and limits
 
-Build validation now checks nested routes and root-relative resources. `scripts/check-seo.py` runs with every build and verifies the four metadata/language pairs, canonical URLs, clean links and absence of the old project files. Browser checks verify titles, images, language switch plus reload, semantic/legacy fragments, portfolio navigation, lightbox and old-route 404s. All 26 gesture tests pass with updated section selectors.
+Build validation now checks nested routes and root-relative resources. `scripts/check-seo.py` runs with every build and verifies all eighteen metadata/language pairs, canonical URLs, clean links and absence of the old project files. Browser checks verify all project links in both catalogs, year archives, titles, images, language switch plus reload, semantic/legacy fragments, portfolio navigation, lightbox and old-route 404s. All 26 gesture tests pass with updated section selectors.
 
 Noindex remains by prior agreement. Titles and slugs do not guarantee rankings. Main homepage content is still rendered by the existing JavaScript runtime; pre-rendering that content is a separate enhancement, not part of this URL/title edit. No content or visual redesign is intended.
 

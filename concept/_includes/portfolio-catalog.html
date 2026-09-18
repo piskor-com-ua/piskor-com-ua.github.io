@@ -1,6 +1,7 @@
 {% assign en = false %}{% if page.lang == 'en' %}{% assign en = true %}{% endif %}
 {% assign home_url = '/' %}{% if en %}{% assign home_url = '/en/' %}{% endif %}
 {% include portfolio-projects.html %}
+{% if page.year %}{% assign projects = projects | where: 'project_year', page.year %}{% endif %}
 {% assign year_groups = projects | group_by: 'project_year' %}
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#16232a">
 {% include seo.html %}
@@ -10,12 +11,14 @@
 <a class="skip" href="#main">{% if en %}Skip to content{% else %}До змісту{% endif %}</a>
 <header class="header"><a class="logo" href="{{ home_url }}" aria-label="PISKOR Architect"><img src="/assets/piskor-logo.png" width="420" height="80" alt="PISKOR Architect"></a><nav class="project-nav"><a href="{{ home_url }}">{% if en %}Home{% else %}Головна{% endif %}</a><a href="#contact">{% if en %}Contact{% else %}Контакти{% endif %}</a></nav><div class="header-right"><div class="language"><a href="{{ page.uk_url }}" lang="uk" {% unless en %}aria-current="page"{% endunless %}>UA</a><span>/</span><a href="{{ page.en_url }}" lang="en" {% if en %}aria-current="page"{% endif %}>EN</a></div><a class="header-call" href="tel:+380974781005">+380 97 478 10 05 ↗</a></div></header>
 <main id="main">
-<section class="project-title"><nav class="project-breadcrumb" aria-label="{% if en %}Breadcrumb{% else %}Навігаційний шлях{% endif %}"><a href="{{ home_url }}">{% if en %}Home{% else %}Головна{% endif %}</a><span>/</span><span aria-current="page">{% if en %}Portfolio{% else %}Портфоліо{% endif %}</span></nav><p class="eyebrow project-eyebrow">{% if en %}Portfolio{% else %}Портфоліо{% endif %}</p><h1>{% if en %}Spaces<br><span>with character.</span>{% else %}Простори<br><span>з характером.</span>{% endif %}</h1><div class="project-title-bottom"><p>{% if en %}Explore our projects through the decisions that shape them: from space planning to materials and the details of everyday life.{% else %}Знайомтеся з нашими проєктами через рішення, які їх формують: від планування до матеріалів і деталей щоденного життя.{% endif %}</p></div></section>
+<section class="project-title"><nav class="project-breadcrumb" aria-label="{% if en %}Breadcrumb{% else %}Навігаційний шлях{% endif %}"><a href="{{ home_url }}">{% if en %}Home{% else %}Головна{% endif %}</a><span>/</span>{% if page.year %}<a href="{% if en %}/en/portfolio/{% else %}/portfolio/{% endif %}">{% if en %}Portfolio{% else %}Портфоліо{% endif %}</a><span>/</span><span aria-current="page">{{ page.year }}</span>{% else %}<span aria-current="page">{% if en %}Portfolio{% else %}Портфоліо{% endif %}</span>{% endif %}</nav><p class="eyebrow project-eyebrow">{% if en %}{% if page.year %}Projects · {{ page.year }}{% else %}Portfolio{% endif %}{% else %}{% if page.year %}Проєкти · {{ page.year }}{% else %}Портфоліо{% endif %}{% endif %}</p><h1>{% if en %}{% if page.year %}Projects<br><span>from {{ page.year }}.</span>{% else %}Spaces<br><span>with character.</span>{% endif %}{% else %}{% if page.year %}Проєкти<br><span>{{ page.year }} року.</span>{% else %}Простори<br><span>з характером.</span>{% endif %}{% endif %}</h1><div class="project-title-bottom"><p>{% if en %}{% if page.year %}Explore all projects from this year.{% else %}Explore our projects through the decisions that shape them: from space planning to materials and the details of everyday life.{% endif %}{% else %}{% if page.year %}Перегляньте всі проєкти, створені цього року.{% else %}Знайомтеся з нашими проєктами через рішення, які їх формують: від планування до матеріалів і деталей щоденного життя.{% endif %}{% endif %}</p></div></section>
 {% if projects.size > 0 %}
+{% unless page.year %}
 <nav class="catalog-years" aria-label="{% if en %}Browse projects by year{% else %}Проєкти за роками{% endif %}">
 <span class="catalog-years-label">{% if en %}By year{% else %}За роками{% endif %}</span>
 <div class="catalog-years-links">{% for group in year_groups %}{% assign year_id = group.name | default: 'undated' %}<a href="#year-{{ year_id }}">{% if group.name == '' %}{% if en %}Other projects{% else %}Інші проєкти{% endif %}{% else %}{{ group.name }}{% endif %}</a>{% endfor %}</div>
 </nav>
+{% endunless %}
 {% endif %}
 <div class="portfolio catalog-projects">
 {% for group in year_groups %}{% assign year_id = group.name | default: 'undated' %}

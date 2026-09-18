@@ -26,8 +26,11 @@ class Page(HTMLParser):
         if self.in_title:
             self.titles[-1] += value
 
-routes = {'/': 'uk', '/en/': 'en', '/portfolio/': 'uk', '/en/portfolio/': 'en', '/portfolio/lviv-apartment/': 'uk', '/en/portfolio/lviv-apartment/': 'en'}
-routes.update({'/portfolio/briukhovychi-house/': 'uk', '/en/portfolio/briukhovychi-house/': 'en'})
+routes = {'/': 'uk', '/en/': 'en', '/portfolio/': 'uk', '/en/portfolio/': 'en'}
+for project, slug, year in [('lviv-apartment', 'lviv-apartment', '2025'), ('briukhovychi-house', 'briukhovychi-house', '2026'), ('troyanda', 'troyanda', '2023'), ('nevelychuka', 'private-house-briukhovychi', '2023')]:
+    routes.update({f'/portfolio/{year}/{slug}/': 'uk', f'/en/portfolio/{year}/{slug}/': 'en'})
+for year in ['2023', '2025', '2026']:
+    routes.update({f'/portfolio/{year}/': 'uk', f'/en/portfolio/{year}/': 'en'})
 titles = set()
 for route, lang in routes.items():
     page = Page((Path('_site') / route.lstrip('/') / 'index.html').read_text())
@@ -59,7 +62,7 @@ for path in Path('_site').rglob('*.html'):
     assert len(graphs) == 1 and graphs[0]['@context'] == 'https://schema.org', path
     types = {node['@type'] for node in graphs[0]['@graph']}
     assert {'Organization', 'WebSite'} <= types, path
-    if path.parent.name == 'portfolio':
+    if 'CollectionPage' in types:
         assert {'CollectionPage', 'BreadcrumbList'} <= types, path
     elif 'portfolio' in path.parts:
         assert {'CreativeWork', 'BreadcrumbList'} <= types, path

@@ -39,7 +39,7 @@ async page => {
   }
   if (errors.length) throw Error(errors.join('\n'));
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(origin + '/portfolio/briukhovychi-house/');
+  await page.goto(origin + '/portfolio/2026/briukhovychi-house/');
   await page.evaluate(async () => Promise.all([...document.images].filter(i => i.getAttribute('src')).map(i => { i.loading = 'eager'; return i.decode(); })));
   await page.evaluate(() => scrollTo({top:0,behavior:'instant'}));
   await page.screenshot({ path: 'output/playwright/briukhovychi-desktop.png' });

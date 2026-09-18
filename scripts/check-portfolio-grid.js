@@ -2,7 +2,8 @@ async page => {
   const results = [];
   for (const language of ['', '/en']) {
     for (const project of ['lviv-apartment', 'briukhovychi-house']) {
-      await page.goto('http://127.0.0.1:4173' + language + '/portfolio/' + project + '/?preview=shared-grid');
+      const years = {'lviv-apartment':'2025','briukhovychi-house':'2026'};
+      await page.goto('http://127.0.0.1:4173' + language + '/portfolio/' + years[project] + '/' + project + '/?preview=shared-grid');
       for (const width of [1440, 768, 390]) {
         await page.setViewportSize({width, height:900});
         const errors = await page.evaluate(() => {
@@ -24,7 +25,7 @@ async page => {
     }
   }
   await page.setViewportSize({width:1440,height:1000});
-  await page.goto('http://127.0.0.1:4173/portfolio/briukhovychi-house/?preview=shared-grid');
+  await page.goto('http://127.0.0.1:4173/portfolio/2026/briukhovychi-house/?preview=shared-grid');
   await page.locator('.case-chapter').first().locator('img').evaluateAll(async imgs=>Promise.all(imgs.map(i=>i.decode())));
   await page.locator('.case-chapter').first().screenshot({path:'output/playwright/shared-portfolio-grid.png'});
   return results;

@@ -7,4 +7,6 @@
 .case-light .scenario-note{border-color:#c4ccc5}
 .case-light .scenario-note>p{color:#40544f}
 .project-page .case-images{column-gap:var(--portfolio-gap)}
+.pdf-project-page .case-navigation{grid-template-columns:repeat(4,1fr)}
+.nevelychuka-page .case-images img{height:clamp(260px,34vw,520px);aspect-ratio:auto;object-fit:cover}
 @media(max-width:700px){.scenario-note{margin-top:30px;padding-top:24px}.scenario-note>p{font-size:15px}.scenario-note h3{font-size:28px}.project-page .case-chapter-heading,.project-page .case-story-copy,.project-page .case-images{gap:var(--portfolio-gap)}}

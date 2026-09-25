@@ -37,6 +37,6 @@ assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noind
 assert not list(out.rglob('*.md'))
 for path in out.rglob('*'):
     if path.is_file():
-        assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf'} or path.name in {'piskor-logo.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
+        assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.mp4'} or path.name in {'piskor-logo.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')
 subprocess.run(['python3', 'scripts/check-seo.py'], check=True)

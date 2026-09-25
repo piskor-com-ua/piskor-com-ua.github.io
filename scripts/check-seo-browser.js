@@ -7,6 +7,10 @@ async page => {
     ['/portfolio/2026/briukhovychi-house/','uk'],['/en/portfolio/2026/briukhovychi-house/','en'],
     ['/portfolio/2023/troyanda/','uk'],['/en/portfolio/2023/troyanda/','en'],
     ['/portfolio/2023/private-house-briukhovychi/','uk'],['/en/portfolio/2023/private-house-briukhovychi/','en'],
+    ['/portfolio/2025/franka-apartment/','uk'],['/en/portfolio/2025/franka-apartment/','en'],
+    ['/portfolio/2025/continental-apartment/','uk'],['/en/portfolio/2025/continental-apartment/','en'],
+    ['/portfolio/2025/neoclassic-apartment/','uk'],['/en/portfolio/2025/neoclassic-apartment/','en'],
+    ['/portfolio/2026/roksoliany-apartment/','uk'],['/en/portfolio/2026/roksoliany-apartment/','en'],
     ['/portfolio/2023/','uk'],['/en/portfolio/2023/','en'],
     ['/portfolio/2025/','uk'],['/en/portfolio/2025/','en'],
     ['/portfolio/2026/','uk'],['/en/portfolio/2026/','en']
@@ -34,7 +38,7 @@ async page => {
   if(await page.locator('html').getAttribute('lang')!=='en')throw Error('English refresh');
   await page.locator('[data-lang="uk"]').click();
   if(page.url().slice(origin.length).split(/[?#]/)[0]!=='/')throw Error('Ukrainian switch');
-  for(const [catalog, expected] of [['/portfolio/',['/portfolio/2023/private-house-briukhovychi/','/portfolio/2023/troyanda/','/portfolio/2026/briukhovychi-house/','/portfolio/2025/lviv-apartment/']],['/en/portfolio/',['/en/portfolio/2023/private-house-briukhovychi/','/en/portfolio/2023/troyanda/','/en/portfolio/2026/briukhovychi-house/','/en/portfolio/2025/lviv-apartment/']]]){
+  for(const [catalog, expected] of [['/portfolio/',['/portfolio/2023/private-house-briukhovychi/','/portfolio/2023/troyanda/','/portfolio/2026/briukhovychi-house/','/portfolio/2026/roksoliany-apartment/','/portfolio/2025/lviv-apartment/','/portfolio/2025/franka-apartment/','/portfolio/2025/continental-apartment/','/portfolio/2025/neoclassic-apartment/']],['/en/portfolio/',['/en/portfolio/2023/private-house-briukhovychi/','/en/portfolio/2023/troyanda/','/en/portfolio/2026/briukhovychi-house/','/en/portfolio/2026/roksoliany-apartment/','/en/portfolio/2025/lviv-apartment/','/en/portfolio/2025/franka-apartment/','/en/portfolio/2025/continental-apartment/','/en/portfolio/2025/neoclassic-apartment/']]]){
     await page.goto(origin+catalog);
     const links=await page.locator('.portfolio-card').evaluateAll(cards=>cards.map(card=>card.getAttribute('href')));
     if(links.length!==expected.length||expected.some(route=>!links.includes(route)))throw Error('Portfolio project links '+catalog+': '+links.join(', '));

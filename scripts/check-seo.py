@@ -26,11 +26,11 @@ class Page(HTMLParser):
         if self.in_title:
             self.titles[-1] += value
 
-routes = {'/': 'uk', '/en/': 'en', '/portfolio/': 'uk', '/en/portfolio/': 'en'}
-for project, slug, year in [('lviv-apartment', 'lviv-apartment', '2025'), ('briukhovychi-house', 'briukhovychi-house', '2026'), ('troyanda', 'troyanda', '2023'), ('nevelychuka', 'private-house-briukhovychi', '2023')]:
-    routes.update({f'/portfolio/{year}/{slug}/': 'uk', f'/en/portfolio/{year}/{slug}/': 'en'})
-for year in ['2023', '2025', '2026']:
-    routes.update({f'/portfolio/{year}/': 'uk', f'/en/portfolio/{year}/': 'en'})
+routes = {}
+for index in Path('_site').rglob('index.html'):
+    relative = index.parent.relative_to('_site').as_posix()
+    route = '/' if relative == '.' else f'/{relative}/'
+    routes[route] = 'en' if route == '/en/' or route.startswith('/en/') else 'uk'
 titles = set()
 for route, lang in routes.items():
     page = Page((Path('_site') / route.lstrip('/') / 'index.html').read_text())

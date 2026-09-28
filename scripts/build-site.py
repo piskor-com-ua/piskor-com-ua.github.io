@@ -3,12 +3,19 @@ from pathlib import Path
 import re
 import subprocess
 import hashlib
+from optimize_assets import optimize_assets
 
 source = Path('concept')
 out = Path('_site')
+subprocess.run(['python3', '-m', 'unittest', 'discover', '-s', 'scripts',
+                '-p', 'test_optimize_assets.py'], check=True)
 subprocess.run(['bundle', 'exec', 'jekyll', 'build', '--trace'], check=True)
 # Pages receives an already generated artifact; it must not build it a second time.
 (out / '.nojekyll').touch()
+optimization = optimize_assets(out)
+print(f"Optimized media: {optimization['unused']} unused files, "
+      f"{optimization['duplicates']} exact duplicates removed; "
+      f"{optimization['saved_bytes']:,} bytes saved")
 # A changed stylesheet or script must not reuse the previous browser cache entry.
 for page in out.rglob('*.html'):
     def version_resource(match):
@@ -39,4 +46,5 @@ for path in out.rglob('*'):
     if path.is_file():
         assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.mp4'} or path.name in {'piskor-logo.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')
+print(f'Publication contains {sum(p.is_file() for p in out.rglob("*"))} files')
 subprocess.run(['python3', 'scripts/check-seo.py'], check=True)

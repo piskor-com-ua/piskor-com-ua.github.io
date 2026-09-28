@@ -24,7 +24,7 @@ async page => {
  assert((await state()).frame===19,"Entry from services stops at Integration");
  await wheel(-200);assert((await state()).frame===19,"Entry consumes the entire burst");
  await reset(0);
- await page.evaluate(()=>{wheelLatched=false;wheelLast=0;window.scrollTo({top:document.querySelector("#portfolio").offsetTop,behavior:"instant"});});
+ await page.evaluate(()=>{wheelLatched=false;wheelLast=0;window.scrollTo({top:document.querySelector("#contact").offsetTop,behavior:"instant"});});
  await wheel(-20000);assert((await state()).frame===19,"Large upward wheel from portfolio stops at Integration");
  await reset(0);await page.evaluate(()=>{wheelLatched=false;wheelLast=0;window.scrollTo({top:0,behavior:"instant"});});
  await wheel(20000);assert((await state()).frame===0,"Large downward wheel from top stops at first scene");
@@ -58,7 +58,7 @@ async page => {
  await touch("touchstart",200);await touch("touchmove",400);await touch("touchmove",600);await touch("touchend",600);
  assert((await state()).frame===19,"Touch re-entry stops on Integration");
  // Simulate native momentum arriving after a swipe outside the section.
- await reset(19);await page.evaluate(()=>{window.scrollTo({top:document.querySelector("#portfolio").offsetTop,behavior:"instant"});lastStoryScrollY=scrollY;});
+ await reset(19);await page.evaluate(()=>{window.scrollTo({top:document.querySelector("#contact").offsetTop,behavior:"instant"});lastStoryScrollY=scrollY;});
  await touch("touchstart",100);await touch("touchmove",110);await touch("touchend",110);
  await page.evaluate(()=>{window.scrollTo({top:document.querySelector(".story").offsetTop+100,behavior:"instant"});updateScroll();});
  assert((await state()).frame===19,"Native upward overshoot catches last scene");

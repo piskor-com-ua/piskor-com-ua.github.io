@@ -38,10 +38,12 @@ async page => {
   if(await page.locator('html').getAttribute('lang')!=='en')throw Error('English refresh');
   await page.locator('[data-lang="uk"]').click();
   if(page.url().slice(origin.length).split(/[?#]/)[0]!=='/')throw Error('Ukrainian switch');
+  const addedRoutes=['/portfolio/2021/davydiv-house/','/portfolio/2022/zabava-restaurant-sambir/','/portfolio/2023/apartment-shevchenka-lviv/','/portfolio/2023/avalon-holiday-apartment/','/portfolio/2023/avalon-flex-apartment/','/portfolio/2023/coffee-power-lviv/','/portfolio/2023/zamartynivska-40-apartment/','/portfolio/2024/domazhyr-house/','/portfolio/2024/stavova-apartment/','/portfolio/2025/zamartynivska-apartment/'];
   for(const [catalog, expected] of [['/portfolio/',['/portfolio/2023/private-house-briukhovychi/','/portfolio/2023/troyanda/','/portfolio/2026/briukhovychi-house/','/portfolio/2026/roksoliany-apartment/','/portfolio/2025/lviv-apartment/','/portfolio/2025/franka-apartment/','/portfolio/2025/continental-apartment/','/portfolio/2025/neoclassic-apartment/']],['/en/portfolio/',['/en/portfolio/2023/private-house-briukhovychi/','/en/portfolio/2023/troyanda/','/en/portfolio/2026/briukhovychi-house/','/en/portfolio/2026/roksoliany-apartment/','/en/portfolio/2025/lviv-apartment/','/en/portfolio/2025/franka-apartment/','/en/portfolio/2025/continental-apartment/','/en/portfolio/2025/neoclassic-apartment/']]]){
     await page.goto(origin+catalog);
     const links=await page.locator('.portfolio-card').evaluateAll(cards=>cards.map(card=>card.getAttribute('href')));
-    if(links.length!==expected.length||expected.some(route=>!links.includes(route)))throw Error('Portfolio project links '+catalog+': '+links.join(', '));
+    const additions=catalog==='/portfolio/'?addedRoutes:addedRoutes.map(route=>route.replace('/portfolio/','/en/portfolio/'));
+    if(expected.some(route=>!links.includes(route))||additions.some(route=>!links.includes(route))||links.some(route=>!/^\/(?:en\/)?portfolio\/\d{4}\/[^/]+\/$/.test(route)))throw Error('Portfolio project links or year-based URLs '+catalog+': '+links.join(', '));
   }
   for(const old of ['/lviv-apartment.html','/lviv-apartment-en.html']){
     if((await page.request.get(origin+old)).status()!==404)throw Error('Old route still exists: '+old);
@@ -52,8 +54,8 @@ async page => {
     await page.waitForFunction(()=>Math.abs(document.getElementById(location.hash.slice(1)).getBoundingClientRect().top)<180);
     results.push('Legacy link works: '+old);
   }
-  await page.locator('.nav a[href="#portfolio"]').click();
-  await page.locator('.portfolio-card').click();
+  await page.locator('.nav a[href$="/portfolio/"]').click();
+  await page.locator('.portfolio-card').first().click();
   await page.locator('[data-gallery]').first().click();
   if(!await page.locator('.project-lightbox').evaluate(d=>d.open))throw Error('Gallery failed');
   await page.keyboard.press('ArrowRight');await page.keyboard.press('Escape');

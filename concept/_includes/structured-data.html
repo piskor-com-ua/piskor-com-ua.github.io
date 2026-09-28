@@ -30,6 +30,7 @@
       "inLanguage": {{ page.lang | jsonify }},
       "mainEntity": {"@type": "ItemList", "itemListElement": [
         {% include portfolio-projects.html %}
+        {% if page.year %}{% assign projects = projects | where: 'project_year', page.year %}{% endif %}
         {% for project in projects %}{% unless forloop.first %},{% endunless %}
         {"@type":"ListItem", "position":{{ forloop.index }}, "name":{{ project.card_title | jsonify }}, "url":{{ project.url | absolute_url | jsonify }}}
         {% endfor %}
@@ -44,8 +45,8 @@
       "description": {{ page.description | jsonify }},
       "inLanguage": {{ page.lang | jsonify }},
       "creator": {"@id": {{ '/#organization' | absolute_url | jsonify }}},
-      "contentLocation": {"@type": "Place", "name": {{ page.content_location | default: 'Lviv' | jsonify }}},
-      "genre": "Interior design"
+      "genre": "Interior design"{% if page.content_location %},
+      "contentLocation": {"@type": "Place", "name": {{ page.content_location | jsonify }} }{% endif %}
     },
     {% endif %}
     {

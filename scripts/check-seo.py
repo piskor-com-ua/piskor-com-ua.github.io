@@ -44,10 +44,10 @@ for route, lang in routes.items():
     assert 'noindex' in meta['robots'], 'Indexing requires separate approval'
     links = [a for t, a in page.tags if t == 'link']
     canonical = [a['href'] for a in links if a.get('rel') == 'canonical']
-    assert canonical == ['https://piskor-com-ua.github.io' + route]
+    assert canonical == ['https://piskor.com.ua' + route]
     alternates = {a['hreflang']: a['href'] for a in links if 'hreflang' in a}
     suffix = route.removeprefix('/en/').lstrip('/')
-    assert alternates == {'uk': 'https://piskor-com-ua.github.io/' + suffix, 'en': 'https://piskor-com-ua.github.io/en/' + suffix, 'x-default': 'https://piskor-com-ua.github.io/' + suffix}
+    assert alternates == {'uk': 'https://piskor.com.ua/' + suffix, 'en': 'https://piskor.com.ua/en/' + suffix, 'x-default': 'https://piskor.com.ua/' + suffix}
     for tag, attrs in page.tags:
         if tag == 'a' and attrs.get('href', '').startswith('/'):
             assert not urlsplit(attrs['href']).path.endswith('.html'), attrs['href']

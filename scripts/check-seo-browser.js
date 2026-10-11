@@ -23,7 +23,7 @@ async page => {
     if(/concept|концепт/i.test(title)||titles.has(title))throw Error('Invalid title '+title);
     titles.add(title);
     if(await page.locator('html').getAttribute('lang')!==lang)throw Error('Wrong language');
-    if(await page.locator('link[rel=canonical]').getAttribute('href')!=='https://piskor-com-ua.github.io'+route)throw Error('Wrong canonical');
+    if(await page.locator('link[rel=canonical]').getAttribute('href')!=='https://piskor.com.ua'+route)throw Error('Wrong canonical');
     if(await page.locator('link[hreflang]').count()!==3)throw Error('Missing alternates');
     if(await page.locator('meta[property="og:title"]').getAttribute('content')!==title)throw Error('Stale OG title');
     await page.evaluate(async()=>Promise.all([...document.images].filter(i=>i.getAttribute('src')).map(i=>{i.loading='eager';return i.decode();})));

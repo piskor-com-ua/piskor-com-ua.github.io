@@ -1,7 +1,8 @@
 title: PISKOR Architect
 indexing_enabled: false
-url: https://piskor-com-ua.github.io
+url: https://piskor.com.ua
 baseurl: ""
+google_analytics_id: G-S3T2GHM4H3
 source: concept
 destination: _site
 encoding: utf-8

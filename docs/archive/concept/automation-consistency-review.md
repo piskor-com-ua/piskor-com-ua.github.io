@@ -31,4 +31,4 @@
 - Inspected mobile climate and security, mobile control panel, and desktop entry images. JavaScript syntax and whitespace checks pass; no browser JavaScript errors. Existing font-preload warning observed.
 - Local Chromium evidence; not a physical iOS/Safari or production PageSpeed certification.
 
-Asset prompts and generation provenance: `assets/automation/provenance.md`.
+Asset prompts and generation provenance: [automation-provenance.md](automation-provenance.md).

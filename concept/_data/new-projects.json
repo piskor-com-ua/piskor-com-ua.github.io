@@ -1,4 +1,218 @@
 {
+  "vasha-terasa-showroom": {
+    "uk": {
+      "eyebrow": "Комерційний інтер’єр · Шоурум",
+      "title": "Матеріали для терас<br><span>у просторі «Ваша тераса».</span>",
+      "summary": "Шоурум у Львові площею 171 м²: експозиція терасних матеріалів, зал для презентацій, переговорна та робочі місця команди.",
+      "location": "Львів",
+      "area": "171 м²",
+      "property": "Шоурум · Комерційний інтер’єр",
+      "benefit_label": "Що це дає",
+      "cover": "vasha-terasa-hall-01",
+      "cover_alt": "Шоурум «Ваша тераса»: стелажі зі зразками, консультаційні столи, темне дерево та зелені акценти",
+      "intro_title": "Зразки в просторі,<br>а не лише в каталозі.",
+      "intro": "Проєкт шоуруму «Ваша тераса» організовує 171 м² навколо вибору матеріалів. В основному залі зразки можна роздивитися поряд із великими оздобленими площинами, а за столами — обговорити їх застосування. Окремо запроєктовані переговорна, робочі кабінети й кухня. Для презентацій зал змінює конфігурацію: крісла звернені до екрана, а експозиція залишається частиною інтер’єру.",
+      "technical_note": "Робочий альбом містить план світильників, розеток і вимикачів та схему вмикання. Це підтверджує проєктування груп освітлення, але не встановлену автоматизацію. Сценарне керування світлом можна розглядати як окремий наступний крок.",
+      "chapters": [
+        {
+          "anchor": "terrace-material-display", "nav": "Експозиція матеріалів", "title": "Матеріали видно<br>в різному масштабі.",
+          "context": "Основний зал займає 83 м². Тут представлено зразки покриттів і великі фрагменти облицювання, які допомагають оцінити колір та фактуру.",
+          "decision": "Відкриті стелажі й вертикальні панелі розміщені вздовж стін. Центральні столи залишають між експозиціями вільний прохід; темні площини, метал і жива зелень створюють стримане тло для матеріалу.",
+          "benefit": "Відвідувач порівнює невеликий зразок із матеріалом на великій поверхні й бачить, як оздоблення працює в інтер’єрі.",
+          "images": [
+            {"file":"vasha-terasa-hall-01","alt":"Загальний вигляд шоуруму зі стелажами зразків та оздобленими панелями","caption":"Зразки зібрані на відкритих стелажах по периметру залу."},
+            {"file":"vasha-terasa-hall-02","alt":"Експозиційні стелажі й столи для роботи зі зразками терасних матеріалів","caption":"Столи дозволяють розглядати матеріали поруч із експозицією."},
+            {"file":"vasha-terasa-hall-03","alt":"Стінова експозиція дерев’яних панелей і зразків у шоурумі","caption":"Великі оздоблені площини показують фактуру в масштабі інтер’єру."},
+            {"file":"vasha-terasa-hall-07","alt":"Вертикальні стійки зі зразками покриттів та відкриті полиці","caption":"Вертикальна експозиція доповнює полиці зі зразками."}
+          ]
+        },
+        {
+          "anchor": "showroom-consultation-tables", "nav": "Робота з клієнтом", "title": "Місце для вибору<br>і предметної розмови.",
+          "context": "Демонстрація матеріалів і консультація відбуваються в одному залі, без переходу до окремої торгової кімнати.",
+          "decision": "Столи розташовані між експозиційними стінами. Стільниці, зразки й фірмова стіна утворюють робочі точки; прохід крізь зал залишається відкритим. Меблеві креслення уточнюють конструкції столів і стендів.",
+          "benefit": "Можна одразу прикласти зразки один до одного й повернутися до настінної експозиції під час розмови.",
+          "images": [
+            {"file":"vasha-terasa-hall-04","alt":"Консультаційні столи зі зразками терасних покриттів у шоурумі","caption":"Робочі столи стоять безпосередньо біля експозиції."},
+            {"file":"vasha-terasa-hall-05","alt":"Центральний експозиційний стіл із набором зразків покриттів","caption":"На центральному столі матеріали можна порівнювати поруч."},
+            {"file":"vasha-terasa-hall-06","alt":"Стіл для консультацій перед фірмовою стіною «Ваша тераса»","caption":"Фірмова стіна позначає місце для розмови з відвідувачем."},
+            {"file":"vasha-terasa-hall-08","alt":"Консультаційна зона шоуруму з дерев’яними панелями й двома столами","caption":"Столи й панелі утворюють кілька точок для роботи зі зразками."}
+          ]
+        },
+        {
+          "anchor": "showroom-presentation-space", "nav": "Презентації", "title": "Той самий зал.<br>Інший формат зустрічі.",
+          "context": "У проєкті передбачено презентаційне використання основного залу.",
+          "decision": "Ряди мобільних крісел орієнтовані на екран. Конфігурація залишає поруч експозицію зразків; плани освітлення й вмикання окремо опрацьовують світло в залі. Керування світловими сценами може стати наступним етапом, але встановлену автоматизацію матеріали не підтверджують.",
+          "benefit": "Простір підходить і для індивідуального вибору матеріалів, і для групової презентації без окремої зали.",
+          "images": [
+            {"file":"vasha-terasa-presentation-01","alt":"Презентаційний режим шоуруму з рядами крісел і великим екраном","caption":"Крісла орієнтовані на екран у глибині основного залу."},
+            {"file":"vasha-terasa-presentation-02","alt":"Боковий вигляд залу шоуруму з кріслами для презентації та стелажами матеріалів","caption":"Під час презентації експозиція матеріалів залишається поруч."}
+          ]
+        },
+        {
+          "anchor": "branded-meeting-room", "nav": "Переговорна", "title": "Обговорення проєкту<br>за одним столом.",
+          "context": "Поруч із основним залом запроєктовано переговорну площею 16,28 м².",
+          "decision": "Великий стіл зібрав місця для обговорення матеріалів і документів. Підвісні світильники виділяють його як центр кімнати; дерев’яні панелі та фірмовий знак продовжують мову шоуруму.",
+          "benefit": "Після огляду експозиції розмову можна продовжити в окремому, спокійнішому приміщенні.",
+          "images": [
+            {"file":"vasha-terasa-meeting-01","alt":"Переговорна шоуруму з великим столом і фірмовою стіною","caption":"Стіл і підвіси формують центр переговорної."},
+            {"file":"vasha-terasa-meeting-02","alt":"Вигляд переговорної на стіл, вікно та екран презентації","caption":"Презентаційний екран доповнює розмову за столом."},
+            {"file":"vasha-terasa-meeting-03","alt":"Переговорна з вертикальними матеріальними панелями вздовж стіни","caption":"Зразки покриттів присутні й у переговорній."},
+            {"file":"vasha-terasa-meeting-04","alt":"Переговорна з дерев’яними стільцями, підвісним світлом і фірмовим знаком","caption":"Дерево й темне тло поєднують кімнату з основним залом."}
+          ]
+        },
+        {
+          "anchor": "team-workspace-greenery", "nav": "Офіс команди", "title": "Робочий простір<br>за експозицією.",
+          "context": "Для команди передбачено окремий офіс площею 36,66 м².",
+          "decision": "Робочі столи згруповані в центрі кімнати. Підвісна зелена перегородка позначає межу робочих місць, не закриваючи простір суцільною стіною; темні меблі зберігають спільну палітру з шоурумом.",
+          "benefit": "Команда має власне місце для щоденної роботи, а візуальний зв’язок між його частинами лишається відкритим.",
+          "images": [
+            {"file":"vasha-terasa-office-01","alt":"Офісні столи та підвісна зелень у робочому просторі команди","caption":"Зелена перегородка м’яко розділяє робочі місця."},
+            {"file":"vasha-terasa-office-02","alt":"Робочі місця офісу з темними столами та дошкою для нотаток","caption":"Столи зібрані в центрі окремого офісу."},
+            {"file":"vasha-terasa-office-03","alt":"Фронтальний вигляд на офісні столи й зелену перегородку","caption":"Зелень формує межу без глухої стіни."},
+            {"file":"vasha-terasa-office-04","alt":"Боковий вигляд офісу з робочими столами та підвісними рослинами","caption":"Темні робочі меблі підтримують палітру шоуруму."}
+          ]
+        },
+        {
+          "anchor": "private-work-cabinet", "nav": "Окремий кабінет", "title": "Кабінет для роботи<br>в іншому темпі.",
+          "context": "Планування виділяє окремий кабінет площею 12,95 м².",
+          "decision": "Робочий стіл розміщено біля вікна, а диван створює додаткове місце для короткої розмови. Цегляна стіна й світлі шафи відрізняють кабінет від відкритого офісу.",
+          "benefit": "Для зосередженої роботи й невеликої зустрічі є окреме приміщення без потреби займати переговорну.",
+          "images": [
+            {"file":"vasha-terasa-private-office-01","alt":"Окремий робочий кабінет із диваном, столом і цегляною стіною","caption":"Диван додає кабінету місце для короткої розмови."},
+            {"file":"vasha-terasa-private-office-02","alt":"Робочий стіл і світлі шафи в окремому кабінеті шоуруму","caption":"Робоче місце стоїть біля вікна, зберігання зібране в шафах."}
+          ]
+        },
+        {
+          "anchor": "back-office-storage", "nav": "Допоміжний офіс", "title": "Тиха робоча зона<br>з місцем для документів.",
+          "context": "В експлікації окремо зазначено приміщення бухгалтерії площею 12,13 м².",
+          "decision": "Високі закриті шафи й відкриті полиці розміщені навколо робочого столу. Світлі фасади врівноважують темно-зелену стіну; локальне робоче місце не перетинається з маршрутом відвідувачів залу.",
+          "benefit": "Документи та щоденні справи команди мають окреме місце, не займаючи площу експозиції.",
+          "images": [
+            {"file":"vasha-terasa-accounting-01","alt":"Допоміжний офіс із робочим столом, відкритими полицями та високими шафами","caption":"Шафи й полиці зосереджують зберігання біля робочого місця."},
+            {"file":"vasha-terasa-accounting-02","alt":"Стіл і суцільні світлі шафи в приміщенні бухгалтерії","caption":"Світлі шафи відділяють робочу зону від темної стіни."}
+          ]
+        },
+        {
+          "anchor": "staff-kitchen-break-area", "nav": "Кухня команди", "title": "Місце для паузи<br>поза основним залом.",
+          "context": "У плані для кухні відведено 10,17 м².",
+          "decision": "Компактні меблі збирають мийку, робочу поверхню та зберігання вздовж стіни; поруч стоять невеликі столи. Фірмова геометрія присутня в оздобленні, але світлі стіни роблять цю кімнату відмінною від темного шоуруму.",
+          "benefit": "Команда може зробити перерву в окремій зоні, залишаючи експозиційний зал для відвідувачів.",
+          "images": [
+            {"file":"vasha-terasa-kitchen-01","alt":"Кухня персоналу з темними нижніми шафами, мийкою й обіднім столом","caption":"Кухонні меблі й стіл розміщені в одному компактному приміщенні."},
+            {"file":"vasha-terasa-kitchen-02","alt":"Місце для перерви в кухні персоналу з фірмовим геометричним декором","caption":"Столи для короткої паузи стоять окремо від експозиції."}
+          ]
+        }
+      ],
+      "outcome": "Дизайн-проєкт охоплює планування шести приміщень, візуалізації, розгортки стін, плани електроточок і освітлення та креслення індивідуальних меблів і експозиційних стендів. Основний зал поєднує показ матеріалів, консультації й презентації; окремі кімнати підтримують роботу команди.",
+      "source_note": "Основний PDF: план перепланування, с. 7, 171,19 м² = 171 м² після округлення (обмірний план на с. 2 показує попередні 172,58 м²). Рік 2021 узято з дати створення PDF за прямою вказівкою замовника; локацію Львів підтверджено ним. Матеріали підтверджують завершений дизайн-проєкт, а не будівництво чи встановлену автоматизацію."
+    },
+    "en": {
+      "eyebrow": "Commercial interior · Showroom",
+      "title": "Terrace materials<br><span>at Vasha Terasa.</span>",
+      "summary": "A 171 m² showroom in Lviv with a terrace-material display, presentation space, meeting room and dedicated team workspaces.",
+      "location": "Lviv",
+      "area": "171 m²",
+      "property": "Showroom · Commercial interior",
+      "benefit_label": "What it makes possible",
+      "cover": "vasha-terasa-hall-01",
+      "cover_alt": "Vasha Terasa showroom with material displays, consultation tables, dark timber and greenery",
+      "intro_title": "Materials in a room,<br>not just a catalogue.",
+      "intro": "The 171 m² Vasha Terasa showroom is planned around choosing materials. Visitors can examine samples alongside full-height finishes and discuss their use at the tables in the main hall. A meeting room, workspaces and a staff kitchen have their own places in the plan. For presentations, the hall takes on a different arrangement: chairs face a screen while the displays remain part of the setting.",
+      "technical_note": "The working drawings include lighting, socket and switch plans plus a switching diagram. They establish designed lighting groups, not installed automation. Scene-based control could be considered as a separate future step.",
+      "chapters": [
+        {
+          "anchor": "terrace-material-display", "nav": "Material display", "title": "See a finish<br>at more than one scale.",
+          "context": "The 83 m² main hall brings together samples and larger areas of cladding, making colour and texture easier to assess.",
+          "decision": "Open shelves and vertical panels line the walls. Central tables leave a clear route between displays; dark finishes, metal and greenery keep the focus on the materials.",
+          "benefit": "Visitors can compare a small sample with the same kind of finish across a larger surface.",
+          "images": [
+            {"file":"vasha-terasa-hall-01","alt":"Wide view of the showroom with sample shelves and finish panels","caption":"Open shelves gather the samples around the hall."},
+            {"file":"vasha-terasa-hall-02","alt":"Display shelves and tables for viewing terrace-material samples","caption":"Tables bring the samples into the display area."},
+            {"file":"vasha-terasa-hall-03","alt":"Wall display of timber-finish panels in the showroom","caption":"Large wall panels show texture at the scale of an interior."},
+            {"file":"vasha-terasa-hall-07","alt":"Vertical finish panels and open shelving in the main hall","caption":"Vertical panels complement the smaller samples on shelves."}
+          ]
+        },
+        {
+          "anchor": "showroom-consultation-tables", "nav": "Customer consultations", "title": "Choose, compare<br>and talk at one table.",
+          "context": "Material display and consultation share the main hall rather than occupying separate retail rooms.",
+          "decision": "Tables sit among the display walls. Worktops, samples and the branded wall create places for a detailed conversation while the route through the hall remains open. Furniture drawings resolve the tables and display stands.",
+          "benefit": "Samples can be compared side by side and checked against the wall displays during the discussion.",
+          "images": [
+            {"file":"vasha-terasa-hall-04","alt":"Consultation tables with terrace-finish samples inside the showroom","caption":"Tables sit close to the material display."},
+            {"file":"vasha-terasa-hall-05","alt":"Central display table carrying a set of finish samples","caption":"The central table makes it easy to compare samples."},
+            {"file":"vasha-terasa-hall-06","alt":"Consultation table in front of the Vasha Terasa brand wall","caption":"The branded wall anchors a place for customer conversations."},
+            {"file":"vasha-terasa-hall-08","alt":"Two consultation tables with timber panels in the showroom","caption":"Several table positions let the display work for more than one conversation."}
+          ]
+        },
+        {
+          "anchor": "showroom-presentation-space", "nav": "Presentations", "title": "The same hall,<br>a different setting.",
+          "context": "The project also shows the main hall configured for presentations.",
+          "decision": "Rows of movable chairs face the screen while the material display stays nearby. Lighting and switching have their own plans. Scene-based lighting control could be developed later, but the materials do not establish any installed automation.",
+          "benefit": "The showroom can host both individual material selections and group presentations without a dedicated second hall.",
+          "images": [
+            {"file":"vasha-terasa-presentation-01","alt":"Showroom presentation setting with rows of chairs facing a large screen","caption":"Chairs face the screen at the end of the main hall."},
+            {"file":"vasha-terasa-presentation-02","alt":"Side view of the showroom set for a presentation beside material displays","caption":"The display remains alongside the presentation seating."}
+          ]
+        },
+        {
+          "anchor": "branded-meeting-room", "nav": "Meeting room", "title": "A room for the<br>next conversation.",
+          "context": "The plan provides a separate 16.28 m² meeting room beside the main hall.",
+          "decision": "A large table brings people and material samples together. Pendants mark its centre; timber panels and the brand sign continue the visual language of the showroom.",
+          "benefit": "After exploring the displays, visitors can continue a detailed conversation in a quieter room.",
+          "images": [
+            {"file":"vasha-terasa-meeting-01","alt":"Showroom meeting room with a large table and branded wall","caption":"The table and pendants form the centre of the meeting room."},
+            {"file":"vasha-terasa-meeting-02","alt":"Meeting table, window and presentation screen","caption":"A screen supports discussion at the table."},
+            {"file":"vasha-terasa-meeting-03","alt":"Meeting room with vertical material panels along one wall","caption":"Finish samples are part of the meeting room too."},
+            {"file":"vasha-terasa-meeting-04","alt":"Timber chairs, pendant lights and brand sign in the meeting room","caption":"Timber and dark finishes connect the room with the main hall."}
+          ]
+        },
+        {
+          "anchor": "team-workspace-greenery", "nav": "Team office", "title": "A dedicated place<br>for the team.",
+          "context": "The team has a separate 36.66 m² office in the plan.",
+          "decision": "Desks gather in the centre of the room. A hanging green screen marks a boundary between workstations without closing the space off; dark furniture carries the showroom palette into the office.",
+          "benefit": "Daily work has its own setting, with open sightlines across the office.",
+          "images": [
+            {"file":"vasha-terasa-office-01","alt":"Team workstations and hanging greenery in the office","caption":"The planted screen provides a soft division between desks."},
+            {"file":"vasha-terasa-office-02","alt":"Office desks and a board for notes","caption":"Desks are grouped in the centre of the dedicated office."},
+            {"file":"vasha-terasa-office-03","alt":"Frontal view of office desks behind a green hanging screen","caption":"Greenery marks a boundary without a solid wall."},
+            {"file":"vasha-terasa-office-04","alt":"Side view of dark office furniture and hanging plants","caption":"The furniture carries the showroom’s dark palette into the workspace."}
+          ]
+        },
+        {
+          "anchor": "private-work-cabinet", "nav": "Private office", "title": "A quieter room<br>for focused work.",
+          "context": "The layout sets aside a 12.95 m² private office.",
+          "decision": "A desk sits beside the window and a sofa provides another place for a brief discussion. Brickwork and pale cabinets distinguish this room from the shared office.",
+          "benefit": "Focused work and a small meeting have their own space without occupying the meeting room.",
+          "images": [
+            {"file":"vasha-terasa-private-office-01","alt":"Private office with sofa, desk and brick wall","caption":"The sofa adds a place for an informal discussion."},
+            {"file":"vasha-terasa-private-office-02","alt":"Desk by a window and pale cabinets in the private office","caption":"The desk is near the window, with storage in fitted cabinets."}
+          ]
+        },
+        {
+          "anchor": "back-office-storage", "nav": "Back office", "title": "Work and storage<br>away from the display.",
+          "context": "The room schedule includes a separate 12.13 m² accounting office.",
+          "decision": "Tall closed cabinets and open shelves surround the desk. Pale fronts balance the dark-green wall, and the workspace remains separate from customer circulation in the hall.",
+          "benefit": "Documents and day-to-day administration have a dedicated place without using display floor space.",
+          "images": [
+            {"file":"vasha-terasa-accounting-01","alt":"Back office with desk, open shelves and tall cabinets","caption":"Shelves and cabinets gather storage around the desk."},
+            {"file":"vasha-terasa-accounting-02","alt":"Desk and pale full-height cabinets in the accounting office","caption":"Pale cabinets set the workspace against the dark wall."}
+          ]
+        },
+        {
+          "anchor": "staff-kitchen-break-area", "nav": "Staff kitchen", "title": "A place for a break<br>beyond the showroom.",
+          "context": "The plan gives the staff kitchen 10.17 m².",
+          "decision": "Compact cabinetry gathers the sink, work surface and storage along one wall, with small tables nearby. The brand geometry appears in the finishes while pale walls distinguish the room from the dark showroom.",
+          "benefit": "The team can take a break in a separate room, leaving the display hall for visitors.",
+          "images": [
+            {"file":"vasha-terasa-kitchen-01","alt":"Staff kitchen with dark lower cabinets, sink and dining table","caption":"Kitchen fittings and a table share one compact room."},
+            {"file":"vasha-terasa-kitchen-02","alt":"Staff break area with tables and a geometric brand motif","caption":"Break tables sit away from the customer display."}
+          ]
+        }
+      ],
+      "outcome": "The design package covers the layout of six rooms, visualisations, wall elevations, lighting and electrical plans, and working drawings for bespoke furniture and display stands. The main hall supports material display, consultations and presentations; separate rooms serve the team’s daily work.",
+      "source_note": "The revised layout plan on PDF p. 7 totals 171.19 m², rounded to 171 m² (the earlier measured plan on p. 2 lists 172.58 m²). The client explicitly approved using the PDF creation year 2021 and confirmed Lviv as the location. The materials establish a finished design package, not construction or installed automation."
+    }
+  },
   "troyanda": {
     "uk": {
       "eyebrow": "Завершений дизайн-проєкт · Комерційний інтер’єр",

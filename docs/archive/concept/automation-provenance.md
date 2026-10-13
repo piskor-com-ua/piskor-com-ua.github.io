@@ -1,5 +1,7 @@
 # Automation concept assets
 
+The relative asset references below retain their original context in `concept/assets/automation/`.
+
 Generated with the built-in OpenAI Imagegen tool on 2026-09-12; converted to WebP (quality 84). Fictional concepts, not client work. Only these selected images are used. Earlier exploratory images of a different house and staircase were rejected and are not included in the site.
 
 ## climate.webp

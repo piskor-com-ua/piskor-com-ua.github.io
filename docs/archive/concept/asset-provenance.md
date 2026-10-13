@@ -1,5 +1,7 @@
 # Джерела матеріалів концепту 01
 
+Наведені нижче шляхи `assets/…` записані відносно каталогу `concept/`, де зберігаються самі файли.
+
 ## Фірмові матеріали
 
 - `assets/piskor-logo.png`: наданий замовником `PNG.png`, Google Drive ID `1Nj2s-b_vdDy4HheVRgiPm-1rplie3QbB`, із папки `1-2t2VvbQZf0kIqvjwnc9PRQaHHO_exMc`. Завантажено без перемальовування логотипа.

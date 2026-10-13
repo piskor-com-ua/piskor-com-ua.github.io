@@ -21,3 +21,6 @@
 @media(max-width:700px){.project-page .case-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}.project-page .case-navigation a{min-width:0;overflow-wrap:anywhere}}
 @media(max-width:700px){.pdf-project-page .case-navigation,.project-page:not(.pdf-project-page):not(.briukhovychi-page) .case-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .bortnianskoho-apartment-page :is(#bathroom-stone-timber,#guest-wc-lighting) .case-images img{aspect-ratio:3/5;object-fit:cover}
+.turquoise-home-briukhovychi-page :is(#bespoke-furniture-textured-panels,#private-bathroom-dressing,#ground-floor-shower-room,#lighting-curtain-scenario-potential) .case-images img{aspect-ratio:3/5;object-fit:cover}
+.turquoise-home-briukhovychi-page :is(#living-room-daylight-seating,#dining-room-illuminated-shelves) .case-images img{object-position:right bottom}
+.turquoise-home-briukhovychi-page #bespoke-furniture-textured-panels .case-images img{object-position:right center}

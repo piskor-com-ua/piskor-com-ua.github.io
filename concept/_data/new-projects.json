@@ -1,4 +1,139 @@
 {
+  "urban-loft-odesa": {
+    "uk": {
+      "eyebrow":"Житловий інтер’єр · Квартира",
+      "title":"Міський лофт<br><span>в Одесі.</span>",
+      "summary":"Квартира 47 м² зі скляною спальнею, відкритою кухнею та виразною зоною відпочинку. Світла підлога поєднує дерево, темний кам’яний малюнок і графічні портрети.",
+      "location":"Одеса", "area":"47 м²", "property":"Квартира",
+      "cover":"odesa-kitchen-dining-02", "cover_alt":"Кухня та їдальня одеської квартири зі скляною спальнею, дерев’яним столом і синіми кріслами",
+      "intro_title":"Спальня у скляному об’ємі.<br>Квартира з відкритими перспективами.",
+      "intro":"У цьому інтер’єрі спальню відділяє скло в чорному каркасі. Кухня й обідній стіл залишаються відкритими до проходу, а м’які меблі та великі графічні портрети визначають зону відпочинку. Світле оздоблення підлоги пов’язує простір; дерево й темні поверхні додають контрасту. Навіть на компактній площі кожна зона має помітний характер.",
+      "chapters":[
+        {"anchor":"glass-bedroom-space-planning","nav":"Прозоре зонування","title":"Окрема спальня<br>без глухого периметра.",
+         "context":"Спальне місце розташоване всередині скляного об’єму, поруч із проходом між входом і кухнею.",
+         "decision":"Прозорі перегородки з чорними вертикальними лініями позначають межу спальні. Дерев’яна основа й м’які тканини роблять її відмінною від світлого проходу. Скло залишає довгі лінії огляду між частинами квартири.",
+         "benefit":"Зона сну має власні межі, а інтер’єр зберігає візуальну глибину. Це рішення для людини, якій близьке відкрите планування.",
+         "images":[
+           {"file":"odesa-glass-bedroom-01","alt":"Скляний об’єм спальні з чорним каркасом і дерев’яною основою","caption":"Скляні площини окреслюють спальню вздовж світлого проходу."},
+           {"file":"odesa-glass-bedroom-02","alt":"Прохід між скляною спальнею та відкритою кухнею квартири в Одесі","caption":"Прозора межа зберігає огляд між спальнею, кухнею й входом."}
+         ]},
+        {"anchor":"open-kitchen-dining","nav":"Кухня та їдальня","title":"Кухня зі світлою базою<br>і дерев’яним столом.",
+         "context":"Обіднє місце стоїть поряд із кухонною робочою поверхнею та скляною спальнею.",
+         "decision":"Світлі нижні фасади поєднані з дерев’яними верхніми секціями й оздобленням із кам’яним малюнком. Вбудована техніка зібрана у високому блоці. Заокруглений дерев’яний стіл і сині крісла відрізняють їдальню від робочої частини кухні.",
+         "benefit":"Місце для приготування та стіл для вечері розташовані поруч. Меблі визначають функції, а спільна підлога зберігає відкритість кімнати.",
+         "images":[
+           {"file":"odesa-kitchen-dining-01","alt":"Кухонна робоча зона й дерев’яний стіл із синіми кріслами","caption":"Обідній стіл розташований поруч із робочою поверхнею."},
+           {"file":"odesa-kitchen-dining-02","alt":"Кухня з дерев’яними верхніми шафами, світлими фасадами та декоративним підвісом над столом","caption":"Дерево й синя оббивка додають кольору світлій кухні."}
+         ]},
+        {"anchor":"living-area-fireplace","nav":"Зона відпочинку","title":"М’яке місце<br>серед чітких ліній.",
+         "context":"Зона відпочинку продовжує інтер’єр із чорними каркасами, деревом і світлими поверхнями.",
+         "decision":"Диван, крісло та невеликий столик формують місце для розмови й відпочинку. Камінна вставка, рослини та текстиль пом’якшують геометрію скляних перегородок. Великі портрети задають окремий акцент на стіні.",
+         "benefit":"Після робочого дня тут є виразне місце для паузи, яке відрізняється від кухні та проходу за настроєм і меблями.",
+         "images":[
+           {"file":"odesa-living-area-01","alt":"Зона відпочинку з диваном, журнальним столиком і великим графічним портретом","caption":"М’які меблі утворюють окрему композицію для відпочинку."},
+           {"file":"odesa-living-area-02","alt":"Крісло біля камінної вставки та скляної перегородки спальні","caption":"Крісло й камінна вставка створюють затишну точку біля скла."}
+         ]},
+        {"anchor":"graphic-art-material-contrast","nav":"Мистецтво й фактури","title":"Великі портрети<br>замість дрібного декору.",
+         "context":"Графічні роботи займають значну частину стін у зоні відпочинку.",
+         "decision":"Чорно-білі портрети з кольоровими фрагментами поєднані з темними кріслами, деревом і дзеркальними площинами. Невелика кількість великих акцентів залишає інтер’єр виразним без численних декоративних предметів.",
+         "benefit":"Квартира має впізнаваний образ. Меблі й оздоблення працюють як тло для акцентів, які видно з різних точок простору.",
+         "images":[
+           {"file":"odesa-art-detail-01","alt":"Графічний портрет із кольоровим фрагментом біля крісла й камінної вставки","caption":"Великий портрет займає стіну поряд із м’яким кріслом."},
+           {"file":"odesa-art-detail-02","alt":"Графічний портрет у чорній рамі за столиком і кріслом зони відпочинку","caption":"Чорна рама пов’язує мистецький акцент із каркасами перегородок."}
+         ]},
+        {"anchor":"bathroom-shower-storage","nav":"Душова й зберігання","title":"Світла душова.<br>Темні полиці для дрібниць.",
+         "context":"Скло, чорний каркас і контраст оздоблення продовжені в душовій зоні біля спальні.",
+         "decision":"Душова поверхня має світлий кам’яний малюнок, а відкриті полиці й зона умивальника виділені темним оздобленням. Високий вузький стелаж збирає рушники та засоби догляду. Рушникосушарка розташована поряд з умивальником.",
+         "benefit":"Потрібні речі залишаються поруч із душем, а вертикальне зберігання використовує невелику ділянку стіни.",
+         "images":[
+           {"file":"odesa-bathroom-01","alt":"Умивальник, вузькі темні полиці та рушникосушарка в душовій зоні","caption":"Полиці й рушникосушарка розташовані біля умивальника."},
+           {"file":"odesa-bathroom-02","alt":"Світла душова, відкритий стелаж і скляна перегородка поруч зі спальнею","caption":"Душ і вертикальні полиці мають різне оздоблення в одній палітрі."}
+         ]},
+        {"anchor":"integrated-apartment-storage","nav":"Порядок у просторі","title":"Закриті шафи<br>й відкриті акценти.",
+         "context":"Компактне планування потребує місця для щоденних речей, які не повинні займати відкриту зону відпочинку.",
+         "decision":"У вхідній зоні показані світлі високі шафи та ніша з гачками для одягу. На кухні техніка й закриті секції зібрані в меблевих площинах. Біля душу відкриті полиці залишають під рукою тільки потрібні дрібниці.",
+         "benefit":"Зберігання розподілене за місцем користування: одяг біля входу, кухонні речі в меблях, засоби догляду біля душу.","images":[]},
+        {"anchor":"lighting-smart-control-potential","nav":"Світло та сценарії","title":"Світло для різних<br>частин вечора.",
+         "context":"У візуальному рішенні поєднані трекові світильники, локальні підвіси та підсвічені полиці.",
+         "decision":"Трекове світло підкреслює геометрію стелі з бетонною фактурою, а підвіс над столом позначає їдальню. Можливий розвиток цього рішення: окремі сценарії для приготування їжі, вечері та відпочинку з узгодженим керуванням групами світла. Для душової можна додатково розглянути захист від протікання; це рекомендоване доповнення до інтер’єру.",
+         "benefit":"За умови додавання такого керування мешканець зможе змінювати світловий настрій одним сценарієм. Захист від протікання потребуватиме окремого інженерного опрацювання.","images":[]}
+      ],
+      "outcome_title":"Прозоре зонування<br>для міської квартири.",
+      "outcome":"Інтер’єр об’єднує скляну спальню, кухню з їдальнею й зону відпочинку з великими графічними акцентами. Світла підлога залишає простір цілісним, а чорні каркаси, дерево та контрастні фактури позначають окремі зони.",
+      "faq":[
+        {"question":"Кому підійде таке планування?","answer":"Скляне зонування підійде тим, хто цінує відкриті перспективи й візуальний зв’язок між кімнатами. Для власного проєкту ми окремо узгоджуємо потрібний рівень приватності спальні й санвузла."},
+        {"question":"Чи можна розвинути освітлення в розумні сценарії?","answer":"Таке доповнення можна опрацювати окремо: визначити групи світильників і режими для кухні, вечері та відпочинку. У цьому кейсі сценарне керування описане як можливість, а не як установлена система."},
+        {"question":"З чого почати схожий інтер’єр?","answer":"Підготуйте план квартири та розкажіть, як ви користуєтеся кухнею, місцем для сну й зоною відпочинку. Це допоможе визначити межі кімнат і потрібне зберігання до вибору оздоблення."}
+      ],
+      "source_note":"Drive folder 2020_Одеса supplies project year 2020 and city Odesa. Furnished plan image зображення_viber_2020-10-08_10-56-22.jpg gives kitchen 14.32 + bedroom 17.38 + hallway 4.79 + bathroom 4.27 + wardrobe 3.49 + loggia at K=0.5, 2.44 = 46.69 m², rounded 47. No areas from alternative plans were added. Plan09.bpn was not opened; no working-drawing completeness or installed automation is claimed. Twelve renders were inspected; ten curated. The alternative-looking washbasin render 16_Post.jpg is omitted, as is the unpaired entry detail 10_Post.jpg."
+    },
+    "en": {
+      "eyebrow":"Residential interior · Apartment", "title":"Urban loft<br><span>in Odesa.</span>",
+      "summary":"A 47 m² apartment with a glazed sleeping zone, open kitchen and expressive lounge. A light floor connects timber, dark stone patterns and large graphic portraits.",
+      "location":"Odesa", "area":"47 m²", "property":"Apartment",
+      "cover":"odesa-kitchen-dining-02", "cover_alt":"Odesa kitchen and dining area with a glazed bedroom, timber table and blue chairs",
+      "intro_title":"A bedroom behind glass.<br>Open views through the apartment.",
+      "intro":"Glass in a black frame defines the sleeping zone in this apartment. The kitchen and dining table remain open to the circulation route, while soft seating and large graphic portraits mark the lounge. Light floor finishes connect the rooms; timber and dark surfaces add contrast. Each zone has a clear character within the compact footprint.",
+      "chapters":[
+        {"anchor":"glass-bedroom-space-planning","nav":"Transparent zoning","title":"A defined bedroom<br>with an open outlook.",
+         "context":"The bed sits inside a glazed enclosure beside the route between the entrance and kitchen.",
+         "decision":"Transparent partitions with black vertical lines mark the bedroom’s boundary. A timber base and soft fabrics distinguish it from the light passage. Glass preserves long views between parts of the apartment.",
+         "benefit":"The sleeping area has its own boundary while the interior retains visual depth. This approach suits someone who enjoys an open layout.",
+         "images":[
+           {"file":"odesa-glass-bedroom-01","alt":"Glazed bedroom enclosure with black framing and a timber base","caption":"Glass defines the bedroom beside the light circulation route."},
+           {"file":"odesa-glass-bedroom-02","alt":"Passage between the glazed bedroom and open kitchen in the Odesa apartment","caption":"The transparent boundary keeps views open between bedroom, kitchen and entrance."}
+         ]},
+        {"anchor":"open-kitchen-dining","nav":"Kitchen and dining","title":"A light kitchen<br>with a timber table.",
+         "context":"The dining table stands beside the kitchen worktop and glazed sleeping zone.",
+         "decision":"Pale lower fronts meet timber upper cabinets and stone-pattern finishes. Built-in appliances occupy a tall cabinet block. A rounded timber table and blue chairs distinguish dining from food preparation.",
+         "benefit":"Cooking and dining sit close together. Furniture defines each function while the continuous floor keeps the room open.",
+         "images":[
+           {"file":"odesa-kitchen-dining-01","alt":"Kitchen work area beside a timber table with blue dining chairs","caption":"The dining table sits close to the kitchen worktop."},
+           {"file":"odesa-kitchen-dining-02","alt":"Kitchen with timber upper cabinets, pale fronts and a sculptural pendant above the table","caption":"Timber and blue upholstery add colour to the light kitchen."}
+         ]},
+        {"anchor":"living-area-fireplace","nav":"Lounge","title":"Soft seating<br>among clear lines.",
+         "context":"The lounge continues the apartment’s combination of black framing, timber and pale surfaces.",
+         "decision":"A sofa, armchair and small table form a place for conversation and rest. A fireplace insert, plants and textiles soften the geometry of the glass partitions. Large portraits give the wall a distinct focus.",
+         "benefit":"There is a defined place to unwind, with furniture and a mood that differ from the kitchen and circulation space.",
+         "images":[
+           {"file":"odesa-living-area-01","alt":"Lounge with sofa, coffee table and a large graphic portrait","caption":"Soft furniture forms a separate setting for rest."},
+           {"file":"odesa-living-area-02","alt":"Armchair beside the fireplace insert and glazed bedroom partition","caption":"An armchair and fireplace insert create a quieter spot beside the glass."}
+         ]},
+        {"anchor":"graphic-art-material-contrast","nav":"Art and textures","title":"Large portraits<br>give the room its character.",
+         "context":"Graphic artworks occupy much of the lounge walls.",
+         "decision":"Black-and-white portraits with patches of colour sit beside dark armchairs, timber and reflective surfaces. A small number of large accents gives the room expression without a crowded collection of decorative objects.",
+         "benefit":"The apartment has a recognisable image. Furniture and finishes provide a backdrop for accents visible from several points in the room.",
+         "images":[
+           {"file":"odesa-art-detail-01","alt":"Graphic portrait with a coloured detail beside an armchair and fireplace insert","caption":"A large portrait fills the wall beside the armchair."},
+           {"file":"odesa-art-detail-02","alt":"Graphic portrait in a black frame behind the lounge table and armchair","caption":"The black frame relates the artwork to the partition frames."}
+         ]},
+        {"anchor":"bathroom-shower-storage","nav":"Shower and storage","title":"A light shower.<br>Dark shelving close at hand.",
+         "context":"Glass, black framing and contrasting finishes continue in the shower area beside the bedroom.",
+         "decision":"Light stone-pattern surfaces line the shower, while dark finishes mark the open shelves and basin area. Tall narrow shelving holds towels and toiletries. A towel rail sits beside the basin.",
+         "benefit":"Everyday items remain close to the shower, with vertical storage making use of a small stretch of wall.",
+         "images":[
+           {"file":"odesa-bathroom-01","alt":"Basin, narrow dark shelves and towel rail in the shower area","caption":"Shelving and a towel rail sit beside the basin."},
+           {"file":"odesa-bathroom-02","alt":"Light shower enclosure, open shelving and a glazed partition beside the bedroom","caption":"The shower and vertical shelves have different finishes within one palette."}
+         ]},
+        {"anchor":"integrated-apartment-storage","nav":"Storage","title":"Closed cabinets<br>and open essentials.",
+         "context":"A compact layout needs places for daily belongings outside the open lounge.",
+         "decision":"The entrance design shows pale tall cabinets and a niche with coat hooks. Kitchen appliances and closed storage sit within the furniture fronts. Open shelves beside the shower keep everyday essentials close at hand.",
+         "benefit":"Storage follows where things are used: clothes near the entrance, kitchen items in cabinets and toiletries beside the shower.","images":[]},
+        {"anchor":"lighting-smart-control-potential","nav":"Light and possible scenes","title":"Light for different<br>parts of the evening.",
+         "context":"The visual design combines track lighting, local pendants and illuminated shelving.",
+         "decision":"Tracks trace the ceiling’s concrete texture, and a pendant marks the dining table. A possible extension would be coordinated light groups for cooking, dinner and rest. Leak protection could also be considered for the shower as an additional engineering feature.",
+         "benefit":"If added, scene control would let residents change the lighting with one setting. Leak protection would require its own engineering design.","images":[]}
+      ],
+      "outcome_title":"Transparent zoning<br>for an urban apartment.",
+      "outcome":"The interior connects a glazed sleeping zone, kitchen and dining area, and a lounge with large graphic accents. A light floor keeps the space continuous while black frames, timber and contrasting textures distinguish its zones.",
+      "faq":[
+        {"question":"Who would this layout suit?","answer":"Glazed zoning suits people who value open views and a visual connection between rooms. In a new project, we discuss the level of privacy needed for the bedroom and bathroom separately."},
+        {"question":"Could the lighting support smart scenes?","answer":"That could be designed as a separate addition, with light groups for cooking, dinner and rest. Scene control is presented here as a possibility, rather than an installed system."},
+        {"question":"Where should a similar interior begin?","answer":"Bring an apartment plan and describe how you use the kitchen, sleeping area and lounge. This helps define room boundaries and storage before choosing finishes."}
+      ],
+      "source_note":"Project year 2020 and Odesa are supplied by the source folder name. The furnished plan totals 14.32 + 17.38 + 4.79 + 4.27 + 3.49 + 2.44 (loggia with coefficient 0.5 already applied) = 46.69 m², rounded to 47 m². Native Plan09.bpn was not opened. The page makes no claims about a complete working-drawing package, construction status or installed automation. Ten of twelve renders are curated; the differing basin view and unpaired entry detail are omitted."
+    }
+  },
   "vasha-terasa-showroom": {
     "uk": {
       "eyebrow": "Комерційний інтер’єр · Шоурум",

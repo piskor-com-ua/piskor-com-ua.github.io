@@ -12,6 +12,7 @@
 .pdf-project-page .case-navigation{grid-template-columns:repeat(4,1fr)}
 .nevelychuka-page .case-images img{height:clamp(260px,34vw,520px);aspect-ratio:auto;object-fit:cover}
 .pdf-project-page:not(.nevelychuka-page) .case-images img{aspect-ratio:4/3;object-fit:cover}
+.pdf-project-page.urban-loft-odesa-page .case-images img{aspect-ratio:1080/1283;object-fit:cover}
 .lviv-apartment-page #client-brief .case-images img,.lviv-apartment-page #space-planning .case-images img{aspect-ratio:3/4}
 .lviv-apartment-page #custom-storage .case-images img{aspect-ratio:2970/2100}
 .case-video{margin:48px 0 0}.case-video video{display:block;width:100%;height:auto;aspect-ratio:1280/704;max-height:80vh;object-fit:contain;background:#101010}.case-video figcaption{font-size:13px;line-height:1.65;margin-top:14px;color:var(--muted)}.case-light .case-video figcaption{color:#40544f}

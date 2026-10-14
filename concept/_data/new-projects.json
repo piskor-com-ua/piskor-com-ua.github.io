@@ -1,4 +1,412 @@
 {
+  "dolce-flower-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн квіткової крамниці · Львів",
+      "title": "Dolce Flower.<br><span>Простір для квітів.</span>",
+      "summary": "Квіткова крамниця у Львові, 148 м². Темні експозиційні меблі, бірюзові акценти й ботанічна графіка поєднують квіти з брендованою фотозоною та місцями для відвідувачів.",
+      "location": "Львів",
+      "area": "148 м²",
+      "property": "Квіткова крамниця · Торговий інтер’єр",
+      "cover": "dolce-flower-01",
+      "cover_alt": "Касова стійка, диван і ботанічна стіна в інтер’єрі Dolce Flower",
+      "intro_title": "Крамниця квітів,<br>де є місце зупинитися.",
+      "intro": "Дизайн ставить квіти й зелень на темне тло. Тонкі стелажі та острови з рослинами формують експозицію, а невеликі столи й диван дають місце для розмови. Брендована ботанічна стіна робить Dolce Flower упізнаваним. Допоміжні приміщення відокремлюють внутрішню роботу від простору для покупців.",
+      "benefit_label": "Для покупців і крамниці",
+      "chapters": [
+        {
+          "anchor": "brand-wall-flower-photo-zone",
+          "nav": "Бренд і фотозона",
+          "title": "Крамницю впізнають<br>з першого погляду.",
+          "context": "Dolce Flower у Львові поєднує квіткову експозицію з місцями для відвідувачів. Брендована стіна дає простору чіткий візуальний орієнтир.",
+          "decision": "Велика ботанічна графіка, напис Dolce Flower та світловий контур обрамляють невеликий диван. Бірюзові подушки повторюють колір стін, а рослини з обох боків пов’язують фотозону з торговою експозицією.",
+          "benefit": "Покупець одразу бачить назву крамниці й місце, де можна зупинитися. Для бренду це впізнаваний фон для фотографій, що залишається частиною інтер’єру.",
+          "images": [
+            {
+              "file": "dolce-flower-03",
+              "alt": "Диван із бірюзовими подушками перед стіною з написом Dolce Flower",
+              "caption": "Ботанічна графіка й напис формують фон фотозони."
+            },
+            {
+              "file": "dolce-flower-10",
+              "alt": "Вид через стелажі на диван і брендовану стіну Dolce Flower",
+              "caption": "Фотозону видно з проходу між стелажами."
+            }
+          ]
+        },
+        {
+          "anchor": "checkout-florist-counter",
+          "nav": "Касова зона",
+          "title": "Стійка поєднує<br>обслуговування й експозицію.",
+          "context": "У квітковій крамниці каса має бути помітною та залишати місце для спілкування з покупцем.",
+          "decision": "Темна стійка з підсвіченим цоколем розташована біля брендованої зони. Квіти й пакування доповнюють її гостьову сторону, а полиці за стійкою продовжують експозицію. Скляні підвіси виділяють цю частину залу.",
+          "benefit": "Гість має зрозумілу точку звернення до персоналу. Оформлення стійки підтримує торгову експозицію й загальну палітру, тому робоче місце не виглядає окремим від зали.",
+          "images": [
+            {
+              "file": "dolce-flower-01",
+              "alt": "Касова стійка, диван і ботанічна стіна в інтер’єрі Dolce Flower",
+              "caption": "Касова зона розташована поруч із брендованою стіною."
+            },
+            {
+              "file": "dolce-flower-05",
+              "alt": "Стійка й експозиція рослин уздовж проходу Dolce Flower",
+              "caption": "Відкритий прохід пов’язує експозицію з обслуговуванням."
+            }
+          ]
+        },
+        {
+          "anchor": "central-plant-display-islands",
+          "nav": "Острови з рослинами",
+          "title": "Рослини в центрі<br>маршруту покупця.",
+          "context": "Покупцю важливо бачити асортимент з різних боків і мати змогу підійти до окремої рослини.",
+          "decision": "Грановані темні острови збирають рослини на кількох рівнях. Високі екземпляри розташовані вище, дрібніші композиції займають нижні поверхні. Острови доповнюють стелажі по периметру й залишають проходи навколо експозиції.",
+          "benefit": "Різні рівні допомагають роздивитися композиції без суцільного ряду однакових полиць. Відкриті боки островів дозволяють обирати рослини з кількох напрямків.",
+          "images": [
+            {
+              "file": "dolce-flower-08",
+              "alt": "Грановані острови з рослинами в центрі торгової зали",
+              "caption": "Острови залишають кілька підходів до рослин."
+            },
+            {
+              "file": "dolce-flower-15",
+              "alt": "Різнорівневі острови з високими й низькими рослинами",
+              "caption": "Різна висота поверхонь робить композиції видимими."
+            }
+          ]
+        },
+        {
+          "anchor": "metal-shelving-decor-display",
+          "nav": "Стелажі й декор",
+          "title": "Легкий каркас<br>для різної експозиції.",
+          "context": "Квіти, вази й декоративні предмети мають різну висоту та форму. Меблі повинні залишати їх видимими.",
+          "decision": "Тонкі металеві стійки утворюють відкриту сітку полиць. Великі секції чергуються з меншими, а рослини виходять за межі каркаса. Темні площини позаду поєднані зі світлими металевими лініями й дзеркальними фрагментами.",
+          "benefit": "На полицях можна розміщувати групи товарів різного масштабу. Відкритий каркас зберігає огляд між експозиціями, а відбиття додають глибини торговому простору.",
+          "images": [
+            {
+              "file": "dolce-flower-06",
+              "alt": "Відкриті металеві полиці з вазами, рослинами й декором",
+              "caption": "Великі й малі секції пристосовані до різного формату товарів."
+            },
+            {
+              "file": "dolce-flower-14",
+              "alt": "Вази й декоративні предмети на металевих полицях біля проходу",
+              "caption": "Тонкі стійки зберігають огляд між секціями."
+            },
+            {
+              "file": "dolce-flower-16",
+              "alt": "Стелаж із вазами, дзеркалом і декоративними предметами",
+              "caption": "Дзеркальні фрагменти додають глибини експозиції."
+            },
+            {
+              "file": "dolce-flower-17",
+              "alt": "Прохід уздовж відкритих металевих стелажів квіткової крамниці",
+              "caption": "Ритм відкритих секцій підтримує маршрут уздовж експозиції."
+            }
+          ]
+        },
+        {
+          "anchor": "visitor-seating-among-plants",
+          "nav": "Місця для відвідувачів",
+          "title": "Місце для розмови<br>серед рослин.",
+          "context": "Вибір квітів або композиції може потребувати розмови й часу. У залі для цього є окремі місця.",
+          "decision": "Невеликі круглі столи та м’які крісла розташовані між рослинами й відкритими стелажами. Світла оббивка та бірюзові деталі виділяють посадку на темному тлі. Великі вазони відокремлюють ці місця від основного проходу.",
+          "benefit": "Відвідувач може присісти, обговорити вибір або зачекати. Посадка залишається пов’язаною з асортиментом, тому рослини видно й під час розмови.",
+          "images": [
+            {
+              "file": "dolce-flower-02",
+              "alt": "Круглий стіл із м’якими кріслами між рослинами й металевими стелажами",
+              "caption": "Компактний стіл утворює місце для розмови серед експозиції."
+            },
+            {
+              "file": "dolce-flower-04",
+              "alt": "М’яке крісло біля столу під сферичними підвісами в квітковій крамниці",
+              "caption": "Світла оббивка відокремлює місце від темного тла."
+            },
+            {
+              "file": "dolce-flower-07",
+              "alt": "Круглий стіл і крісла біля рослин під білим сферичним світильником",
+              "caption": "Посадка має власне локальне освітлення."
+            },
+            {
+              "file": "dolce-flower-12",
+              "alt": "М’які крісла навколо круглого столу серед квіткових стелажів",
+              "caption": "Рослини відокремлюють посадку від основної експозиції."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-turquoise-finishes",
+          "nav": "Світло і палітра",
+          "title": "Світло виділяє квіти<br>на темному тлі.",
+          "context": "Темна палітра підкреслює зелень, але потребує кількох рівнів освітлення для товару й місць відвідувачів.",
+          "decision": "Стельові панелі доповнюють сферичні підвіси над столами й компактні спрямовані світильники. Підсвічування нижньої частини меблів окреслює острови. Бірюзові площини біля вікон і зелені акценти поєднують освітлення з ботанічною темою.",
+          "benefit": "Погляд переходить між квітами, полицями й місцями для відпочинку. Освітлення підтримує різні зони, а темне тло залишає рослини головними в композиції.",
+          "images": [
+            {
+              "file": "dolce-flower-09",
+              "alt": "Квіткова експозиція зі сферичними підвісами та бірюзовими віконними площинами",
+              "caption": "Бірюзові площини підтримують зелень і світлові акценти."
+            },
+            {
+              "file": "dolce-flower-11",
+              "alt": "Стельові панелі, підвіси та підсвічені меблі над квітковою експозицією",
+              "caption": "Загальне світло доповнюють підвіси й контури меблів."
+            }
+          ]
+        },
+        {
+          "anchor": "retail-planning-cold-storage-office",
+          "nav": "Планування і зберігання",
+          "title": "Торгова зала<br>має власну сервісну частину.",
+          "context": "Проєкт охоплює 148 м². Планування враховує експозицію, обслуговування відвідувачів і приміщення для внутрішньої роботи.",
+          "decision": "Торгова зона поєднує стелажі по периметру та окремі острови. Фотозона займає власне місце біля скошеної стіни. За межами основної експозиції план відводить кабінет і два холодильні приміщення, пов’язані із сервісною частиною.",
+          "benefit": "Відвідувачі бачать квіти й зрозумілі точки обслуговування. Окремі допоміжні приміщення дають змогу планувати зберігання та внутрішню роботу без перенесення всіх функцій у торгову залу.",
+          "images": []
+        },
+        {
+          "anchor": "retail-lighting-automation-potential",
+          "nav": "Світлові сценарії",
+          "title": "Основа для сценаріїв<br>відкриття й вечірньої роботи.",
+          "context": "Загальне світло, підвіси й декоративне підсвічування виконують різні завдання. Їх можна розглянути як окремі групи керування.",
+          "decision": "Рекомендоване доповнення до проєкту: сцени відкриття крамниці, роботи з покупцями та закриття. Для вечірнього режиму можна зберегти акценти на брендованій стіні й експозиції. Реалізація потребує перевірки сумісності світильників, драйверів та електричних груп.",
+          "benefit": "За сумісного обладнання персонал зможе змінювати потрібні групи одним сценарієм. Таке керування потребує окремого підбору обладнання й налаштування.",
+          "images": []
+        },
+        {
+          "anchor": "flower-storage-climate-security-potential",
+          "nav": "Клімат і контроль",
+          "title": "Окремі потреби<br>зали та зберігання квітів.",
+          "context": "Торгова зала й холодильні приміщення мають різні завдання. Кліматичні рішення потрібно узгоджувати з обладнанням кожної зони.",
+          "decision": "Як додаткове інженерне рішення доречно розглянути контроль температури холодильних приміщень і режими опалення та клімату торгової зали за графіком роботи. Для входу й сервісних зон можна оцінити керування доступом. Контроль протікань має сенс біля фактичних водопровідних вузлів, які потрібно визначити окремо.",
+          "benefit": "Такі сценарії можуть допомогти персоналу контролювати зберігання й підготовку приміщень до роботи. Склад системи варто визначати за реальним обладнанням і режимом крамниці.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Експозиція й обслуговування<br>в одному інтер’єрі.",
+      "outcome": "Проєкт поєднує планування торгової зали, острови з квітами, відкриті стелажі, касову зону та місця для відвідувачів. Ботанічна графіка й освітлення пов’язують гостьові зони. План також відводить кабінет і два холодильні приміщення, щоб сервісна частина мала власне місце в крамниці.",
+      "faq": [
+        {
+          "question": "Що входить у площу 148 м²?",
+          "answer": "Загальна площа охоплює торгові й допоміжні приміщення, зокрема кабінет, холодильний блок та вхідні зони. Це не лише площа квіткової експозиції."
+        },
+        {
+          "question": "Як планування допомагає обирати квіти?",
+          "answer": "Стелажі по периметру та окремі острови показують асортимент на різній висоті. Проходи дають змогу підійти до рослин, а столи й диван створюють місця, де можна зупинитися."
+        },
+        {
+          "question": "Що формує характер Dolce Flower?",
+          "answer": "Ботанічна стіна, напис бренду й бірюзові акценти пов’язують фотозону з квітковою експозицією. Темні меблі підкреслюють зелень, а тонкі стелажі зберігають відкритий огляд."
+        },
+        {
+          "question": "Чи можна автоматизувати освітлення та клімат?",
+          "answer": "Світлові сценарії й контроль температури можуть доповнити проєкт. Для реалізації потрібне сумісне обладнання й окреме інженерне рішення; ці можливості не подані як встановлені системи."
+        }
+      ],
+      "source_note": "Internal: Drive2020_DolceFlower folder1eOFukjqIN3_12NuTKv8cMHtz4jhAM35e. Two JPG measured/furniture plans fully reviewed; twenty renders reviewed, dark-version selected without mixing alternative white scheme. User confirmed Lviv,2020,and adopted148m² as final presentation area without approximation mark after authorised estimate148.171m². Dimensioned office8.13204 and cold block28.5; calibrated residual retail82.62885,service26.60456,entrance2.30559. Retain estimation provenance internally; not an official measured certificate. Original areas and owner adoption documented in /tmp/piskor-dolce-flower.GVFUI4/area-estimate.md. No installed automation or construction completion evidence. Lighting/heating/climate/access/water recommendations only; no curtains or exterior system evidence. Duplicate screening against465published source images found no identical imagery; named branded wall and commercial layout differ from existing flower cases."
+    },
+    "en": {
+      "eyebrow": "Flower shop design · Lviv",
+      "title": "Dolce Flower.<br><span>A botanical interior.</span>",
+      "summary": "A 148 m² flower shop in Lviv. Dark display furniture, turquoise accents and botanical graphics connect flower displays with a branded photo area and visitor seating.",
+      "location": "Lviv",
+      "area": "148 m²",
+      "property": "Flower shop · Retail interior",
+      "cover": "dolce-flower-01",
+      "cover_alt": "Dolce Flower counter, sofa and botanical wall",
+      "intro_title": "A flower shop<br>with room to linger.",
+      "intro": "The design places flowers and greenery against a dark backdrop. Slender shelves and planted islands define the displays, while small tables and a sofa provide places to sit. The branded botanical wall gives Dolce Flower a clear identity. Supporting rooms keep internal work separate from the customer-facing floor.",
+      "benefit_label": "For customers and the shop",
+      "chapters": [
+        {
+          "anchor": "brand-wall-flower-photo-zone",
+          "nav": "Brand and photo area",
+          "title": "A recognisable<br>arrival scene.",
+          "context": "Dolce Flower in Lviv combines flower displays with places for visitors to sit. A branded wall gives the interior a clear visual reference.",
+          "decision": "Large botanical graphics, the Dolce Flower lettering and an illuminated outline frame a small sofa. Turquoise cushions repeat the wall colour, and plants on either side connect the photo area to the retail displays.",
+          "benefit": "Visitors can immediately see the shop name and a place to pause. The branded wall provides a recognisable photo backdrop within the interior.",
+          "images": [
+            {
+              "file": "dolce-flower-03",
+              "alt": "Sofa with turquoise cushions in front of the Dolce Flower wall",
+              "caption": "Botanical graphics and lettering form the photo-area backdrop."
+            },
+            {
+              "file": "dolce-flower-10",
+              "alt": "View through the shelving towards the sofa and Dolce Flower wall",
+              "caption": "The photo area is visible from the aisle between shelves."
+            }
+          ]
+        },
+        {
+          "anchor": "checkout-florist-counter",
+          "nav": "Checkout",
+          "title": "A counter for service<br>and display.",
+          "context": "A flower shop needs a checkout that is easy to find and leaves room for a conversation with the customer.",
+          "decision": "A dark counter with an illuminated plinth sits beside the branded area. Flowers and packaging line its customer-facing side, while shelving behind it continues the display. Glass pendants mark this part of the room.",
+          "benefit": "Visitors have a clear place to ask for assistance. The counter follows the display layout and colour palette, keeping the service point connected to the room.",
+          "images": [
+            {
+              "file": "dolce-flower-01",
+              "alt": "Dolce Flower counter, sofa and botanical wall",
+              "caption": "The counter sits alongside the branded wall."
+            },
+            {
+              "file": "dolce-flower-05",
+              "alt": "Counter and plant displays along the Dolce Flower aisle",
+              "caption": "An open aisle connects the displays with the service point."
+            }
+          ]
+        },
+        {
+          "anchor": "central-plant-display-islands",
+          "nav": "Plant islands",
+          "title": "Plants at the centre<br>of the customer route.",
+          "context": "Customers need to see the range from different angles and approach individual plants.",
+          "decision": "Angular dark islands display plants at several heights. Taller plants rise above smaller arrangements on the lower surfaces. The islands complement the perimeter shelves and leave routes around the displays.",
+          "benefit": "The different heights make arrangements easier to see. Open sides let customers browse the plants from several directions.",
+          "images": [
+            {
+              "file": "dolce-flower-08",
+              "alt": "Angular plant islands in the centre of the retail floor",
+              "caption": "The islands provide several approaches to the plants."
+            },
+            {
+              "file": "dolce-flower-15",
+              "alt": "Tiered islands with tall and low plants",
+              "caption": "Different surface heights keep arrangements visible."
+            }
+          ]
+        },
+        {
+          "anchor": "metal-shelving-decor-display",
+          "nav": "Shelving and decor",
+          "title": "A slender framework<br>for varied displays.",
+          "context": "Flowers, vases and decorative objects vary in height and shape. Display furniture needs to keep them visible.",
+          "decision": "Slender metal uprights form an open shelving grid. Large compartments alternate with smaller ones, and planting extends beyond the frame. Dark backdrops combine with light metal lines and mirrored details.",
+          "benefit": "The shelves accommodate product groups of different sizes. Open frames preserve views between displays, and reflections add depth to the retail space.",
+          "images": [
+            {
+              "file": "dolce-flower-06",
+              "alt": "Open metal shelves with vases, plants and decor",
+              "caption": "Large and small compartments suit different product formats."
+            },
+            {
+              "file": "dolce-flower-14",
+              "alt": "Vases and decorative objects on metal shelves by an aisle",
+              "caption": "Slender uprights preserve views between compartments."
+            },
+            {
+              "file": "dolce-flower-16",
+              "alt": "Shelving with vases, a mirror and decorative objects",
+              "caption": "Mirrored details add depth to the display."
+            },
+            {
+              "file": "dolce-flower-17",
+              "alt": "Aisle beside open metal shelving in the flower shop",
+              "caption": "Open compartments follow the route alongside the displays."
+            }
+          ]
+        },
+        {
+          "anchor": "visitor-seating-among-plants",
+          "nav": "Visitor seating",
+          "title": "A place to talk<br>among the plants.",
+          "context": "Choosing flowers or an arrangement can take time and conversation. The room includes places for that.",
+          "decision": "Small round tables and upholstered chairs sit between planting and open shelves. Light upholstery and turquoise details make the seating visible against the dark backdrop. Large planters distinguish these places from the main aisle.",
+          "benefit": "Visitors can sit down to discuss their choice or wait. The seating remains connected to the displays, keeping plants in view during the conversation.",
+          "images": [
+            {
+              "file": "dolce-flower-02",
+              "alt": "Round table and upholstered chairs between plants and metal shelves",
+              "caption": "A compact table provides a place to talk among the displays."
+            },
+            {
+              "file": "dolce-flower-04",
+              "alt": "Upholstered chair by a table beneath spherical pendants in the flower shop",
+              "caption": "Light upholstery distinguishes the seat from the dark backdrop."
+            },
+            {
+              "file": "dolce-flower-07",
+              "alt": "Round table and chairs by plants beneath a white spherical pendant",
+              "caption": "The seating has its own local lighting."
+            },
+            {
+              "file": "dolce-flower-12",
+              "alt": "Upholstered chairs around a round table among flower shelves",
+              "caption": "Plants distinguish the seating from the main display."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-turquoise-finishes",
+          "nav": "Light and palette",
+          "title": "Light brings flowers<br>forward against a dark backdrop.",
+          "context": "A dark palette brings out the greenery and calls for several layers of light around products and visitor seating.",
+          "decision": "Ceiling panels are complemented by spherical pendants above tables and compact spotlights. Lighting at furniture bases outlines the islands. Turquoise surfaces by the windows and green accents connect the lighting to the botanical theme.",
+          "benefit": "The eye moves between flowers, shelves and seating. Lighting defines the different areas, while the dark backdrop keeps plants prominent.",
+          "images": [
+            {
+              "file": "dolce-flower-09",
+              "alt": "Flower displays with spherical pendants and turquoise window surfaces",
+              "caption": "Turquoise surfaces complement the greenery and lighting accents."
+            },
+            {
+              "file": "dolce-flower-11",
+              "alt": "Ceiling panels, pendants and illuminated furniture around flower displays",
+              "caption": "General lighting is supplemented by pendants and furniture outlines."
+            }
+          ]
+        },
+        {
+          "anchor": "retail-planning-cold-storage-office",
+          "nav": "Planning and storage",
+          "title": "A retail room<br>with supporting spaces.",
+          "context": "The project covers 148 m². The layout accounts for display, customer service and back-of-house work.",
+          "decision": "The retail area combines perimeter shelving with freestanding islands. A photo area has its own position beside the angled wall. Outside the main display, the plan allocates an office and two cold-storage rooms connected to the service area.",
+          "benefit": "Visitors see the flowers and clear service points. Separate supporting rooms allow storage and internal work to be planned without placing every function on the retail floor.",
+          "images": []
+        },
+        {
+          "anchor": "retail-lighting-automation-potential",
+          "nav": "Lighting scenes",
+          "title": "A starting point<br>for opening and evening scenes.",
+          "context": "General lighting, pendants and decorative light serve different purposes. They can be considered as separate control groups.",
+          "decision": "A recommended extension is to develop scenes for opening, customer service and closing. An evening setting could retain accents on the branded wall and displays. Implementation requires checking the compatibility of fittings, drivers and electrical circuits.",
+          "benefit": "With compatible equipment, staff could select the required groups through one scene. This control approach requires separate equipment selection and commissioning.",
+          "images": []
+        },
+        {
+          "anchor": "flower-storage-climate-security-potential",
+          "nav": "Climate and monitoring",
+          "title": "Different needs<br>for retail and flower storage.",
+          "context": "The retail floor and cold-storage rooms serve different purposes. Climate decisions need coordination with the equipment in each area.",
+          "decision": "Further engineering could consider temperature monitoring for the cold rooms and heating and climate schedules for the retail floor. Access control can be assessed for the entrance and service areas. Leak monitoring is relevant near actual plumbing connections, which need to be identified separately.",
+          "benefit": "These scenarios could help staff monitor storage and prepare the premises for opening. The system scope should follow the shop’s actual equipment and routine.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Display and service<br>within one interior.",
+      "outcome": "The design combines the retail layout, flower display islands, open shelves, checkout and visitor seating. Botanical graphics and lighting connect the customer areas. The plan also allocates an office and two cold-storage rooms so the service spaces have their own place within the shop.",
+      "faq": [
+        {
+          "question": "What does the 148 m² area include?",
+          "answer": "The total covers the retail and supporting spaces, including the office, cold-storage block and entrance areas. It is not just the flower display floor."
+        },
+        {
+          "question": "How does the layout support browsing?",
+          "answer": "Perimeter shelving and freestanding islands present the range at different heights. Routes around the displays let customers approach the plants, while tables and a sofa provide places to pause."
+        },
+        {
+          "question": "What gives Dolce Flower its identity?",
+          "answer": "The botanical wall, branded lettering and turquoise accents connect the photo area to the flower displays. Dark furniture makes the greenery prominent, and slender shelving keeps views open."
+        },
+        {
+          "question": "Can the lighting and climate be automated?",
+          "answer": "Lighting scenes and temperature monitoring are possible extensions. Their implementation requires compatible equipment and separate engineering design; they are not presented as installed systems."
+        }
+      ],
+      "source_note": "Internal: Drive2020_DolceFlower folder1eOFukjqIN3_12NuTKv8cMHtz4jhAM35e. Two JPG measured/furniture plans fully reviewed; twenty renders reviewed, dark-version selected without mixing alternative white scheme. User confirmed Lviv,2020,and adopted148m² as final presentation area without approximation mark after authorised estimate148.171m². Dimensioned office8.13204 and cold block28.5; calibrated residual retail82.62885,service26.60456,entrance2.30559. Retain estimation provenance internally; not an official measured certificate. Original areas and owner adoption documented in /tmp/piskor-dolce-flower.GVFUI4/area-estimate.md. No installed automation or construction completion evidence. Lighting/heating/climate/access/water recommendations only; no curtains or exterior system evidence. Duplicate screening against465published source images found no identical imagery; named branded wall and commercial layout differ from existing flower cases."
+    }
+  },
   "meduza-lounge-lviv": {
     "uk": {
       "eyebrow": "Дизайн лаунж-простору · Львів",

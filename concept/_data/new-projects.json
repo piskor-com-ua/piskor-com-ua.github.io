@@ -1,4 +1,472 @@
 {
+  "shenc-park-yavoriv": {
+    "uk": {
+      "eyebrow": "Дизайн ресторану й номерів · Яворів",
+      "title": "Shenc Park.<br><span>Ресторан і простір відпочинку.</span>",
+      "summary": "Ресторан і два інтер’єри номерів у Яворові, Львівська область, 147 м². Зелені акценти, м’яка посадка та багаторівневе світло поєднують залу з двома різними за характером номерами.",
+      "location": "Яворів, Львівська область",
+      "area": "147 м²",
+      "property": "Ресторан · Інтер’єри готельних номерів",
+      "cover": "restaurant-02",
+      "cover_alt": "Круглі столи, зелені крісла та рослини ресторану Shenc Park",
+      "intro_title": "Ресторан і номери<br>зі спільним характером.",
+      "intro": "Ресторан задає настрій для зустрічей: круглі столи, рослини й бар із деревною фактурою. Номери пропонують спокійнішу атмосферу. В одному оливкові стіни поєднані зі світлими меблями, в іншому графітові молдинги доповнені гірчичним кріслом. Арки, текстиль і локальне світло пов’язують частини кожного номера. Кейс охоплює залу та два інтер’єри номерів.",
+      "benefit_label": "Для гостей і закладу",
+      "chapters": [
+        {
+          "anchor": "restaurant-round-tables-guest-seating",
+          "nav": "Посадка в ресторані",
+          "title": "За одним столом<br>зручно бути разом.",
+          "context": "Ресторанна зала поєднує круглі столи з м’якими кріслами й диванною посадкою. Гість може обрати місце біля вікна або в глибині зали.",
+          "decision": "Столи утворюють окремі групи. Сірі й зелені крісла чергуються з диванами, а великі рослини розділяють композицію без суцільних перегородок. Світлі скатертини виділяють сервірування на темнішому тлі.",
+          "benefit": "Різні варіанти посадки підтримують і коротку зустріч, і довшу вечерю. Групування меблів дає кожному столу власне місце в залі.",
+          "images": [
+            {
+              "file": "restaurant-02",
+              "alt": "Круглі столи, дивани й зелені крісла в залі Shenc Park",
+              "caption": "Загальний ракурс показує групування столів."
+            },
+            {
+              "file": "restaurant-06",
+              "alt": "Столи й м’які крісла біля вікон ресторану",
+              "caption": "Світло з вікон доповнює світлу сервіровку."
+            },
+            {
+              "file": "restaurant-07",
+              "alt": "М’яка посадка і рослини між столами ресторанної зали",
+              "caption": "Зелень відокремлює окремі місця в залі."
+            },
+            {
+              "file": "restaurant-10",
+              "alt": "Круглий стіл поруч із диваном і вікном",
+              "caption": "Диванна посадка доповнює окремі крісла."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-bar-service-counter",
+          "nav": "Бар і сервіс",
+          "title": "Бар залишається<br>частиною зали.",
+          "context": "Барна стійка формує окрему точку обслуговування, видиму з гостьових столів.",
+          "decision": "Деревна фактура об’єднує стійку з високими полицями позаду. Барні стільці додають посадку вздовж прилавка. Рослини та світильники продовжують оформлення основної зали.",
+          "benefit": "Гості легко знаходять бар, а відкриті полиці підтримують його експозицію. Сервісна зона читається чітко й не випадає із загального інтер’єру.",
+          "images": [
+            {
+              "file": "restaurant-05",
+              "alt": "Деревна барна стійка і полиці позаду столів",
+              "caption": "Деревна фактура збирає бар в одну композицію."
+            },
+            {
+              "file": "restaurant-09",
+              "alt": "Бар із високими полицями та гостьові столи Shenc Park",
+              "caption": "Бар видно з основної гостьової частини."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-materials-layered-lighting",
+          "nav": "Матеріали й світло",
+          "title": "Вечірня атмосфера<br>починається зі світла.",
+          "context": "У залі світло має виділяти столи й водночас залишати помітним оформлення стін.",
+          "decision": "Підвіси розташовані над столами, трекові світильники доповнюють загальне освітлення, а світловий контур окреслює верхню частину стін. Вертикальні темні площини, графічне панно та зелені акценти утворюють спільне тло.",
+          "benefit": "Локальне світло привертає увагу до столу. Контурне підсвічування додає глибини стінам, а стримана палітра залишає сервірування й рослини виразними.",
+          "images": [
+            {
+              "file": "restaurant-01",
+              "alt": "Підвісний світильник над столом і вертикальне оформлення стіни",
+              "caption": "Підвіс виділяє стіл на тлі вертикальних площин."
+            },
+            {
+              "file": "restaurant-03",
+              "alt": "Світильники і світловий контур біля вікна ресторану",
+              "caption": "Контурне світло продовжується вздовж стін."
+            },
+            {
+              "file": "restaurant-04",
+              "alt": "Графічне панно, зелені крісла і підвіси ресторанної зали",
+              "caption": "Панно задає виразний фон для гостьових столів."
+            },
+            {
+              "file": "restaurant-08",
+              "alt": "Барні стільці та підвісне світло біля вікон Shenc Park",
+              "caption": "Світло поєднує барну й ресторанну частини."
+            }
+          ]
+        },
+        {
+          "anchor": "olive-guest-room-sleeping-area",
+          "nav": "Оливковий номер",
+          "title": "Спальна зона<br>з власним характером.",
+          "context": "Перший тип номера поєднує оливкові стіни, світлий текстиль і два ліжка.",
+          "decision": "М’які узголів’я розташовані на темнішому тлі з декоративними молдингами. Приховане світло під стелею доповнюють бра. Арковий отвір пов’язує спальну частину зі світлішою зоною номера.",
+          "benefit": "Світлий текстиль чітко виділяє ліжка. Кілька рівнів світла дають основу для різних режимів відпочинку без зміни оформлення номера.",
+          "images": [
+            {
+              "file": "olive-room-02",
+              "alt": "Два ліжка, оливкові стіни та арка в готельному номері",
+              "caption": "Оливкова палітра визначає спальну частину."
+            },
+            {
+              "file": "olive-room-05",
+              "alt": "Узголів’я ліжка, бра й вид на вікно оливкового номера",
+              "caption": "Локальне світло доповнює денне освітлення."
+            }
+          ]
+        },
+        {
+          "anchor": "olive-room-lounge-daylight",
+          "nav": "Відпочинок біля вікна",
+          "title": "У номері є місце<br>для спокійної паузи.",
+          "context": "Окрім ліжок, номер має окреме місце, де можна сісти з напоєм або відпочити вдень.",
+          "decision": "Оливкове крісло зі столиком стоїть біля вікон. Світлий комод утворює телевізійну зону, а темні штори обрамляють денне світло. Деревний малюнок підлоги поєднує цю частину зі спальнею.",
+          "benefit": "Гість отримує окреме місце для відпочинку поза ліжком. Меблі біля вікна використовують світлішу частину номера, а телевізор залишається видимим із зони відпочинку.",
+          "images": [
+            {
+              "file": "olive-room-01",
+              "alt": "Крісло, столик, комод і телевізор між вікнами номера",
+              "caption": "Крісло зі столиком має власне місце біля вікна."
+            },
+            {
+              "file": "olive-room-04",
+              "alt": "Вид зі спальні через арку на крісло й комод",
+              "caption": "Арка пов’язує відпочинок і спальну частину."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-room-storage-dressing-arch",
+          "nav": "Зберігання і деталі",
+          "title": "Зручна підготовка<br>до нового дня.",
+          "context": "Готельний номер потребує зрозумілого місця для речей і підготовки до виходу.",
+          "decision": "Світла шафа поєднана з низькими шухлядами та поверхнею біля дзеркала. Пуф доповнює цю зону. Молдинги й арковий прохід повторюють оформлення спальні, а підвісний світильник виділяє дзеркало.",
+          "benefit": "Одяг і невеликі речі можна розмістити окремо від ліжок. Дзеркало з місцем для сидіння робить щоденну підготовку зручнішою.",
+          "images": [
+            {
+              "file": "olive-room-03",
+              "alt": "Світла шафа, шухляди, дзеркало та пуф у номері",
+              "caption": "Шафа й дзеркало формують окрему зону підготовки."
+            },
+            {
+              "file": "olive-room-07",
+              "alt": "Арковий прохід і декоративні молдинги оливкового номера",
+              "caption": "Арка зберігає зв’язок між частинами номера."
+            }
+          ]
+        },
+        {
+          "anchor": "graphite-room-mustard-lounge",
+          "nav": "Графітовий номер",
+          "title": "Темна палітра<br>з теплим акцентом.",
+          "context": "Другий тип номера має інший настрій: графітові стіни й чорне узголів’я доповнені гірчичним кріслом.",
+          "decision": "Світлі нижні панелі й стеля врівноважують темні стіни. Високе м’яке узголів’я обрамляють бра. Арка, дзеркало й рослина додають глибини, а телевізор і крісло утворюють компактну зону відпочинку.",
+          "benefit": "Номер має виразний образ і кілька місць для користування: ліжко, крісло та зона біля дзеркала. Теплий колір крісла робить посадку помітною в темному інтер’єрі.",
+          "images": [
+            {
+              "file": "graphite-room-01",
+              "alt": "Телевізор і гірчичне крісло на тлі графітових молдингів",
+              "caption": "Гірчичне крісло виділяє місце для відпочинку."
+            },
+            {
+              "file": "graphite-room-02",
+              "alt": "Арковий прохід до графітового номера з кріслом",
+              "caption": "Арка об’єднує частини номера."
+            },
+            {
+              "file": "graphite-room-03",
+              "alt": "М’яке узголів’я, бра та текстиль готельного ліжка",
+              "caption": "Бра доповнюють високе м’яке узголів’я."
+            },
+            {
+              "file": "graphite-room-04",
+              "alt": "Вид через вхід на ліжко, рослину й вікно номера",
+              "caption": "Світла стеля врівноважує темну палітру."
+            }
+          ]
+        },
+        {
+          "anchor": "brand-identity-interior-details",
+          "nav": "Ідентичність закладу",
+          "title": "Бренд помітний<br>у деталях інтер’єру.",
+          "context": "Ресторан і номери об’єднує зелена палітра Shenc Park, але кожен простір має власний характер.",
+          "decision": "Фірмовий зелений колір з’являється в кріслах, подушках і ресторанному текстилі. Напис Shenc Park на подушках підтримує впізнаваність. Світлі поверхні й деревні фактури пов’язують бренд з оформленням номерів.",
+          "benefit": "Гість бачить зв’язок між рестораном і проживанням через конкретні деталі. Брендування не потребує великих написів у кожній частині простору.",
+          "images": []
+        },
+        {
+          "anchor": "hospitality-lighting-curtain-automation-potential",
+          "nav": "Сценарії світла",
+          "title": "Світло можна адаптувати<br>до ритму закладу.",
+          "context": "У ресторані є підвіси, трекове й контурне світло; у номерах до них додаються бра та штори. Ці елементи мають потенціал для окремих сценаріїв керування.",
+          "decision": "Рекомендоване розширення: режими підготовки зали, вечері та прибирання. Для номерів доречні сценарії входу, читання й відпочинку. Керування шторами можливе після вибору моторизованих карнизів; світлові сцени потребують сумісних драйверів і перевірки електричних груп.",
+          "benefit": "За сумісного обладнання персонал міг би готувати залу одним сценарієм, а гість обирати потрібне світло в номері. Це рекомендації для інженерного розвитку, не опис встановленої автоматизації.",
+          "images": []
+        },
+        {
+          "anchor": "guest-room-climate-security-water-potential",
+          "nav": "Клімат і контроль",
+          "title": "Комфорт гостя<br>під час проживання й пауз.",
+          "context": "У номерах показані кондиціонери та опалювальні прилади. Їхню роботу варто узгоджувати з користуванням кімнатою.",
+          "decision": "Рекомендований напрям: окремі температурні режими для заселеного й вільного номера після перевірки обладнання. Системи доступу та безпеки можна розглядати в окремому інженерному проєкті. Контроль протікань потребує плану сантехніки; зовнішні системи виходять за межі представлених інтер’єрів.",
+          "benefit": "Такий підхід міг би допомогти підтримувати комфорт перед заселенням і керувати обладнанням під час пауз. Склад систем має відповідати реальній експлуатації закладу.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Спільний образ.<br>Різні сценарії для гостей.",
+      "outcome": "Дизайн поєднує ресторан із різними варіантами посадки й баром, оливковий номер із двома ліжками та зоною підготовки, а також графітовий номер із виразним місцем для відпочинку. Матеріали, арки та світло пов’язують простори без однакового оформлення кожної кімнати. Автоматизація подана як можливий інженерний розвиток.",
+      "faq": [
+        {
+          "question": "Що охоплює площа 147 м²?",
+          "answer": "Кейс охоплює ресторанну залу та два представлені інтер’єри номерів. Це не загальна площа всього готельного комплексу."
+        },
+        {
+          "question": "Чим відрізняються номери?",
+          "answer": "Оливковий номер поєднує два ліжка, місце для відпочинку та світлі меблі для зберігання. Графітовий має високе м’яке узголів’я, темні молдинги й гірчичне крісло. В обох арки пов’язують частини кімнати."
+        },
+        {
+          "question": "Що об’єднує ресторан і номери?",
+          "answer": "Зелені акценти, деревні фактури й брендований текстиль підтримують спільний образ. Ресторан залишається простором для зустрічей, а кожен номер має власну спокійнішу палітру."
+        },
+        {
+          "question": "Чи можна додати керування світлом і кліматом?",
+          "answer": "Окремі світлові сцени та температурні режими для заселеного й вільного номера рекомендовані як можливе розширення. Для реалізації потрібні сумісне обладнання й інженерний проєкт; встановленими системами ці рішення не названі."
+        }
+      ],
+      "source_note": "Internal: Source Drive2020_Shenk park 1rCUrQ67LiT17MxD9gmTxBP97lNGHTQyU. All44render files and all44brandbook pages reviewed. Location Yavoriv,Lviv region on brandbookp22; year2020 folder and PDFmetadata, ownerapproved usePDFyear. Owner explicitly selected147m² as final presentation area on2026-10-14 after rough visual estimate, scoped to restaurant and two presented room interiors. No dimensioned drawings or measured area certificate; do not claim calculated or entire hotel floor area. Empty drawingsfolder checkedtwice. Use10hallvariant3renders,6olive and4graphite; alternative hallvariants1/2notmixed. Duplicate screening44renders against481publishedsourceimages, no identity matches; noexistingShenccase. No construction completion or installed automation evidence. Lighting,heating,curtains,climate,security,water,outdoor considered; recommendationsonly, no specifiedprotocols/controllers. Brandingmockups and stockimagesexcluded. Sourcearchive /tmp/piskor-shenk-park.eYYTQd/intake.md."
+    },
+    "en": {
+      "eyebrow": "Restaurant and hotel room design · Yavoriv",
+      "title": "Shenc Park.<br><span>Dining and a place to stay.</span>",
+      "summary": "Restaurant and two guest room interiors in Yavoriv, Lviv region, 147 m². Green accents, upholstered seating and layered lighting connect the dining room with two distinct room designs.",
+      "location": "Yavoriv, Lviv region",
+      "area": "147 m²",
+      "property": "Restaurant · Hotel room interiors",
+      "cover": "restaurant-02",
+      "cover_alt": "Round tables, green chairs and plants in the Shenc Park restaurant",
+      "intro_title": "Dining and accommodation<br>with a shared identity.",
+      "intro": "The restaurant sets the social mood through round tables, plants and a timber bar. The rooms offer a quieter setting: olive walls and pale furniture in one, graphite mouldings and a mustard armchair in the other. Arches, textiles and local lighting connect the areas within each room. The case focuses on the dining room and two room interiors.",
+      "benefit_label": "For guests and the venue",
+      "chapters": [
+        {
+          "anchor": "restaurant-round-tables-guest-seating",
+          "nav": "Restaurant seating",
+          "title": "Round tables<br>for shared meals.",
+          "context": "The restaurant combines round tables with upholstered chairs and sofa seating. Guests can choose a place by a window or further into the room.",
+          "decision": "Tables form individual groups. Grey and green chairs alternate with sofas, while large plants distinguish the seating areas without solid partitions. Pale tablecloths bring the table settings forward against darker surroundings.",
+          "benefit": "The seating choices suit a brief meeting or a longer dinner. Grouped furniture gives each table a defined place within the room.",
+          "images": [
+            {
+              "file": "restaurant-02",
+              "alt": "Round tables, sofas and green chairs in Shenc Park",
+              "caption": "An overall view shows the table groups."
+            },
+            {
+              "file": "restaurant-06",
+              "alt": "Tables and upholstered chairs by the restaurant windows",
+              "caption": "Daylight complements the pale table settings."
+            },
+            {
+              "file": "restaurant-07",
+              "alt": "Upholstered seating and plants between restaurant tables",
+              "caption": "Planting distinguishes individual seating areas."
+            },
+            {
+              "file": "restaurant-10",
+              "alt": "Round table beside a sofa and window",
+              "caption": "Sofa seating complements individual chairs."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-bar-service-counter",
+          "nav": "Bar and service",
+          "title": "A bar connected<br>to the dining room.",
+          "context": "The bar forms a distinct service point visible from the dining tables.",
+          "decision": "Timber finishes connect the counter with tall shelving behind it. Stools provide seating along the counter. Plants and light fittings continue the main room’s design.",
+          "benefit": "Guests can readily locate the bar, and open shelves support its display. The service area remains visually connected to the dining room.",
+          "images": [
+            {
+              "file": "restaurant-05",
+              "alt": "Timber bar counter and shelving behind the dining tables",
+              "caption": "Timber finishes connect the bar elements."
+            },
+            {
+              "file": "restaurant-09",
+              "alt": "Bar with tall shelving and Shenc Park dining tables",
+              "caption": "The bar is visible from the main seating area."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-materials-layered-lighting",
+          "nav": "Materials and light",
+          "title": "Lighting sets<br>the evening atmosphere.",
+          "context": "In the dining room, lighting needs to distinguish the tables while retaining the wall details.",
+          "decision": "Pendants sit above the tables, track fittings supplement the general lighting, and a light line outlines the upper walls. Dark vertical surfaces, a graphic wall feature and green accents provide a consistent backdrop.",
+          "benefit": "Local light draws attention to the table. Perimeter lighting adds depth to the walls, and the restrained palette keeps the table settings and plants prominent.",
+          "images": [
+            {
+              "file": "restaurant-01",
+              "alt": "Pendant above a table and vertical wall treatment",
+              "caption": "A pendant distinguishes the table against the vertical surfaces."
+            },
+            {
+              "file": "restaurant-03",
+              "alt": "Light fittings and perimeter lighting beside a restaurant window",
+              "caption": "The light line continues along the walls."
+            },
+            {
+              "file": "restaurant-04",
+              "alt": "Graphic wall feature, green chairs and restaurant pendants",
+              "caption": "The wall feature provides a distinctive dining backdrop."
+            },
+            {
+              "file": "restaurant-08",
+              "alt": "Bar stools and pendant lighting by Shenc Park windows",
+              "caption": "Lighting connects the bar and dining areas."
+            }
+          ]
+        },
+        {
+          "anchor": "olive-guest-room-sleeping-area",
+          "nav": "Olive guest room",
+          "title": "A sleeping area<br>with its own character.",
+          "context": "The first room type combines olive walls, pale textiles and two beds.",
+          "decision": "Upholstered headboards sit against darker walls with decorative mouldings. Concealed ceiling lighting is complemented by wall lights. An arched opening connects the sleeping area with a lighter part of the room.",
+          "benefit": "Pale textiles bring the beds forward. Several layers of light provide a basis for different ways to use the room during rest.",
+          "images": [
+            {
+              "file": "olive-room-02",
+              "alt": "Two beds, olive walls and an arch in a hotel room",
+              "caption": "Olive tones define the sleeping area."
+            },
+            {
+              "file": "olive-room-05",
+              "alt": "Bed headboard, wall light and window view in the olive room",
+              "caption": "Local lighting complements daylight."
+            }
+          ]
+        },
+        {
+          "anchor": "olive-room-lounge-daylight",
+          "nav": "Lounge by the window",
+          "title": "Room for a quiet pause<br>beside the window.",
+          "context": "Beyond the beds, the room includes a place to sit with a drink or take a break during the day.",
+          "decision": "An olive armchair and side table sit beside the windows. A pale chest of drawers defines the television area, while dark curtains frame the daylight. The timber-patterned floor connects this part of the room with the sleeping area.",
+          "benefit": "Guests have a separate place to relax away from the bed. The furniture uses the brighter part of the room, with the television visible from the lounge area.",
+          "images": [
+            {
+              "file": "olive-room-01",
+              "alt": "Armchair, table, chest of drawers and television between the room windows",
+              "caption": "The armchair and table have their own place by a window."
+            },
+            {
+              "file": "olive-room-04",
+              "alt": "View from the sleeping area through an arch to the armchair and chest",
+              "caption": "The arch connects the lounge and sleeping areas."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-room-storage-dressing-arch",
+          "nav": "Storage and details",
+          "title": "A place to get ready<br>for the day.",
+          "context": "A hotel room needs a clear place for belongings and getting ready to go out.",
+          "decision": "A pale wardrobe is combined with low drawers and a surface beside the mirror. A stool completes the area. Mouldings and the arched passage repeat the bedroom detailing, while a pendant marks the mirror.",
+          "benefit": "Clothes and smaller belongings have a place away from the beds. A mirror with seating supports the guest’s daily routine.",
+          "images": [
+            {
+              "file": "olive-room-03",
+              "alt": "Pale wardrobe, drawers, mirror and stool in the guest room",
+              "caption": "The wardrobe and mirror form a separate dressing area."
+            },
+            {
+              "file": "olive-room-07",
+              "alt": "Arched passage and decorative mouldings in the olive room",
+              "caption": "The arch preserves the connection between room areas."
+            }
+          ]
+        },
+        {
+          "anchor": "graphite-room-mustard-lounge",
+          "nav": "Graphite guest room",
+          "title": "A dark palette<br>with a warm accent.",
+          "context": "The second room type has a different mood: graphite walls and a black headboard are complemented by a mustard armchair.",
+          "decision": "Pale lower wall panels and the ceiling balance the darker walls. Wall lights frame the tall upholstered headboard. An arch, mirror and plant add depth, while the television and armchair form a compact lounge area.",
+          "benefit": "The room has a distinctive identity with places to sleep, sit and use the mirror. The warm chair colour makes the lounge seat prominent within the dark interior.",
+          "images": [
+            {
+              "file": "graphite-room-01",
+              "alt": "Television and mustard armchair against graphite wall mouldings",
+              "caption": "A mustard armchair marks the lounge area."
+            },
+            {
+              "file": "graphite-room-02",
+              "alt": "Arched passage into the graphite room with an armchair",
+              "caption": "An arch connects the room areas."
+            },
+            {
+              "file": "graphite-room-03",
+              "alt": "Upholstered headboard, wall lights and hotel bed textiles",
+              "caption": "Wall lights complement the tall upholstered headboard."
+            },
+            {
+              "file": "graphite-room-04",
+              "alt": "Entrance view towards the bed, plant and room window",
+              "caption": "A pale ceiling balances the dark palette."
+            }
+          ]
+        },
+        {
+          "anchor": "brand-identity-interior-details",
+          "nav": "Brand identity",
+          "title": "Brand identity<br>in interior details.",
+          "context": "The restaurant and rooms share Shenc Park’s green palette, while each space has its own character.",
+          "decision": "The brand’s green appears in chairs, cushions and restaurant textiles. Shenc Park lettering on cushions supports recognition. Pale surfaces and timber finishes connect the identity with the room interiors.",
+          "benefit": "Guests recognise a connection between dining and accommodation through specific details. Branding does not require large lettering throughout every space.",
+          "images": []
+        },
+        {
+          "anchor": "hospitality-lighting-curtain-automation-potential",
+          "nav": "Lighting scenarios",
+          "title": "Lighting can follow<br>the venue’s daily rhythm.",
+          "context": "The restaurant has pendants, track and perimeter lighting; guest rooms add wall lights and curtains. These elements offer a basis for separate control scenarios.",
+          "decision": "Recommended extensions include room preparation, dinner and cleaning settings. Guest rooms could have arrival, reading and rest scenes. Curtain control would require motorised tracks; lighting scenes need compatible drivers and verified electrical circuits.",
+          "benefit": "With compatible equipment, staff could prepare the dining room through one scene, while guests select suitable room lighting. These are engineering recommendations, not a description of installed automation.",
+          "images": []
+        },
+        {
+          "anchor": "guest-room-climate-security-water-potential",
+          "nav": "Climate and monitoring",
+          "title": "Guest comfort<br>during stays and vacancies.",
+          "context": "The rooms show air-conditioning units and heating emitters. Their operation can be coordinated with room use.",
+          "decision": "A recommended direction is separate temperature settings for occupied and vacant rooms, subject to equipment checks. Access and security systems can be considered through a separate engineering project. Leak monitoring requires a plumbing plan; outdoor systems fall outside the interiors presented here.",
+          "benefit": "This approach could help prepare a comfortable room before arrival and manage equipment during vacancies. The system scope should follow the venue’s actual operating routine.",
+          "images": []
+        }
+      ],
+      "outcome_title": "One identity.<br>Different guest experiences.",
+      "outcome": "The design brings together a restaurant with varied seating and a bar, an olive room with two beds and a dressing area, and a graphite room with a distinct lounge accent. Materials, arches and lighting connect the spaces without making them identical. Automation is presented as a possible engineering extension.",
+      "faq": [
+        {
+          "question": "What does the 147 m² area cover?",
+          "answer": "The case covers the restaurant room and two presented guest room interiors. The figure does not describe the total area of the hotel complex."
+        },
+        {
+          "question": "How do the guest rooms differ?",
+          "answer": "The olive room combines two beds, a lounge seat and pale storage furniture. The graphite room has a tall upholstered headboard, dark wall mouldings and a mustard armchair. Both use arches to connect room areas."
+        },
+        {
+          "question": "What connects the restaurant and the rooms?",
+          "answer": "Green accents, timber finishes and branded textiles give the spaces a shared identity. The restaurant retains a social setting, while each guest room has its own quieter palette."
+        },
+        {
+          "question": "Can lighting and climate controls be added?",
+          "answer": "Separate lighting scenes and occupied or vacant room temperature settings are recommended possibilities. Implementation requires compatible equipment and an engineering project; these systems are not presented as installed."
+        }
+      ],
+      "source_note": "Internal: Source Drive2020_Shenk park 1rCUrQ67LiT17MxD9gmTxBP97lNGHTQyU. All44render files and all44brandbook pages reviewed. Location Yavoriv,Lviv region on brandbookp22; year2020 folder and PDFmetadata, ownerapproved usePDFyear. Owner explicitly selected147m² as final presentation area on2026-10-14 after rough visual estimate, scoped to restaurant and two presented room interiors. No dimensioned drawings or measured area certificate; do not claim calculated or entire hotel floor area. Empty drawingsfolder checkedtwice. Use10hallvariant3renders,6olive and4graphite; alternative hallvariants1/2notmixed. Duplicate screening44renders against481publishedsourceimages, no identity matches; noexistingShenccase. No construction completion or installed automation evidence. Lighting,heating,curtains,climate,security,water,outdoor considered; recommendationsonly, no specifiedprotocols/controllers. Brandingmockups and stockimagesexcluded. Sourcearchive /tmp/piskor-shenk-park.eYYTQd/intake.md."
+    }
+  },
   "dolce-flower-lviv": {
     "uk": {
       "eyebrow": "Дизайн квіткової крамниці · Львів",

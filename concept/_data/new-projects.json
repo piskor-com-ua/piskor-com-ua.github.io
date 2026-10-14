@@ -1,4 +1,350 @@
 {
+  "meduza-lounge-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн лаунж-простору · Львів",
+      "title": "Медуза.<br><span>Бірюзове світло.</span>",
+      "summary": "Лаунж-інтер’єр у Львові, 117 м². Вигнуті світлові портали, графічне скло й темний текстиль поєднують дві гостьові зали з баром та продуманою кухонною частиною.",
+      "location": "Львів",
+      "area": "117 м²",
+      "property": "Лаунж-простір · Бар і кухня",
+      "cover": "portals-01",
+      "cover_alt": "Загальний вигляд лаунж-зали з бірюзовими порталами та скляними панелями",
+      "intro_title": "Вечірній інтер’єр<br>з упізнаваним характером.",
+      "intro": "Дизайн «Медузи» побудований на бірюзовому світлі й темному тлі. Вигнуті рами та графіка медуз формують спільний характер гостьових залів. Різні групи посадки дають вибір місця для вечора, а бар і планування технічної частини підтримують логіку обслуговування.",
+      "benefit_label": "Для гостей і закладу",
+      "chapters": [
+        {
+          "anchor": "lounge-space-curved-portals",
+          "nav": "Простір і форма",
+          "title": "Бірюзові портали<br>збирають залу в єдине ціле.",
+          "context": "У «Медузі» у Львові гостьові зони мають різний характер, але залишаються частинами одного інтер’єру.",
+          "decision": "Вигнуті металеві рами переходять зі стін до стелі й позначають межі посадки. Скляні панелі з графікою медуз пропускають погляд між зонами. Темна відкрита стеля залишає увагу на світлих контурах, а центральний прохід пов’язує залу з баром.",
+          "benefit": "Гість легко зчитує структуру закладу й бачить, де розташовані місця та бар. Геометрія порталів дає бренду впізнавану деталь, пов’язану з архітектурою простору.",
+          "images": [
+            {
+              "file": "portals-01",
+              "alt": "Загальний вигляд лаунж-зали з бірюзовими порталами та скляними панелями",
+              "caption": "Вигнуті рами повторюються вздовж проходу між місцями гостей."
+            },
+            {
+              "file": "portals-02",
+              "alt": "Вид через металеві портали й гостьову посадку на бар",
+              "caption": "Бар завершує перспективу гостьової зали."
+            }
+          ]
+        },
+        {
+          "anchor": "sofa-seating-glass-partitions",
+          "nav": "Місця для компаній",
+          "title": "Окремі диванні зони<br>без глухих перегородок.",
+          "context": "Для вечора з друзями потрібне власне місце за столом, але повністю закриті кабіни зробили б залу тіснішою.",
+          "decision": "Дивани розташовані навколо низьких прямокутних столів. Скляні перегородки з тонкими чорними рамами відокремлюють групи й зберігають огляд зали. Бірюзові подушки та рослини пом’якшують темну оббивку, а графіка на склі підтримує назву закладу.",
+          "benefit": "Компанії мають зрозумілі межі своєї посадки. Прозорі перегородки дозволяють зберегти цілісний простір і не закривати декоративне світло від сусідніх місць.",
+          "images": [
+            {
+              "file": "seating-01",
+              "alt": "Диванна зона зі скляною перегородкою, низьким столом і рослинами",
+              "caption": "Графічне скло позначає межу місця, зберігаючи відкритий огляд."
+            },
+            {
+              "file": "seating-02",
+              "alt": "Дві диванні групи з бірюзовими подушками й графікою медуз",
+              "caption": "Низькі меблі залишають світлові портали видимими з різних ракурсів."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-dark-materials",
+          "nav": "Світло і матеріали",
+          "title": "Темний фон.<br>Світло біля гостя.",
+          "context": "У темному лаунж-інтер’єрі світло має виділяти місця для відпочинку й допомагати орієнтуватися.",
+          "decision": "Підвіси над столами доповнюють лінійне світло біля стін і бірюзові акценти на конструкціях. Чорні штори ділять диванні місця, а біля екрана м’які крісла утворюють іншу посадку. На тлі темних стін і стелі світлові лінії окреслюють глибину кімнати.",
+          "benefit": "Освітлення підтримує вечірню атмосферу, але залишає окремі орієнтири біля столів і проходів. Різні типи посадки дають гостю вибір між диванною групою та місцем біля екрана.",
+          "images": [
+            {
+              "file": "lighting-01",
+              "alt": "М’які крісла біля екрана на тлі темних стін із лінійним підсвічуванням",
+              "caption": "Лінія світла відділяє темну посадку від стіни."
+            },
+            {
+              "file": "lighting-02",
+              "alt": "Диванні місця з чорними шторами, підвісними світильниками й бірюзовою колоною",
+              "caption": "Підвіси освітлюють столи, а бірюзовий контур позначає межу зон."
+            }
+          ]
+        },
+        {
+          "anchor": "small-lounge-flexible-seating",
+          "nav": "Малий зал",
+          "title": "Камерний зал<br>з м’якою посадкою.",
+          "context": "Менший зал продовжує тему основного простору, але має більш камерний масштаб.",
+          "decision": "М’які крісла поєднані з диваном і невеликими столами. Штори та графічні скляні панелі повторюють матеріали великої зали. Світловий контур уздовж панелей робить їх видимими на темному тлі й підтримує напрямок проходу.",
+          "benefit": "Малий зал пропонує інший формат відпочинку без зміни характеру закладу. Спільні деталі поєднують обидві гостьові зони й зберігають впізнаваність інтер’єру.",
+          "images": [
+            {
+              "file": "small-lounge-01",
+              "alt": "Малий зал із м’яким кріслом, диваном і графічною скляною панеллю",
+              "caption": "Поєднання крісла й дивана створює різні місця в камерному залі."
+            },
+            {
+              "file": "small-lounge-02",
+              "alt": "Прохід малого залу між шторами та підсвіченими скляними панелями",
+              "caption": "Контур панелей продовжує світлову тему основної зали."
+            }
+          ]
+        },
+        {
+          "anchor": "washroom-illuminated-basins",
+          "nav": "Санвузол",
+          "title": "Бірюзові акценти<br>в темному санвузлі.",
+          "context": "Санвузол залишається частиною гостьового досвіду, тому його оформлення продовжує загальну палітру.",
+          "decision": "Два умивальники мають циліндричні основи з бірюзовим підсвічуванням. Рельєфні темні стіни, велике дзеркало та сітчаста стеля з компактними світильниками створюють виразний фон. Світло біля підлоги й дзеркала повторює лінії гостьових залів.",
+          "benefit": "Гість бачить послідовний дизайн навіть у невеликій сервісній зоні. Дзеркало розширює огляд, а підсвічені основи умивальників додають виразну деталь, пов’язану з іншими приміщеннями.",
+          "images": [
+            {
+              "file": "washroom-01",
+              "alt": "Кутовий ракурс санвузла з дзеркалом і двома підсвіченими умивальниками",
+              "caption": "Бірюзове світло поєднує умивальники з палітрою залів."
+            },
+            {
+              "file": "washroom-02",
+              "alt": "Фронтальний вигляд умивальників на темному рельєфному тлі",
+              "caption": "Дзеркало й контурне світло підтримують глибину невеликого приміщення."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-bar-metalwork",
+          "nav": "Бар і конструкції",
+          "title": "Бар і портали<br>в єдиній геометрії.",
+          "context": "Впізнавані портали й бар потребують спільної геометрії та узгоджених деталей.",
+          "decision": "У проєкті опрацьовані металеві каркаси вигнутих рам, барної стійки й полиць над нею. Окремо визначені світлові панелі, труби для штор і розміри диванних модулів та столів. Внутрішня частина бару розроблена як робоча зона, а зовнішня підтримує оформлення зали.",
+          "benefit": "Розміри й конструкції підтримують задум на рівні конкретних деталей. Бар пов’язаний із гостьовою частиною візуально, але має власну робочу логіку для персоналу.",
+          "images": []
+        },
+        {
+          "anchor": "kitchen-workflow-service-coordination",
+          "nav": "Кухня і сервіс",
+          "title": "За атмосферою зали<br>стоїть робоча кухня.",
+          "context": "Дизайн закладу охоплює гостьові приміщення та технічну частину. На повній обмірній площі 117 м² важливо врахувати обидві.",
+          "decision": "Технологічне рішення розділяє зберігання, гарячу й холодну підготовку, робоче місце для піци та видачу. Мийна зона має послідовність приймання посуду, миття й розміщення чистого посуду. Розташування обладнання доповнюють витяжні зонти та прив’язки води й електрики.",
+          "benefit": "Такий розподіл дає персоналу окремі місця для різних операцій. Для власника це зв’язок між інтер’єром, кухонним обладнанням і точками підключення ще на рівні проєкту.",
+          "images": []
+        },
+        {
+          "anchor": "lighting-curtain-automation-potential",
+          "nav": "Світлові сценарії",
+          "title": "Можливість змінювати<br>атмосферу одним сценарієм.",
+          "context": "Підвіси, контурне світло й декоративні панелі мають різні завдання. Це основа для подальшого сценарного керування.",
+          "decision": "Рекомендоване доповнення: об’єднати сумісні світлові групи в сцени підготовки зали, вечірнього приймання гостей і прибирання. Якщо персонал регулярно змінює положення штор, можна розглянути приводи для відповідних карнизів. Підбір керування потребує перевірки драйверів, електричних груп і механіки штор.",
+          "benefit": "За сумісного обладнання персонал зможе викликати потрібне освітлення без послідовного перемикання кожної групи. Це можливий розвиток проєкту, який потребує окремого підбору й налаштування.",
+          "images": []
+        },
+        {
+          "anchor": "climate-water-security-automation-potential",
+          "nav": "Комфорт і контроль",
+          "title": "Потенціал автоматизації<br>для роботи закладу.",
+          "context": "Гостьові зали, кухня та водопровідні вузли мають різні потреби в комфорті й контролі.",
+          "decision": "Для подальшого інженерного опрацювання доречні окремі режими опалення й клімату для часу роботи та закриття. Вентиляцію залів потрібно узгодити з кухонною витяжкою й фактичною кількістю гостей. Біля мийок можна розглянути контроль протікань, а для входу та службових зон керування доступом. Кожен сценарій потребує сумісної системи й окремого інженерного рішення.",
+          "benefit": "Такі доповнення можуть спростити підготовку приміщень і контроль службових зон. Пріоритет варто визначати за реальним режимом роботи закладу, щоб автоматизація вирішувала щоденні завдання персоналу.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Атмосфера для гостей.<br>Деталі для роботи закладу.",
+      "outcome": "Проєкт поєднує дизайн обох гостьових залів і санвузла, планування посадки, оздоблення та освітлення. Деталі індивідуальних меблів і металевих конструкцій підтримують візуальний задум. Кухонне обладнання, прив’язки води й електрики пов’язують гостьовий інтер’єр із сервісними зонами.",
+      "faq": [
+        {
+          "question": "Що входить у площу 117 м²?",
+          "answer": "Це повна обмірна площа, яка охоплює гостьові та допоміжні приміщення, зокрема кухонну частину й санвузли. Вона не обмежується лише місцями для гостей."
+        },
+        {
+          "question": "Що робить інтер’єр упізнаваним?",
+          "answer": "Бірюзові вигнуті портали й графіка медуз поєднують дві гостьові зали. Скляні перегородки, штори та різні типи посадки створюють окремі місця в межах спільної темної палітри."
+        },
+        {
+          "question": "Чи передбачена автоматизація?",
+          "answer": "Проєкт містить рішення освітлення й електричних груп. Сценарне керування, приводи штор, режими опалення, контроль протікань і доступу подані як рекомендовані доповнення, а не підтверджені встановлені системи."
+        },
+        {
+          "question": "Чи можна застосувати такий підхід до іншого закладу?",
+          "answer": "PISKOR може розробити посадку, бар і сервісні зони під ваше приміщення та формат роботи. Розкажіть про тип закладу й площу, щоб обговорити потрібний склад проєкту."
+        }
+      ],
+      "source_note": "Internal: 2020_Медуза, Drive folder 1MXPD9cbg9BCcLvXpOqrlwqsSkunFMmFK. Design album 26 pages, measured plan, six kitchen technology PDFs, five metalwork/bar/furniture specifications, kitchen equipment XLSX and recipe DOCX reviewed. Lviv confirmed by owner. Year 2020 from project folder, Nov 2020 design album creation and dated 27/10/20 technology plan. Measured plan p1: 56.43+28.13+11.59+17.12+1.83+1.83=116.93 m², rounded 117, full scope approved by owner. Render frames 06/01/03/05/02/04/07/08/11/12. No installed automation or construction status confirmed; light, curtain, heating, climate, water, access scenarios are recommendations. No exterior-system evidence."
+    },
+    "en": {
+      "eyebrow": "Lounge interior design · Lviv",
+      "title": "Meduza.<br><span>Turquoise light.</span>",
+      "summary": "A 117 m² lounge interior in Lviv. Curved illuminated portals, graphic glass and dark textiles connect two guest rooms with a bar and a planned kitchen.",
+      "location": "Lviv",
+      "area": "117 m²",
+      "property": "Lounge venue · Bar and kitchen",
+      "cover": "portals-01",
+      "cover_alt": "Lounge interior with turquoise portals and glass panels",
+      "intro_title": "An evening interior<br>with a clear identity.",
+      "intro": "The design of Meduza centres on turquoise light against a dark backdrop. Curved frames and jellyfish graphics give the guest rooms a shared identity. Different seating groups offer a choice of places to spend an evening, while the bar and back-of-house layout support the venue’s service.",
+      "benefit_label": "For guests and the venue",
+      "chapters": [
+        {
+          "anchor": "lounge-space-curved-portals",
+          "nav": "Space and form",
+          "title": "Turquoise portals<br>connect the lounge.",
+          "context": "Meduza in Lviv combines different seating areas within one interior.",
+          "decision": "Curved metal frames extend from the walls towards the ceiling and mark the seating areas. Jellyfish graphics on glass panels keep views open between them. The exposed dark ceiling draws attention to the illuminated outlines, while a central aisle connects the lounge to the bar.",
+          "benefit": "Guests can read the layout and see the seating and bar. The portals give the venue a recognisable feature rooted in the architecture.",
+          "images": [
+            {
+              "file": "portals-01",
+              "alt": "Lounge interior with turquoise portals and glass panels",
+              "caption": "Curved frames repeat along the aisle between seating areas."
+            },
+            {
+              "file": "portals-02",
+              "alt": "View through the metal portals and guest seating towards the bar",
+              "caption": "The bar sits at the end of the view through the lounge."
+            }
+          ]
+        },
+        {
+          "anchor": "sofa-seating-glass-partitions",
+          "nav": "Group seating",
+          "title": "Sofa groups<br>with open sightlines.",
+          "context": "An evening with friends calls for a table of your own, but enclosed booths would make the room feel smaller.",
+          "decision": "Sofas sit around low rectangular tables. Glass partitions in slender black frames separate the groups without closing off views. Turquoise cushions and planting soften the dark upholstery, and the glass graphics carry the venue’s identity.",
+          "benefit": "Each group has a defined seating area. Transparent partitions preserve the overall room and allow the decorative lighting to remain visible from neighbouring tables.",
+          "images": [
+            {
+              "file": "seating-01",
+              "alt": "Sofa area with a glass partition, low table and plants",
+              "caption": "Graphic glass defines the seating area while keeping views open."
+            },
+            {
+              "file": "seating-02",
+              "alt": "Two sofa groups with turquoise cushions and jellyfish graphics",
+              "caption": "Low furniture keeps the illuminated portals visible across the room."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-dark-materials",
+          "nav": "Light and materials",
+          "title": "A dark backdrop.<br>Light close to the guest.",
+          "context": "Lighting in a dark lounge needs to define places to sit and help guests find their way.",
+          "decision": "Pendants above the tables complement linear wall lighting and turquoise accents on the frames. Black curtains divide sofa areas, while soft lounge chairs create a different seating arrangement by the screen. Against dark walls and ceilings, the light outlines the depth of the room.",
+          "benefit": "The lighting keeps an evening atmosphere while marking tables and circulation. Guests can choose between a sofa group and a seat near the screen.",
+          "images": [
+            {
+              "file": "lighting-01",
+              "alt": "Soft lounge chairs by a screen against dark walls with linear lighting",
+              "caption": "A line of light separates the dark seating from the wall."
+            },
+            {
+              "file": "lighting-02",
+              "alt": "Sofa seating with black curtains, pendant lights and a turquoise column",
+              "caption": "Pendants light the tables, and the turquoise outline marks the seating zones."
+            }
+          ]
+        },
+        {
+          "anchor": "small-lounge-flexible-seating",
+          "nav": "Small lounge",
+          "title": "A smaller room<br>with relaxed seating.",
+          "context": "The smaller lounge continues the main room’s design at a more intimate scale.",
+          "decision": "Soft lounge chairs sit alongside a sofa and small tables. Curtains and graphic glass panels repeat the materials of the main room. Lighting along the panels makes them visible against the dark backdrop and follows the circulation route.",
+          "benefit": "The smaller room offers another way to spend an evening without changing the venue’s character. Shared details connect both guest areas.",
+          "images": [
+            {
+              "file": "small-lounge-01",
+              "alt": "Small lounge with a soft chair, sofa and graphic glass panel",
+              "caption": "A chair and sofa provide different seating choices in the smaller room."
+            },
+            {
+              "file": "small-lounge-02",
+              "alt": "Small lounge aisle between curtains and illuminated glass panels",
+              "caption": "Illuminated panel edges continue the main lounge’s lighting theme."
+            }
+          ]
+        },
+        {
+          "anchor": "washroom-illuminated-basins",
+          "nav": "Washroom",
+          "title": "Turquoise accents<br>in a dark washroom.",
+          "context": "The washroom is part of the guest experience, so its design continues the venue’s palette.",
+          "decision": "Two basins have cylindrical bases with turquoise illumination. Textured dark walls, a large mirror and a mesh ceiling with compact lights form the backdrop. Lighting by the floor and mirror repeats the lines found in the lounges.",
+          "benefit": "Guests encounter a consistent design in a small service space. The mirror extends the view, while illuminated basin bases connect the room to the rest of the interior.",
+          "images": [
+            {
+              "file": "washroom-01",
+              "alt": "Angled washroom view with a mirror and two illuminated basins",
+              "caption": "Turquoise light connects the basins to the lounge palette."
+            },
+            {
+              "file": "washroom-02",
+              "alt": "Front view of the basins against textured dark walls",
+              "caption": "The mirror and edge lighting add depth to the compact room."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-bar-metalwork",
+          "nav": "Bar and metalwork",
+          "title": "Bar and portals<br>in one design.",
+          "context": "The distinctive portals and bar call for consistent geometry and coordinated details.",
+          "decision": "The design develops the metal frameworks of the curved portals, bar counter and overhead shelves. It also defines light panels, curtain rails and dimensions for sofa modules and tables. The inside of the counter is planned as a working area, while its guest-facing side follows the lounge design.",
+          "benefit": "Dimensions and construction details carry the design into its individual parts. The bar belongs visually to the lounge and has a separate working layout for staff.",
+          "images": []
+        },
+        {
+          "anchor": "kitchen-workflow-service-coordination",
+          "nav": "Kitchen and service",
+          "title": "Behind the lounge<br>is a planned kitchen.",
+          "context": "The design covers guest rooms and back-of-house spaces. Both are part of the full measured area of 117 m².",
+          "decision": "The kitchen layout separates storage, hot and cold preparation, pizza preparation and the pass. The washing area follows a sequence from incoming dishes through washing to clean storage. Equipment positions are supported by extraction hoods and water and electrical connection plans.",
+          "benefit": "This arrangement gives staff defined places for different tasks. For the owner, it connects the interior layout with kitchen equipment and connection points at the design stage.",
+          "images": []
+        },
+        {
+          "anchor": "lighting-curtain-automation-potential",
+          "nav": "Lighting scenes",
+          "title": "Potential to change<br>the atmosphere with one scene.",
+          "context": "Pendants, edge lighting and decorative panels serve different purposes. They provide a starting point for scene control.",
+          "decision": "A recommended extension is to group compatible lighting into scenes for opening preparation, evening service and cleaning. If staff regularly reposition the curtains, motorised tracks could also be considered. Control selection requires checking drivers, electrical circuits and the curtain hardware.",
+          "benefit": "With compatible equipment, staff could select the appropriate lighting without switching each group separately. This is a possible extension requiring separate equipment selection and commissioning.",
+          "images": []
+        },
+        {
+          "anchor": "climate-water-security-automation-potential",
+          "nav": "Comfort and control",
+          "title": "Automation potential<br>for venue operations.",
+          "context": "Guest rooms, the kitchen and water connections have different comfort and monitoring needs.",
+          "decision": "Further engineering could consider heating and climate schedules for opening hours and closure. Lounge ventilation needs coordination with kitchen extraction and actual occupancy. Leak monitoring near sinks and access control for the entrance and service areas are also worth assessing. Each scenario requires a compatible system and a separate engineering design.",
+          "benefit": "These additions could simplify room preparation and monitoring of service areas. Priorities should follow the venue’s operating routine so automation addresses the staff’s daily tasks.",
+          "images": []
+        }
+      ],
+      "outcome_title": "A guest experience<br>supported by working details.",
+      "outcome": "The project brings together the interior design of both lounges and the washroom, seating layouts, finishes and lighting. Bespoke furniture and metalwork details support the visual design. Kitchen equipment, water connections and electrical layouts connect the guest-facing spaces to the service areas.",
+      "faq": [
+        {
+          "question": "What is included in the 117 m² area?",
+          "answer": "The full measured area includes the guest rooms and supporting spaces, including kitchen and washroom areas. It is not just the seating area."
+        },
+        {
+          "question": "What makes the lounge recognisable?",
+          "answer": "Turquoise curved portals and jellyfish graphics connect the two guest rooms. Glass partitions, curtains and varied seating create distinct places within the shared dark palette."
+        },
+        {
+          "question": "Does the project include automation?",
+          "answer": "The design includes lighting layouts and electrical groups. Scene control, curtain drives, heating schedules, leak monitoring and access control are recommended extensions, not confirmed installed systems."
+        },
+        {
+          "question": "Can this approach work for another venue?",
+          "answer": "PISKOR can develop the seating, bar and service layout around your premises and operating needs. Tell us the venue format and floor area to discuss the right scope."
+        }
+      ],
+      "source_note": "Internal: 2020_Медуза, Drive folder 1MXPD9cbg9BCcLvXpOqrlwqsSkunFMmFK. Design album 26 pages, measured plan, six kitchen technology PDFs, five metalwork/bar/furniture specifications, kitchen equipment XLSX and recipe DOCX reviewed. Lviv confirmed by owner. Year 2020 from project folder, Nov 2020 design album creation and dated 27/10/20 technology plan. Measured plan p1: 56.43+28.13+11.59+17.12+1.83+1.83=116.93 m², rounded 117, full scope approved by owner. Render frames 06/01/03/05/02/04/07/08/11/12. No installed automation or construction status confirmed; light, curtain, heating, climate, water, access scenarios are recommendations. No exterior-system evidence."
+    }
+  },
   "sholts-restaurant-drohobych": {
     "uk": {
       "eyebrow": "Дизайн ресторану · Дрогобич",

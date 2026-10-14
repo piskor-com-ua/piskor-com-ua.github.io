@@ -1,4 +1,306 @@
 {
+  "sholts-restaurant-drohobych": {
+    "uk": {
+      "eyebrow": "Дизайн ресторану · Дрогобич",
+      "title": "Ресторан<br><span>під цегляними склепіннями.</span>",
+      "summary": "Ресторанний інтер’єр «Шольц» у Дрогобичі, 41 м². Цегляні склепіння, бордова оббивка й підсвічені картини створюють камерну залу з виразним характером.",
+      "location": "Дрогобич",
+      "area": "41 м²",
+      "property": "Ресторан · Два підвальні приміщення",
+      "cover": "vaults-01",
+      "cover_alt": "Ресторанна зала під цегляним склепінням із бордовим диваном і підсвіченими картинами",
+      "intro_title": "Місце для вечері<br>під цегляним склепінням.",
+      "intro": "Дизайн спирається на геометрію підвального простору. Відкрита цегла залишається головною фактурою, а світлові контури окреслюють арки й картини. М’які дивани, невеликі столи та крісла утворюють групи для гостей. Темна підлога й бордовий текстиль об’єднують композицію.",
+      "benefit_label": "Для гостей і закладу",
+      "chapters": [
+        {
+          "anchor": "brick-vaults-restaurant-interior",
+          "nav": "Архітектура",
+          "title": "Склепіння визначає<br>характер зали.",
+          "context": "У невеликому підвальному просторі форма стелі відчутна з кожного місця.",
+          "decision": "Цегляна поверхня переходить зі стін у склепіння. Біля торцевої стіни світлова лінія повторює арку; низькі дивани залишають її відкритою для погляду. Великі картини розташовані між ділянками видимої цегли.",
+          "benefit": "Архітектура дає закладу впізнавану основу. Гість бачить цілісну залу, у якій декор підтримує склепіння, а не закриває його.",
+          "images": [
+            {
+              "file": "vaults-01",
+              "alt": "Цегляне склепіння над бордовим диваном і круглими столами",
+              "caption": "Світловий контур повторює форму торцевої арки."
+            },
+            {
+              "file": "vaults-02",
+              "alt": "Загальний ракурс ресторанної зали з диванами, кріслами й бордовими шторами",
+              "caption": "Низькі меблі залишають склепіння відкритим для погляду."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-seating-round-tables",
+          "nav": "Місця для гостей",
+          "title": "Невеликі столи<br>й м’яка посадка.",
+          "context": "Камерна зала потребує меблів, які підтримують спілкування за столом.",
+          "decision": "Уздовж стін розміщені м’які дивани, навпроти них стоять окремі крісла. Круглі столи на центральних опорах утворюють компактні групи. Бордова й темна оббивка розрізняє місця, зберігаючи спільну палітру.",
+          "benefit": "Гості можуть обрати диван або крісло. Невеликі групи столів дають змогу організувати залу під різні компанії без громіздких меблевих блоків.",
+          "images": [
+            {
+              "file": "seating-01",
+              "alt": "Бордовий диван із двома круглими столами та темними кріслами",
+              "caption": "Диван і крісла утворюють окремі групи за столами."
+            },
+            {
+              "file": "seating-02",
+              "alt": "Місця для гостей уздовж цегляної стіни під склепінням",
+              "caption": "Посадка біля стін підтримує відкритий огляд зали."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-brick-arches",
+          "nav": "Освітлення",
+          "title": "Світло на цеглі,<br>картинах і столах.",
+          "context": "Атмосфера підвальної зали залежить від того, які поверхні виділяє світло.",
+          "decision": "Візуальна композиція поєднує світлові рамки навколо картин, підсвічування біля нижньої частини стін і компактні світильники на склепінні. Контур арки додає ще один рівень. Світло показує фактуру цегли та відокремлює меблі від темного фону.",
+          "benefit": "У погляду є кілька орієнтирів: картина за столом, світла арка й локальні акценти. Зала зберігає вечірній характер без одного великого світильника посеред стелі.",
+          "images": [
+            {
+              "file": "lighting-01",
+              "alt": "Камерна зала зі світловими рамками навколо картин і світильниками на цегляній стелі",
+              "caption": "Рамки й невеликі світильники створюють кілька рівнів світла."
+            },
+            {
+              "file": "lighting-02",
+              "alt": "Підсвічені картини та обідні столи в бічному ракурсі",
+              "caption": "Світло виділяє декоративні поверхні поруч із місцями гостей."
+            }
+          ]
+        },
+        {
+          "anchor": "art-gallery-restaurant-walls",
+          "nav": "Картини",
+          "title": "Картини задають<br>своєрідність кожного місця.",
+          "context": "Гості бачать стіни зблизька, тому декор має працювати і з відстані, і за столом.",
+          "decision": "Великі роботи в рамках доповнені меншими зображеннями. Світловий контур виділяє центральну картину, тоді як цегла залишається видимим тлом. Композиції різняться за сюжетами й розмірами.",
+          "benefit": "Місця мають власні візуальні акценти. Для закладу це спосіб сформувати впізнаваний інтер’єр без однакового декору на кожній стіні.",
+          "images": [
+            {
+              "file": "art-01",
+              "alt": "Центральна картина у світловій рамці та невеликі зображення на цегляній стіні",
+              "caption": "Велика робота збирає настінну композицію навколо столу."
+            },
+            {
+              "file": "art-02",
+              "alt": "Кольорова картина за столами ресторану під цегляним склепінням",
+              "caption": "Інший сюжет додає окремий акцент сусідній групі місць."
+            }
+          ]
+        },
+        {
+          "anchor": "burgundy-brass-dark-finishes",
+          "nav": "Матеріали",
+          "title": "Бордовий текстиль<br>на тлі темної цегли.",
+          "context": "Виразний простір потребує узгодженої палітри, щоб деталі не змагалися між собою.",
+          "decision": "Бордова оббивка та штори поєднані з темною глянцевою підлогою. Тонкі світлі лінії на підлозі підтримують металеві деталі меблів у латунному тоні. Рослини пом’якшують межі між столами й фактурними стінами.",
+          "benefit": "Палітра поєднує насичені меблі з темною архітектурною основою. Блиск опор і підлоги додає світлових відбиттів, а текстиль залишає посадку візуально м’якою.",
+          "images": [
+            {
+              "file": "materials-01",
+              "alt": "Темна підлога, латунні опори столів і рослини у ресторанній залі",
+              "caption": "Металеві деталі столів доповнюють темну цеглу й оббивку."
+            },
+            {
+              "file": "materials-02",
+              "alt": "Сервірування столу біля бордової штори та цегляної стіни",
+              "caption": "Бордовий текстиль поєднує меблі з оформленням стін."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-lighting-scene-potential",
+          "nav": "Світлові сценарії",
+          "title": "Можливі сцени<br>для різного часу доби.",
+          "context": "Кілька рівнів світла дають основу для сценарного керування.",
+          "decision": "Як додаткове рішення можна розглянути окреме керування рамками, контуром арки та світильниками на стелі. Сцена підготовки зали могла б бути яскравішою, а вечірня сцена залишала б акцент на столах і картинах. Для цього потрібні сумісні джерела світла, драйвери та перевірка електричних груп.",
+          "benefit": "За відповідного обладнання персонал міг би змінювати атмосферу одним сценарієм. Такий розвиток освітлення потребує окремого підбору й налаштування системи.",
+          "images": []
+        },
+        {
+          "anchor": "basement-comfort-system-potential",
+          "nav": "Комфорт і контроль",
+          "title": "Комфорт підвалу<br>варто продумати окремо.",
+          "context": "Для ресторану під землею оздоблення має доповнюватися рішеннями для щоденної роботи.",
+          "decision": "Рекомендоване продовження проєкту: оцінити вентиляцію за фактичною кількістю гостей і зонування опалення для двох приміщень. Контроль протікань доречний там, де є водопровідні вузли; контроль доступу можна розглянути для входу. Приводи декоративних штор мають сенс лише за регулярної потреби змінювати їхнє положення. Ці системи потребують окремого інженерного завдання.",
+          "benefit": "Таке опрацювання допомагає пов’язати бажану атмосферу з умовами перебування гостей і роботою персоналу. Вибір систем залежить від реального обладнання та режиму закладу.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Цегляне склепіння<br>й продумана атмосфера вечері.",
+      "outcome": "Дизайн охоплює два підвальні приміщення загальною площею 41 м² у Дрогобичі. Кейс розкриває ресторанну залу, її посадку, оздоблення, картини та світлові акценти. Цегляна архітектура поєднана з м’якими меблями й темною палітрою, щоб простір мав власний характер.",
+      "faq": [
+        {
+          "question": "Яку площу охоплює дизайн?",
+          "answer": "Два підвальні приміщення: 15,4 і 25,4 м². Разом 40,8 м², або 41 м² після округлення. Рік проєкту: 2020; локація: Дрогобич."
+        },
+        {
+          "question": "Що надає ресторану камерного характеру?",
+          "answer": "Цегляне склепіння, дивани біля стін, круглі столи й кілька рівнів світла. Підсвічені картини створюють різні акценти біля місць гостей, а бордовий текстиль пов’язує залу."
+        },
+        {
+          "question": "Які сценарії автоматизації можна розглянути?",
+          "answer": "Передусім світлові сцени для підготовки зали та вечірньої роботи. Вентиляцію, зонування опалення й захист від протікань варто визначати окремим інженерним завданням. Це рекомендовані доповнення до дизайну з підбором сумісного обладнання."
+        }
+      ],
+      "source_note": "Drive folder2020_Шольц id1-mnRcixaRRTJgQ4dbeSir61MrajpC9gG. Owner confirmed2020 and both basement rooms on14Oct2026. Inventory basement plan photo_2020-07-22_18-58-27.jpg id1dRxXpFH75JAOUi8Fgl7gxOILwy_Gm1kg gives15.4+25.4=40.8m² rounded41. Plans identifyDrohobych; old2008 inventory dates are not project dates, upper floors excluded. Eleven renders fully reviewed, ten selected for galleries, photo07 omitted as redundant lighting angle. Fifty site-record photos reviewed separately; not public final imagery. Compared11 renders with461 portfolio1440WebPs, no identity matches (nearestdHash15-22), distinct fromZabava restaurant andMarkoSoli shop. No installed automation or completed construction claim. PLN/BPN native source files are not opened; no unsupported construction documentation scope claimed."
+    },
+    "en": {
+      "eyebrow": "Restaurant design · Drohobych",
+      "title": "A restaurant<br><span>beneath brick vaults.</span>",
+      "summary": "A 41 m² restaurant interior for Sholts in Drohobych. Brick vaults, burgundy upholstery and illuminated artwork give the intimate dining room its character.",
+      "location": "Drohobych",
+      "area": "41 m²",
+      "property": "Restaurant · Two basement rooms",
+      "cover": "vaults-01",
+      "cover_alt": "Restaurant dining room beneath a brick vault with a burgundy sofa and illuminated artwork",
+      "intro_title": "A place for dinner<br>beneath a brick vault.",
+      "intro": "The design takes its direction from the basement architecture. Exposed brick remains the main texture, while light outlines the arches and artwork. Sofas, small tables and individual chairs form groups for guests. A dark floor and burgundy textiles bring the room together.",
+      "benefit_label": "For guests and the venue",
+      "chapters": [
+        {
+          "anchor": "brick-vaults-restaurant-interior",
+          "nav": "Architecture",
+          "title": "The vault gives<br>the room its character.",
+          "context": "In a small basement room, the ceiling shape is visible from every seat.",
+          "decision": "Exposed brick continues from the walls into the vault. A light outline follows the end-wall arch; low sofas keep it in view. Large framed works sit between areas of visible brick.",
+          "benefit": "The architecture gives the venue a recognisable identity. The decorative elements support the vault rather than hide it.",
+          "images": [
+            {
+              "file": "vaults-01",
+              "alt": "Brick vault above a burgundy sofa and round dining tables",
+              "caption": "The light outline follows the shape of the end-wall arch."
+            },
+            {
+              "file": "vaults-02",
+              "alt": "Wide view of the dining room with sofas, chairs and burgundy curtains",
+              "caption": "Low furniture keeps the vaulted ceiling in view."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-seating-round-tables",
+          "nav": "Guest seating",
+          "title": "Small tables<br>and upholstered seating.",
+          "context": "An intimate dining room needs furniture that supports conversation at the table.",
+          "decision": "Sofas sit along the walls, facing individual chairs. Round tables on central bases form compact groups. Burgundy and dark upholstery distinguish the seats within a consistent palette.",
+          "benefit": "Guests can choose a sofa or an individual chair. Small table groups offer flexibility for different parties without large furniture blocks.",
+          "images": [
+            {
+              "file": "seating-01",
+              "alt": "Burgundy sofa with two round tables and dark chairs",
+              "caption": "Sofas and chairs form separate groups around the tables."
+            },
+            {
+              "file": "seating-02",
+              "alt": "Dining seats along the brick wall beneath the vault",
+              "caption": "Seating along the walls maintains views across the room."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-brick-arches",
+          "nav": "Lighting",
+          "title": "Light on brick,<br>artwork and tables.",
+          "context": "The basement atmosphere depends on which surfaces the lighting brings into view.",
+          "decision": "The composition combines illuminated picture frames, light near the lower walls and compact fixtures on the vault. The arch outline adds another layer. Light reveals the brick texture and separates furniture from the dark background.",
+          "benefit": "The eye has several points of reference: artwork behind a table, the lit arch and local accents. The room retains its evening character without one large central ceiling fixture.",
+          "images": [
+            {
+              "file": "lighting-01",
+              "alt": "Intimate dining room with illuminated frames and fixtures on the brick ceiling",
+              "caption": "Frames and compact fixtures provide distinct layers of light."
+            },
+            {
+              "file": "lighting-02",
+              "alt": "Side view of illuminated artwork and dining tables",
+              "caption": "Light draws attention to decorative surfaces beside the seats."
+            }
+          ]
+        },
+        {
+          "anchor": "art-gallery-restaurant-walls",
+          "nav": "Artwork",
+          "title": "Artwork gives<br>each seat its own backdrop.",
+          "context": "Guests see the walls at close range, so decoration needs to work both across the room and at the table.",
+          "decision": "Large framed works are accompanied by smaller images. A light outline picks out the central picture, while exposed brick remains its backdrop. The arrangements vary in subject and size.",
+          "benefit": "Different seats have their own visual accents. The venue gains a recognisable interior without repeating the same decoration on every wall.",
+          "images": [
+            {
+              "file": "art-01",
+              "alt": "Central artwork in an illuminated frame with smaller pictures on a brick wall",
+              "caption": "A large work brings the wall arrangement together behind the table."
+            },
+            {
+              "file": "art-02",
+              "alt": "Colourful artwork behind restaurant tables beneath a brick vault",
+              "caption": "A different subject gives the neighbouring seats their own accent."
+            }
+          ]
+        },
+        {
+          "anchor": "burgundy-brass-dark-finishes",
+          "nav": "Materials",
+          "title": "Burgundy textiles<br>against dark brick.",
+          "context": "A distinctive room needs a consistent palette so its details do not compete.",
+          "decision": "Burgundy upholstery and curtains sit alongside a dark glossy floor. Fine light lines in the floor pattern echo the brass-coloured furniture details. Plants soften the boundaries between tables and textured walls.",
+          "benefit": "The palette combines richly coloured furniture with the dark architectural backdrop. Furniture bases and flooring reflect the light, while textiles give the seating a softer appearance.",
+          "images": [
+            {
+              "file": "materials-01",
+              "alt": "Dark floor, brass-coloured table bases and plants in the restaurant",
+              "caption": "Metal table details complement the dark brick and upholstery."
+            },
+            {
+              "file": "materials-02",
+              "alt": "Table setting beside a burgundy curtain and brick wall",
+              "caption": "Burgundy textiles connect furniture with the wall treatment."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-lighting-scene-potential",
+          "nav": "Lighting scene potential",
+          "title": "Possible scenes<br>for different times of day.",
+          "context": "Several lighting layers provide a starting point for scene controls.",
+          "decision": "A possible extension would be separate control of picture frames, the arch outline and ceiling fixtures. A preparation scene could be brighter, while an evening scene could focus on tables and artwork. This would require compatible light sources, drivers and an assessment of the electrical circuits.",
+          "benefit": "With suitable equipment, staff could change the atmosphere through a single scene. This extension to the lighting design would need separate system selection and commissioning.",
+          "images": []
+        },
+        {
+          "anchor": "basement-comfort-system-potential",
+          "nav": "Comfort and control",
+          "title": "Basement comfort<br>needs its own brief.",
+          "context": "A restaurant below ground needs operational decisions alongside its interior finishes.",
+          "decision": "Recommended next steps include assessing ventilation against the actual guest capacity and heating zones for the two rooms. Leak detection is worth considering at plumbing points, and access control at the entrance. Motors for decorative curtains would make sense only if their position needs to change regularly. These systems need a separate engineering brief.",
+          "benefit": "This work can connect the intended atmosphere with guest comfort and staff routines. System selection depends on the actual equipment and operating schedule.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Brick vaults<br>and a considered dining atmosphere.",
+      "outcome": "The design covers two basement rooms in Drohobych with a total rounded area of 41 m². The case explores the dining room, seating, finishes, artwork and lighting accents. Upholstered furniture and a dark palette complement the brick architecture and give the room its own character.",
+      "faq": [
+        {
+          "question": "How much space does the design cover?",
+          "answer": "Two basement rooms of 15.4 and 25.4 m². Their total is 40.8 m², rounded to 41 m². The project year is 2020 and the location is Drohobych."
+        },
+        {
+          "question": "What makes the restaurant feel intimate?",
+          "answer": "The brick vault, sofas along the walls, round tables and layered lighting. Illuminated artwork gives different seats their own accents, while burgundy textiles connect the room."
+        },
+        {
+          "question": "Which automation scenarios could be considered?",
+          "answer": "Lighting scenes for preparation and evening service are the first opportunity. Ventilation, heating zones and leak protection need a separate engineering brief. These are recommended additions to the design and require compatible equipment."
+        }
+      ],
+      "source_note": "Drive folder2020_Шольц id1-mnRcixaRRTJgQ4dbeSir61MrajpC9gG. Owner confirmed2020 and both basement rooms on14Oct2026. Inventory basement plan photo_2020-07-22_18-58-27.jpg id1dRxXpFH75JAOUi8Fgl7gxOILwy_Gm1kg gives15.4+25.4=40.8m² rounded41. Plans identifyDrohobych; old2008 inventory dates are not project dates, upper floors excluded. Eleven renders fully reviewed, ten selected for galleries, photo07 omitted as redundant lighting angle. Fifty site-record photos reviewed separately; not public final imagery. Compared11 renders with461 portfolio1440WebPs, no identity matches (nearestdHash15-22), distinct fromZabava restaurant andMarkoSoli shop. No installed automation or completed construction claim. PLN/BPN native source files are not opened; no unsupported construction documentation scope claimed."
+    }
+  },
   "light-classic-apartment-briukhovychi": {
     "uk": {
       "eyebrow": "Дизайн інтер’єру · Квартира",

@@ -27,3 +27,4 @@
 .light-classic-apartment-briukhovychi-page :is(#entrance-hall-bespoke-storage,#home-study-active-break,#walk-in-wardrobe-illuminated-storage,#main-shower-room-stone-pattern,#private-shower-room-mirror-light) .case-images img{aspect-ratio:3/4;object-fit:cover}
 .light-classic-apartment-briukhovychi-page #entrance-hall-bespoke-storage .case-images figure:nth-child(4) img{object-position:right center}
 .light-classic-apartment-briukhovychi-page #main-shower-room-stone-pattern .case-images figure:nth-child(3) img{object-position:left center}
+.sholts-restaurant-drohobych-page :is(#dining-seating-round-tables,#layered-lighting-brick-arches,#art-gallery-restaurant-walls,#burgundy-brass-dark-finishes) .case-images img{aspect-ratio:3/4;object-fit:cover}

@@ -1,4 +1,680 @@
 {
+  "light-classic-apartment-briukhovychi": {
+    "uk": {
+      "eyebrow": "Дизайн інтер’єру · Квартира",
+      "title": "Неокласика<br><span>з природним акцентом.</span>",
+      "summary": "Квартира у Брюховичах площею 141 м². Світла кухня-вітальня, дві різні спальні, кабінет і гардероб поєднані рамковими фасадами, теплим деревом та природними рисунками.",
+      "location": "Брюховичі, Львівська область",
+      "area": "141 м²",
+      "property": "Квартира",
+      "cover": "living-01",
+      "cover_alt": "Світла вітальня з кільцевою люстрою, диваном і великим вікном",
+      "intro_title": "Класичні пропорції.<br>Живі природні деталі.",
+      "intro": "Світлі стіни з молдингами й рамкові меблеві фасади створюють спільну основу квартири. Паркетна дошка додає тепла, а природні рисунки роблять кімнати різними: лісовий мотив у стриманій спальні, виразне листя в другій, кам’яні прожилки у санвузлах. Планування залишає відкритий простір для зустрічей і окремі кімнати для власних справ.",
+      "chapters": [
+        {
+          "anchor": "apartment-space-planning",
+          "nav": "Планування",
+          "title": "Спільний простір.<br>Окремі приватні кімнати.",
+          "context": "Квартирі потрібна простора зона для зустрічей і можливість усамітнитися, не залишаючи дім.",
+          "decision": "Перепланування поєднує кухню та вітальню, зберігає дві окремі спальні й додає кабінет та гардероб. Коридор пов’язує кімнати, а технічне приміщення відділяє інженерні потреби від житлового простору.",
+          "benefit": "Робота, відпочинок і зберігання отримують власні місця. Дві душові кімнати доповнюють приватні зони й зменшують залежність мешканців від одного санвузла.",
+          "images": []
+        },
+        {
+          "anchor": "entrance-hall-bespoke-storage",
+          "nav": "Вхід і зберігання",
+          "title": "Зручний вхід<br>із місцем для речей.",
+          "context": "Довгий коридор задає перше враження й водночас обслуговує кілька кімнат.",
+          "decision": "Високі шафи повторюють рамковий рисунок світлих стін. Дзеркальна вставка, підвісна консоль і пуф утворюють місце для коротких щоденних справ. М’яка ніша додає сидіння поруч зі зберіганням.",
+          "benefit": "Одяг не займає відкритий прохід, а біля входу є де сісти й покласти потрібні дрібниці. Вбудовані меблі виглядають частиною оздоблення.",
+          "images": [
+            {
+              "file": "hall-01",
+              "alt": "Світлий коридор із рамковими стінами та консоллю",
+              "caption": "Коридор пов’язує кімнати й залишає відкритий прохід."
+            },
+            {
+              "file": "hall-02",
+              "alt": "Дзеркальна вставка, консоль і пуф у коридорі",
+              "caption": "Дзеркало доповнює місце для щоденних справ біля входу."
+            },
+            {
+              "file": "hall-03",
+              "alt": "Підвісна консоль з кам’яною стільницею та пуфом",
+              "caption": "Консоль і пуф не займають усю ширину проходу."
+            },
+            {
+              "file": "hall-04",
+              "alt": "М’яка ніша поруч із високими шафами передпокою",
+              "caption": "Ніша додає сидіння до композиції закритого зберігання."
+            }
+          ]
+        },
+        {
+          "anchor": "living-room-soft-classic-interior",
+          "nav": "Вітальня",
+          "title": "Світла вітальня<br>для неспішних зустрічей.",
+          "context": "М’яка зона займає світлу частину спільної кімнати біля великого вікна.",
+          "decision": "Диван, високе крісло й низькі столики зібрані на килимі. Світлі молдинги та архітектурне зображення за диваном підтримують класичний характер; проста телевізійна тумба не перевантажує протилежну стіну.",
+          "benefit": "Меблі звернені одне до одного, тому кімната зручна для розмов. Легкий текстиль пропускає денне світло, а щільні штори дозволяють змінювати приватність.",
+          "images": [
+            {
+              "file": "living-01",
+              "alt": "Вітальня з диваном, великим вікном і кільцевою люстрою",
+              "caption": "Велике вікно освітлює м’яку зону протягом дня."
+            },
+            {
+              "file": "living-02",
+              "alt": "Диван і високе крісло перед світлою стіною з молдингами",
+              "caption": "Крісло й диван утворюють місце для розмов."
+            },
+            {
+              "file": "living-03",
+              "alt": "Деталь дивана й журнального столика на тлі архітектурного зображення",
+              "caption": "Світла оббивка й низький столик залишають композицію легкою."
+            },
+            {
+              "file": "living-04",
+              "alt": "Вид із вітальні на телевізійну тумбу та кухню",
+              "caption": "Вбудована кухня продовжує рамковий рисунок вітальні."
+            }
+          ]
+        },
+        {
+          "anchor": "kitchen-panelled-cabinetry",
+          "nav": "Кухня",
+          "title": "Світлі фасади.<br>Робоча поверхня без зайвого.",
+          "context": "Кухня відкрита до спільної кімнати, тому побутові функції мають узгоджуватися з її оздобленням.",
+          "decision": "Рамкові нижні фасади поєднані зі стриманими верхніми шафами. Високий блок вміщує вбудовану техніку, а підсвічена ніша та фартух із кам’яним рисунком продовжують світлу палітру. Скляна вітрина поруч зі столом показує посуд.",
+          "benefit": "Основні прилади й зберігання зібрані вздовж стіни. Підсвітка робочої поверхні дає окреме світло для приготування, не вимагаючи яскравого освітлення всієї вітальні.",
+          "images": [
+            {
+              "file": "kitchen-01",
+              "alt": "Кухонні фасади й скляна вітрина поруч з обіднім столом",
+              "caption": "Скляна вітрина збирає посуд поруч зі столом."
+            },
+            {
+              "file": "kitchen-02",
+              "alt": "Кухня з рамковими фасадами, вбудованою духовкою та підсвіткою фартуха",
+              "caption": "Підсвітка відділяє робочу поверхню від загального світла."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-area-daylight",
+          "nav": "Їдальня",
+          "title": "Місце для столу<br>в одному просторі з вітальнею.",
+          "context": "Обідня зона розташована поруч із кухнею, залишаючись відкритою до кімнати.",
+          "decision": "Стіл на виразній геометричній основі доповнюють м’які стільці. Над ним є власний підвісний світильник; світла стіна з тонкими молдингами утворює спокійний фон.",
+          "benefit": "Їжу зручно подавати без переходу між кімнатами. Стіл підходить для щоденних трапез і розмов, а окремий світильник виділяє його ввечері.",
+          "images": [
+            {
+              "file": "dining-01",
+              "alt": "Обідня зона поруч із вітальнею та кухнею",
+              "caption": "Відкрите планування пов’язує приготування їжі та відпочинок."
+            },
+            {
+              "file": "dining-02",
+              "alt": "Обідній стіл із м’якими стільцями та окремим підвісним світильником",
+              "caption": "Власний підвісний світильник позначає місце обіднього столу."
+            }
+          ]
+        },
+        {
+          "anchor": "forest-bedroom-reading-corner",
+          "nav": "Спальня з лісовим рисунком",
+          "title": "Природний рисунок<br>і спокійне місце для читання.",
+          "context": "У першій спальні акцент зосереджений біля узголів’я, а решта кімнати лишається стриманою.",
+          "decision": "Лісовий рисунок обрамлює м’яке ліжко. Висока шафа має рамкові фасади; крісло з торшером стоїть біля вікна. Телевізійна площина й низька тумба продовжують геометрію стін.",
+          "benefit": "Кімната дає вибір між відпочинком у ліжку й окремим місцем для читання. Закрита шафа забирає одяг із відкритих поверхонь.",
+          "images": [
+            {
+              "file": "forest-bedroom-01",
+              "alt": "Спальня з лісовим рисунком за ліжком і високою шафою",
+              "caption": "Лісовий рисунок зосереджує акцент біля узголів’я."
+            },
+            {
+              "file": "forest-bedroom-02",
+              "alt": "Ліжко й вікно спальні у світлій природній палітрі",
+              "caption": "Щільні штори доповнюють легкий текстиль біля вікна."
+            },
+            {
+              "file": "forest-bedroom-03",
+              "alt": "Крісло з торшером біля телевізійної площини спальні",
+              "caption": "Крісло й торшер утворюють окреме місце для читання."
+            },
+            {
+              "file": "forest-bedroom-04",
+              "alt": "Вбудована шафа з рамковими фасадами навпроти ліжка",
+              "caption": "Рамкові фасади продовжують оздоблення стін."
+            }
+          ]
+        },
+        {
+          "anchor": "botanical-bedroom-vanity",
+          "nav": "Спальня з ботанічним акцентом",
+          "title": "Виразні шпалери.<br>Особистий простір біля дзеркала.",
+          "context": "Друга спальня має більш декоративний характер у межах тієї самої світлої палітри.",
+          "decision": "Ботанічний рисунок поєднує стіну за ліжком і телевізійну зону. Туалетний столик із дзеркалом та м’яким стільцем входить у спільну меблеву композицію. Світлі шафи й відкриті полиці обрамлюють кімнату.",
+          "benefit": "Для ранкового догляду є окрема поверхня й місце для сидіння. Виразний рисунок на стінах дозволяє залишити решту меблів спокійними.",
+          "images": [
+            {
+              "file": "botanical-bedroom-01",
+              "alt": "Ліжко на тлі ботанічних шпалер у світлій спальні",
+              "caption": "Природний рисунок додає характеру світлому інтер’єру."
+            },
+            {
+              "file": "botanical-bedroom-02",
+              "alt": "Телевізійна зона та туалетний столик на тлі ботанічного рисунка",
+              "caption": "Телевізор і місце біля дзеркала входять в одну композицію."
+            },
+            {
+              "file": "botanical-bedroom-03",
+              "alt": "Туалетний столик із дзеркалом і м’яким стільцем",
+              "caption": "Для ранкового догляду є власна стільниця й сидіння."
+            },
+            {
+              "file": "botanical-bedroom-04",
+              "alt": "Спальня з великим вікном, ліжком і світлими шафами",
+              "caption": "Вікно залишається відкритим для денного світла."
+            }
+          ]
+        },
+        {
+          "anchor": "home-study-active-break",
+          "nav": "Кабінет",
+          "title": "Робота вдома<br>з місцем для руху.",
+          "context": "Окремий кабінет дозволяє відділити робочі справи від спальні та спільної кімнати.",
+          "decision": "Стіл стоїть біля вікна; підвісні й відкриті секції тримають потрібні речі поруч. Декоративний рисунок за робочою зоною пом’якшує її характер. У кімнаті є місце для велотренажера.",
+          "benefit": "Робоче місце має власну кімнату й природне світло. Коротку активну перерву можна зробити поруч, не перетворюючи вітальню на робочий або спортивний простір.",
+          "images": [
+            {
+              "file": "study-01",
+              "alt": "Робочий стіл біля вікна з полицями та декоративною стіною",
+              "caption": "Стіл отримує денне світло та зберігання поруч."
+            },
+            {
+              "file": "study-02",
+              "alt": "Велотренажер біля вікна в домашньому кабінеті",
+              "caption": "Місце для руху доповнює робочу функцію кімнати."
+            }
+          ]
+        },
+        {
+          "anchor": "walk-in-wardrobe-illuminated-storage",
+          "nav": "Гардероб",
+          "title": "Одяг на виду.<br>Речі у своїх секціях.",
+          "context": "Окремий гардероб звільняє житлові кімнати від частини щоденного зберігання.",
+          "decision": "Відкриті системи мають різну висоту для одягу, висувні шухляди й полиці для взуття та сумок. Підсвітка виділяє верхні секції, а дзеркало підтримує функцію кімнати для примірки.",
+          "benefit": "Речі видно без відкривання кожного фасаду. Прохід між системами залишає місце для вибору одягу й користування шухлядами.",
+          "images": [
+            {
+              "file": "wardrobe-01",
+              "alt": "Відкрита система гардероба з полицями, шухлядами та підсвіткою",
+              "caption": "Відкрите зберігання показує речі без зайвих фасадів."
+            },
+            {
+              "file": "wardrobe-02",
+              "alt": "Секції гардероба для одягу та взуття",
+              "caption": "Шухляди й полиці доповнюють місця для одягу на вішаках."
+            },
+            {
+              "file": "wardrobe-03",
+              "alt": "Прохід між двома системами відкритого зберігання",
+              "caption": "Прохід залишає місце для користування обома системами."
+            },
+            {
+              "file": "wardrobe-04",
+              "alt": "Гардеробні секції з різними висотами для одягу",
+              "caption": "Різна висота секцій відповідає різним речам."
+            }
+          ]
+        },
+        {
+          "anchor": "main-shower-room-stone-pattern",
+          "nav": "Основний санвузол",
+          "title": "Світлий кам’яний рисунок<br>і прозора душова.",
+          "context": "У просторішому санвузлі потрібні повноцінний душ і зручна зона біля дзеркала.",
+          "decision": "Плитка з кам’яним рисунком пов’язує стіни та підлогу. Скляна душова перегородка зберігає огляд, підвісна тумба залишає підлогу відкритою, а вертикальні полиці дають місце для щоденних засобів.",
+          "benefit": "Кожна функція має своє місце без масивного поділу кімнати. Світло біля дзеркала доповнює стельове освітлення.",
+          "images": [
+            {
+              "file": "main-bath-01",
+              "alt": "Основний санвузол із підвісною тумбою, дзеркалом і душем",
+              "caption": "Підвісна тумба залишає площину підлоги відкритою."
+            },
+            {
+              "file": "main-bath-02",
+              "alt": "Скляна душова перегородка та плитка з кам’яним рисунком",
+              "caption": "Прозоре скло розділяє мокру та суху частини кімнати."
+            },
+            {
+              "file": "main-bath-03",
+              "alt": "Підвісний унітаз і рушникосушка на світлій стіні",
+              "caption": "Сантехніка й рушникосушка узгоджені з рисунком стіни."
+            },
+            {
+              "file": "main-bath-04",
+              "alt": "Душова зона з прозорою перегородкою та світлими поверхнями",
+              "caption": "Світле оздоблення продовжується всередині душу."
+            }
+          ]
+        },
+        {
+          "anchor": "private-shower-room-mirror-light",
+          "nav": "Другий санвузол",
+          "title": "Компактна кімната<br>з повним набором функцій.",
+          "context": "Другий санвузол продовжує оздоблення квартири в меншому просторі.",
+          "decision": "Вузька підвісна тумба й дзеркало з окремими світильниками поєднані з душем за склом. Інсталяції унітаза й біде не займають зайвого місця перед стіною. Кам’яний рисунок підтримує зв’язок з основним санвузлом.",
+          "benefit": "Додаткова душова кімната дає мешканцям більше незалежності. Підвісні прилади та скло залишають видимою підлогу й межі приміщення.",
+          "images": [
+            {
+              "file": "private-bath-01",
+              "alt": "Другий санвузол із підвісною тумбою та світильниками біля дзеркала",
+              "caption": "Світильники біля дзеркала доповнюють загальне освітлення."
+            },
+            {
+              "file": "private-bath-02",
+              "alt": "Дзеркало та умивальник поруч зі скляною душовою",
+              "caption": "Вузька тумба зберігає місце для входу в душ."
+            },
+            {
+              "file": "private-bath-03",
+              "alt": "Підвісні унітаз і біде в другому санвузлі",
+              "caption": "Підвісні прилади залишають підлогу видимою."
+            },
+            {
+              "file": "private-bath-04",
+              "alt": "Фронтальний вид на підвісні унітаз і біде та кам’яний рисунок стіни",
+              "caption": "Кам’яний рисунок пов’язує два санвузли квартири."
+            }
+          ]
+        },
+        {
+          "anchor": "lighting-circuits-curtain-automation-potential",
+          "nav": "Світло та штори",
+          "title": "Окреме світло<br>для різних справ.",
+          "context": "Вечірня квартира не потребує однакової яскравості в кожному куточку.",
+          "decision": "Проєкт розділяє основні світильники, бра, підсвітку полиць і кухонної поверхні; прохідні вимикачі дають керування з кількох точок. Подвійні стельові карнизи узгоджені з оздобленням. Наступним можливим кроком є об’єднання сумісних груп у світлові сцени та додавання моторизованих штор.",
+          "benefit": "Вечеря, читання й робота мають власне світло. Автоматичні сцени й приводи штор потребують окремого підбору обладнання; це потенціал розвитку, а не встановлена система.",
+          "images": []
+        },
+        {
+          "anchor": "underfloor-heating-cooling-coordination",
+          "nav": "Опалення та клімат",
+          "title": "Тепло під ногами.<br>Техніка на своєму місці.",
+          "context": "Комфорт квартири залежить не лише від видимого оздоблення, а й від розміщення опалення та кліматичних приладів.",
+          "decision": "План передбачає теплу підлогу в окремих зонах, радіатори, комбіновані рушникосушки та місця для панелей керування опаленням. Живлення кондиціонерів і витяжних вентиляторів узгоджується з їхнім розташуванням. Для розвитку системи можна передбачити керування температурою за зонами й розкладом.",
+          "benefit": "Опалення й електричні підключення враховані до виготовлення меблів та оздоблення. Зональну автоматизацію потрібно проєктувати окремо, перевіривши сумісність обраного обладнання.",
+          "images": []
+        },
+        {
+          "anchor": "water-security-outdoor-automation-potential",
+          "nav": "Захист і додаткові сценарії",
+          "title": "Можливості<br>для спокійнішого щодня.",
+          "context": "Сантехнічні вузли, технічне приміщення та виходи на відкриті зони потребують окремої уваги до контролю.",
+          "decision": "Для подальшого розвитку доречно розглянути виявлення протікань із перекриттям води, контроль входу та сценарій виходу з вимкненням вибраних світлових груп. Для передбаченого зовнішнього освітлення можна окремо підібрати керування за розкладом.",
+          "benefit": "Такі рішення можуть скоротити кількість щоденних перевірок. Їх описано як рекомендований напрям: датчики, охоронна система й централізоване керування не підтверджені як встановлені.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Інтер’єр, продуманий<br>до меблів і підключень.",
+      "outcome": "Проєкт поєднує перепланування, дизайн усіх кімнат і робочі рішення для меблів, освітлення, сантехніки, опалення, стель, підлог та дверей. Індивідуальні меблі мають власні креслення й узгоджені розміри; матеріали та обладнання зібрані у специфікаціях. Це дозволяє переходити до виконання з цілісним набором рішень.",
+      "faq": [
+        {
+          "question": "Яку площу охоплює дизайн-проєкт?",
+          "answer": "141 м² внутрішнього простору після перепланування. Площа охоплює кухню-вітальню, коридор, дві спальні, кабінет, гардероб, два санвузли та технічне приміщення."
+        },
+        {
+          "question": "Як поєднані неокласика та сучасний побут?",
+          "answer": "Молдинги й рамкові фасади підтримують класичні пропорції. Вбудована техніка, окремий гардероб, робоче місце та підсвітка потрібних зон відповідають щоденним потребам."
+        },
+        {
+          "question": "Що передбачено для опалення й автоматизації?",
+          "answer": "У проєкті є тепла підлога, радіатори, рушникосушки, місця для керування опаленням і окремі світлові групи. Світлові сцени, моторизовані штори, зональне керування кліматом і захист від протікань описані як можливі доповнення, а не встановлені системи."
+        }
+      ],
+      "source_note": "Source: Drive folder 2021_Брюховичі_Велика квартира (18LI6wLRRnRpfDkeolBjrw-FvvtzeyJW9); full 63-page PISKOR album 1AgRsRzgdeaXr2_oaYD2Fe022HUfsRKRw, dated 19 August 2021. Location Briukhovychi stated throughout album. Final replanning page 5 schedule: 19.05+42.79+3.46+6.71+6.19+10.77+18.64+29.47+4.37=141.45 m² ->141. Original measured area 144.02 on page2 not used; floor finishes and ceiling quantities not apartment area. Original render objects extracted directly, not rendered PDF pages. Compared 42 source visuals against 411 existing portfolio images: no visual identity match (minimum dHash distance11); existing classic apartment96m² has different layout and cabinetry, houses151/244/255/398m² different typology/layout. Confirmed design provisions: separate light circuits/two-way switches, underfloor heating69.01m², radiators, towel rails, HVAC/fan power, curtain tracks, outdoor lighting. Installation status and automation protocols not established; scenes, motors, sensors, zoned control labelled potential. Client invoice kept private."
+    },
+    "en": {
+      "eyebrow": "Interior design · Apartment",
+      "title": "Classic interiors<br><span>with a natural accent.</span>",
+      "summary": "A 141 m² apartment in Briukhovychi. A light kitchen and living room, two distinct bedrooms, a study and dressing room share panelled cabinetry, warm timber and nature-inspired patterns.",
+      "location": "Briukhovychi, Lviv region",
+      "area": "141 m²",
+      "property": "Apartment",
+      "cover": "living-01",
+      "cover_alt": "Light living room with a ring chandelier, sofa and large window",
+      "intro_title": "Classic proportions.<br>Natural details.",
+      "intro": "Light moulded walls and panelled furniture provide a shared foundation. Timber flooring adds warmth, while natural patterns distinguish the rooms: a forest motif in one bedroom, expressive leaves in the other and stone veining in the bathrooms. The layout balances open space for company with separate rooms for personal routines.",
+      "chapters": [
+        {
+          "anchor": "apartment-space-planning",
+          "nav": "Space planning",
+          "title": "Shared living.<br>Private rooms of your own.",
+          "context": "The apartment needs a generous gathering space and room to spend time alone without leaving home.",
+          "decision": "The revised layout brings the kitchen and living room together, retains two separate bedrooms and introduces a study and dressing room. A corridor connects the rooms; a separate utility room keeps services out of the living areas.",
+          "benefit": "Work, rest and storage each have a defined place. Two shower rooms serve the private areas, so residents do not have to share a single bathroom.",
+          "images": []
+        },
+        {
+          "anchor": "entrance-hall-bespoke-storage",
+          "nav": "Entrance and storage",
+          "title": "An entrance<br>with room for everyday things.",
+          "context": "The long hallway sets the first impression while connecting several rooms.",
+          "decision": "Tall cabinets repeat the framed pattern of the light walls. A mirror, floating console and pouf make a useful stopping point; an upholstered niche adds seating beside the storage.",
+          "benefit": "Coats stay out of the circulation route. There is somewhere to sit and set down small essentials, with fitted furniture that belongs to the wall composition.",
+          "images": [
+            {
+              "file": "hall-01",
+              "alt": "Light hallway with framed wall panels and a console",
+              "caption": "The hallway links the rooms and keeps the circulation route open."
+            },
+            {
+              "file": "hall-02",
+              "alt": "Mirror panel, console and pouf in the hallway",
+              "caption": "A mirror completes the everyday stopping point near the entrance."
+            },
+            {
+              "file": "hall-03",
+              "alt": "Floating console with a stone top and pouf",
+              "caption": "The console and pouf leave room to pass."
+            },
+            {
+              "file": "hall-04",
+              "alt": "Upholstered niche beside tall entrance cabinets",
+              "caption": "A seating niche joins the closed-storage composition."
+            }
+          ]
+        },
+        {
+          "anchor": "living-room-soft-classic-interior",
+          "nav": "Living room",
+          "title": "A light living room<br>for unhurried company.",
+          "context": "The seating area occupies the bright part of the shared room beside a large window.",
+          "decision": "A sofa, high-backed armchair and low tables sit together on a rug. Pale mouldings and the architectural image behind the sofa give the room its classic character; a simple media cabinet keeps the opposite wall uncluttered.",
+          "benefit": "The seats face into the room for conversation. Sheer curtains admit daylight, with heavier curtains available for privacy.",
+          "images": [
+            {
+              "file": "living-01",
+              "alt": "Living room with sofa, large window and ring chandelier",
+              "caption": "The large window brings daylight into the seating area."
+            },
+            {
+              "file": "living-02",
+              "alt": "Sofa and high-backed chair against a pale moulded wall",
+              "caption": "The armchair and sofa create a setting for conversation."
+            },
+            {
+              "file": "living-03",
+              "alt": "Sofa and coffee-table detail against an architectural image",
+              "caption": "Pale upholstery and a low table keep the arrangement light."
+            },
+            {
+              "file": "living-04",
+              "alt": "View from the living room towards the media cabinet and kitchen",
+              "caption": "The fitted kitchen continues the living room’s panelled pattern."
+            }
+          ]
+        },
+        {
+          "anchor": "kitchen-panelled-cabinetry",
+          "nav": "Kitchen",
+          "title": "Pale cabinetry.<br>A clear working surface.",
+          "context": "The kitchen opens onto the shared room, so its practical functions need to suit the adjoining interior.",
+          "decision": "Framed lower fronts meet restrained upper cabinets. A tall unit holds built-in appliances; the illuminated niche and stone-pattern splashback continue the pale palette. A glazed cabinet beside the table displays crockery.",
+          "benefit": "Appliances and storage line the wall. Worktop lighting provides a separate layer for cooking without requiring bright light throughout the living room.",
+          "images": [
+            {
+              "file": "kitchen-01",
+              "alt": "Kitchen cabinetry and glazed display unit beside the dining table",
+              "caption": "A glazed cabinet keeps crockery close to the table."
+            },
+            {
+              "file": "kitchen-02",
+              "alt": "Kitchen with framed fronts, built-in oven and illuminated splashback",
+              "caption": "Task lighting separates the worktop from the room’s general lighting."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-area-daylight",
+          "nav": "Dining area",
+          "title": "A table that belongs<br>to the shared room.",
+          "context": "The dining area sits beside the kitchen and remains open to the living space.",
+          "decision": "A table with a geometric base is paired with upholstered chairs. Its own pendant marks the setting, against a quiet backdrop of pale walls and fine mouldings.",
+          "benefit": "Meals can be served without moving between rooms. The table supports everyday dining and conversation, with a dedicated light for the evening.",
+          "images": [
+            {
+              "file": "dining-01",
+              "alt": "Dining area adjoining the living room and kitchen",
+              "caption": "The open layout connects cooking with the adjoining living area."
+            },
+            {
+              "file": "dining-02",
+              "alt": "Dining table with upholstered chairs and a dedicated pendant",
+              "caption": "A dedicated pendant marks the dining setting."
+            }
+          ]
+        },
+        {
+          "anchor": "forest-bedroom-reading-corner",
+          "nav": "Forest-pattern bedroom",
+          "title": "A natural backdrop<br>and a place to read.",
+          "context": "In the first bedroom, the emphasis stays around the headboard while the rest of the room is restrained.",
+          "decision": "A forest-pattern wall frames the upholstered bed. The tall wardrobe has panelled fronts, and an armchair with a floor lamp sits beside the window. The media wall and low cabinet follow the geometry of the wall panels.",
+          "benefit": "The room offers both a comfortable bed and a separate reading spot. A closed wardrobe keeps clothing off the open surfaces.",
+          "images": [
+            {
+              "file": "forest-bedroom-01",
+              "alt": "Bedroom with a forest-pattern backdrop and tall wardrobe",
+              "caption": "The forest pattern concentrates the accent around the headboard."
+            },
+            {
+              "file": "forest-bedroom-02",
+              "alt": "Bed and bedroom window in a pale natural palette",
+              "caption": "Heavier curtains complement the sheer window dressing."
+            },
+            {
+              "file": "forest-bedroom-03",
+              "alt": "Armchair and floor lamp beside the bedroom media wall",
+              "caption": "An armchair and floor lamp provide a separate reading spot."
+            },
+            {
+              "file": "forest-bedroom-04",
+              "alt": "Fitted wardrobe with panelled fronts opposite the bed",
+              "caption": "Panelled wardrobe fronts continue the wall treatment."
+            }
+          ]
+        },
+        {
+          "anchor": "botanical-bedroom-vanity",
+          "nav": "Botanical bedroom",
+          "title": "Expressive wallpaper.<br>A personal place at the mirror.",
+          "context": "The second bedroom has a more decorative character within the same pale palette.",
+          "decision": "Botanical patterns link the headboard wall and media area. A dressing table, mirror and upholstered chair join the furniture composition, with light wardrobes and open shelves framing the room.",
+          "benefit": "There is a dedicated surface and seat for the morning routine. The patterned walls carry the visual interest, allowing the furniture to stay quiet.",
+          "images": [
+            {
+              "file": "botanical-bedroom-01",
+              "alt": "Bed against botanical wallpaper in a light bedroom",
+              "caption": "A natural pattern gives the pale interior its character."
+            },
+            {
+              "file": "botanical-bedroom-02",
+              "alt": "Media area and dressing table against botanical wallpaper",
+              "caption": "The television and mirror area belong to one composition."
+            },
+            {
+              "file": "botanical-bedroom-03",
+              "alt": "Dressing table with mirror and upholstered chair",
+              "caption": "The morning routine has its own surface and seat."
+            },
+            {
+              "file": "botanical-bedroom-04",
+              "alt": "Bedroom with a large window, bed and light wardrobes",
+              "caption": "The window remains open to daylight."
+            }
+          ]
+        },
+        {
+          "anchor": "home-study-active-break",
+          "nav": "Home study",
+          "title": "Work at home<br>with room to move.",
+          "context": "A separate study keeps work away from the bedroom and shared living area.",
+          "decision": "The desk sits by the window, with wall-mounted and open storage close at hand. A patterned wall softens the workspace; the room also accommodates an exercise bike.",
+          "benefit": "The workspace has its own room and daylight. A short active break is possible nearby without turning the living room into an office or exercise area.",
+          "images": [
+            {
+              "file": "study-01",
+              "alt": "Desk beside the window with shelves and a patterned wall",
+              "caption": "The desk has daylight and storage close at hand."
+            },
+            {
+              "file": "study-02",
+              "alt": "Exercise bike beside the window in the home study",
+              "caption": "An exercise spot complements the room’s working function."
+            }
+          ]
+        },
+        {
+          "anchor": "walk-in-wardrobe-illuminated-storage",
+          "nav": "Dressing room",
+          "title": "Clothing in view.<br>A section for each need.",
+          "context": "A separate dressing room takes part of the everyday storage out of the living spaces.",
+          "decision": "Open units provide varied hanging heights, drawers and shelves for shoes and bags. Lighting defines the upper compartments; a mirror supports dressing.",
+          "benefit": "Items are visible without opening every cabinet. The aisle between the units leaves room to choose clothing and use the drawers.",
+          "images": [
+            {
+              "file": "wardrobe-01",
+              "alt": "Open dressing-room storage with shelves, drawers and lighting",
+              "caption": "Open storage keeps belongings visible without extra fronts."
+            },
+            {
+              "file": "wardrobe-02",
+              "alt": "Dressing-room compartments for clothing and shoes",
+              "caption": "Drawers and shelves complement the hanging spaces."
+            },
+            {
+              "file": "wardrobe-03",
+              "alt": "Aisle between two open storage systems",
+              "caption": "The aisle provides access to both storage systems."
+            },
+            {
+              "file": "wardrobe-04",
+              "alt": "Dressing-room sections with varied hanging heights",
+              "caption": "Different compartment heights suit different belongings."
+            }
+          ]
+        },
+        {
+          "anchor": "main-shower-room-stone-pattern",
+          "nav": "Main shower room",
+          "title": "Pale stone patterns<br>and a glazed shower.",
+          "context": "The larger bathroom needs a full shower and a comfortable place at the mirror.",
+          "decision": "Stone-pattern tiles connect walls and floor. A glazed enclosure preserves the view, a floating vanity keeps the floor open, and vertical shelves hold everyday products.",
+          "benefit": "Each function has a defined place without heavy partitions. Lighting beside the mirror complements the ceiling lights.",
+          "images": [
+            {
+              "file": "main-bath-01",
+              "alt": "Main bathroom with floating vanity, mirror and shower",
+              "caption": "The floating vanity keeps the floor plane open."
+            },
+            {
+              "file": "main-bath-02",
+              "alt": "Glazed shower enclosure and stone-pattern tiles",
+              "caption": "Clear glass separates the wet and dry areas."
+            },
+            {
+              "file": "main-bath-03",
+              "alt": "Wall-hung toilet and towel rail against a pale wall",
+              "caption": "Sanitary fittings and the towel rail are coordinated with the wall pattern."
+            },
+            {
+              "file": "main-bath-04",
+              "alt": "Shower area with a clear enclosure and pale surfaces",
+              "caption": "Pale finishes continue into the shower."
+            }
+          ]
+        },
+        {
+          "anchor": "private-shower-room-mirror-light",
+          "nav": "Second shower room",
+          "title": "A compact room<br>with a complete set of functions.",
+          "context": "The second bathroom continues the apartment finishes in a smaller space.",
+          "decision": "A narrow floating vanity and separately lit mirror sit beside the glazed shower. Concealed toilet and bidet installations keep their services within the wall. Stone patterns link the room to the main bathroom.",
+          "benefit": "A second shower room gives residents more independence. Wall-hung fittings and glass keep the floor and room boundaries visible.",
+          "images": [
+            {
+              "file": "private-bath-01",
+              "alt": "Second bathroom with floating vanity and mirror lights",
+              "caption": "Mirror lights complement the general lighting."
+            },
+            {
+              "file": "private-bath-02",
+              "alt": "Mirror and basin beside a glazed shower",
+              "caption": "A narrow vanity preserves access to the shower."
+            },
+            {
+              "file": "private-bath-03",
+              "alt": "Wall-hung toilet and bidet in the second bathroom",
+              "caption": "Wall-hung fittings keep the floor visible."
+            },
+            {
+              "file": "private-bath-04",
+              "alt": "Front view of the wall-hung toilet and bidet against a stone-pattern wall",
+              "caption": "Stone patterns connect the apartment’s two bathrooms."
+            }
+          ]
+        },
+        {
+          "anchor": "lighting-circuits-curtain-automation-potential",
+          "nav": "Lighting and curtains",
+          "title": "Separate lighting<br>for different activities.",
+          "context": "An evening at home does not require the same brightness in every corner.",
+          "decision": "The design separates general lights, wall lamps, shelf lighting and kitchen task lighting. Two-way switches allow control from several points, while double ceiling tracks are coordinated with the finishes. A possible next step is to combine compatible circuits into lighting scenes and add motorised curtains.",
+          "benefit": "Dining, reading and working have their own lighting layers. Automated scenes and curtain motors require separate equipment selection; they are development potential, not an installed system.",
+          "images": []
+        },
+        {
+          "anchor": "underfloor-heating-cooling-coordination",
+          "nav": "Heating and climate",
+          "title": "Warmth underfoot.<br>Services in their right places.",
+          "context": "Comfort depends on the positioning of heating and climate equipment as well as the visible finishes.",
+          "decision": "The plan provides underfloor heating in selected areas, radiators, combined towel rails and positions for heating controls. Air-conditioning and extract-fan power supplies are coordinated with their locations. Zoned temperature control and schedules are possible extensions.",
+          "benefit": "Heating and electrical connections are considered before furniture and finishes. Zoned automation needs separate design and compatibility checks for the selected equipment.",
+          "images": []
+        },
+        {
+          "anchor": "water-security-outdoor-automation-potential",
+          "nav": "Protection and further scenarios",
+          "title": "Options for<br>an easier daily routine.",
+          "context": "Plumbing points, the utility room and access to outdoor areas deserve separate attention to control.",
+          "decision": "Possible extensions include leak detection with water shut-off, entrance monitoring and a leaving-home scene that switches off selected lighting groups. Scheduled control could also be considered for the specified outdoor lighting.",
+          "benefit": "These additions could reduce routine checks. They are recommended options; installed sensors, a security system and centralised control are not confirmed.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Interiors considered<br>down to furniture and connections.",
+      "outcome": "The project combines replanning, room designs and working details for furniture, lighting, plumbing, heating, ceilings, floors and doors. Bespoke pieces have their own drawings and coordinated dimensions, with finishes and equipment collected in schedules. The design provides a coherent set of decisions for the execution stage.",
+      "faq": [
+        {
+          "question": "What area does the interior project cover?",
+          "answer": "141 m² of internal space after replanning: the kitchen and living room, corridor, two bedrooms, study, dressing room, two bathrooms and utility room."
+        },
+        {
+          "question": "How do classic details support modern daily life?",
+          "answer": "Mouldings and panelled fronts establish classic proportions. Built-in appliances, a separate dressing room, dedicated workspace and task lighting respond to everyday needs."
+        },
+        {
+          "question": "What is provided for heating and automation?",
+          "answer": "The design includes underfloor heating, radiators, towel rails, heating-control positions and separate lighting circuits. Lighting scenes, motorised curtains, zoned climate control and leak protection are possible additions, not confirmed installed systems."
+        }
+      ],
+      "source_note": "Source: Drive folder 2021_Брюховичі_Велика квартира (18LI6wLRRnRpfDkeolBjrw-FvvtzeyJW9); full 63-page PISKOR album 1AgRsRzgdeaXr2_oaYD2Fe022HUfsRKRw, dated 19 August 2021. Location Briukhovychi stated throughout album. Final replanning page 5 schedule: 19.05+42.79+3.46+6.71+6.19+10.77+18.64+29.47+4.37=141.45 m² ->141. Original measured area 144.02 on page2 not used; floor finishes and ceiling quantities not apartment area. Original render objects extracted directly, not rendered PDF pages. Compared 42 source visuals against 411 existing portfolio images: no visual identity match (minimum dHash distance11); existing classic apartment96m² has different layout and cabinetry, houses151/244/255/398m² different typology/layout. Confirmed design provisions: separate light circuits/two-way switches, underfloor heating69.01m², radiators, towel rails, HVAC/fan power, curtain tracks, outdoor lighting. Installation status and automation protocols not established; scenes, motors, sensors, zoned control labelled potential. Client invoice kept private."
+    }
+  },
   "turquoise-home-briukhovychi": {
     "uk": {
       "eyebrow":"Дизайн інтер’єру · Приватний будинок",

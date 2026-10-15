@@ -4310,5 +4310,183 @@
       ],
       "source_note": "Internal: Drive2021_Marko Luxe/del Marko folder1wQk4OXcnLqV5ySrcLBq8pEfaijVTFwK7. Owner confirmed Lviv and used Marko Luxe name on2026-10-15. Year2021 supported by folder and PDF creation2021-07-22, established PDF-year workflow. Main album44pages fully reviewed, logo1page, standalone technical PDFs25pages reviewed; old PNG kitchen plan reviewed. Area remodelled planp6 sums46.72+15.28+16.22+31.36+1.71+3.96+1.67+3.30+4.34+2.42=126.98 ->127m². Do not combine older measured130.94m² onp2. All25finalrenders reviewed;18distinct selected excluding alternate camera007/024 edits. All46surveyphotos reviewed;110.79s site video visually reviewed using111 one-second frames across full duration. Survey evidence is unfinished shell, not completion proof; audio not used as factual source. Raw photos/video/drawings excluded from publication. Duplicate screening25renders against501publishedsourceimages min dHash13/64 foundnoidentity; distinct from MarkoSoli retailstores. No installed automation evidence. Lighting/heating/climate/curtains-blinds/security/water assessed as recommendations requiring compatible equipment; exterior systems outside interior scope and not claimed. Technical plans show ventilation supply/extract/localhoods/heat-recovery, plumbing/electrical connections and custom bar equipment allocation, not installation/compliance certification. Sourcearchive /tmp/piskor-del-marko.mY99Uk/intake.md."
     }
+  },
+  "zhyvyi-khlib-bakery-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн крамниці · Львів",
+      "title": "Живий хліб.<br><span>Крамниця на 25 м².</span>",
+      "summary": "Дизайн хлібної крамниці у Львові. На 25 м² поєднані відкрита викладка, холодильні вітрини й каса. Світле дерево, металеві полиці та впізнавана графіка бренду об’єднують компактний простір.",
+      "cover": "bakery-counter",
+      "cover_alt": "Хлібна викладка, каса та скляні вітрини крамниці Живий хліб у Львові",
+      "location": "Львів",
+      "area": "25 м²",
+      "property": "Хлібна крамниця",
+      "benefit_label": "Для покупця й команди",
+      "intro_title": "Покупець бачить товар.<br>Продавець має місце для роботи.",
+      "intro": "У невеликій крамниці вітрини займають значну частину площі. Тому планування починається з їхньої форми: кутовий прилавок збирає обслуговування в одному місці, настінні полиці піднімають викладку вгору, а вхід відкриває погляд на асортимент. Інтер’єр має власне обличчя завдяки логотипу, деревним фактурам і білим підвісним світильникам.",
+      "chapters": [
+        {
+          "anchor": "bakery-counter-customer-approach",
+          "nav": "Планування й обслуговування",
+          "title": "Вітрини, каса й робоча зона<br>в одному плануванні.",
+          "context": "На 25 м² потрібно показати асортимент, залишити покупцеві зручний підхід до вітрини та організувати робоче місце продавця. Кутова форма прилавка збирає ці завдання в одну композицію.",
+          "decision": "Прозорі вітрини сходяться біля каси й відділяють гостьову частину від робочої. З боку входу видно товари, хлібну викладку та місце замовлення. Уздовж стін розташовані тумби й високі полиці, а мийка має місце за прилавком. Розміри меблевих секцій узгоджені з холодильним обладнанням; електричні точки на різних висотах і підключення води враховані в робочих планах.",
+          "benefit": "Покупець може оглянути продукти перед замовленням. Продавець має визначені місця для розрахунку, зберігання й підготовки товару. Для замовника меблі та комунікації складаються в узгоджену схему робочого місця.",
+          "images": [
+            {
+              "file": "bakery-counter",
+              "alt": "Кутова вітрина та каса під настінною викладкою хліба в Живому хлібі",
+              "caption": "Каса поєднує дві частини прилавка."
+            },
+            {
+              "file": "entrance-display",
+              "alt": "Скляна холодильна вітрина біля входу, підвісні світильники й високі полиці",
+              "caption": "Вхід відкриває огляд на вітрину й настінні полиці."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-bread-shelves-brand-identity",
+          "nav": "Викладка, матеріали та світло",
+          "title": "Високі полиці<br>й упізнаваний образ крамниці.",
+          "context": "Асортимент займає стіни по висоті, залишаючи середину залу для покупця. Світле оздоблення й графіка Живого хліба об’єднують різні групи товарів.",
+          "decision": "Білі металеві полиці та кошики піднімають хлібну викладку над прилавком. На сусідній стіні відкриті секції зібрані над тумбами; драбина дає доступ до верхніх рівнів. Логотип і вертикальний напис мають власні площини. Деревні фасади поєднані з фактурою OSB та рейковою стелею. Білі підвіси виділяють прилавок, стельові світильники доповнюють загальне освітлення, а робочий план окремо визначає світлові групи й підсвічування полиць.",
+          "benefit": "Висота стін працює на викладку без окремих стелажів посеред залу. Матеріали додають тепла, а світло допомагає розрізнити рівні товарів. Бренд помітний у самому інтер’єрі, поруч із продуктами.",
+          "images": [
+            {
+              "file": "bread-brand-wall",
+              "alt": "Логотип Живий хліб, полиці з хлібом і стелажі поруч із холодильником напоїв",
+              "caption": "Графіка бренду об’єднує хлібну викладку та зону каси."
+            },
+            {
+              "file": "wall-shelves",
+              "alt": "Висока система білих металевих полиць із драбиною над кутовою вітриною",
+              "caption": "Відкриті полиці використовують висоту стіни."
+            }
+          ]
+        },
+        {
+          "anchor": "bakery-lighting-control-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Світло за графіком.<br>Увага до робочої зони.",
+          "context": "Розділені світлові групи й мийка в робочій частині дають конкретні точки для подальшого оснащення крамниці.",
+          "decision": "Можливий сценарій відкриття вмикав би торгове світло та підсвічування викладки, а режим прибирання використовував би повне загальне освітлення. Біля мийки доречний контроль протікання зі сповіщенням відповідальній людині. Сигналізацію й клімат можна узгодити з графіком роботи після обстеження інженерних систем. Це рекомендований розвиток: автоматичні сцени, обладнання та інтеграції потребують окремого проєкту й добору сумісних пристроїв.",
+          "benefit": "Команда могла б перемикати світло одним сценарієм і швидше дізнаватися про проблему з водою. Холодильне обладнання при цьому має зберігати окреме живлення й не вимикатися разом зі світлом."
+        }
+      ],
+      "outcome_title": "Торгова зала<br>з продуманою робочою частиною.",
+      "outcome": "Проєкт об’єднує планування крамниці, кутові вітрини, індивідуальні меблі й графіку бренду. Матеріали та світло працюють разом із викладкою, а електрика й вода узгоджені з робочою зоною. Покупець бачить асортимент, команда має зрозуміле місце для обслуговування.",
+      "faq": [
+        {
+          "question": "Яка площа та локація крамниці?",
+          "answer": "Живий хліб розташований у Львові. Розрахована за розмірами креслень площа становить 25 м² після округлення. Рік проєкту: 2020."
+        },
+        {
+          "question": "Як організована викладка в маленькому приміщенні?",
+          "answer": "Холодильні вітрини зібрані навколо каси, а відкриті полиці й кошики використовують висоту стін. Нижні тумби доповнюють місця зберігання, не займаючи середину торгового залу окремими стелажами."
+        },
+        {
+          "question": "Що створює характер інтер’єру?",
+          "answer": "Світлі деревні фасади, фактура OSB і рейкова стеля поєднані з білими металевими полицями. Логотип і вертикальний напис бренду залишаються помітними над викладкою."
+        },
+        {
+          "question": "Які робочі рішення входять у проєкт?",
+          "answer": "Планування обладнання, деталізація меблів і прилавків, розгортки стін, матеріали, розміщення світильників, електричних точок та підключень води до мийки."
+        },
+        {
+          "question": "Чи можна додати автоматизацію?",
+          "answer": "Розділені групи освітлення дають основу для сценаріїв відкриття й прибирання. Біля мийки можна передбачити контроль протікання. Це рекомендовані можливості подальшого оснащення; встановлені контролери, датчики чи інтеграції цим кейсом не заявляються."
+        }
+      ],
+      "source_note": "Internal: owner confirmed Lviv and2020 on2026-10-15. Drive Живий хліб: nine relevant drawing JPGs,25 renders in six alternative variants,6 pre-redesign photographs fully reviewed. Exclude unrelated apartment plan-alt.jpg. Area from sockets-alt dimensions: (2.300+0.100+2.270)*5.050 -0.100*1.000 -0.580*0.300 +2.700*((0.540+0.550)/2)=24.781 m², rounded25. Entrance550/540 and width2700 explicitly found in elevations.jpg after full-resolution reread; slight10mm dimensional discrepancy does not affect integer rounding. Do not derive area from image scale or mix apartment plan. Gallery uses four distinct consistent folder6 renders only, no alternate finishes/survey photos/drawings. Source IDs in /tmp/piskor-living-bread scripts and intake. No completed build or installed automation is claimed. Lighting/electrical/water design confirmed; lighting scenes and water/security/climate are potential. Heating/curtains/outdoor systems not evidenced. Duplicate screening against519 published originals found no identity match; reviewed layout/branding is distinct."
+    },
+    "en": {
+      "eyebrow": "Retail interior design · Lviv",
+      "title": "Zhyvyi Khlib.<br><span>A shop in 25 m².</span>",
+      "summary": "A bakery shop interior in Lviv. Open shelving, refrigerated displays and a cash desk share 25 m². Light timber, metal shelves and the brand’s graphic identity bring the compact space together.",
+      "cover": "bakery-counter",
+      "cover_alt": "Bread display, cash desk and glass counters at the Zhyvyi Khlib shop in Lviv",
+      "location": "Lviv",
+      "area": "25 m²",
+      "property": "Bakery shop",
+      "benefit_label": "For customers and staff",
+      "intro_title": "Customers see the products.<br>Staff have room to work.",
+      "intro": "Display counters take up a substantial part of a small shop. Their shape sets the layout: an angled counter brings service into one place, wall shelves carry products upwards, and the entrance opens a view of the range. The logo, timber textures and white pendant lights give the interior its own identity.",
+      "chapters": [
+        {
+          "anchor": "bakery-counter-customer-approach",
+          "nav": "Layout and service",
+          "title": "Displays, cash desk and workspace<br>in one coordinated layout.",
+          "context": "The 25 m² shop needs to present its range, give customers a clear approach to the counter and accommodate the staff workspace. The angled counter brings these requirements into one arrangement.",
+          "decision": "Transparent displays meet at the cash desk and separate the customer area from the staff workspace. The entrance gives a view of the products, bread shelves and ordering point. Cabinets and tall shelves follow the walls, with a sink behind the counter. Furniture sections are sized around the refrigerated equipment; electrical points at different heights and water connections are coordinated in the working plans.",
+          "benefit": "Customers can look over products before ordering. Staff have defined places for payment, storage and preparing goods. For the client, furniture and services form a coordinated workspace layout.",
+          "images": [
+            {
+              "file": "bakery-counter",
+              "alt": "Angled display counter and cash desk below the bread shelves at Zhyvyi Khlib",
+              "caption": "The cash desk joins the two counter sections."
+            },
+            {
+              "file": "entrance-display",
+              "alt": "Refrigerated glass display near the entrance, pendant lights and tall wall shelves",
+              "caption": "The entrance gives a view of the counter and wall displays."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-bread-shelves-brand-identity",
+          "nav": "Displays, materials and lighting",
+          "title": "Tall shelving<br>and a recognisable shop identity.",
+          "context": "The product range extends up the walls, leaving the centre of the room for customers. Light finishes and Zhyvyi Khlib graphics bring the different product groups together.",
+          "decision": "White metal shelves and baskets carry the bread display above the counter. Open sections sit over cabinets on the adjacent wall, with a ladder for the upper levels. The logo and vertical lettering have their own surfaces. Timber fronts meet OSB texture and a slatted ceiling. White pendants identify the counter, ceiling fittings add general light, and the working plan sets out separate lighting groups and shelf illumination.",
+          "benefit": "Wall height provides display space without freestanding shelves in the centre. Materials add warmth, while lighting helps distinguish the product levels. The brand is visible within the interior, alongside the products.",
+          "images": [
+            {
+              "file": "bread-brand-wall",
+              "alt": "Zhyvyi Khlib logo, bread shelves and storage beside the drinks refrigerator",
+              "caption": "Brand graphics connect the bread display and cash desk."
+            },
+            {
+              "file": "wall-shelves",
+              "alt": "Tall white metal shelving with a ladder above the angled glass counter",
+              "caption": "Open shelving makes use of the wall height."
+            }
+          ]
+        },
+        {
+          "anchor": "bakery-lighting-control-potential",
+          "nav": "Automation potential",
+          "title": "Lighting for the working day.<br>Attention to the workspace.",
+          "context": "Separate lighting groups and a sink in the staff area provide specific opportunities for future equipment and controls.",
+          "decision": "An opening scene could switch on sales lighting and display illumination, while cleaning mode would use full general lighting. Leak monitoring near the sink could notify the responsible person. Alarm and climate controls could follow the opening schedule after a services survey. These are recommended future additions: automatic scenes, equipment and integrations need a separate design and compatible devices.",
+          "benefit": "Staff could select lighting through one scene and learn about a water problem sooner. Refrigeration must retain a separate power supply and must not switch off with the lights."
+        }
+      ],
+      "outcome_title": "A sales floor<br>with a considered staff workspace.",
+      "outcome": "The project brings together the shop layout, angled display counters, bespoke furniture and brand graphics. Materials and lighting support the product display, with electrical and water connections coordinated around the workspace. Customers can see the range, and staff have a clear place to serve them.",
+      "faq": [
+        {
+          "question": "Where is the shop and how large is it?",
+          "answer": "Zhyvyi Khlib is in Lviv. Its area, calculated from the drawing dimensions and rounded to a whole number, is 25 m². The project year is 2020."
+        },
+        {
+          "question": "How does the small shop accommodate its product range?",
+          "answer": "Refrigerated displays meet at the cash desk, while open shelves and baskets use the wall height. Base cabinets add storage without filling the centre of the sales floor with freestanding shelves."
+        },
+        {
+          "question": "What gives the interior its character?",
+          "answer": "Light timber fronts, OSB texture and a slatted ceiling meet white metal shelves. The logo and vertical brand lettering remain visible above the product display."
+        },
+        {
+          "question": "What working design information is included?",
+          "answer": "Equipment layout, furniture and counter details, wall elevations, finishes, lighting locations, electrical points and water connections for the sink."
+        },
+        {
+          "question": "Could automation be added?",
+          "answer": "Separate lighting groups offer a basis for opening and cleaning scenes. Leak monitoring could be added near the sink. These are recommended future options; this case does not claim installed controllers, sensors or integrations."
+        }
+      ],
+      "source_note": "Internal: see Ukrainian source_note for owner-confirmed location/year, dimensioned area calculation rounding to25m², complete source review, alternative finish exclusions and duplicate screening. English has identical scope. No installed automation or completed construction claimed."
+    }
   }
 }

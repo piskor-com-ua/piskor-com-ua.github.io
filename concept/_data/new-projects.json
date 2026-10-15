@@ -3798,5 +3798,517 @@
       {"anchor":"zamartynivska-guest-wc","nav":"Guest WC","title":"A compact room<br>with thoughtful storage.","context":"The separate WC is positioned near the apartment entrance.","decision":"Wall-mounted sanitaryware, storage above the concealed cistern and a compact basin make use of the available floor area. Stone-textured finishes and olive fronts continue the bathroom palette.","benefit":"The guest area has its essential functions while keeping the same visual language as the rest of the home.","images":[{"file":"zamartynivska-apartment-21","alt":"Separate WC with wall-mounted toilet, compact basin and olive cabinetry","caption":"A compact basin and fitted cabinets preserve clear circulation."},{"file":"zamartynivska-apartment-22","alt":"Guest WC with stone-effect tile and recessed shelf","caption":"A recessed niche provides a place for everyday essentials."}]},
       {"anchor":"zamartynivska-lighting-heating","nav":"Lighting and heating","title":"Light and warmth<br>planned around the layout.","context":"The album details the apartment’s lighting, electrical points and heating.","decision":"The lighting plan specifies 34 spotlights, four pendants and a profile for LED strip lighting; separate drawings show switch and outlet positions. The heating plan includes underfloor heating in the bathroom and kitchen, plus a heated towel rail. The lighting circuits provide a basis for scene control if smart-home automation is included during implementation.","benefit":"Electrical and heating points are coordinated with the furniture, and the option to develop lighting into smart-home scenes is clear from the design stage.","images":[]}
       ],"outcome":"Olive fronts, a light base and warm timber carry from the entry through to the bathroom. An open kitchen and living room, separate bedroom and dedicated dressing room keep the 74 m² apartment clearly organized.","source_note":"The 74.34 m² schedule including the balcony is rounded to 74 m². The 2025 project year follows the PDF creation date, as agreed with the client."}
+  },
+  "marko-luxe-restaurant-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн ресторану · Львів",
+      "title": "Marko Luxe.<br><span>Камерний ресторан.</span>",
+      "summary": "Інтер’єр ресторану у Львові, 127 м². Теплі деревні фактури й м’яка посадка доповнені озелененими металевими конструкціями, підсвіченим баром і малими залами.",
+      "location": "Львів",
+      "area": "127 м²",
+      "property": "Ресторан · Громадський інтер’єр",
+      "cover": "hall-012",
+      "cover_alt": "Столи, підсвічені ніші й бар ресторану Marko Luxe",
+      "intro_title": "Різні місця<br>в одному ресторані.",
+      "intro": "Дизайн враховує наявний перепад рівнів. Основна зала поєднує посадку біля вікон, окремі столики й високий стіл. Малі зали пропонують диванні групи та ботанічне тло. Індивідуальні меблі й світло пов’язують ці місця, а технологічні плани кухні та інженерні прив’язки опрацьовують сервісну сторону ресторану.",
+      "benefit_label": "Для гостей і персоналу",
+      "chapters": [
+        {
+          "anchor": "restaurant-window-banquette-seating",
+          "nav": "Основна зала",
+          "title": "Посадка, що залишає<br>місце для розмови.",
+          "context": "У Marko Luxe місця вздовж вікон доповнюють окремі столики та висока посадка. Відвідувач може обрати різний формат зустрічі в межах однієї зали.",
+          "decision": "Довгий м’який диван розташований уздовж стіни. Прямокутні столи й стільці формують окремі групи, а металеві конструкції з рослинами відділяють посадку від проходу. Глибокі темні рами підкреслюють вікна та підсвічені ніші.",
+          "benefit": "Гість бачить доступні місця й може сісти ближче до денного світла. Ритм столів і невисоких розділювачів робить велику залу більш камерною.",
+          "images": [
+            {
+              "file": "hall-007",
+              "alt": "М’який диван уздовж стіни та столи в основній залі Marko Luxe",
+              "caption": "Диванна посадка доповнює окремі стільці."
+            },
+            {
+              "file": "hall-009",
+              "alt": "Вид від барної посадки на столи біля вікон ресторану",
+              "caption": "Прохід пов’язує вхід, столи й барну зону."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-tables-small-group-dining",
+          "nav": "Столи для компанії",
+          "title": "Свій стіл<br>для невеликої компанії.",
+          "context": "Не кожна зустріч потребує довгого дивана. У залі є компактні столи з посадкою з кількох боків.",
+          "decision": "Деревні стільниці спираються на тонкі металеві основи. М’які стільці поєднані з диванною посадкою, а озеленені конструкції та настінний декор формують тло. Меблі підібрані до масштабу конкретного місця.",
+          "benefit": "За столом зручно спілкуватися обличчям одне до одного. Невеликі групи меблів дають залу різні сценарії користування без суцільного ряду однакових місць.",
+          "images": [
+            {
+              "file": "hall-001",
+              "alt": "Деревний стіл із металевою основою та м’якими стільцями",
+              "caption": "Компактна група столу й крісел біля стіни."
+            },
+            {
+              "file": "hall-023",
+              "alt": "Столик із м’якими стільцями біля озелененої металевої конструкції",
+              "caption": "Зелень підтримує камерний характер посадки."
+            }
+          ]
+        },
+        {
+          "anchor": "bar-counter-equipment-service",
+          "nav": "Бар і сервіс",
+          "title": "Упізнаваний бар<br>зі зручною робочою зоною.",
+          "context": "Бар має бути помітним для гостя й водночас містити місце для обладнання та роботи персоналу.",
+          "decision": "Підсвічена деревна передня панель відділяє гостьову сторону від робочої. Відкриті полиці позаду доповнюють експозицію. Креслення стійки враховують мийку, охолоджувач і льодогенератор, а також місце для кег.",
+          "benefit": "Обслуговування має чітку точку в залі. Обладнання отримує своє місце всередині стійки, а її фасад підтримує характер ресторану.",
+          "images": [
+            {
+              "file": "hall-013",
+              "alt": "Барна стійка з підсвіченою деревною панеллю та полицями",
+              "caption": "Підсвічений фасад виділяє точку обслуговування."
+            },
+            {
+              "file": "hall-012",
+              "alt": "Загальний вид ресторану з баром у торці зали",
+              "caption": "Бар залишається видимим із гостьової частини."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-metal-furniture-planted-screens",
+          "nav": "Індивідуальні меблі",
+          "title": "Меблі формують простір<br>і залишають його відкритим.",
+          "context": "У компактному ресторані розділення посадки має зберігати огляд між частинами зали.",
+          "decision": "Металеві сітчасті конструкції поєднані з кашпо та окремими декоративними світловими акцентами. Високий стіл має власну групу стільців. Робочі креслення деталізують каркаси, столи й елементи біля сходів.",
+          "benefit": "Відкриті елементи позначають межі місць і не перетворюються на глухі стіни. Посадка за високим столом додає ще один спосіб провести час у ресторані.",
+          "images": [
+            {
+              "file": "hall-005",
+              "alt": "Металеві сітчасті розділювачі та озеленення біля столів",
+              "caption": "Сітчасті елементи зберігають огляд між групами."
+            },
+            {
+              "file": "hall-002",
+              "alt": "Високий стіл зі стільцями перед озелененою конструкцією",
+              "caption": "Висока посадка має окреме місце в основній залі."
+            }
+          ]
+        },
+        {
+          "anchor": "small-lounges-botanical-wall-sofas",
+          "nav": "Малі зали",
+          "title": "М’які дивани<br>для довшої зустрічі.",
+          "context": "Менші зали змінюють ритм ресторану: замість відкритої посадки тут переважають диванні групи.",
+          "decision": "Дивани теплого коричневого відтінку зібрані навколо прямокутних столів. Ботанічне панно й зелені текстильні акценти дають тло, а відкриті металеві елементи продовжують оформлення основної зали.",
+          "benefit": "Компанія має окрему м’яку зону для спільного столу. Зв’язок із загальним інтер’єром зберігається, хоча масштаб і настрій посадки відрізняються.",
+          "images": [
+            {
+              "file": "hall-017",
+              "alt": "Дивани навколо столу перед ботанічним панно",
+              "caption": "Ботанічне панно формує тло диванної групи."
+            },
+            {
+              "file": "hall-019",
+              "alt": "Коричневі дивани та розгалужений світильник малого залу",
+              "caption": "М’яка посадка зібрана навколо спільного столу."
+            },
+            {
+              "file": "hall-016",
+              "alt": "Вид уздовж малого залу з диванами та рослинами",
+              "caption": "Деревні фактури й зелень пов’язують інтер’єр."
+            },
+            {
+              "file": "hall-014",
+              "alt": "Перехід між рівнями та озеленені металеві елементи малого залу",
+              "caption": "Перепад рівнів є частиною планувальної структури."
+            }
+          ]
+        },
+        {
+          "anchor": "decorative-lighting-warm-materials",
+          "nav": "Світло і матеріали",
+          "title": "Світло виділяє стіл<br>і глибину інтер’єру.",
+          "context": "Деревні фактури та темні площини потребують світла, яке підтримує і посадку, і оформлення стін.",
+          "decision": "Підвісні світильники позначають столи, спрямоване стельове світло додає акцентів, а підсвічені ніші й бар працюють на глибину зали. У малих залах розгалужені світильники зі скляними елементами підкреслюють диванні групи.",
+          "benefit": "Гість сприймає окремі місця й декоративні деталі, а не лише загальну яскравість. Різні типи світильників підтримують характер кожної частини ресторану.",
+          "images": [
+            {
+              "file": "hall-020",
+              "alt": "Підвіси над столом і високою посадкою Marko Luxe",
+              "caption": "Локальне світло виділяє конкретні місця."
+            },
+            {
+              "file": "hall-018",
+              "alt": "Декоративний підвіс, ботанічна стіна та озеленення",
+              "caption": "Форма підвісу підтримує декоративне оформлення."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-washroom-mirror-lighting",
+          "nav": "Гостьовий санвузол",
+          "title": "Невеликий простір<br>із продуманими деталями.",
+          "context": "Гостьовий санвузол продовжує палітру ресторану в значно меншому масштабі.",
+          "decision": "Темні фактурні стіни поєднані з деревним оздобленням, компактною раковиною та дзеркалом складної форми. Спрямоване світло й зелений декор додають акцентів без окремого великого світильника.",
+          "benefit": "Навіть допоміжне приміщення має впізнаваний образ. Дзеркало й локальне світло виділяють зону раковини, а компактні елементи відповідають розмірам кімнати.",
+          "images": [
+            {
+              "file": "wc-02",
+              "alt": "Компактна раковина й дзеркало на темній стіні санвузла",
+              "caption": "Дзеркало та світло виділяють раковину."
+            },
+            {
+              "file": "wc-01",
+              "alt": "Темний гостьовий санвузол із деревним оздобленням",
+              "caption": "Матеріали продовжують палітру ресторану."
+            }
+          ]
+        },
+        {
+          "anchor": "washroom-handrails-spatial-layout",
+          "nav": "Санвузол із поручнями",
+          "title": "Більше уваги<br>до різних потреб гостей.",
+          "context": "Планування передбачає окремий просторіший санвузол із поручнями.",
+          "decision": "Раковина й унітаз розташовані з урахуванням опорних поручнів. Дзеркало, деревна фактура та зелені елементи повторюють оформлення інших гостьових приміщень. Розміщення обладнання деталізоване в планах і розгортках.",
+          "benefit": "Рішення враховує гостей, яким потрібні додаткові опори. При цьому приміщення зберігає той самий характер, що й інші частини ресторану.",
+          "images": [
+            {
+              "file": "accessible-wc-01",
+              "alt": "Раковина, дзеркало та поручні в просторішому санвузлі",
+              "caption": "Опорні елементи враховані в розміщенні обладнання."
+            },
+            {
+              "file": "accessible-wc-03",
+              "alt": "Унітаз із поручнями та деревне оздоблення санвузла",
+              "caption": "Поручні поєднані зі спільною палітрою закладу."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-planning-guest-service-zones",
+          "nav": "Планування",
+          "title": "Гостьові й сервісні функції<br>мають свої місця.",
+          "context": "Проєкт охоплює 127 м². План після перепланування розділяє основну залу, дві менші зони на різних рівнях і кухню з баром.",
+          "decision": "Основна зала займає близько 47 м², малі зали разом близько 32 м², кухня та бар близько 31 м². Решта площі відведена санвузлам, коридорам і допоміжним приміщенням. Меблювання враховує наявні вікна та переходи між рівнями.",
+          "benefit": "Інтер’єр отримує різні за настроєм гостьові зони й окрему сервісну частину. Планувальна структура пояснює, як декоративні рішення працюють у реальному приміщенні.",
+          "images": []
+        },
+        {
+          "anchor": "kitchen-bar-technical-coordination",
+          "nav": "Кухня і бар",
+          "title": "Сервіс продуманий<br>за межами гостьового кадру.",
+          "context": "Ресторанний інтер’єр потребує узгодження меблів із роботою кухні, бару та інженерних підключень.",
+          "decision": "Технологічні плани визначають місця мийок, робочих поверхонь, холодильного обладнання й стелажів. Схеми води та електроживлення прив’язують підключення до обладнання, а креслення бару деталізують його робочу частину.",
+          "benefit": "Команда має узгоджену основу для організації сервісу й виготовлення меблів. Гостьова сторона залишається цілісною, хоча за нею стоїть окрема технічна робота.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-kitchen-ventilation-design",
+          "nav": "Вентиляція",
+          "title": "Повітрообмін врахований<br>разом із плануванням.",
+          "context": "Гостьова посадка й кухонне обладнання мають різні потреби у вентиляції.",
+          "decision": "Вентиляційні матеріали передбачають припливні й витяжні повітропроводи, локальні кухонні витяжки та рекуператор. Траси співвіднесені з розташуванням обладнання й об’ємом приміщень; це частина інженерного проєкту.",
+          "benefit": "Систему можна узгоджувати з інтер’єром до монтажу, зберігаючи місце для її елементів. Це допомагає розглядати комфорт зали разом із сервісною частиною, а не окремо від неї.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-lighting-scenes-potential",
+          "nav": "Сценарії світла",
+          "title": "Світло може змінюватися<br>разом із форматом вечора.",
+          "context": "Підвіси, стельові акценти, ніші й бар виконують різні завдання. Їхнє окреме керування є логічним напрямом розвитку проєкту.",
+          "decision": "Рекомендовані сценарії: підготовка зали, обслуговування гостей і прибирання. Для вечірньої посадки можна виділити світло столів, бару та декоративних площин. Реалізація потребує сумісних світильників і драйверів та перевірки електричних груп.",
+          "benefit": "За сумісного обладнання персонал міг би обирати потрібний набір світла одним сценарієм. Це потенціал автоматизації, а не твердження про встановлену систему.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-climate-water-security-potential",
+          "nav": "Клімат і контроль",
+          "title": "Інженерія може підтримати<br>щоденний ритм ресторану.",
+          "context": "Вентиляція та точки водопостачання дають конкретну основу для подальшого керування й моніторингу.",
+          "decision": "Можливе розширення включає погоджені режими вентиляції, опалення чи охолодження відповідно до обладнання та графіка закладу. Контроль протікань доречний біля мийок кухні й бару. Охоронні сценарії та керування текстилем чи жалюзі потребують окремого визначення складу систем і сумісних приводів.",
+          "benefit": "Такі сценарії могли б спростити підготовку до відкриття й контроль після закриття. Їх слід проєктувати під реальний режим роботи ресторану, не підміняючи ними підтверджені дизайнерські рішення.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Гостьовий простір<br>із технічною основою.",
+      "outcome": "Marko Luxe поєднує основну залу, малі зали й бар через деревні фактури, озеленені металеві елементи та багаторівневе світло. Проєкт також опрацьовує індивідуальні меблі, кухонну технологію, інженерні підключення та вентиляцію. Рекомендовані сценарії автоматизації описують можливий наступний крок окремо від підтвердженого складу проєкту.",
+      "faq": [
+        {
+          "question": "Що входить у площу 127 м²?",
+          "answer": "Площа охоплює основну залу, дві менші зони, кухню й бар, санвузли, коридори та допоміжні приміщення за планом після перепланування."
+        },
+        {
+          "question": "Що визначає характер Marko Luxe?",
+          "answer": "Деревні фактури, тепла коричнева посадка й ботанічна графіка поєднані з озелененими металевими елементами та підсвіченими нішами. Основна й малі зали пропонують різні формати посадки у спільній палітрі."
+        },
+        {
+          "question": "Чи опрацьовані кухня та бар?",
+          "answer": "Так. Гостьовий інтер’єр доповнений технологічними планами, прив’язками води й електроживлення, вентиляцією та деталями стійки. Креслення бару враховують мийку, охолоджувач, льодогенератор і місце для кег."
+        },
+        {
+          "question": "Які меблі спроєктовані індивідуально?",
+          "answer": "Робочі креслення деталізують столи, барну стійку, металеві сітчасті конструкції та елементи біля сходів. Їхні пропорції й місця для обладнання пов’язані з плануванням."
+        },
+        {
+          "question": "Чи можна автоматизувати світло й інженерні системи?",
+          "answer": "Рекомендовані можливості включають світлові сцени, температурні режими залежно від обладнання та контроль протікань біля мийок. Реалізація потребує окремого інженерного опрацювання й сумісного обладнання; встановлена автоматизація не заявлена."
+        }
+      ],
+      "source_note": "Internal: Drive2021_Marko Luxe/del Marko folder1wQk4OXcnLqV5ySrcLBq8pEfaijVTFwK7. Owner confirmed Lviv and used Marko Luxe name on2026-10-15. Year2021 supported by folder and PDF creation2021-07-22, established PDF-year workflow. Main album44pages fully reviewed, logo1page, standalone technical PDFs25pages reviewed; old PNG kitchen plan reviewed. Area remodelled planp6 sums46.72+15.28+16.22+31.36+1.71+3.96+1.67+3.30+4.34+2.42=126.98 ->127m². Do not combine older measured130.94m² onp2. All25finalrenders reviewed;18distinct selected excluding alternate camera007/024 edits. All46surveyphotos reviewed;110.79s site video visually reviewed using111 one-second frames across full duration. Survey evidence is unfinished shell, not completion proof; audio not used as factual source. Raw photos/video/drawings excluded from publication. Duplicate screening25renders against501publishedsourceimages min dHash13/64 foundnoidentity; distinct from MarkoSoli retailstores. No installed automation evidence. Lighting/heating/climate/curtains-blinds/security/water assessed as recommendations requiring compatible equipment; exterior systems outside interior scope and not claimed. Technical plans show ventilation supply/extract/localhoods/heat-recovery, plumbing/electrical connections and custom bar equipment allocation, not installation/compliance certification. Sourcearchive /tmp/piskor-del-marko.mY99Uk/intake.md."
+    },
+    "en": {
+      "eyebrow": "Restaurant interior design · Lviv",
+      "title": "Marko Luxe.<br><span>An intimate restaurant.</span>",
+      "summary": "A 127 m² restaurant interior in Lviv. Warm timber finishes and upholstered seating meet planted metal screens, an illuminated bar and smaller lounge areas.",
+      "location": "Lviv",
+      "area": "127 m²",
+      "property": "Restaurant · Hospitality interior",
+      "cover": "hall-012",
+      "cover_alt": "Marko Luxe dining tables, illuminated shelving and bar",
+      "intro_title": "Different places<br>within one restaurant.",
+      "intro": "The design makes use of an existing level change. The main room combines window seating, individual tables and a high counter. Smaller rooms offer sofa groups and a botanical backdrop. Custom furniture and lighting connect these settings, while kitchen and utility plans develop the service side of the restaurant.",
+      "benefit_label": "For guests and staff",
+      "chapters": [
+        {
+          "anchor": "restaurant-window-banquette-seating",
+          "nav": "Main dining room",
+          "title": "Seating with room<br>for conversation.",
+          "context": "At Marko Luxe, window seating is complemented by individual tables and a high counter. Visitors can choose different settings within the same dining room.",
+          "decision": "A long upholstered bench follows the wall. Rectangular tables and chairs form individual groups, while planted metal structures distinguish the seating from the aisle. Deep dark frames outline the windows and illuminated niches.",
+          "benefit": "Guests can see the seating choices and sit closer to daylight. Tables and low dividers give the main room a more intimate scale.",
+          "images": [
+            {
+              "file": "hall-007",
+              "alt": "Upholstered bench and tables in the main Marko Luxe dining room",
+              "caption": "Bench seating complements individual chairs."
+            },
+            {
+              "file": "hall-009",
+              "alt": "View from the high seating towards restaurant tables by the windows",
+              "caption": "An aisle connects the entrance, tables and bar area."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-tables-small-group-dining",
+          "nav": "Tables for small groups",
+          "title": "A table for<br>a small group.",
+          "context": "Not every visit calls for a long bench. The room also has compact tables with seating on several sides.",
+          "decision": "Timber tabletops sit on slender metal frames. Upholstered chairs work alongside bench seating, with planted structures and wall details forming the backdrop. Furniture responds to the scale of each seating area.",
+          "benefit": "Guests can face one another across the table. Small furniture groups provide alternatives to a continuous row of identical seats.",
+          "images": [
+            {
+              "file": "hall-001",
+              "alt": "Timber table with a metal frame and upholstered chairs",
+              "caption": "A compact table and chair group beside the wall."
+            },
+            {
+              "file": "hall-023",
+              "alt": "Table and upholstered chairs beside a planted metal structure",
+              "caption": "Planting supports the intimate seating arrangement."
+            }
+          ]
+        },
+        {
+          "anchor": "bar-counter-equipment-service",
+          "nav": "Bar and service",
+          "title": "A recognisable bar<br>with a defined workspace.",
+          "context": "The bar needs to be easy for guests to find while accommodating equipment and staff tasks.",
+          "decision": "An illuminated timber front separates the guest side from the workspace. Open back-bar shelves support the display. The counter drawings accommodate a sink, cooler, ice maker and keg storage.",
+          "benefit": "The room has a clear service point. Equipment has allocated space within the counter, whose frontage follows the restaurant’s design.",
+          "images": [
+            {
+              "file": "hall-013",
+              "alt": "Bar counter with an illuminated timber panel and shelving",
+              "caption": "The illuminated front marks the service point."
+            },
+            {
+              "file": "hall-012",
+              "alt": "Overall restaurant view with the bar at the end of the room",
+              "caption": "The bar remains visible from the guest seating."
+            }
+          ]
+        },
+        {
+          "anchor": "bespoke-metal-furniture-planted-screens",
+          "nav": "Bespoke furniture",
+          "title": "Furniture defines areas<br>without closing them off.",
+          "context": "In a compact restaurant, seating divisions need to preserve views between areas.",
+          "decision": "Metal mesh structures combine with planters and individual decorative lighting accents. A high table has its own seating group. Working drawings detail the frames, tables and stair-adjacent elements.",
+          "benefit": "Open elements mark seating boundaries without becoming solid walls. The high table gives guests another way to use the restaurant.",
+          "images": [
+            {
+              "file": "hall-005",
+              "alt": "Metal mesh dividers and planting beside dining tables",
+              "caption": "Mesh elements preserve views between seating groups."
+            },
+            {
+              "file": "hall-002",
+              "alt": "High table and chairs in front of a planted structure",
+              "caption": "High seating has a distinct place in the main room."
+            }
+          ]
+        },
+        {
+          "anchor": "small-lounges-botanical-wall-sofas",
+          "nav": "Small lounges",
+          "title": "Sofas for<br>a longer visit.",
+          "context": "The smaller rooms change the restaurant’s pace, with sofa groups taking the place of more open seating.",
+          "decision": "Warm brown sofas sit around rectangular tables. A botanical wall feature and green textile accents form the backdrop, while open metal elements continue the main room’s detailing.",
+          "benefit": "Groups have their own upholstered setting around a shared table. The room retains a connection to the wider interior while offering a different scale and mood.",
+          "images": [
+            {
+              "file": "hall-017",
+              "alt": "Sofas around a table in front of a botanical wall feature",
+              "caption": "A botanical wall feature forms the sofa group’s backdrop."
+            },
+            {
+              "file": "hall-019",
+              "alt": "Brown sofas and a branching light fitting in a small lounge",
+              "caption": "Sofa seating gathers around a shared table."
+            },
+            {
+              "file": "hall-016",
+              "alt": "View along a small lounge with sofas and plants",
+              "caption": "Timber finishes and greenery connect the interior."
+            },
+            {
+              "file": "hall-014",
+              "alt": "Level change and planted metal elements in a small lounge",
+              "caption": "The level change is part of the layout."
+            }
+          ]
+        },
+        {
+          "anchor": "decorative-lighting-warm-materials",
+          "nav": "Light and materials",
+          "title": "Lighting brings out<br>the tables and room depth.",
+          "context": "Timber finishes and darker surfaces call for lighting that supports both the seating and wall details.",
+          "decision": "Pendants mark the tables, directional ceiling fittings add accents, and illuminated niches and the bar add depth. Branching fittings with glass elements distinguish the sofa groups in the smaller rooms.",
+          "benefit": "Guests can distinguish individual seats and decorative details rather than just the room’s overall brightness. Different fittings suit the character of each area.",
+          "images": [
+            {
+              "file": "hall-020",
+              "alt": "Pendants above a table and high seating at Marko Luxe",
+              "caption": "Local light distinguishes individual seating areas."
+            },
+            {
+              "file": "hall-018",
+              "alt": "Decorative pendant, botanical wall and planting",
+              "caption": "The pendant’s shape complements the decorative setting."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-washroom-mirror-lighting",
+          "nav": "Guest washroom",
+          "title": "A small room<br>with considered details.",
+          "context": "The guest washroom continues the restaurant’s palette at a much smaller scale.",
+          "decision": "Dark textured walls combine with timber finishes, a compact basin and an angular mirror. Directional lighting and green decor add accents without a separate large fitting.",
+          "benefit": "The supporting room has a recognisable identity. A mirror and local lighting mark the basin, while compact fittings suit the room’s dimensions.",
+          "images": [
+            {
+              "file": "wc-02",
+              "alt": "Compact basin and mirror on a dark washroom wall",
+              "caption": "The mirror and lighting define the basin area."
+            },
+            {
+              "file": "wc-01",
+              "alt": "Dark guest washroom with timber finishes",
+              "caption": "The finishes continue the restaurant palette."
+            }
+          ]
+        },
+        {
+          "anchor": "washroom-handrails-spatial-layout",
+          "nav": "Washroom with handrails",
+          "title": "More attention<br>to different guest needs.",
+          "context": "The layout provides a separate, larger washroom with handrails.",
+          "decision": "The basin and toilet are arranged with supporting handrails. The mirror, timber finishes and green elements repeat the other guest areas. Plans and elevations detail the equipment positions.",
+          "benefit": "The design considers guests who need additional support. The room retains the same character as the rest of the restaurant.",
+          "images": [
+            {
+              "file": "accessible-wc-01",
+              "alt": "Basin, mirror and handrails in the larger washroom",
+              "caption": "Supporting elements are considered in the equipment layout."
+            },
+            {
+              "file": "accessible-wc-03",
+              "alt": "Toilet with handrails and timber washroom finishes",
+              "caption": "Handrails sit within the venue’s shared palette."
+            }
+          ]
+        },
+        {
+          "anchor": "restaurant-planning-guest-service-zones",
+          "nav": "Layout",
+          "title": "Defined places<br>for guests and service.",
+          "context": "The project covers 127 m². The remodelled plan separates the main room, two smaller areas at different levels, and the kitchen and bar.",
+          "decision": "The main room occupies about 47 m², the small rooms together about 32 m², and the kitchen and bar about 31 m². Washrooms, corridors and supporting rooms account for the remaining area. Furniture placement responds to existing windows and level changes.",
+          "benefit": "The interior provides guest areas with different moods and a separate service zone. The layout connects decorative decisions with the actual premises.",
+          "images": []
+        },
+        {
+          "anchor": "kitchen-bar-technical-coordination",
+          "nav": "Kitchen and bar",
+          "title": "Service planning<br>beyond the guest-facing view.",
+          "context": "A restaurant interior needs furniture coordinated with kitchen work, bar service and utility connections.",
+          "decision": "Technology plans locate sinks, worktops, refrigeration and shelving. Plumbing and electrical drawings position connections around the equipment, and counter drawings detail the bar workspace.",
+          "benefit": "The team has a coordinated basis for organising service and fabricating furniture. The guest-facing design remains consistent with the technical work behind it.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-kitchen-ventilation-design",
+          "nav": "Ventilation",
+          "title": "Ventilation considered<br>alongside the layout.",
+          "context": "Guest seating and kitchen equipment have different ventilation needs.",
+          "decision": "The ventilation documents provide supply and extract ducts, local kitchen extraction and a heat-recovery unit. Routes relate to equipment positions and room volumes as part of the engineering design.",
+          "benefit": "The system can be coordinated with the interior before installation, with space allocated for its components. Guest comfort is considered alongside the service areas.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-lighting-scenes-potential",
+          "nav": "Lighting scenes",
+          "title": "Lighting can adapt<br>to the evening’s pace.",
+          "context": "Pendants, ceiling accents, niches and the bar serve different purposes. Separate control is a logical extension of the design.",
+          "decision": "Recommended settings include room preparation, guest service and cleaning. An evening setting could give tables, the bar and decorative surfaces their own lighting balance. Implementation requires compatible fittings and drivers and verified electrical groups.",
+          "benefit": "With compatible equipment, staff could select the required lighting through one scene. This is automation potential, not a claim that a system was installed.",
+          "images": []
+        },
+        {
+          "anchor": "restaurant-climate-water-security-potential",
+          "nav": "Climate and monitoring",
+          "title": "Engineering can support<br>the restaurant’s daily routine.",
+          "context": "Ventilation and plumbing points provide a concrete basis for further control and monitoring.",
+          "decision": "Possible extensions include coordinated ventilation, heating or cooling settings suited to the equipment and opening hours. Leak monitoring is relevant near kitchen and bar sinks. Security scenarios and control of curtains or blinds require a separately defined system scope and compatible drives.",
+          "benefit": "These scenarios could simplify preparation before opening and checks after closing. They should be designed around the restaurant’s actual routine rather than presented as part of the confirmed interior work.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Guest experience<br>supported by technical design.",
+      "outcome": "Marko Luxe combines the main dining room, smaller lounges and a bar through timber finishes, planted metalwork and layered lighting. The design also develops custom furniture, kitchen technology, utility connections and ventilation. Recommended automation scenarios describe a possible next step, separate from the confirmed project scope.",
+      "faq": [
+        {
+          "question": "What does the 127 m² area include?",
+          "answer": "The area includes the main room, two smaller room areas, kitchen and bar, washrooms, corridors and supporting spaces in the remodelled plan."
+        },
+        {
+          "question": "What gives Marko Luxe its character?",
+          "answer": "Timber finishes, warm brown seating and botanical graphics work with planted metal screens and illuminated niches. The main room and smaller lounges offer different seating settings within the same palette."
+        },
+        {
+          "question": "Does the project include kitchen and bar planning?",
+          "answer": "Yes. Technology plans, plumbing and electrical connections, ventilation and counter details support the guest-facing interior. Bar drawings allocate space for a sink, refrigeration, an ice maker and keg storage."
+        },
+        {
+          "question": "Which furniture elements are custom designed?",
+          "answer": "The working drawings detail tables, the bar counter, metal mesh structures and elements beside the stairs. Their proportions and equipment positions respond to the layout."
+        },
+        {
+          "question": "Can lighting and building systems be automated?",
+          "answer": "Lighting scenes, equipment-dependent climate schedules and leak monitoring near the sinks are recommended extensions. Their implementation requires separate engineering and compatible equipment; installed automation is not claimed."
+        }
+      ],
+      "source_note": "Internal: Drive2021_Marko Luxe/del Marko folder1wQk4OXcnLqV5ySrcLBq8pEfaijVTFwK7. Owner confirmed Lviv and used Marko Luxe name on2026-10-15. Year2021 supported by folder and PDF creation2021-07-22, established PDF-year workflow. Main album44pages fully reviewed, logo1page, standalone technical PDFs25pages reviewed; old PNG kitchen plan reviewed. Area remodelled planp6 sums46.72+15.28+16.22+31.36+1.71+3.96+1.67+3.30+4.34+2.42=126.98 ->127m². Do not combine older measured130.94m² onp2. All25finalrenders reviewed;18distinct selected excluding alternate camera007/024 edits. All46surveyphotos reviewed;110.79s site video visually reviewed using111 one-second frames across full duration. Survey evidence is unfinished shell, not completion proof; audio not used as factual source. Raw photos/video/drawings excluded from publication. Duplicate screening25renders against501publishedsourceimages min dHash13/64 foundnoidentity; distinct from MarkoSoli retailstores. No installed automation evidence. Lighting/heating/climate/curtains-blinds/security/water assessed as recommendations requiring compatible equipment; exterior systems outside interior scope and not claimed. Technical plans show ventilation supply/extract/localhoods/heat-recovery, plumbing/electrical connections and custom bar equipment allocation, not installation/compliance certification. Sourcearchive /tmp/piskor-del-marko.mY99Uk/intake.md."
+    }
   }
 }

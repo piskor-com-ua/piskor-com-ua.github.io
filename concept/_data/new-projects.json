@@ -1,4 +1,404 @@
 {
+  "green-accent-loft-apartment": {
+    "uk": {
+      "eyebrow": "Дизайн інтер’єру · Компактна квартира",
+      "title": "Компактний лофт<br><span>із зеленим акцентом.</span>",
+      "summary": "Квартира площею 37 м² зі скляною спальнею, відкритою кухнею-їдальнею, індивідуальним зберіганням і повноцінною ванною. Зелений текстиль пов’язує цеглу, дерево та темний кам’яний рисунок.",
+      "location": "Львів",
+      "area": "37 м²",
+      "property": "Квартира",
+      "cover": "living-01",
+      "cover_alt": "Вітальня та їдальня із зеленими шторами, цегляними стінами й деревними шафами",
+      "intro_title": "Невелика площа.<br>Окремі місця для життя.",
+      "intro": "Скло відділяє зону сну й залишає видимими вікна. Вбудовані меблі не лише вміщують речі: вони організують вхід, доповнюють спальню й формують фон спільної кімнати. Світла цегла сусідить із зеленим текстилем, теплим деревом та темним кам’яним рисунком.",
+      "chapters": [
+        {
+          "anchor": "compact-apartment-space-planning",
+          "nav": "Планування",
+          "title": "37 м²<br>із повноцінною спальнею.",
+          "context": "Невелика квартира має вмістити окреме місце для сну й відкритий простір для спільного часу.",
+          "decision": "Кухня, обідній стіл і диван розташовані біля двох вікон. Спальню відділяє скляна перегородка, а вхід і санвузол займають окрему частину плану. Зберігання зібране біля входу та ліжка.",
+          "benefit": "Прозора межа зберігає огляд кімнати й доступ світла до спальні. Мешканці отримують різні зони без суцільної стіни посеред квартири.",
+          "images": [
+            {
+              "file": "layout-01",
+              "alt": "Відкрита кімната з диваном, столом і кухнею біля вікон",
+              "caption": "Спільні функції розташовані у світлій частині квартири."
+            },
+            {
+              "file": "layout-02",
+              "alt": "Скляна спальня поруч із вітальнею та меблевою стіною",
+              "caption": "Скло позначає межу спальні, залишаючи кімнату візуально відкритою."
+            }
+          ]
+        },
+        {
+          "anchor": "living-room-green-textiles",
+          "nav": "Вітальня",
+          "title": "М’яка зона<br>біля денного світла.",
+          "context": "Диван стоїть поруч із великими вікнами та обіднім столом.",
+          "decision": "Кутова м’яка секція, круглий журнальний столик і виразний килим утворюють місце для відпочинку. Темно-зелені штори й подушки підтримують колір обідніх крісел; біла стеля та світла цегла залишають верхню частину кімнати легкою.",
+          "benefit": "Вітальня зручна для розмов і короткого відпочинку. Текстиль відділяє її від кухні без додаткових перегородок.",
+          "images": [
+            {
+              "file": "living-01",
+              "alt": "Кутовий диван біля вікон із зеленими шторами",
+              "caption": "Великі вікна освітлюють диван і стіл."
+            },
+            {
+              "file": "living-02",
+              "alt": "Вітальня з круглим столиком і виразним килимом",
+              "caption": "Килим збирає м’яку зону в окрему композицію."
+            }
+          ]
+        },
+        {
+          "anchor": "kitchen-dining-bespoke-cabinetry",
+          "nav": "Кухня та їдальня",
+          "title": "Готувати й вечеряти<br>в одному просторі.",
+          "context": "Кухня залишається відкритою до вітальні, тому техніка й зберігання мають вписатися у загальну композицію.",
+          "decision": "Темні нижні фасади поєднані з деревними верхніми шафами та фартухом із кам’яним рисунком. Круглий стіл доповнюють зелені м’які крісла й власний підвісний світильник. Робоча поверхня має окрему підсвітку.",
+          "benefit": "Стіл розташований поруч із місцем приготування їжі. Кухонні шафи тримають посуд і прилади в одному блоці, залишаючи спільну кімнату для відпочинку.",
+          "images": [
+            {
+              "file": "kitchen-dining-01",
+              "alt": "Круглий стіл із зеленими кріслами перед кухонними фасадами",
+              "caption": "Окремий підвісний світильник позначає обідню зону."
+            },
+            {
+              "file": "kitchen-dining-02",
+              "alt": "Кухня з деревними шафами й темними нижніми фасадами поруч зі скляною спальнею",
+              "caption": "Робочий блок узгоджений із входом та скляною перегородкою."
+            }
+          ]
+        },
+        {
+          "anchor": "glass-bedroom-daylight",
+          "nav": "Скляна спальня",
+          "title": "Окрема зона сну<br>без втрати світла.",
+          "context": "Спальня розташована далі від вікон, але залишається частиною світлого інтер’єру.",
+          "decision": "Скло у темних рамах відділяє ліжко від спільної кімнати. Деревна підлога й темний текстиль роблять спальню затишнішою. Портретне зображення на стіні додає акценту, а високі меблеві секції збирають одяг біля ліжка.",
+          "benefit": "Зона сну має визначені межі й зв’язок із денним світлом. Ліжко відділене від основного руху кімнатою, а скляна площина зберігає відчуття спільного простору.",
+          "images": [
+            {
+              "file": "bedroom-01",
+              "alt": "Ліжко й високі секції зберігання у скляній спальні",
+              "caption": "Зберігання розташоване поруч із зоною сну."
+            },
+            {
+              "file": "bedroom-02",
+              "alt": "Вид зі спальні крізь скло на диван і великі вікна",
+              "caption": "Прозора межа залишає видимою світлу частину квартири."
+            }
+          ]
+        },
+        {
+          "anchor": "entrance-wardrobe-mirror",
+          "nav": "Зберігання та вхід",
+          "title": "Високі меблі<br>працюють з обох боків.",
+          "context": "У компактній квартирі кожен додатковий предмет впливає на проходи.",
+          "decision": "Висока меблева композиція поєднує відкриті секції для одягу, деревні фасади й дзеркальну площину. Вона розташована на межі входу та спальні. Світло під верхніми секціями допомагає користуватися зберіганням.",
+          "benefit": "Речі мають визначені місця, а дзеркало доступне біля входу. Один меблевий блок організує кілька функцій без окремих шаф у кожній зоні.",
+          "images": [
+            {
+              "file": "storage-01",
+              "alt": "Меблева композиція з деревними фасадами та відкритими секціями для одягу",
+              "caption": "Відкриті й закриті секції зібрані в одному блоці."
+            },
+            {
+              "file": "storage-02",
+              "alt": "Дзеркальна площина біля входу на тлі кухні",
+              "caption": "Дзеркало доповнює щоденний сценарій виходу."
+            }
+          ]
+        },
+        {
+          "anchor": "brick-timber-green-materials",
+          "nav": "Фактури та колір",
+          "title": "Цегла й дерево.<br>Зелений текстиль.",
+          "context": "Характер квартири створюють виразні поверхні, а не велика кількість декоративних предметів.",
+          "decision": "Світла й червона цегла поєднані з деревними меблями, кам’яним рисунком та темними металевими рамами. Зелені штори й крісла пов’язують зони. На меблевій стіні відкриті полиці чергуються з глухими фасадами.",
+          "benefit": "Кожна зона має власний акцент, але палітра залишається спільною. Так компактний простір виглядає цілісним навіть із різними матеріалами.",
+          "images": [
+            {
+              "file": "materials-01",
+              "alt": "Вітальня з виразним килимом, зеленими шторами й деревними шафами",
+              "caption": "Текстиль підтримує спільну палітру житлових зон."
+            },
+            {
+              "file": "materials-02",
+              "alt": "Їдальня на тлі червоної цегли та меблевої стіни з полицями",
+              "caption": "Червона цегла та полиці формують фон спільної кімнати."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-dark-stone-timber",
+          "nav": "Санвузол",
+          "title": "Темний кам’яний рисунок<br>і теплі меблеві деталі.",
+          "context": "Санвузол має повноцінну ванну, умивальник і зберігання у невеликому приміщенні.",
+          "decision": "Темні поверхні з кам’яним рисунком поєднані з деревними фасадами. Чаша умивальника стоїть на стільниці, високі шафи збирають засоби, а дзеркало й вузькі підсвічені ніші додають глибини. Скло та шторка відділяють зону ванни.",
+          "benefit": "Щоденні речі розташовані біля потрібної зони. Світло біля дзеркала й стелі дозволяє користуватися кімнатою без одного різкого центрального акценту.",
+          "images": [
+            {
+              "file": "bathroom-01",
+              "alt": "Ванна й накладний умивальник у темному санвузлі",
+              "caption": "Повноцінна ванна розташована вздовж стіни."
+            },
+            {
+              "file": "bathroom-02",
+              "alt": "Умивальник і деревні шафи на тлі кам’яного рисунка",
+              "caption": "Високі фасади дають місце для щоденних засобів."
+            },
+            {
+              "file": "bathroom-03",
+              "alt": "Вид від ванни на дзеркало та зберігання санвузла",
+              "caption": "Дзеркало підтримує огляд вузької кімнати."
+            },
+            {
+              "file": "bathroom-04",
+              "alt": "Деталь накладної чаші, стільниці та підсвічених ніш",
+              "caption": "Невеликі ніші доповнюють основне зберігання."
+            }
+          ]
+        },
+        {
+          "anchor": "lighting-circuits-and-scene-potential",
+          "nav": "Освітлення",
+          "title": "Світло для кухні,<br>відпочинку й особистих справ.",
+          "context": "Квартира має кілька сценаріїв користування в одному невеликому просторі.",
+          "decision": "Проєкт передбачає трекове освітлення, бра й окремі LED-виводи. Підсвітка кухні, меблів і периметра стелі доповнює основні прилади. Для розвитку можна розглянути об’єднання сумісних груп у сцени вечері, відпочинку та виходу.",
+          "benefit": "Різні справи не вимагають однаково яскравої всієї кімнати. Автоматичні сцени потребують окремого підбору обладнання й не подаються як встановлена система.",
+          "images": []
+        },
+        {
+          "anchor": "heating-curtains-water-security-potential",
+          "nav": "Можливості автоматизації",
+          "title": "Додаткові сценарії<br>для щоденного комфорту.",
+          "context": "Вікна зі щільними шторами, радіатори й сантехнічні точки дають підстави розглянути наступні кроки автоматизації.",
+          "decision": "Для сумісного обладнання доречні регулювання опалення за розкладом, моторизовані штори та захист від протікань із перекриттям води. Контроль входу й узгоджене керування кліматом можна включити до окремого завдання на системи.",
+          "benefit": "Такі доповнення можуть зменшити кількість щоденних дій. Це рекомендований напрям розвитку, який потребує окремого проєктування, перевірки сумісності та монтажу обладнання.",
+          "images": []
+        }
+      ],
+      "outcome_title": "Компактний інтер’єр<br>із узгодженими деталями.",
+      "outcome": "Проєкт визначає планування квартири, меблеві композиції, оздоблення та розташування світла. Кухонні розгортки узгоджують шафи, розетки й LED-виводи; візуалізації показують зв’язок спальні та спільної кімнати. Можливі сценарії автоматизації відділені від підтверджених дизайнерських рішень.",
+      "faq": [
+        {
+          "question": "Яку площу охоплює проєкт?",
+          "answer": "37 м² після округлення зазначеної загальної площі. Планування поєднує кухню-вітальню, скляну спальню, вхідне зберігання й санвузол."
+        },
+        {
+          "question": "Навіщо спальню відділили склом?",
+          "answer": "Воно позначає зону сну, залишаючи доступ денного світла й огляд кімнати. Це візуальна межа, а не обіцянка повної акустичної приватності."
+        },
+        {
+          "question": "Чи можна автоматизувати світло й опалення?",
+          "answer": "У проєкті є різні рівні освітлення. Світлові сцени, розклад опалення, приводи штор і захист від протікань можна розглянути як окремі доповнення з підбором сумісного обладнання."
+        }
+      ],
+      "source_note": "Drive folder 2020_Квартира пана Андрія. PDF yefremova.pdf id1FDzC7rOAm9EDnjkwUUqx3yZp9wGRjqSr: one page16,12Nov2020; explicit total36.9m² ->37. Owner confirmed Lviv as the location on 14 October 2026; city was not inferred from street filename. Full19 source images reviewed; floor-plan image05 excluded; bathroom02/03 duplicate view and01/18 repeated view not both used. Selected16 distinct renders. Compared19 source images with445 existing1440 portfolio visuals: no identity match, min dHash12; Odesa47m² has different floorplan, kitchen and bedroom art. Only track/wall/LED design positions confirmed, no installed automation. No construction-status claim. No private client name public."
+    },
+    "en": {
+      "eyebrow": "Interior design · Compact apartment",
+      "title": "A compact loft<br><span>with green accents.</span>",
+      "summary": "A 37 m² apartment with a glazed bedroom, open kitchen and dining area, bespoke storage and a full bath. Green textiles connect brick, timber and dark stone patterns.",
+      "location": "Lviv",
+      "area": "37 m²",
+      "property": "Apartment",
+      "cover": "living-01",
+      "cover_alt": "Living and dining area with green curtains, brick walls and timber-look cabinets",
+      "intro_title": "A small footprint.<br>Distinct places to live.",
+      "intro": "Glass separates the sleeping area while retaining a view towards the windows. Fitted furniture does more than hold belongings: it defines the entrance, supports the bedroom and gives the shared room its backdrop. The palette combines pale brick with green textiles, warm timber and dark stone patterns.",
+      "chapters": [
+        {
+          "anchor": "compact-apartment-space-planning",
+          "nav": "Planning",
+          "title": "37 m²<br>with a dedicated bedroom.",
+          "context": "The small apartment needs a separate sleeping space and an open area for spending time together.",
+          "decision": "The kitchen, dining table and sofa sit beside two windows. A glazed partition defines the bedroom; the entrance and bathroom occupy a separate part of the plan. Storage is grouped near the entrance and bed.",
+          "benefit": "The transparent boundary preserves the view and lets light reach the bedroom. The layout provides distinct zones without a solid wall through the middle.",
+          "images": [
+            {
+              "file": "layout-01",
+              "alt": "Open room with sofa, table and kitchen beside the windows",
+              "caption": "Shared activities occupy the bright part of the apartment."
+            },
+            {
+              "file": "layout-02",
+              "alt": "Glazed bedroom beside the living area and fitted wall",
+              "caption": "Glass defines the bedroom while keeping the room visually open."
+            }
+          ]
+        },
+        {
+          "anchor": "living-room-green-textiles",
+          "nav": "Living room",
+          "title": "Comfortable seating<br>beside the daylight.",
+          "context": "The sofa sits beside large windows and close to the dining table.",
+          "decision": "A corner sofa, round coffee table and patterned rug create the sitting area. Deep-green curtains and cushions echo the dining chairs; the white ceiling and pale brick keep the upper part of the room light.",
+          "benefit": "The setting supports conversation and everyday rest. Textiles distinguish it from the kitchen without additional partitions.",
+          "images": [
+            {
+              "file": "living-01",
+              "alt": "Corner sofa beside windows with green curtains",
+              "caption": "Large windows light both the sofa and table."
+            },
+            {
+              "file": "living-02",
+              "alt": "Living area with a round table and patterned rug",
+              "caption": "The rug brings the seating area together."
+            }
+          ]
+        },
+        {
+          "anchor": "kitchen-dining-bespoke-cabinetry",
+          "nav": "Kitchen and dining",
+          "title": "Cooking and dining<br>in one shared space.",
+          "context": "The kitchen remains open to the living area, so appliances and storage need to suit the overall composition.",
+          "decision": "Dark lower fronts meet timber-look upper units and a stone-pattern splashback. Green upholstered chairs and a dedicated pendant surround the round table. The worktop has its own lighting.",
+          "benefit": "The table is close to the cooking area. Kitchen cabinets keep crockery and appliances together, leaving the shared room available for relaxing.",
+          "images": [
+            {
+              "file": "kitchen-dining-01",
+              "alt": "Round table with green chairs in front of kitchen cabinetry",
+              "caption": "A dedicated pendant marks the dining area."
+            },
+            {
+              "file": "kitchen-dining-02",
+              "alt": "Kitchen with timber-look cabinets and dark lower fronts beside the glazed bedroom",
+              "caption": "The working area is coordinated with the entrance and glazed partition."
+            }
+          ]
+        },
+        {
+          "anchor": "glass-bedroom-daylight",
+          "nav": "Glazed bedroom",
+          "title": "A defined sleeping area<br>that keeps the light.",
+          "context": "The bedroom sits further from the windows but remains part of the bright interior.",
+          "decision": "Dark-framed glass separates the bed from the shared room. Timber flooring and dark bedding give the bedroom a quieter atmosphere. A portrait on the wall adds an accent, with tall storage units keeping clothing near the bed.",
+          "benefit": "The sleeping area has clear boundaries and a connection to daylight. The bed sits away from the main circulation route, while the glazed boundary retains the sense of a shared space.",
+          "images": [
+            {
+              "file": "bedroom-01",
+              "alt": "Bed and tall storage units in the glazed bedroom",
+              "caption": "Storage sits beside the sleeping area."
+            },
+            {
+              "file": "bedroom-02",
+              "alt": "View from the bedroom through glass towards the sofa and large windows",
+              "caption": "The transparent boundary retains the view towards the windows."
+            }
+          ]
+        },
+        {
+          "anchor": "entrance-wardrobe-mirror",
+          "nav": "Storage and entrance",
+          "title": "Tall furniture<br>serves both sides.",
+          "context": "In a compact apartment, every additional object affects circulation.",
+          "decision": "A tall fitted composition combines open hanging spaces, timber-look fronts and a mirror. It sits between the entrance and bedroom, with lighting beneath the upper compartments.",
+          "benefit": "Belongings have defined places and a mirror is available at the entrance. One fitted unit supports several functions without separate cupboards in every zone.",
+          "images": [
+            {
+              "file": "storage-01",
+              "alt": "Fitted composition with timber-look fronts and open hanging compartments",
+              "caption": "Open and closed compartments share one fitted unit."
+            },
+            {
+              "file": "storage-02",
+              "alt": "Mirror panel near the entrance with the kitchen behind",
+              "caption": "The mirror supports the everyday leaving-home routine."
+            }
+          ]
+        },
+        {
+          "anchor": "brick-timber-green-materials",
+          "nav": "Materials and colour",
+          "title": "Brick and timber.<br>Green textiles.",
+          "context": "Expressive surfaces give the apartment its character without relying on numerous decorative objects.",
+          "decision": "Pale and red brick meet timber-look furniture, stone patterns and dark metal frames. Green curtains and chairs connect the zones. Open shelves alternate with closed fronts on the fitted wall.",
+          "benefit": "Each zone has its own accent within a shared palette. Different materials still read as one compact interior.",
+          "images": [
+            {
+              "file": "materials-01",
+              "alt": "Living area with a patterned rug, green curtains and timber-look cabinets",
+              "caption": "Textiles support the shared palette of the living areas."
+            },
+            {
+              "file": "materials-02",
+              "alt": "Dining area against red brick and fitted shelving",
+              "caption": "Red brick and shelves form the backdrop to the shared room."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-dark-stone-timber",
+          "nav": "Bathroom",
+          "title": "Dark stone patterns<br>and warm cabinet details.",
+          "context": "The compact bathroom has a full bath, basin and storage.",
+          "decision": "Dark stone-pattern surfaces meet timber-look fronts. A countertop bowl, tall cabinets, mirror and narrow illuminated niches organise the room. Glass and a curtain separate the bath area.",
+          "benefit": "Everyday items stay close to where they are used. Mirror and ceiling lighting spread the light rather than relying on one harsh central fitting.",
+          "images": [
+            {
+              "file": "bathroom-01",
+              "alt": "Bath and countertop basin in the dark bathroom",
+              "caption": "A full bath runs along the wall."
+            },
+            {
+              "file": "bathroom-02",
+              "alt": "Basin and timber-look cabinets against stone patterns",
+              "caption": "Tall cabinets provide room for everyday products."
+            },
+            {
+              "file": "bathroom-03",
+              "alt": "View from the bath towards the mirror and bathroom storage",
+              "caption": "The mirror extends the view in the narrow room."
+            },
+            {
+              "file": "bathroom-04",
+              "alt": "Countertop bowl, vanity surface and illuminated niche detail",
+              "caption": "Small niches complement the main storage."
+            }
+          ]
+        },
+        {
+          "anchor": "lighting-circuits-and-scene-potential",
+          "nav": "Lighting",
+          "title": "Light for cooking,<br>relaxing and personal routines.",
+          "context": "Several everyday activities share a small space.",
+          "decision": "The design provides track lights, wall lamps and separate LED outlets. Kitchen, furniture and ceiling-perimeter lighting complement the main fittings. Compatible circuits could later be combined into dining, relaxing and leaving-home scenes.",
+          "benefit": "Different activities do not need the same brightness throughout the room. Automated scenes require separate equipment selection and are not presented as an installed system.",
+          "images": []
+        },
+        {
+          "anchor": "heating-curtains-water-security-potential",
+          "nav": "Automation options",
+          "title": "Further scenarios<br>for everyday comfort.",
+          "context": "Curtained windows, radiators and plumbing points suggest practical next steps for automation.",
+          "decision": "Compatible equipment could support scheduled heating, motorised curtains and leak detection with water shut-off. Entrance monitoring and coordinated climate control could form part of a separate systems brief.",
+          "benefit": "These additions could reduce routine actions. They are recommended options requiring separate systems design, compatibility checks and equipment installation.",
+          "images": []
+        }
+      ],
+      "outcome_title": "A compact interior<br>with coordinated details.",
+      "outcome": "The project defines the apartment layout, furniture, finishes and lighting positions. Kitchen elevations coordinate cabinets, sockets and LED outlets; selected visualisations show how the sleeping and shared areas fit together. Possible automation extensions remain separate from the confirmed design decisions.",
+      "faq": [
+        {
+          "question": "How much space does the design cover?",
+          "answer": "37 m², rounded from the stated total area. The layout includes a kitchen and living area, a glazed bedroom, entrance storage and bathroom."
+        },
+        {
+          "question": "Why use glass around the bedroom?",
+          "answer": "It defines the sleeping area while allowing daylight and views across the room. It is a visual boundary rather than a promise of complete acoustic privacy."
+        },
+        {
+          "question": "Can the lighting and heating be automated?",
+          "answer": "The design includes distinct lighting layers. Scenes, heating schedules, curtain motors and leak protection can be explored with compatible equipment as separate additions."
+        }
+      ],
+      "source_note": "Drive folder 2020_Квартира пана Андрія. PDF yefremova.pdf id1FDzC7rOAm9EDnjkwUUqx3yZp9wGRjqSr: one page16,12Nov2020; explicit total36.9m² ->37. Owner confirmed Lviv as the location on 14 October 2026; city was not inferred from street filename. Full19 source images reviewed; floor-plan image05 excluded; bathroom02/03 duplicate view and01/18 repeated view not both used. Selected16 distinct renders. Compared19 source images with445 existing1440 portfolio visuals: no identity match, min dHash12; Odesa47m² has different floorplan, kitchen and bedroom art. Only track/wall/LED design positions confirmed, no installed automation. No construction-status claim. No private client name public."
+    }
+  },
   "berloha-lounge-bar-lviv": {
     "uk": {
       "eyebrow": "Дизайн бару · Львів",

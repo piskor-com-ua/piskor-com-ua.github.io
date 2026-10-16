@@ -1,4 +1,340 @@
 {
+  "shingle-house-pidriasne": {
+    "uk": {
+      "eyebrow": "Архітектура будинку · Підрясне",
+      "title": "Дім із садовими<br><span>двориками.</span>",
+      "summary": "Shingle House у Підрясному, 227 м². Житлові крила охоплюють невеликі сади, а високе скління відкриває будинок до тераси. Заглиблена посадка біля вогню й окрема зона із сауною дають різні способи відпочивати вдома.",
+      "cover": "house-garden-day",
+      "cover_alt": "Shingle House у Підрясному з високим заскленим фронтоном, фактурними фасадами та критою терасою",
+      "location": "Підрясне, Львівська область",
+      "area": "227 м²",
+      "property": "Двоповерховий будинок",
+      "intro_title": "Сад поруч<br>із кімнатами.",
+      "intro": "Планування залишає між крилами будинку озеленені дворики. Вони з’являються біля сполучних проходів і розділяють великі об’єми на менші частини. Спільна кухня-вітальня розкривається до тераси, а спальні другого поверху мають власний хол. Зовні цю різницю підтримують високий двосхилий об’єм і нижчі крила з широкими горизонтальними накриттями.",
+      "chapters": [
+        {
+          "anchor": "glazed-gable-textured-facades",
+          "nav": "Архітектура й матеріали",
+          "title": "Високе скління<br>між фактурними фасадами.",
+          "context": "З боку саду будинок має виразний вертикальний акцент. Поруч нижчі накриття й широкі вікна задають спокійнішу горизонтальну лінію.",
+          "decision": "Засклений фронтон обрамлений деревною площиною. Темні панелі переходять зі схилів даху на стіни; лускате оздоблення сусідніх об’ємів дає дрібнішу фактуру. Світлі панелі з регулярним рисунком отворів і тонкі опори навісів розділяють масивні та відкриті частини фасаду.",
+          "benefit": "Будинок легко впізнати за силуетом. Велике скління залишає зв’язок із садом, а фактурні площини додають деталей у близьких ракурсах, біля вікон і тераси.",
+          "images": [
+            {
+              "file": "house-garden-day",
+              "alt": "Денний ракурс Shingle House у Підрясному з високим склінням, темним двосхилим об’ємом і лускатим оздобленням",
+              "caption": "Високий фронтон збирає композицію між нижчими крилами будинку."
+            },
+            {
+              "file": "house-garden-evening",
+              "alt": "Той самий фасад Shingle House увечері з освітленими кімнатами та критою терасою",
+              "caption": "Увечері світло кімнат підкреслює глибину скління й форму об’ємів."
+            }
+          ]
+        },
+        {
+          "anchor": "two-storey-planning-garden-courts",
+          "nav": "Планування 227 м²",
+          "title": "Спільне життя внизу.<br>Окремий поверх для спалень.",
+          "context": "Два поверхи дозволяють розділити щоденне спілкування, приймання гостей і приватний відпочинок. Садові дворики проходять між житловою та допоміжною частинами.",
+          "decision": "На нижньому рівні вітальня переходить у кухню з островом та обіднім столом. Хол зі сходами пов’язує її з гостьовою спальнею, санвузлами й господарськими приміщеннями. На другому поверсі розташовані дві спальні, ванна кімната та хол із місцем для сидіння. Озеленені проміжки залишаються відкритими між крилами, а не заповнюються додатковими кімнатами.",
+          "benefit": "Гостьова спальня на першому поверсі дає можливість розмістити гостей окремо від верхніх спалень. Родина може користуватися спільною зоною внизу й переходити до тихішої частини будинку для відпочинку."
+        },
+        {
+          "anchor": "garden-terrace-courtyard-connection",
+          "nav": "Садова сторона",
+          "title": "Тераса продовжує<br>житлові простори.",
+          "context": "З боку саду відкриті місця для відпочинку розташовані вздовж засклених фасадів. Невеликі дерева й нижчі посадки заповнюють простір між крилами.",
+          "decision": "Зовнішні дивани стоять на широкій терасі перед високими вікнами. Далі розміщена чаша басейну, а сходинки поєднують різні рівні зовнішнього простору. Площина тераси має чітку крайку над озелененням. У вечірній світловій композиції окремо виділені сходинки, рослини та фактурні стіни.",
+          "benefit": "Для відпочинку надворі є кілька місць поряд із будинком. Сад видно і з тераси, і крізь великі вікна, а дворики розділяють сусідні частини фасаду зеленню.",
+          "images": [
+            {
+              "file": "garden-courts-day",
+              "alt": "Садовий фасад Shingle House з терасою, зовнішніми диванами, басейном і деревом між крилами",
+              "caption": "Місця відпочинку й озеленені проміжки продовжуються вздовж садового фасаду."
+            },
+            {
+              "file": "garden-courts-night",
+              "alt": "Нічна візуалізація садового фасаду з підсвіченими сходинками, рослинами й лускатими стінами",
+              "caption": "Окремі світлові акценти розрізняють крайку тераси, сходи й озеленення."
+            }
+          ]
+        },
+        {
+          "anchor": "sunken-terrace-fire-lounge",
+          "nav": "Заглиблена тераса",
+          "title": "Посадка біля вогню<br>під широким навісом.",
+          "context": "Одна із зовнішніх зон має камерніший характер. Місця для сидіння опущені нижче навколишнього настилу й зібрані навколо вогнища.",
+          "decision": "М’яка посадка обрамлює заглиблену частину тераси. Навіс на тонких темних опорах прикриває її зверху, не закриваючи вид у сад. Поряд проходять широкі сходинки; у вечірньому варіанті їхні крайки позначені лінійним світлом. Направлені світильники під навісом зосереджені на зоні відпочинку.",
+          "benefit": "Тут можна зібратися ближче одне до одного, окремо від широкої відкритої тераси. Сидіння не перекривають огляд із будинку, а освітлені сходинки показують перехід між рівнями ввечері.",
+          "images": [
+            {
+              "file": "sunken-lounge-day",
+              "alt": "Заглиблена м’яка посадка навколо вогнища під навісом Shingle House",
+              "caption": "Посадка нижче рівня тераси залишає відкритим вид у сад."
+            },
+            {
+              "file": "sunken-lounge-evening",
+              "alt": "Вечірня зона відпочинку біля вогню з направленим світлом і підсвіченими сходинками",
+              "caption": "Локальне світло біля сидінь поєднане з лініями світла на сходах."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-parking-arrival",
+          "nav": "Паркування й прибуття",
+          "title": "Місце для двох авто<br>в архітектурі будинку.",
+          "context": "Крите паркування розташоване біля одного з нижчих крил. Його навіс продовжує горизонтальні лінії фасаду.",
+          "decision": "Два автомобілі стоять поруч під спільним накриттям. Широкі опори мають те саме світле панельне оздоблення, що й стіни будинку, а темна крайка навісу повторює обрамлення дахів. У вечірньому варіанті світло виділяє опори й прилеглі посадки, залишаючи зрозумілою межу паркування.",
+          "benefit": "Паркування має визначене місце поряд із будинком, а не займає садову терасу. Навіс виглядає частиною загального проєкту, тому практична зона не порушує образ фасадів.",
+          "images": [
+            {
+              "file": "carport-day",
+              "alt": "Крите паркування на два автомобілі біля Shingle House з широкими світлими опорами та темним навісом",
+              "caption": "Два паркомісця зібрані під навісом, узгодженим із фасадами."
+            },
+            {
+              "file": "carport-evening",
+              "alt": "Вечірній ракурс паркування Shingle House з освітленими опорами, рослинами й фактурним фасадом",
+              "caption": "Світлові акценти позначають опори навісу та озеленення поруч."
+            }
+          ]
+        },
+        {
+          "anchor": "home-gym-sauna-service-wing",
+          "nav": "Відпочинок і побут",
+          "title": "Тренування й сауна<br>у власному будинку.",
+          "context": "Перший поверх вміщує більше, ніж спільну житлову зону. Окреме крило збирає місця для занять і відновлення поруч із допоміжними приміщеннями.",
+          "decision": "Тренажерна кімната розташована поруч із сауною та санвузлом. Технічне приміщення має окреме місце біля холу; у ньому відведені місця для мийки й господарського обладнання. Гостьова спальня залишається в іншій частині цього крила, поруч із ще одним санвузлом.",
+          "benefit": "Для тренування чи відпочинку після нього не потрібно залишати дім. Побутові функції мають окремі приміщення, тому вони не займають місце в кухні-вітальні."
+        },
+        {
+          "anchor": "terrace-step-lighting-design",
+          "nav": "Світлова атмосфера",
+          "title": "Стримане біле світло<br>або кольоровий акцент.",
+          "context": "Світло має різні завдання: показати перепад рівнів, виділити фактуру фасаду або змінити настрій тераси. Світлова подача проєкту розглядає ці рішення окремо.",
+          "decision": "Лінійне підсвічування повторює крайки сходинок і настилу. Білий варіант залишає кольори матеріалів стриманими, а кольорова альтернатива додає виразний акцент уздовж тих самих ліній. Це варіанти світлового дизайну; спосіб керування, обладнання й автоматичне перемикання потребують окремого інженерного рішення.",
+          "benefit": "Замовник може порівняти спокійний щоденний вигляд тераси та виразніший вечірній настрій до вибору світильників. При цьому контур сходів залишається окремим завданням, незалежно від декоративного кольору.",
+          "images": [
+            {
+              "file": "terrace-white-light",
+              "alt": "Біла лінійна підсвітка крайок тераси й широких сходинок Shingle House",
+              "caption": "Білий варіант підкреслює крайки настилу й сходинок."
+            },
+            {
+              "file": "terrace-colour-light",
+              "alt": "Кольоровий пурпуровий варіант підсвічування тих самих сходинок і крайок тераси",
+              "caption": "Кольоровий варіант змінює атмосферу без зміни геометрії світлових ліній."
+            }
+          ]
+        },
+        {
+          "anchor": "home-lighting-climate-security-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Сценарії для тераси.<br>Окремий контроль кімнат.",
+          "context": "Світлова композиція, велике скління й поділ на спільні та приватні кімнати дають конкретні напрямки для подальшої автоматизації.",
+          "decision": "Для зовнішнього світла можна передбачити сценарії повернення, вечора на терасі та нічного проходу сходами. Сумісні приводи штор дозволили б окремо керувати приватністю біля високого скління. Опалення й клімат доцільно розглядати за зонами, щоб верхні спальні та спільний простір мали власні налаштування. Біля санвузлів і господарської мийки можна додати контроль протікання, а охорону периметра й доступ узгодити з режимами присутності. Обладнання сауни та басейну потребує окремих рішень виробника й власних захистів. Це потенціал подальшого оснащення, а не перелік встановлених систем.",
+          "benefit": "Таке оснащення могло б спростити повторювані дії й дати окремий контроль різним частинам будинку. Сценарії та пристрої потрібно узгоджувати разом з інженерією, щоб зручність не підміняла вимоги до безпечної роботи обладнання."
+        }
+      ],
+      "outcome_title": "Житлові кімнати,<br>сад і відпочинок поруч.",
+      "outcome": "На 227 м² поєднані спільна кухня-вітальня, гостьова кімната, верхні спальні та крило із сауною й тренажерною кімнатою. Дворики розділяють житлові об’єми зеленню, а відкриті й криті тераси продовжують будинок назовні. Світлова подача показує, як ті самі простори змінюють характер після заходу сонця.",
+      "faq": [
+        {
+          "question": "Де розташований будинок і яка його площа?",
+          "answer": "Shingle House розташований у Підрясному, Львівська область. Загальна площа становить 227 м². Рік проєкту: 2022."
+        },
+        {
+          "question": "Для чого потрібні садові дворики?",
+          "answer": "Озеленені проміжки розділяють крила будинку й залишають сад поруч із проходами та кімнатами. Планування поєднує їх зі спільною житловою зоною, гостьовою й господарською частинами."
+        },
+        {
+          "question": "Як розділені функції двох поверхів?",
+          "answer": "Внизу розташовані кухня-вітальня, гостьова спальня, санвузли, тренажерна кімната, сауна й допоміжні приміщення. Другий поверх має дві спальні, ванну кімнату та власний хол."
+        },
+        {
+          "question": "Чим відрізняється заглиблена тераса?",
+          "answer": "М’які місця для сидіння опущені нижче рівня настилу й зібрані біля вогнища під навісом. Посадка не перекриває огляд, а крайки сусідніх сходинок виділені у вечірньому світловому варіанті."
+        },
+        {
+          "question": "Що передбачає світлова подача?",
+          "answer": "Вона порівнює денні й вечірні стани фасадів, світло рослин, опор і сходинок, а також білий та кольоровий акценти тераси. Зображення показують дизайнерські рішення, а не підтвердження встановлених контролерів чи автоматизації."
+        },
+        {
+          "question": "Які smart-home сценарії доречні для такого будинку?",
+          "answer": "Світлові сцени для повернення й відпочинку, керування сумісними шторами, окремі налаштування опалення та клімату за кімнатами, контроль протікання й узгодження охорони та доступу. У цьому кейсі це рекомендовані напрямки подальшого інженерного оснащення."
+        }
+      ],
+      "source_note": "Internal: owner confirmed Pidriasne, Lviv Oblast;2022; final227m² on2026-10-16. Area is owner-confirmed final total, not an independently measured gross area. Prior labelled room sums162.3+64.7=227, lower WC unlabelled; owner resolved final number, no invented allowance. Six planningJPEGs and50renderJPEGs reviewed; source IDs in/tmp/piskor-shingle-download.py and intake.md. Ten selected original renders reviewed full-size: P23/P13,F42/F36,S16/S14,D22/D16,N23/N22; each used once in galleries. Day/night and colour states intentionally compared; do not represent50files as50cameraangles. No drawings or interiors used as gallery assets, no generated imagery. No construction completion, material species, thermal performance or installed automation claimed. Lighting is designed/visualized; automation categories lighting/heating/curtains/security/water/climate/outdoor individually assessed as potential only. Duplicate comparison:50renders vs533publishedoriginals, min dHash13; manual nearest-match review found unrelated cases, distinctive glazed gable/sunken lounge not in catalogue. Owner approved the reviewed case for publication on2026-10-16."
+    },
+    "en": {
+      "eyebrow": "Residential architecture · Pidriasne",
+      "title": "A home around<br><span>garden courts.</span>",
+      "summary": "Shingle House in Pidriasne, 227 m². The wings enclose small gardens, while tall glazing opens towards the terrace. A sunken lounge by the fire and a separate sauna area offer different ways to relax at home.",
+      "cover": "house-garden-day",
+      "cover_alt": "Shingle House in Pidriasne with a tall glazed gable, textured elevations and a covered terrace",
+      "location": "Pidriasne, Lviv Oblast",
+      "area": "227 m²",
+      "property": "Two-storey house",
+      "intro_title": "A garden beside<br>the rooms.",
+      "intro": "Planted courts remain between the house wings. They sit alongside connecting passages and divide large volumes into smaller parts. The shared kitchen and living space opens towards the terrace, while the upstairs bedrooms have their own hall. Outside, a tall pitched-roof volume and lower wings with broad horizontal canopies express that arrangement.",
+      "chapters": [
+        {
+          "anchor": "glazed-gable-textured-facades",
+          "nav": "Architecture and materials",
+          "title": "Tall glazing<br>between textured elevations.",
+          "context": "A strong vertical element faces the garden. Lower canopies and broad windows establish a quieter horizontal line alongside it.",
+          "decision": "A timber surface frames the glazed gable. Dark panels extend from the roof slopes onto the walls, while shingle-like cladding gives neighbouring volumes a finer texture. Light panels with a regular pattern of holes and slender canopy supports distinguish solid surfaces from open spaces.",
+          "benefit": "The silhouette gives the house a recognisable identity. Large glazing maintains the garden connection, with textured surfaces adding detail at closer views near windows and the terrace.",
+          "images": [
+            {
+              "file": "house-garden-day",
+              "alt": "Daytime view of Shingle House in Pidriasne with tall glazing, a dark pitched volume and shingle-like cladding",
+              "caption": "The tall gable draws together the lower wings of the house."
+            },
+            {
+              "file": "house-garden-evening",
+              "alt": "Evening view of the same Shingle House elevation with illuminated rooms and a covered terrace",
+              "caption": "Room lighting reveals the depth of glazing and the building volumes at dusk."
+            }
+          ]
+        },
+        {
+          "anchor": "two-storey-planning-garden-courts",
+          "nav": "Planning 227 m²",
+          "title": "Shared life downstairs.<br>A separate bedroom floor.",
+          "context": "Two floors separate everyday gatherings, visiting guests and private rest. Garden courts sit between the living and supporting wings.",
+          "decision": "On the lower floor, the living room connects to a kitchen with an island and dining table. A stair hall links it to the guest bedroom, bathrooms and utility spaces. Upstairs are two bedrooms, a bathroom and a hall with seating. Planted gaps remain open between the wings rather than being filled with additional rooms.",
+          "benefit": "The downstairs guest bedroom accommodates visitors separately from the upper bedrooms. The family can share the lower living area and move to a quieter part of the house to rest."
+        },
+        {
+          "anchor": "garden-terrace-courtyard-connection",
+          "nav": "The garden side",
+          "title": "A terrace extending<br>the living spaces.",
+          "context": "Outdoor seating follows the glazed garden elevations. Small trees and low planting fill the gaps between wings.",
+          "decision": "Outdoor sofas stand on a broad terrace before the tall windows. A pool lies further along, with steps connecting the outdoor levels. The terrace has a clear edge above the planting. The evening lighting study separately accents steps, plants and textured walls.",
+          "benefit": "There are several places to relax outdoors beside the house. The garden is visible from the terrace and through the large windows, while planted courts separate neighbouring parts of the elevation.",
+          "images": [
+            {
+              "file": "garden-courts-day",
+              "alt": "Garden elevation of Shingle House with a terrace, outdoor sofas, a pool and a tree between the wings",
+              "caption": "Seating and planted gaps continue along the garden elevation."
+            },
+            {
+              "file": "garden-courts-night",
+              "alt": "Night visualization of the garden elevation with lit steps, plants and textured shingle-like surfaces",
+              "caption": "Separate accents distinguish terrace edges, steps and planting."
+            }
+          ]
+        },
+        {
+          "anchor": "sunken-terrace-fire-lounge",
+          "nav": "The sunken terrace",
+          "title": "Seating by the fire<br>beneath a broad canopy.",
+          "context": "One outdoor space has a more intimate character. Seats are set below the surrounding terrace level and gathered around a fire feature.",
+          "decision": "Soft seating lines the sunken part of the terrace. A canopy on slender dark supports covers it without closing off the garden view. Broad steps run alongside; linear light marks their edges in the evening design. Spotlights beneath the canopy focus on the seating.",
+          "benefit": "People can gather closer together, separately from the broad open terrace. Low seating keeps the view from the house open, while illuminated step edges identify the change of level at night.",
+          "images": [
+            {
+              "file": "sunken-lounge-day",
+              "alt": "Sunken upholstered seating around a fire feature beneath the Shingle House canopy",
+              "caption": "Seating below terrace level keeps the view towards the garden open."
+            },
+            {
+              "file": "sunken-lounge-evening",
+              "alt": "Evening fire lounge with focused light over seating and illuminated step edges",
+              "caption": "Local light around the seats meets linear illumination on the steps."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-parking-arrival",
+          "nav": "Parking and arrival",
+          "title": "Room for two cars<br>within the house composition.",
+          "context": "Covered parking sits beside a lower wing. Its canopy extends the horizontal lines of the elevation.",
+          "decision": "Two cars stand side by side under one roof. Broad supports have the same light panel finish as the house walls, while the dark canopy edge repeats the roof framing. In the evening design, lighting accents the supports and nearby planting, keeping the parking boundary legible.",
+          "benefit": "Parking has a defined place beside the house rather than occupying the garden terrace. The canopy belongs to the architectural composition, so this practical space supports the exterior character.",
+          "images": [
+            {
+              "file": "carport-day",
+              "alt": "Covered parking for two cars beside Shingle House with broad light supports and a dark canopy",
+              "caption": "Two parking spaces share a canopy coordinated with the elevations."
+            },
+            {
+              "file": "carport-evening",
+              "alt": "Evening view of Shingle House parking with illuminated supports, planting and textured walls",
+              "caption": "Lighting accents identify the canopy supports and nearby planting."
+            }
+          ]
+        },
+        {
+          "anchor": "home-gym-sauna-service-wing",
+          "nav": "Wellness and utility spaces",
+          "title": "Exercise and a sauna<br>within the home.",
+          "context": "The lower floor accommodates more than shared living. A separate wing places exercise and recovery spaces beside supporting rooms.",
+          "decision": "The gym sits alongside a sauna and bathroom. A technical room has its own place off the hall, with a sink and household equipment shown in the plan. The guest bedroom is in another part of this wing, with a bathroom nearby.",
+          "benefit": "Exercise and time to unwind afterwards do not require leaving home. Household functions have separate rooms, keeping them out of the shared kitchen and living space."
+        },
+        {
+          "anchor": "terrace-step-lighting-design",
+          "nav": "Lighting atmosphere",
+          "title": "Restrained white light<br>or a coloured accent.",
+          "context": "Lighting serves different purposes: identifying levels, revealing facade texture or changing the terrace mood. The design studies consider these separately.",
+          "decision": "Linear light follows step and deck edges. The white version keeps material colours restrained, while a coloured alternative introduces a stronger accent along the same lines. These are lighting design options; controls, equipment and automatic switching require a separate engineering design.",
+          "benefit": "The client can compare a quiet everyday terrace setting with a more expressive evening atmosphere before selecting fixtures. Clear step edges remain a separate requirement regardless of decorative colour.",
+          "images": [
+            {
+              "file": "terrace-white-light",
+              "alt": "White linear lighting along the terrace edges and broad Shingle House steps",
+              "caption": "White light identifies deck and step edges."
+            },
+            {
+              "file": "terrace-colour-light",
+              "alt": "Purple alternative lighting along the same Shingle House steps and terrace edges",
+              "caption": "A coloured option changes the atmosphere along the same lighting lines."
+            }
+          ]
+        },
+        {
+          "anchor": "home-lighting-climate-security-automation-potential",
+          "nav": "Automation potential",
+          "title": "Terrace scenes.<br>Separate room controls.",
+          "context": "The lighting design, large glazing and division between shared and private rooms offer specific opportunities for future automation.",
+          "decision": "Outdoor lighting could use arrival, terrace evening and night stair scenes. Compatible curtain drives could provide privacy control at the tall glazing. Heating and climate controls could be zoned, giving upstairs bedrooms and shared spaces their own settings. Leak monitoring could be added near bathrooms and the utility sink, with perimeter security and access coordinated around occupancy. Sauna and pool equipment need their own manufacturer-specific solutions and safeguards. These are potential future additions, not a list of installed systems.",
+          "benefit": "Such equipment could simplify recurring actions and provide separate control over different parts of the house. Scenes and devices need coordination with building services so convenience does not replace safe equipment operation."
+        }
+      ],
+      "outcome_title": "Living rooms, gardens<br>and leisure close together.",
+      "outcome": "The 227 m² house combines a shared kitchen and living space, a guest room, upper bedrooms and a wing with a sauna and gym. Planted courts separate the volumes, while open and sheltered terraces extend the house outdoors. Lighting studies show how these same spaces change character after sunset.",
+      "faq": [
+        {
+          "question": "Where is the house and how large is it?",
+          "answer": "Shingle House is in Pidriasne, Lviv Oblast. The total area is 227 m². The project year is 2022."
+        },
+        {
+          "question": "What are the garden courts for?",
+          "answer": "Planted gaps separate the house wings and keep gardens beside passages and rooms. The layout connects these courts with shared living, guest and supporting spaces."
+        },
+        {
+          "question": "How are the two floors organised?",
+          "answer": "The lower floor contains the kitchen and living room, guest bedroom, bathrooms, gym, sauna and utility spaces. Upstairs are two bedrooms, a bathroom and a separate hall."
+        },
+        {
+          "question": "What distinguishes the sunken terrace?",
+          "answer": "Soft seats are set below the deck level and gathered by a fire feature beneath a canopy. The seating keeps views open, with the neighbouring step edges identified in the evening lighting design."
+        },
+        {
+          "question": "What do the lighting studies show?",
+          "answer": "They compare daytime and evening elevations, accents on planting, supports and steps, and white or coloured terrace lighting. They present design decisions rather than proof of installed controllers or automation."
+        },
+        {
+          "question": "Which smart-home scenes could suit this house?",
+          "answer": "Arrival and leisure lighting scenes, compatible curtain controls, room-based heating and climate settings, leak monitoring and coordinated security and access. In this case these are recommended directions for future engineering design."
+        }
+      ],
+      "source_note": "Internal: owner confirmed Pidriasne, Lviv Oblast;2022; final227m² on2026-10-16. Same scope and evidence as Ukrainian source_note. Reviewed six planningJPEGs and50renderJPEGs;10uniquegalleryfiles. Planning text only, no drawing images. Lighting designs do not establish installed automation or completed construction. Owner approved publication of reviewed case on2026-10-16."
+    }
+  },
   "pine-house-soluky": {
     "uk": {
       "eyebrow": "Архітектура будинку · Солуки",

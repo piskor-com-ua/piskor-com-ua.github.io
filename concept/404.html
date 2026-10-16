@@ -1,0 +1,68 @@
+---
+layout: document
+lang: uk
+not_found: true
+permalink: /404.html
+uk_url: /404.html?lang=uk
+en_url: /404.html?lang=en
+sitemap: false
+title: Сторінку не знайдено | PISKOR Architect
+description: Цієї сторінки немає. Перейдіть до проєктів PISKOR Architect, дізнайтеся про наш підхід або зв’яжіться з нами.
+---
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16232a">
+  <script src="/not-found.js" defer></script>
+  {% include seo.html %}
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preload" href="/assets/roboto-light.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/not-found.css">
+</head>
+<body class="not-found-page">
+  <a class="skip" href="#main" data-error-en="Skip to content">До змісту</a>
+  <header class="header">
+    <a class="logo" href="/" data-error-path="/" aria-label="PISKOR Architect">
+      <img src="/assets/piskor-logo.png" width="420" height="80" alt="PISKOR Architect">
+    </a>
+    <nav class="error-header-nav" aria-label="Головна навігація" data-error-en-label="Main navigation">
+      <a href="/portfolio/" data-error-path="/portfolio/" data-error-en="Portfolio">Портфоліо</a>
+      <a href="/#contact" data-error-path="/#contact" data-error-en="Contact">Контакти</a>
+    </nav>
+    <div class="header-right">
+      <nav class="language" aria-label="Мова" data-error-en-label="Language">
+        <a href="/404.html?lang=uk" lang="uk" hreflang="uk" data-error-lang="uk" aria-current="page" aria-label="Українська">UA</a>
+        <span aria-hidden="true">/</span>
+        <a href="/404.html?lang=en" lang="en" hreflang="en" data-error-lang="en" aria-label="English">EN</a>
+      </nav>
+      <a class="header-call" href="tel:+380974781005">+380 97 478 10 05 <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="error-intro" aria-labelledby="error-title">
+      <div class="error-copy">
+        <p class="eyebrow" data-error-en="Page not found">Сторінку не знайдено</p>
+        <h1 id="error-title"><span data-error-en="This page">Цієї сторінки</span><br><span data-error-en="isn’t here.">тут немає.</span></h1>
+        <p class="error-description" data-error-en="The link may have changed, or there may be a typo in the address. Explore our projects or choose a section below.">Можливо, посилання змінилося або в адресі є помилка. Перегляньте наші проєкти чи оберіть потрібний розділ нижче.</p>
+        <a class="text-link" href="/portfolio/" data-error-path="/portfolio/"><span class="error-link-label" data-error-en="Explore our projects">Переглянути проєкти</span><span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="error-code" aria-label="Помилка 404" data-error-en-label="Error 404"><span>404</span></div>
+    </section>
+    <nav class="error-sections" aria-labelledby="error-sections-title">
+      <h2 class="eyebrow" id="error-sections-title" data-error-en="Where would you like to go?">Куди прямуємо далі?</h2>
+      <div class="error-section-links">
+        <a href="/" data-error-path="/"><span data-error-en="Home">Головна</span><span aria-hidden="true">↗</span></a>
+        <a href="/#design-process" data-error-path="/#design-process"><span data-error-en="Expertise">Напрями роботи</span><span aria-hidden="true">↗</span></a>
+        <a href="/#our-approach" data-error-path="/#our-approach"><span data-error-en="Our approach">Наш підхід</span><span aria-hidden="true">↗</span></a>
+        <a href="/#contact" data-error-path="/#contact"><span data-error-en="Contact">Контакти</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </main>
+  <footer class="footer error-footer">
+    <span>© {{ site.time | date: '%Y' }} PISKOR Architect</span>
+    <a href="tel:+380974781005">+380 97 478 10 05 <span aria-hidden="true">↗</span></a>
+  </footer>
+</body>

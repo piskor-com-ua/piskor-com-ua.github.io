@@ -7,7 +7,8 @@ const assert = require('node:assert/strict');
 (async () => {
   const origin = 'http://127.0.0.1:4176';
   const server = spawn('python3', ['-m', 'http.server', '4176', '--bind', '127.0.0.1', '--directory', '_site'], { stdio: 'ignore' });
-  let browser;
+  let browser, page;
+  mkdirSync('output/browser', { recursive: true });
   try {
     for (let attempt = 0; attempt < 30; attempt++) {
       try { await fetch(origin); break; } catch {
@@ -18,7 +19,7 @@ const assert = require('node:assert/strict');
     browser = await chromium.launch({ headless: true });
     const context = await browser.newContext();
     const errors = [];
-    const page = await context.newPage();
+    page = await context.newPage();
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) errors.push(response.status() + ' ' + response.url()); });
     const checkGrid = vm.runInThisContext('(' + readFileSync('scripts/check-portfolio-grid.js', 'utf8') + ')');
@@ -83,6 +84,22 @@ const assert = require('node:assert/strict');
     mkdirSync('output/browser', { recursive: true });
     writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
+  } catch (error) {
+    if (page) {
+      await page.screenshot({ path: 'output/browser/failure.jpg', type: 'jpeg' });
+      const diagnostics = await page.evaluate(() => ({
+        url: location.href, viewport: innerWidth, client: document.documentElement.clientWidth,
+        scroll: document.documentElement.scrollWidth,
+        elements: [...document.querySelectorAll('body *')].map(element => {
+          const box = element.getBoundingClientRect();
+          return { tag: element.tagName, id: element.id, className: element.className,
+            left: box.left, right: box.right, width: box.width, text: element.textContent.slice(0, 80) };
+        }).filter(box => box.width > 0 && (box.right > innerWidth + .5 || box.left < -.5)).slice(0, 25)
+      }));
+      writeFileSync('output/browser/failure.json', JSON.stringify(diagnostics, null, 2));
+      console.error(JSON.stringify(diagnostics, null, 2));
+    }
+    throw error;
   } finally {
     if (browser) await browser.close();
     server.kill();

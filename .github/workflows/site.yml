@@ -53,6 +53,7 @@ jobs:
       - name: Check every project on desktop and mobile
         run: npm run test:browser
       - name: Save browser verification
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: browser-verification

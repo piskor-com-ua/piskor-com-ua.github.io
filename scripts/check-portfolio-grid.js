@@ -10,6 +10,10 @@ async (page, origin = 'http://127.0.0.1:4173') => {
     await page.evaluate(() => document.fonts.ready);
     for (const width of [1440, 768, 390]) {
       await page.setViewportSize({ width, height: 900 });
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      });
       const errors = await page.evaluate(() => {
         const errors = [];
         for (const chapter of document.querySelectorAll('.case-chapter')) {

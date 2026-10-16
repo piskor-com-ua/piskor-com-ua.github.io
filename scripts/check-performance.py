@@ -27,6 +27,9 @@ assert all('https://piskor.com.ua' + p['url'] in (output / 'llms.txt').read_text
 cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
+    early = root.find(lambda n: n.tag == 'script' and 'data-consent-inline' in n.attrs)
+    assert len(early) == 1, str(page) + ': missing early consent controller'
+    assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
     images = root.find(lambda n: n.tag == 'img' and n.attrs.get('src', '').startswith('/assets/'))
     for image in images:
         attrs = image.attrs
@@ -56,7 +59,9 @@ for page in output.rglob('*.html'):
             label = card.attrs['aria-labelledby']
             assert card.find(lambda n: n.tag == 'h3' and n.attrs.get('id') == label)
         sheets = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'stylesheet')
-        assert len(sheets) == 1 and urlsplit(sheets[0].attrs['href']).path == '/catalog-bundle.css'
+        assert not sheets, str(page) + ': render-blocking catalog stylesheet'
+        styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)
+        assert len(styles) == 1, str(page) + ': missing shared inline catalog styles'
     for node in root.find(lambda n: n.tag in {'img', 'script', 'link', 'button', 'video', 'source'}):
         for key in ['src', 'href', 'data-full', 'poster']:
             value = node.attrs.get(key, '')
@@ -78,4 +83,6 @@ for selector in [r'\.contact-top \.eyebrow', r'\.contact-main p']:
     low, high = sorted([luminance(foreground), luminance(background)])
     assert (high + .05) / (low + .05) >= 4.5
 assert '.ttf' not in css and 'font-display:swap' in css
+subsets = [output / 'assets/fonts' / (name + '-subset.woff2') for name in ('roboto-light', 'roboto-regular')]
+assert sum(path.stat().st_size for path in subsets) <= 40000, 'Recheck the first-paint font budget before expanding character coverage'
 print(f'Performance contracts: {len(pairs)} bilingual projects, {cards} responsive cards, actual image dimensions, resource versions and contact contrast verified')

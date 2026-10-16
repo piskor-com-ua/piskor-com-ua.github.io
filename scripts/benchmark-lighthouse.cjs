@@ -1,14 +1,24 @@
 const { spawn } = require('node:child_process');
 const { readFileSync, writeFileSync, mkdirSync } = require('node:fs');
 const path = require('node:path');
-const baseline = process.argv[2] || 'http://127.0.0.1:4184/portfolio/';
-const candidate = process.argv[3] || 'http://127.0.0.1:4183/portfolio/';
-const folder = 'output/lighthouse';
+const { parseArgs } = require('node:util');
+const { values, positionals } = parseArgs({ allowPositionals: true, options: {
+  runs: { type: 'string', default: '3' }, modes: { type: 'string', default: 'mobile,desktop' },
+  output: { type: 'string', default: 'output/lighthouse' }
+} });
+const baseline = positionals[0] || 'http://127.0.0.1:4184/portfolio/';
+const candidate = positionals[1] || 'http://127.0.0.1:4183/portfolio/';
+const folder = values.output;
+const runs = Number(values.runs);
+const modes = values.modes.split(',');
+if (!Number.isInteger(runs) || runs < 1 || runs > 10 || !modes.length || modes.some(mode => !['mobile', 'desktop'].includes(mode))) {
+  throw Error('Use --runs 1..10 and --modes mobile,desktop');
+}
 mkdirSync(folder, { recursive: true });
 const rows = [];
 (async () => {
-  for (const mode of ['mobile', 'desktop']) {
-    for (let run = 1; run <= 3; run++) {
+  for (const mode of modes) {
+    for (let run = 1; run <= runs; run++) {
       for (const [name, url] of [['baseline', baseline], ['candidate', candidate]]) {
         const filename = path.resolve(folder, name + '-' + mode + '-' + run + '.json');
         const args = [url, '--quiet', '--chrome-flags=--headless', '--output=json', '--output-path=' + filename,

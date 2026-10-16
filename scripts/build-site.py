@@ -2,32 +2,28 @@
 from pathlib import Path
 import re
 import subprocess
-import hashlib
+from prepare_public_assets import prepare_public_assets, bundle_catalog_styles
+from fingerprint_resources import fingerprint_resources
+from agent_catalog import generate_agent_catalog
 from optimize_assets import optimize_assets
 
 source = Path('concept')
 out = Path('_site')
 subprocess.run(['python3', '-m', 'unittest', 'discover', '-s', 'scripts',
-                '-p', 'test_optimize_assets.py'], check=True)
+                '-p', 'test_*.py'], check=True)
 subprocess.run(['bundle', 'exec', 'jekyll', 'build', '--trace'], check=True)
 # Pages receives an already generated artifact; it must not build it a second time.
 (out / '.nojekyll').touch()
+print(f'Prepared images: {prepare_public_assets(out)}')
+bundle_catalog_styles(out)
+generate_agent_catalog(out)
 optimization = optimize_assets(out)
 print(f"Optimized media: {optimization['unused']} unused files, "
       f"{optimization['duplicates']} exact duplicates removed; "
       f"{optimization['saved_bytes']:,} bytes saved")
-# A changed stylesheet or script must not reuse the previous browser cache entry.
-for page in out.rglob('*.html'):
-    def version_resource(match):
-        prefix, reference, quote = match.groups()
-        resource = out / reference.lstrip('/') if reference.startswith('/') else page.parent / reference
-        if resource.suffix not in {'.css', '.js'} or not resource.is_file():
-            return match.group(0)
-        digest = hashlib.sha256(resource.read_bytes()).hexdigest()[:12]
-        return f'{prefix}{reference}?v={digest}{quote}'
-    page.write_text(re.sub(r'''((?:src|href)=["'])([^"'?]+)(["'])''', version_resource, page.read_text()))
+print(f'Versioned {fingerprint_resources(out)} media/font resources')
 for path in out.rglob('*'):
-    if path.suffix not in {'.html', '.css', '.js'}:
+    if path.suffix not in {'.html', '.css', '.js', '.json'}:
         continue
     text = path.read_text()
     references = re.findall(r'''(?:src|href)=["']([^"']+)["']''', text) if path.suffix == '.html' else []
@@ -44,7 +40,9 @@ assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noind
 assert not list(out.rglob('*.md'))
 for path in out.rglob('*'):
     if path.is_file():
-        assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.mp4'} or path.name in {'piskor-logo.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
+        assert path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.woff2', '.mp4'} or path.name in {'piskor-logo.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'llms.txt', 'project-catalog.json', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')
 print(f'Publication contains {sum(p.is_file() for p in out.rglob("*"))} files')
 subprocess.run(['python3', 'scripts/check-seo.py'], check=True)
+
+subprocess.run(['python3', 'scripts/check-performance.py'], check=True)

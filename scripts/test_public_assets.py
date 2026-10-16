@@ -1,0 +1,85 @@
+import hashlib
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from PIL import Image
+from prepare_public_assets import prepare_public_assets, bundle_catalog_styles
+from fingerprint_resources import fingerprint_resources
+from optimize_assets import optimize_assets
+
+
+class PublicAssetsTest(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.output = Path(self.temp.name) / '_site'
+        self.output.mkdir()
+        (self.output / '.nojekyll').touch()
+        (self.output / 'assets').mkdir()
+
+    def test_actual_sizes_responsive_candidates_and_source_preservation(self):
+        image = self.output / 'assets/cover-1440.webp'
+        Image.new('RGB', (1080, 810), '#258878').save(image)
+        original = image.read_bytes()
+        page = self.output / 'index.html'
+        page.write_text('<img class="portfolio-card-cover" src="/assets/cover-1440.webp" width="2970" height="2100" loading="eager">')
+        result = prepare_public_assets(self.output)
+        text = page.read_text()
+        self.assertEqual(result['unique_covers'], 1)
+        self.assertIn('width="1080" height="810"', text)
+        self.assertIn('960w', text)
+        self.assertIn('1080w', text)
+        self.assertNotIn('1440w', text)
+        self.assertEqual(image.read_bytes(), original)
+        with Image.open(self.output / 'assets/responsive/cover-960.webp') as prepared:
+            self.assertEqual(prepared.size, (960, 720))
+
+    def test_nested_fingerprints_follow_bytes_and_keep_paths(self):
+        image = self.output / 'assets/cover.webp'
+        image.write_bytes(b'picture')
+        font = self.output / 'assets/font.woff2'
+        font.write_bytes(b'font')
+        style = self.output / 'site.css'
+        style.write_text('a{background:url(assets/cover.webp)}')
+        script = self.output / 'site.js'
+        script.write_text('const font="/assets/font.woff2";')
+        page = self.output / 'index.html'
+        page.write_text('<link href="/site.css"><script src="/site.js"></script><img srcset="/assets/cover.webp 640w">')
+        (self.output / 'project-catalog.json').write_text(json.dumps({'image': '/assets/cover.webp'}))
+        fingerprint_resources(self.output)
+        self.assertIn('cover.webp?v=' + hashlib.sha256(b'picture').hexdigest()[:12], style.read_text())
+        self.assertIn('/site.css?v=' + hashlib.sha256(style.read_bytes()).hexdigest()[:12], page.read_text())
+        self.assertIn('font.woff2?v=', script.read_text())
+        self.assertIn('cover.webp?v=', (self.output / 'project-catalog.json').read_text())
+        self.assertTrue(image.exists())
+        self.assertTrue(font.exists())
+        # Optimizer understands versioned references and preserves WOFF2.
+        optimize_assets(self.output)
+        self.assertTrue(font.exists())
+
+    def test_queries_and_fragments_survive_versioning(self):
+        (self.output / 'assets/cover.webp').write_bytes(b'picture')
+        page = self.output / 'index.html'
+        page.write_text('<img src="/assets/cover.webp?width=640&amp;mode=crop#view">')
+        fingerprint_resources(self.output)
+        self.assertIn('?width=640&amp;mode=crop&amp;v=', page.read_text())
+        self.assertIn('#view', page.read_text())
+        once = page.read_text()
+        fingerprint_resources(self.output)
+        self.assertEqual(page.read_text(), once)
+
+    def test_bundle_keeps_source_order_and_only_changes_catalog(self):
+        for name in ['analytics-consent.css', 'style.css', 'portfolio.css', 'catalog.css']:
+            (self.output / name).write_text('/* ' + name + ' */')
+        links = ''.join('<link rel="stylesheet" href="/' + name + '">' for name in ['analytics-consent.css', 'style.css', 'portfolio.css', 'catalog.css'])
+        (self.output / 'index.html').write_text(links + '<body class="catalog-page">')
+        (self.output / 'case.html').write_text(links + '<body class="project-page">')
+        bundle_catalog_styles(self.output)
+        self.assertEqual((self.output / 'index.html').read_text().count('rel="stylesheet"'), 1)
+        self.assertEqual((self.output / 'case.html').read_text().count('rel="stylesheet"'), 4)
+        self.assertLess((self.output / 'catalog-bundle.css').read_text().index('style.css'), (self.output / 'catalog-bundle.css').read_text().index('portfolio.css'))
+
+
+if __name__ == '__main__':
+    unittest.main()

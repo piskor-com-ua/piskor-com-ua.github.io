@@ -29,6 +29,10 @@ jobs:
           import os, re
           assert re.match(r'^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?!?: .+', os.environ['PR_TITLE']), 'Use a Conventional Commit PR title'
           PYCODE
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
       - name: Validate JavaScript
         run: |
           for file in concept/*.js; do node --check "$file"; done
@@ -36,8 +40,25 @@ jobs:
         uses: ruby/setup-ruby@e81a8fa391b11a595c1b7ed84177cc0fe02faf83 # v1
         with:
           bundler-cache: true
+      - name: Install image build dependency
+        run: python3 -m pip install -r requirements-build.txt
+      - name: Validate agent tools
+        run: node --test scripts/test-agent-tools.js
       - name: Build and check public artifact
         run: python3 scripts/build-site.py
+      - name: Install browser validation tools
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+      - name: Check every project on desktop and mobile
+        run: npm run test:browser
+      - name: Save browser verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: browser-verification
+          path: output/browser
+          retention-days: 7
       - name: Configure Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'schedule'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0

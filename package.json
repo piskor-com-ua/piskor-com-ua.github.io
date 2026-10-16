@@ -1,0 +1,12 @@
+{
+  "name": "piskor-site-validation",
+  "private": true,
+  "scripts": {
+    "test:agent": "node --test scripts/test-agent-tools.js",
+    "test:browser": "node scripts/run-browser-checks.cjs"
+  },
+  "devDependencies": {
+    "lighthouse": "13.5.0",
+    "playwright": "1.64.1"
+  }
+}

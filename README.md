@@ -52,4 +52,8 @@ Both catalogs and their structured ItemList populate automatically from the loca
 
 Follow [the mandatory maintenance contract](docs/performance-agentic-maintenance.md) for all functionality and content changes. The build prepares responsive cards, corrects image dimensions, combines catalog styles from shared sources, generates project-catalog.json and llms.txt from rendered cases, and versions media/fonts before CSS/JS. Original source media remain untouched. WebMCP tools read public facts when a supported API is present; ordinary browsers do not fetch the agent catalog. Cloudflare changes follow merge and verified Pages deployment; indexing remains a separate approval.
 
+The build also generates WOFF2 subsets from rendered and dynamic text, inlines the shared catalog styles and runs the existing consent controller at the start of body. Edit the original CSS/JS and fonts, never generated subsets or inline copies. Original font URLs remain available for cached pages. FontTools and Brotli versions are pinned in requirements-build.txt.
+
+For compressed local comparisons, serve each built artifact with python3 scripts/serve-benchmark.py ARTIFACT --port PORT, then run node scripts/benchmark-lighthouse.cjs BASELINE_URL CANDIDATE_URL --runs 5 --modes mobile --output output/speed-index-benchmark. Retain the full range and distinguish these local results from production PSI.
+
 For the full browser matrix, run npm ci, npx playwright install chromium, then npm run test:browser. CI runs this matrix on every PR and saves screenshots plus the route/viewport results as browser-verification. See [implementation evidence and benchmark method](docs/performance-agentic-evidence.md).

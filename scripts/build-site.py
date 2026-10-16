@@ -6,6 +6,7 @@ from prepare_public_assets import prepare_public_assets, bundle_catalog_styles
 from fingerprint_resources import fingerprint_resources
 from agent_catalog import generate_agent_catalog
 from optimize_assets import optimize_assets
+from first_paint import inline_consent, subset_fonts, inline_catalog_styles
 
 source = Path('concept')
 out = Path('_site')
@@ -14,6 +15,8 @@ subprocess.run(['python3', '-m', 'unittest', 'discover', '-s', 'scripts',
 subprocess.run(['bundle', 'exec', 'jekyll', 'build', '--trace'], check=True)
 # Pages receives an already generated artifact; it must not build it a second time.
 (out / '.nojekyll').touch()
+print(f'Early consent: {inline_consent(out)} pages')
+print(f'Font subsets: {subset_fonts(out)}')
 print(f'Prepared images: {prepare_public_assets(out)}')
 bundle_catalog_styles(out)
 generate_agent_catalog(out)
@@ -22,6 +25,7 @@ print(f"Optimized media: {optimization['unused']} unused files, "
       f"{optimization['duplicates']} exact duplicates removed; "
       f"{optimization['saved_bytes']:,} bytes saved")
 print(f'Versioned {fingerprint_resources(out)} media/font resources')
+print(f'Inline catalog styles: {inline_catalog_styles(out)} pages')
 for path in out.rglob('*'):
     if path.suffix not in {'.html', '.css', '.js', '.json'}:
         continue

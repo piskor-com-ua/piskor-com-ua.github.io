@@ -34,7 +34,8 @@ def optimize_assets(output):
             raise ValueError(f'Unsafe generated asset: {path}')
 
     unused = [p for p in candidates if p.relative_to(output).as_posix() not in referenced
-              and p.name not in {'roboto-light.ttf', 'roboto-regular.ttf'}]
+              and p.name not in {'roboto-light.ttf', 'roboto-regular.ttf',
+                                 'roboto-light.woff2', 'roboto-regular.woff2'}]
     aliases, fingerprints = {}, {}
     for path in candidates:
         reference = path.relative_to(output).as_posix()

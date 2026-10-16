@@ -21,3 +21,5 @@
 {% include structured-data.html %}
 <link rel="stylesheet" href="/analytics-consent.css">
 <script src="/analytics-consent.js" data-measurement-id="{{ site.google_analytics_id }}" defer></script>
+
+{% unless page.not_found or page.redirect_to %}<script src="/agent-tools.js" defer></script>{% endunless %}

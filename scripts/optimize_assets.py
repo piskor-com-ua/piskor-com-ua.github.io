@@ -3,12 +3,12 @@ from pathlib import Path
 import hashlib
 import re
 
-TEXT_SUFFIXES = {'.html', '.css', '.js'}
-MEDIA_SUFFIXES = {'.webp', '.png', '.svg', '.ttf', '.mp4'}
+TEXT_SUFFIXES = {'.html', '.css', '.js', '.json'}
+MEDIA_SUFFIXES = {'.webp', '.png', '.svg', '.ttf', '.woff2', '.mp4'}
 # Includes srcset, data-full, posters, JSON-LD and literal JS/CSS asset URLs.
 ASSET_URL = re.compile(
     r'(?P<prefix>(?:\.\./)*|\./|/)?'
-    r'(?P<asset>assets/[\w./%-]+\.(?:webp|png|svg|ttf|mp4))'
+    r'(?P<asset>assets/[\w./%-]+\.(?:webp|png|svg|ico|ttf|woff2|mp4))'
     r'(?=$|[\s\"\'<>(),?#`\\])'
 )
 
@@ -33,7 +33,8 @@ def optimize_assets(output):
         if path.is_symlink() or not path.resolve().is_relative_to(assets):
             raise ValueError(f'Unsafe generated asset: {path}')
 
-    unused = [p for p in candidates if p.relative_to(output).as_posix() not in referenced]
+    unused = [p for p in candidates if p.relative_to(output).as_posix() not in referenced
+              and p.name not in {'roboto-light.ttf', 'roboto-regular.ttf'}]
     aliases, fingerprints = {}, {}
     for path in candidates:
         reference = path.relative_to(output).as_posix()

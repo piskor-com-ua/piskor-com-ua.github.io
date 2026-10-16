@@ -1,4 +1,290 @@
 {
+  "berloha-lounge-bar-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн бару · Львів",
+      "title": "Бар «Берлога».<br><span>Камерний вечір у Львові.</span>",
+      "summary": "Камерний бар у Львові, де фактурний камінь і дерево оточують м’яку зону відпочинку. Барна стійка залишається поруч із гостями, а багаторівневе світло змінює настрій зали протягом вечора.",
+      "location": "Львів",
+      "area": "39 м²",
+      "property": "Комерційний заклад із баром",
+      "cover": "lounge-bar-overview",
+      "cover_alt": "Інтер’єр бару Берлога у Львові з дерев’яними стелажами, диваном і барною стійкою",
+      "intro_title": "Невелика зала.<br>Власний характер.",
+      "intro": "У «Берлозі» гостинність починається з близького масштабу: низький столик біля дивана, крісло для неквапливої розмови та високі місця біля бару. Дерев’яні обрамлення розділяють ці зони, але залишають їх відкритими одна до одної. Проєкт поєднує інтер’єрну композицію з деталями меблів, електрики та освітлення, від яких залежить зручність щоденної роботи закладу.",
+      "benefit_label": "Для гостей і закладу",
+      "chapters": [
+        {
+          "anchor": "compact-bar-lounge-planning",
+          "nav": "Зала та посадка",
+          "title": "Біля бару<br>чи поруч із диваном.",
+          "context": "Компактна зала поєднує два способи провести вечір: спілкування біля стійки та відпочинок у м’якій зоні.",
+          "decision": "Диван і крісло зібрані навколо низького круглого столика. Високі стільці винесені до барної частини. Дерев’яні стелажі та обрамлення позначають межі посадки, а відкритий центр пов’язує її з баром.",
+          "benefit": "Гості можуть обрати місце під настрій зустрічі, а невеликий простір не зводиться до одного ряду столів.",
+          "images": [
+            {
+              "file": "lounge-bar-overview",
+              "alt": "Загальний вигляд бару Берлога з відкритим переходом між лаунж-зоною та стійкою",
+              "caption": "Бар і м’яка посадка читаються як частини однієї камерної зали."
+            },
+            {
+              "file": "lounge-sofa-projector",
+              "alt": "Диван, крісло та круглий столик у лаунж-зоні бару Берлога",
+              "caption": "Низький столик і різна м’яка посадка задають спокійніший формат зустрічі."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-bar-service-counter",
+          "nav": "Барна стійка",
+          "title": "Бар, який видно<br>з усієї зали.",
+          "context": "Барна частина має впізнаваний силует і водночас збирає робочі поверхні та зберігання в одному місці.",
+          "decision": "Дерев’яна стільниця стоїть перед кам’яним тлом із відкритими полицями для пляшок і келихів. Нижні шафи приховують частину робочого наповнення. Креслення меблів та електрики узгоджують стійку, холодильник і розетки з цією композицією.",
+          "benefit": "Гість одразу бачить, де замовити напій. Робоча зона залишається компактною, а полиці й стільниця підтримують характер закладу.",
+          "images": [
+            {
+              "file": "bar-counter-stone-backdrop",
+              "alt": "Дерев’яна барна стійка з високими стільцями та полицями на тлі кам’яної стіни",
+              "caption": "Підсвічені полиці та підвіс над стійкою виділяють бар у глибині зали."
+            },
+            {
+              "file": "bar-service-bespoke-cabinets",
+              "alt": "Робоча поверхня бару, нижні шафи та дерев’яна стільниця у Берлозі",
+              "caption": "Робоча стільниця й закриті шафи продовжують відкриту барну композицію."
+            }
+          ]
+        },
+        {
+          "anchor": "stone-timber-custom-joinery",
+          "nav": "Матеріали й меблі",
+          "title": "Виразна фактура<br>в кожній деталі.",
+          "context": "Дерево з нерівним краєм, рельєфний камінь і темні площини формують теплий, трохи грубуватий характер «Берлоги».",
+          "decision": "Вертикальний дерев’яний слеб із підсвіченою вставкою стає акцентом між зонами. Поруч працюють стелажі з діагональними елементами, дерев’яні розсувні полотна та шафи з геометричним рисунком. Меблеві креслення задають розміри полиць, фасадів і барних модулів, щоб деталі складалися в цілісний інтер’єр.",
+          "benefit": "Заклад має деталі, які легко впізнати й запам’ятати. Вбудовані меблі водночас дають місце для зберігання та організовують невелику залу.",
+          "images": [
+            {
+              "file": "timber-sliding-doors-lounge",
+              "alt": "Лаунж-зона Берлоги з дерев’яними розсувними полотнами та фактурною вставкою зі слебів",
+              "caption": "Дерев’яні обрамлення й розсувні полотна продовжують матеріальну тему зали."
+            },
+            {
+              "file": "slab-partition-stone-wall",
+              "alt": "Дерев’яний слеб із підсвіченою вставкою поруч із кам’яною стіною та м’якою посадкою",
+              "caption": "Бокове світло підкреслює рельєф каменю та природний край дерева."
+            }
+          ]
+        },
+        {
+          "anchor": "projection-screen-guest-events",
+          "nav": "Екран у залі",
+          "title": "Ще один привід<br>зібратися разом.",
+          "context": "Проєкційний екран додає до барного формату можливість спільного перегляду.",
+          "decision": "У композицію зали включено стельовий проєктор та екран, а на електричному плані передбачено живлення й інтернет-розетку в медіазоні. Таке рішення дозволяє розглядати перегляд трансляцій або презентацій як окремий сценарій використання простору.",
+          "benefit": "Заклад отримує основу для тематичних зустрічей у тій самій залі. Медіатехніка врахована в інтер’єрі, а не додана до нього випадково."
+        },
+        {
+          "anchor": "layered-lighting-bar-atmosphere",
+          "nav": "Світлові сцени",
+          "title": "Світло змінює<br>настрій вечора.",
+          "context": "Освітлення «Берлоги» складається з окремих шарів: загального, локального біля посадки та декоративного навколо бару й дерев’яних деталей.",
+          "decision": "Трекові світильники працюють разом із підвісами, настільними лампами та прихованим підсвічуванням. Схема вмикання розділяє групи світла, а відеовізуалізація показує, як їхня послідовна зміна переводить простір від приглушеного настрою до виразнішого освітлення бару й зали.",
+          "benefit": "Світло допомагає виділити стійку, залишити м’яку зону камерною та показати фактуру матеріалів. Власник отримує продуману світлову композицію для різних моментів вечора.",
+          "video": {
+            "file": "lighting-scenes-visualisation.mp4",
+            "poster": "lounge-bar-overview-1440.webp",
+            "alt": "Відеовізуалізація зміни груп освітлення в барі Берлога",
+            "caption": "Демонстрація світлових сцен у візуалізації: змінюються акценти на барі, посадці та дерев’яних деталях."
+          }
+        },
+        {
+          "anchor": "bar-furniture-electrical-coordination",
+          "nav": "Деталі для роботи",
+          "title": "Продумані деталі<br>за видимою атмосферою.",
+          "context": "Виразний інтер’єр потребує точної координації меблів, оздоблення та електрики.",
+          "decision": "Розгортки пов’язують полиці та фасади з виводами підсвічування. План розеток враховує холодильник, роутер і медіазону. Стельові розрізи пояснюють стики різних площин, а план підлоги задає розкладку великоформатної плитки.",
+          "benefit": "Підрядники отримують узгоджені прив’язки до інтер’єру. Це допомагає зберегти задум у дрібницях, які гості помічають як акуратну, завершену роботу."
+        },
+        {
+          "anchor": "bar-lighting-climate-security-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Менше перемикань.<br>Більше уваги гостям.",
+          "context": "Окремі світлові групи дають основу для подальшого сценарного керування закладом.",
+          "decision": "Як наступний крок можна об’єднати світло у сцени відкриття, вечірньої роботи, перегляду та прибирання. Для повноцінної автоматизації також варто розглянути розклад опалення й вентиляції, контроль доступу після закриття та захист від протікань біля барної мийки. Кожна з цих опцій потребує окремого підбору обладнання й узгодження з інженерією закладу.",
+          "benefit": "Такі сценарії можуть скоротити повторювані дії персоналу та допомогти підтримувати потрібний режим зали. У цьому кейсі вони подані як можливості розвитку, а не як уже встановлена система."
+        }
+      ],
+      "outcome_title": "Атмосфера бару.<br>Точність у деталях.",
+      "outcome": "Проєкт охоплює інтер’єр камерного закладу з баром: посадку, матеріали, індивідуальні меблі, освітлення та електричні прив’язки. Візуалізації й робочі креслення пов’язують загальний настрій із розмірами та вузлами, потрібними для втілення задуму.",
+      "faq": [
+        {
+          "question": "Який формат закладу має «Берлога»?",
+          "answer": "Це комерційний заклад із баром у Львові. Інтер’єр поєднує високу посадку біля стійки з м’якою лаунж-зоною для невеликих компаній."
+        },
+        {
+          "question": "Як організовано невелику площу?",
+          "answer": "Барна частина й диванна група залишаються візуально пов’язаними. Дерев’яні обрамлення та стелажі розділяють посадку без глухої перегородки між основними гостьовими зонами."
+        },
+        {
+          "question": "Що надає інтер’єру впізнаваності?",
+          "answer": "Природний край дерев’яних слебів, рельєфна кам’яна поверхня та стелажі з діагональними елементами. Світло підкреслює ці деталі й виділяє барну стійку."
+        },
+        {
+          "question": "Для чого в барі передбачено проєктор?",
+          "answer": "Проєктор та екран додають можливість спільного перегляду. Живлення й інтернет-підключення враховані в електричному плані, тому медіасценарій узгоджений із дизайном зали."
+        },
+        {
+          "question": "Чи показує відео встановлену автоматизацію?",
+          "answer": "Відео демонструє зміну освітлення у візуалізації інтер’єру. Кейс показує світлову композицію й окремі групи вмикання; він не стверджує, що в закладі встановлено контролери, датчики чи інтегровану систему керування."
+        },
+        {
+          "question": "Що потрібно для проєкту власного бару?",
+          "answer": "Почніть із плану приміщення, бажаного формату посадки та переліку робочого обладнання. PISKOR Architect допоможе пов’язати атмосферу закладу з плануванням, меблями й технічними рішеннями. Обговорити об’єкт можна за телефоном на сторінці."
+        }
+      ],
+      "source_note": "Internal: owner confirmed Lviv and commercial venue with bar on 2026-10-16. Year 2021 from named project folder and PDF creation 2021-02-26, consistent source chronology. General project area 38.51 m² repeated on working sheets rounds to39 m²; floor finish takeoff38.03 m² is not total project area, never added. 13 PDFs: 11-page basement set plus12 standalone drawings, all pages reviewed. Six coherent final renders from folder2, no alternate furniture/lighting versions or drawing images. Video9.67sec is rendered lighting demonstration, not actual installed automation. Duplicate check nine candidate frames versus565 released frames, nearest13-20bits visually unrelated; existing72m²Shevchenka apartment and2022Shevchenka70 plan differ. Lighting switching, power, internet, furniture, floor/ceiling coordinated at design level. Heating/climate/security/water potential only; curtain motors/exterior systems unsupported and not claimed. No exact address, completed-construction claim, proprietary protocols or installed sensors."
+    },
+    "en": {
+      "eyebrow": "Bar interior design · Lviv",
+      "title": "Berloha lounge bar.<br><span>Intimate evenings in Lviv.</span>",
+      "summary": "An intimate bar in Lviv, with textured stone and timber around a relaxed seating area. The counter stays close to the guests, while layered lighting changes the mood of the room through the evening.",
+      "location": "Lviv",
+      "area": "39 m²",
+      "property": "Commercial venue with a bar",
+      "cover": "lounge-bar-overview",
+      "cover_alt": "Berloha bar interior in Lviv with timber shelving, a sofa and bar counter",
+      "intro_title": "A small room.<br>A distinct character.",
+      "intro": "Berloha takes its welcoming feel from an intimate scale: a low table beside the sofa, an armchair for a long conversation and high stools by the counter. Timber frames separate these areas without closing them off from one another. The project brings the interior composition together with furniture details, electrical connections and lighting that support the venue’s daily operation.",
+      "benefit_label": "For guests and the venue",
+      "chapters": [
+        {
+          "anchor": "compact-bar-lounge-planning",
+          "nav": "Room and seating",
+          "title": "A seat at the bar<br>or beside the sofa.",
+          "context": "The compact room offers two ways to spend an evening: conversation at the counter and a slower pace in the lounge.",
+          "decision": "A sofa and armchair sit around a low round table, with high stools in the bar area. Timber shelving and frames define the seating, while an open centre connects it to the counter.",
+          "benefit": "Guests can choose a place that suits the occasion. The small room accommodates more than a single row of tables.",
+          "images": [
+            {
+              "file": "lounge-bar-overview",
+              "alt": "Overview of Berloha bar with an open connection between the lounge and counter",
+              "caption": "The bar and soft seating belong to one intimate room."
+            },
+            {
+              "file": "lounge-sofa-projector",
+              "alt": "Sofa, armchair and round table in Berloha’s lounge area",
+              "caption": "A low table and varied soft seating create a relaxed setting for conversation."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-bar-service-counter",
+          "nav": "Bar counter",
+          "title": "A counter visible<br>across the room.",
+          "context": "The bar has a recognisable outline and brings work surfaces and storage together in one place.",
+          "decision": "A timber counter stands before a stone backdrop with open shelves for bottles and glasses. Lower cabinets conceal part of the working storage. Furniture and electrical drawings coordinate the counter, refrigerator and sockets with the composition.",
+          "benefit": "Guests can see where to order. The work area stays compact, with shelving and the counter contributing to the venue’s character.",
+          "images": [
+            {
+              "file": "bar-counter-stone-backdrop",
+              "alt": "Timber bar counter with high stools and shelving against a textured stone wall",
+              "caption": "Lit shelves and a pendant above the counter draw attention to the bar."
+            },
+            {
+              "file": "bar-service-bespoke-cabinets",
+              "alt": "Bar worktop, lower cabinets and timber counter at Berloha",
+              "caption": "The worktop and closed cabinets continue the open bar composition."
+            }
+          ]
+        },
+        {
+          "anchor": "stone-timber-custom-joinery",
+          "nav": "Materials and joinery",
+          "title": "Texture carried<br>into every detail.",
+          "context": "Live-edge timber, rough stone and dark surfaces give Berloha a warm, rugged character.",
+          "decision": "A vertical timber slab with a lit insert marks the transition between zones. Nearby are shelves with diagonal bracing, timber sliding panels and cabinets with a geometric pattern. Joinery drawings set out the shelves, fronts and bar modules so the details form a coherent interior.",
+          "benefit": "The venue has details guests can recognise and remember. Fitted furniture also provides storage and gives structure to the small room.",
+          "images": [
+            {
+              "file": "timber-sliding-doors-lounge",
+              "alt": "Berloha lounge with timber sliding panels and a live-edge slab feature",
+              "caption": "Timber frames and sliding panels carry the same material through the room."
+            },
+            {
+              "file": "slab-partition-stone-wall",
+              "alt": "Timber slab with a lit insert beside textured stone and lounge seating",
+              "caption": "Light grazes the stone and picks out the timber’s natural edge."
+            }
+          ]
+        },
+        {
+          "anchor": "projection-screen-guest-events",
+          "nav": "Screen in the room",
+          "title": "Another reason<br>to meet here.",
+          "context": "A projection screen adds the option of shared viewing to the bar setting.",
+          "decision": "The room composition includes a ceiling projector and screen. The electrical plan provides power and an internet socket in the media area, allowing screenings or presentations to be considered as another use of the space.",
+          "benefit": "The venue has a basis for themed gatherings in the same room. Media equipment is considered within the interior rather than added as an afterthought."
+        },
+        {
+          "anchor": "layered-lighting-bar-atmosphere",
+          "nav": "Lighting scenes",
+          "title": "Light changes<br>the evening’s mood.",
+          "context": "Berloha’s lighting has separate layers: general illumination, local light by the seats and decorative accents around the counter and timber details.",
+          "decision": "Track lights work with pendants, table lamps and concealed lighting. The switching plan separates the lighting groups. A rendered video shows how changing them in sequence takes the room from a subdued setting to brighter accents on the bar and seating.",
+          "benefit": "Light draws attention to the counter, keeps the lounge intimate and reveals the materials’ texture. The owner has a lighting composition designed around different moments of the evening.",
+          "video": {
+            "file": "lighting-scenes-visualisation.mp4",
+            "poster": "lounge-bar-overview-1440.webp",
+            "alt": "Rendered demonstration of changing lighting groups in Berloha bar",
+            "caption": "A rendered lighting study: accents shift between the bar, seating and timber details."
+          }
+        },
+        {
+          "anchor": "bar-furniture-electrical-coordination",
+          "nav": "Details for daily use",
+          "title": "Careful coordination<br>behind the atmosphere.",
+          "context": "An expressive interior needs furniture, finishes and electrical points to fit together precisely.",
+          "decision": "Wall elevations relate the shelves and fronts to lighting outlets. The socket plan accounts for the refrigerator, router and media area. Ceiling sections explain the junctions between surfaces, while the floor plan sets out the large-format tiles.",
+          "benefit": "Contractors have coordinated setting-out information tied to the interior. It helps carry the design through to the small details guests experience as a carefully finished room."
+        },
+        {
+          "anchor": "bar-lighting-climate-security-automation-potential",
+          "nav": "Automation potential",
+          "title": "Fewer switches.<br>More attention for guests.",
+          "context": "Separate lighting groups provide a basis for future scene control in the venue.",
+          "decision": "A next step could bring lights together into opening, evening, viewing and cleaning scenes. Heating and ventilation schedules, access monitoring after closing and leak protection near the bar sink are further options to assess. Each requires its own equipment selection and coordination with the venue’s building services.",
+          "benefit": "These scenarios could reduce repetitive tasks for staff and help maintain the intended room settings. They are opportunities for future development, not a claim of installed automation."
+        }
+      ],
+      "outcome_title": "A bar’s atmosphere.<br>Precision in the details.",
+      "outcome": "The project covers an intimate venue with a bar: seating, finishes, bespoke furniture, lighting and electrical connections. Visualisations and working drawings connect the overall mood with the dimensions and details needed to carry the design forward.",
+      "faq": [
+        {
+          "question": "What kind of venue is Berloha?",
+          "answer": "It is a commercial venue with a bar in Lviv. The interior combines high seating at the counter with a soft lounge area for small groups."
+        },
+        {
+          "question": "How is the small space organised?",
+          "answer": "The bar and sofa group remain visually connected. Timber frames and shelves define the seating without a solid partition between the main guest areas."
+        },
+        {
+          "question": "What gives the interior its identity?",
+          "answer": "Live-edge timber slabs, textured stone and shelves with diagonal elements. Lighting picks out these details and draws attention to the counter."
+        },
+        {
+          "question": "Why include a projector in the bar?",
+          "answer": "The projector and screen add the option of shared viewing. Power and an internet connection are included in the electrical plan, tying the media setting to the room’s design."
+        },
+        {
+          "question": "Does the video show installed automation?",
+          "answer": "The video demonstrates lighting changes in an interior visualisation. The case presents the lighting composition and separate switching groups; it does not claim installed controllers, sensors or an integrated control system."
+        },
+        {
+          "question": "How do I start designing my own bar?",
+          "answer": "Start with a floor plan, the seating format you want and a list of working equipment. PISKOR Architect can connect the venue’s atmosphere with its layout, furniture and technical details. Use the phone number on this page to discuss your property."
+        }
+      ],
+      "source_note": "Internal: same source and scope as Ukrainian. Owner confirmed Lviv and commercial venue with bar; 2021 source chronology. General38.51m² rounds39m², not floor-material quantity38.03m². All13PDFs/23pages,21images and complete9.67sec lighting video reviewed. Six final coherent renders only; automation potential explicitly conditional, no installed system or completed construction claimed."
+    }
+  },
   "aurum-blue-apartment-lviv": {
     "uk": {
       "eyebrow": "Дизайн квартири · Львів",

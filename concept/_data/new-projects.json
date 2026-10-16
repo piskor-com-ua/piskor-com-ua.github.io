@@ -1,4 +1,212 @@
 {
+  "bartativ-house-reconstruction": {
+    "uk": {
+      "eyebrow": "Реконструкція будинку · Бартатів",
+      "title": "Нове життя дому<br><span>в Бартатові.</span>",
+      "summary": "Реконструкція змінює те, як родина користується будинком. Вітальня отримала друге світло, чотири спальні розташовані на двох поверхах, а тераса продовжує спільну зону в сад. Світлі стіни й темний клінкер об’єднують добудову з основним об’ємом.",
+      "cover": "entrance-facade",
+      "cover_alt": "Критий вхід будинку в Бартатові, світлі фасади, темний клінкер і широкі зовнішні сходи",
+      "location": "Бартатів, Львівська область",
+      "area": "178 м²",
+      "property": "Реконструкція та добудова будинку",
+      "intro_title": "Змінити планування.<br>Відкрити більше простору.",
+      "intro": "Проєкт 2020 року переосмислює наявний житловий будинок у Бартатові. Добудова, нова організація поверхів і виразне скління вітальні працюють разом: спільні кімнати стають відкритішими, а спальні зберігають відокремленість. Підвал бере на себе господарські функції, звільняючи житлові рівні для родини.",
+      "chapters": [
+        {
+          "anchor": "house-reconstruction-clinker-facades",
+          "nav": "Архітектура й фасади",
+          "title": "Один будинок.<br>Цілісний силует.",
+          "context": "Після добудови важливо, щоб будинок сприймався як єдине ціле. Нове оформлення пов’язує вхід, житлові об’єми й терасу спільними матеріалами та лініями даху.",
+          "decision": "Світлу штукатурку доповнюють темні клінкерні площини й металеве покриття даху. Вертикальні смуги кладки підкреслюють вікна, а навіс над входом спирається на оздоблені тим самим матеріалом опори. З боку саду високе скління доходить до схилу даху.",
+          "benefit": "Будинок має впізнаваний вхід і узгоджені фасади з різних боків. Крита площадка дає змогу спокійно відчинити двері під час дощу, а ширші сходи зручно з’єднують її з подвір’ям.",
+          "images": [
+            {
+              "file": "entrance-facade",
+              "alt": "Вхідний фасад будинку в Бартатові з навісом, темними цегляними опорами та широкими сходами",
+              "caption": "Критий вхід і контраст світлої штукатурки з темним клінкером."
+            },
+            {
+              "file": "garden-facade",
+              "alt": "Садовий фасад будинку в Бартатові з високим склінням вітальні та критою терасою",
+              "caption": "Високе скління під дахом і тераса з боку саду."
+            }
+          ]
+        },
+        {
+          "anchor": "double-height-living-room",
+          "nav": "Вітальня з другим світлом",
+          "title": "Висота, яку відчуваєш<br>зі спільної кімнати.",
+          "context": "У центрі планування розташована вітальня площею 23 м². Над нею немає звичайного міжповерхового перекриття: друге світло змінює пропорції кімнати й пов’язує її з верхнім рівнем.",
+          "decision": "Сходи розміщені поруч із вітальнею, кухня прилягає до спільної зони, а верхній поверх має додаткову кімнату відпочинку. Високе фасадне вікно відповідає відкритому об’єму всередині.",
+          "benefit": "Спільна кімната відчувається просторішою без збільшення її площі на плані. Родина має основне місце для зустрічей унизу та окрему зону відпочинку нагорі."
+        },
+        {
+          "anchor": "four-bedroom-family-layout",
+          "nav": "Чотири спальні",
+          "title": "Особистий простір<br>на двох поверхах.",
+          "context": "Планування передбачає чотири спальні: по дві на кожному житловому рівні. У кожній парі є кімнати площею 15 і 17 м², тому приватна частина не залежить від одного поверху.",
+          "decision": "На першому поверсі спальні згруповані поруч із ванною кімнатою та відокремлені від входу. Нагорі ще дві спальні прилягають до невеликої вітальні з виходом на балкон. Такий розподіл дозволяє обрати кімнату відповідно до звичок членів родини.",
+          "benefit": "Спальня на першому поверсі дає можливість користуватися основними житловими приміщеннями без щоденного підйому сходами. Верхній рівень залишає більше відокремленості для роботи чи відпочинку."
+        },
+        {
+          "anchor": "covered-terrace-garden-connection",
+          "nav": "Тераса й сад",
+          "title": "Вийти в сад.<br>Залишитися під дахом.",
+          "context": "Тераса розташована біля спільної частини будинку. Вона формує проміжний простір між кімнатами й відкритим подвір’ям, тож сад стає частиною щоденного маршруту.",
+          "decision": "Схил даху накриває площадку, а огорожа окреслює її край. Вихід із житлової зони з’єднаний із терасою без обходу будинку. Балкон верхнього поверху доповнює цей зв’язок із зовнішнім простором.",
+          "benefit": "Поряд зі спільною кімнатою є місце для короткого відпочинку надворі. Накриття захищає від прямого сонця й опадів, а близькість до кухні спрощує користування терасою під час сімейних зустрічей."
+        },
+        {
+          "anchor": "basement-storage-building-envelope",
+          "nav": "Побут і конструкція",
+          "title": "Господарські речі<br>поза житловими кімнатами.",
+          "context": "Реконструкція охоплює й те, чого не видно на фасаді. У підвалі є три господарські приміщення загальною площею 29 м²; на першому поверсі окремо передбачені господарська кімната й вхідний тамбур.",
+          "decision": "Підсобні функції розподілені між підвалом і житловим рівнем, щоб не займати ними спальні та вітальню. Архітектурна документація також узгоджує утеплення зовнішніх стін, віконні прорізи, покрівлю та вузли примикань.",
+          "benefit": "Родина отримує окремі місця для зберігання та повсякденних господарських справ. Узгоджені рішення оболонки будинку допомагають врахувати комфорт кімнат разом із зовнішнім виглядом, а не залишати ці питання на потім."
+        },
+        {
+          "anchor": "lighting-heating-home-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Керування, яке варто<br>продумати завчасно.",
+          "context": "Друге світло, спальні на двох рівнях і виходи в сад потребують різних сценаріїв користування. Для такого планування доречно розглянути автоматизацію разом з інженерними системами.",
+          "decision": "Можливий наступний крок: окремі сцени світла для вітальні, входу й тераси; зональне керування опаленням та узгоджена робота клімату; моторизоване затінення високих вікон. Для безпеки можна розглянути контроль входів, сповіщення про протікання біля мокрих зон і керування зовнішнім освітленням за розкладом. Це рекомендовані сценарії, а не встановлені системи цього проєкту.",
+          "benefit": "Завчасне погодження таких сценаріїв допомагає визначити потрібні кабелі, приводи й точки керування до оздоблення. Замовник може обрати лише ті функції, якими справді користуватиметься."
+        }
+      ],
+      "outcome_title": "Реконструкція, що починається<br>з життя всередині.",
+      "outcome": "Кейс охоплює реконструкцію та добудову житлового будинку: планування двох поверхів і підвалу, друге світло, фасади, покрівлю, терасу та архітектурні вузли. Проєкт пов’язує зовнішнє оновлення з потребами родини: спільним простором, чотирма спальнями й окремими господарськими зонами.",
+      "faq": [
+        {
+          "question": "У чому головна зміна будинку?",
+          "answer": "Реконструкція поєднує добудову з новою організацією житлових рівнів. Головний просторовий акцент становить вітальня з другим світлом, а фасади й дах об’єднують будинок у цілісний об’єм."
+        },
+        {
+          "question": "Що входить у площу 178 м²?",
+          "answer": "Це сума площ за проєктними експлікаціями: перший поверх, другий поверх із балконом і підвал. Без балкона загальна внутрішня площа становить 170 м² після округлення. Відкритий об’єм другого світла повторно не врахований."
+        },
+        {
+          "question": "Скільки спалень передбачає планування?",
+          "answer": "Чотири: дві на першому поверсі й дві на другому. Унизу розташована основна вітальня з кухнею поруч; нагорі є додаткова вітальня з виходом на балкон."
+        },
+        {
+          "question": "Чи передбачене місце для господарських потреб?",
+          "answer": "Так. Підвал містить три господарські приміщення. Ще одна господарська кімната розташована на першому поверсі, поруч із ванною та вхідною частиною."
+        },
+        {
+          "question": "Чи можна додати розумне керування будинком?",
+          "answer": "Можна розглянути світлові сцени, зональне опалення, затінення високих вікон, контроль води й входів. Це потенціал для окремого інженерного опрацювання; кейс не заявляє про встановлену автоматизацію."
+        },
+        {
+          "question": "Як обговорити реконструкцію власного будинку?",
+          "answer": "Розкажіть PISKOR Architect, що хочете змінити у плануванні та користуванні будинком, і надайте наявні обміри чи плани. Це допоможе визначити склад архітектурного проєкту й питання для обстеження об’єкта."
+        }
+      ],
+      "source_note": "Internal: Drive Bartativ folder19MJxenvzsx8NsaQzxum9mQVHwtKztRQN;34-page PDF1U7RuaqX1X6eU50HAkUXFuvQjTcDEgzYI. Cover confirms2020,Bartativ,LvivOblast,reconstruction/extension. PlanPDFpages12,13,17:96.4+52.9+28.7=178.0 including8.1balcony;169.9interior excludingbalcony rounds170. Labelled individual rooms rounded only in prose. Only final render4.7RED and5 used; variant6.1 excluded. No built/installed automation claim. Source originals and drawings not published. Initial comparison3renders against543releasedframes had minimum64-bitdHash12; nearest inspected unrelated. See/tmp/piskor-bartativ.cC5qFG/intake.md. Local owner review only."
+    },
+    "en": {
+      "eyebrow": "House reconstruction · Bartativ",
+      "title": "A fresh start<br><span>in Bartativ.</span>",
+      "summary": "A house reconstruction designed around family routines. A double-height living room opens up the shared space, four bedrooms occupy two floors, and a terrace extends daily life into the garden. Light walls and dark clinker brick bring the extension and existing house together.",
+      "cover": "entrance-facade",
+      "cover_alt": "Sheltered entrance to the Bartativ house with light walls, dark clinker brick and broad outdoor steps",
+      "location": "Bartativ, Lviv Oblast",
+      "area": "178 m²",
+      "property": "House reconstruction and extension",
+      "intro_title": "A different layout.<br>More room to live.",
+      "intro": "This 2020 project rethinks an existing home in Bartativ. An extension, a revised floor layout and tall living-room glazing work together to open up the shared rooms while keeping bedrooms separate. Basement service rooms leave the residential floors available for family life.",
+      "chapters": [
+        {
+          "anchor": "house-reconstruction-clinker-facades",
+          "nav": "Architecture and facades",
+          "title": "A coherent house<br>from every side.",
+          "context": "An extension should feel part of the house. A shared material palette and connected roof lines bring the entrance, living spaces and terrace into one composition.",
+          "decision": "Light render sits alongside dark clinker brick and a metal roof. Vertical brick panels frame the windows; matching columns support the entrance canopy. On the garden side, tall glazing follows the roof slope.",
+          "benefit": "The entrance is easy to recognise and the facades share a consistent character. The canopy shelters the door in wet weather, while broad steps connect the entrance platform to the garden.",
+          "images": [
+            {
+              "file": "entrance-facade",
+              "alt": "Entrance facade of the Bartativ house with a canopy, dark brick columns and broad outdoor steps",
+              "caption": "A sheltered entrance framed by light render and dark clinker brick."
+            },
+            {
+              "file": "garden-facade",
+              "alt": "Garden facade of the Bartativ house with tall living-room glazing and a covered terrace",
+              "caption": "Tall glazing beneath the roof and a terrace facing the garden."
+            }
+          ]
+        },
+        {
+          "anchor": "double-height-living-room",
+          "nav": "Double-height living room",
+          "title": "A shared room<br>with space above.",
+          "context": "The main living room occupies 23 m² at the centre of the layout. An open volume above it replaces a conventional upper-floor ceiling and connects the room to the level overhead.",
+          "decision": "The staircase sits beside the living room, with the kitchen adjoining the shared area. Upstairs, a separate sitting room provides another place to relax. The tall facade window corresponds to the double-height volume inside.",
+          "benefit": "The room feels more generous without increasing its floor area. The family has a main gathering place downstairs and a separate sitting area upstairs."
+        },
+        {
+          "anchor": "four-bedroom-family-layout",
+          "nav": "Four bedrooms",
+          "title": "Private rooms<br>across two floors.",
+          "context": "The layout includes four bedrooms, two on each residential level. Each pair has a 15 m² room and a 17 m² room, so the private accommodation is not confined to one floor.",
+          "decision": "Downstairs bedrooms sit near the bathroom, away from the entrance. Upstairs, two more bedrooms adjoin a small sitting room with balcony access. Family members can choose a room that suits their daily routine.",
+          "benefit": "A downstairs bedroom allows use of the main living facilities without taking the stairs every day. The upper floor offers greater separation for work or rest."
+        },
+        {
+          "anchor": "covered-terrace-garden-connection",
+          "nav": "Terrace and garden",
+          "title": "Outside,<br>still under cover.",
+          "context": "The terrace adjoins the shared part of the house. It creates a space between the rooms and the open garden, making time outdoors part of the everyday route.",
+          "decision": "A roof slope covers the platform and a railing defines its edge. Direct access from the living area avoids a walk around the house. The upstairs balcony provides another connection to the outdoors.",
+          "benefit": "A sheltered place to pause outdoors sits close to the shared room. The roof offers protection from direct sun and rain, and the nearby kitchen makes the terrace convenient during family gatherings."
+        },
+        {
+          "anchor": "basement-storage-building-envelope",
+          "nav": "Storage and construction",
+          "title": "Service space<br>outside the living rooms.",
+          "context": "The reconstruction also addresses less visible needs. Three basement service rooms total 29 m²; a separate utility room and entrance vestibule occupy the ground floor.",
+          "decision": "Storage and household functions are distributed between the basement and ground floor rather than taking over bedrooms or the living room. The architectural documentation also coordinates external wall insulation, window openings, the roof and construction junctions.",
+          "benefit": "The family has dedicated places for storage and household tasks. Coordinating the building envelope with the architecture considers room comfort alongside appearance rather than leaving it for a later decision."
+        },
+        {
+          "anchor": "lighting-heating-home-automation-potential",
+          "nav": "Automation potential",
+          "title": "Plan the controls<br>before the finishes.",
+          "context": "A double-height room, bedrooms across two floors and garden access create different everyday routines. Automation is worth considering alongside the engineering design for this layout.",
+          "decision": "Possible next steps include separate lighting scenes for the living room, entrance and terrace; heating zones coordinated with climate control; and motorised shading for tall windows. Entry monitoring, leak alerts near wet areas and scheduled outdoor lighting could also be considered. These are recommended options, not installed systems in this project.",
+          "benefit": "Agreeing these routines early helps define wiring, actuators and control locations before finishes begin. The owner can select the functions they will actually use."
+        }
+      ],
+      "outcome_title": "Reconstruction shaped<br>by life inside.",
+      "outcome": "The scope covers a residential reconstruction and extension: two-storey and basement layouts, a double-height room, facades, roof, terrace and architectural details. The exterior redesign responds to family needs inside, with shared space, four bedrooms and separate service areas.",
+      "faq": [
+        {
+          "question": "What is the main change to the house?",
+          "answer": "The reconstruction combines an extension with a revised residential layout. A double-height living room is the main spatial change; redesigned facades and roof bring the house into a coherent composition."
+        },
+        {
+          "question": "What does the 178 m² area include?",
+          "answer": "It adds the project schedules for the ground floor, upper floor including its balcony, and basement. Interior area excluding the balcony rounds to 170 m². The double-height void is not counted a second time."
+        },
+        {
+          "question": "How many bedrooms does the layout have?",
+          "answer": "Four, with two downstairs and two upstairs. The main living room has the kitchen alongside it; an additional sitting room upstairs opens onto the balcony."
+        },
+        {
+          "question": "Is there dedicated storage and utility space?",
+          "answer": "Yes. The basement contains three service rooms. A further utility room sits on the ground floor near the bathroom and entrance area."
+        },
+        {
+          "question": "Could smart-home controls be added?",
+          "answer": "Lighting scenes, heating zones, tall-window shading, leak alerts and entry monitoring are options for a separate engineering design. They are potential additions; this case does not claim installed automation."
+        },
+        {
+          "question": "How can I discuss reconstructing my own home?",
+          "answer": "Tell PISKOR Architect what you want to change about the layout and daily use of your house, and share any existing surveys or plans. This helps define the architectural scope and questions for a building assessment."
+        }
+      ],
+      "source_note": "Internal: same evidence and scope as Ukrainian.2020 and Bartativ explicitly on cover;178m² is96.4+52.9+28.7 including8.1m² balcony,170m² rounded interior excluding balcony. Only two consistent final renders used; alternate6.1 excluded. All automation conditional, no completed construction claim. Local owner review only."
+    }
+  },
   "shingle-house-pidriasne": {
     "uk": {
       "eyebrow": "Архітектура будинку · Підрясне",

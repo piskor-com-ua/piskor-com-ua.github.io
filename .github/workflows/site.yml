@@ -30,7 +30,7 @@ jobs:
           assert re.match(r'^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?!?: .+', os.environ['PR_TITLE']), 'Use a Conventional Commit PR title'
           PYCODE
       - name: Set up Node.js
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
       - name: Validate JavaScript

@@ -44,9 +44,18 @@ for route, lang in routes.items():
     assert 'noindex' in meta['robots'], 'Indexing requires separate approval'
     links = [a for t, a in page.tags if t == 'link']
     canonical = [a['href'] for a in links if a.get('rel') == 'canonical']
-    assert canonical == ['https://piskor.com.ua' + route]
+    refresh = [a['content'] for t, a in page.tags if t == 'meta' and a.get('http-equiv') == 'refresh']
+    canonical_route = route
+    if refresh:
+        assert len(refresh) == 1 and refresh[0].startswith('0;url=/'), route
+        canonical_route = refresh[0].removeprefix('0;url=')
+        assert canonical_route in routes and canonical_route != route, route
+        assert routes[canonical_route] == lang, route
+        target = Page((Path('_site') / canonical_route.lstrip('/') / 'index.html').read_text())
+        assert not any(t == 'meta' and a.get('http-equiv') == 'refresh' for t, a in target.tags), 'Redirect chain'
+    assert canonical == ['https://piskor.com.ua' + canonical_route]
     alternates = {a['hreflang']: a['href'] for a in links if 'hreflang' in a}
-    suffix = route.removeprefix('/en/').lstrip('/')
+    suffix = canonical_route.removeprefix('/en/').lstrip('/')
     assert alternates == {'uk': 'https://piskor.com.ua/' + suffix, 'en': 'https://piskor.com.ua/en/' + suffix, 'x-default': 'https://piskor.com.ua/' + suffix}
     for tag, attrs in page.tags:
         if tag == 'a' and attrs.get('href', '').startswith('/'):

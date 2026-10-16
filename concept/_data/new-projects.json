@@ -5263,46 +5263,590 @@
   },
   "bedroom-lighting-automation": {
     "uk": {
-      "eyebrow": "Автоматизація · Сценарії освітлення",
-      "title": "Світловий сценарій<br><span>для спальні.</span>",
-      "summary": "Керований світловий сценарій для спальні: приглушений старт, рожеве контурне світло, акцентний напис і послідовне підсвічення відкритих полиць.",
-      "location": null,
-      "area": "не застосовується",
-      "property": "Сценарій автоматизації інтер’єру",
-      "cover": "bedroom-lighting-automation-03",
-      "video": {"file":"lighting-scenario-visualisation.mp4","poster":"lighting-scenario-poster.webp","alt":"Відеовізуалізація сценарію освітлення спальні","caption":"Відеовізуалізація світлового сценарію"},
-      "cover_alt": "Світловий сценарій у спальні з підсвіченими полицями та написом",
-      "intro_title": "Світло як режисура.<br>Сценарій, що змінює кімнату.",
-      "intro": "Світловий сценарій керує послідовністю станів одного інтер’єру. Простір починається майже в темряві, далі з’являється рожеве контурне світло, вмикається напис над ліжком і поступово розкриваються відкриті полиці. Наприкінці кімната повертається до приглушеного режиму з точними світловими акцентами.",
-      "technical_note": "Система об’єднує контурне LED-підсвічення ніші за узголів’ям і верхньої лінії відкритих полиць, світловий напис у центральній панелі, підсвічення полиць зліва та справа, а також загальне й акцентне світло стелі. Яскравість і порядок увімкнення кожної групи формують цілісну сцену, у якій спальня м’яко переходить від камерного режиму до виразної вечірньої атмосфери.",
+      "eyebrow": "Дизайн інтер’єру · Дворівнева квартира",
+      "title": "Дворівневий лофт<br><span>у Львові.</span>",
+      "summary": "Дворівнева квартира з відкритими сходами, їдальнею для спільних вечорів і трьома спальнями з різним настроєм. Темне дерево, графіт і зелені акценти поєднують кімнати, а світловий сценарій додає спальні власного вечірнього ритму.",
+      "location": "Львів",
+      "area": null,
+      "property": "Дворівнева квартира",
+      "cover": "dining-table",
+      "cover_alt": "Їдальня дворівневої квартири у Львові із зеленими кріслами й відкритими сходами",
+      "intro_title": "Спільний простір унизу.<br>Власна кімната нагорі.",
+      "intro": "На нижньому рівні їдальня прилягає до відкритих сходів. На верхньому кожна спальня має свій характер: стримані деревні панелі, зелене світло та ігрові мотиви або фіолетову нішу з підвісним кріслом. Спільні матеріали пов’язують ці різні кімнати, а індивідуальні меблі допомагають поєднати відпочинок зі зберіганням і робочим місцем.",
       "chapters": [
-        {"anchor":"lighting-baseline","nav":"Базовий стан","title":"Темрява, яка<br>готує сцену.","context":"Сценарій починається з мінімального рівня освітлення: ліжко, полиці та зона відпочинку лише вгадуються в темному інтер’єрі.","decision":"Керований старт без різкого загального спалаху залишає простір камерним і задає точку відліку для наступних світлових шарів.","benefit":"Кімната зберігає вечірню атмосферу, а зміна режиму відчувається як продумана послідовність світла.","images":[{"file":"bedroom-lighting-automation-01","alt":"Спальня у приглушеному початковому режимі","caption":"Початковий стан залишає видимими лише силуети меблів і слабкі контурні акценти."},{"file":"bedroom-lighting-automation-02","alt":"Спальня з рожевим підсвіченням ніші за узголів’ям","caption":"Перший світловий шар окреслює нішу та переводить увагу до центру кімнати."}]},
-        {"anchor":"accent-lighting-sequence","nav":"Акцентний сценарій","title":"Світло збирає<br>композицію.","context":"Після базового шару вмикаються акценти, які розкривають архітектуру стіни за ліжком та систему відкритого зберігання.","decision":"Світловий напис стає центральним візуальним елементом, а підсвічені полиці зліва та справа додають глибини. Рожевий контур працює як фонова лінія, тоді як локальні джерела виділяють предмети й матеріали.","benefit":"Одна спальня отримує окрему атмосферу для відпочинку, візуального акценту та демонстрації колекції без зміни меблів.","images":[{"file":"bedroom-lighting-automation-03","alt":"Спальня з увімкненим написом і підсвіченими полицями","caption":"Світловий напис і полиці формують центральний акцентний режим."},{"file":"bedroom-lighting-automation-04","alt":"Акцентний режим спальні з рожевим контурним світлом","caption":"Контурне світло підтримує глибину ніші, а полиці залишаються окремим шаром."}]},
-       {"anchor":"dimming-and-reset","nav":"Завершення сценарію","title":"Керування атмосферою,<br>а не лише яскравістю.","context":"Фінальна частина відео показує зниження інтенсивності: напис і рожеві акценти затихають, а кімната повертається до темнішого стану.","decision":"Сценарій працює як послідовність із наростанням і згасанням. Важливим є не тільки факт увімкнення груп, а й порядок їхньої появи та повернення до спокійного режиму.","benefit":"Освітлення підтримує різні моменти користування спальнею — від виразної сцени до м’якого завершення вечора.","images":[{"file":"bedroom-lighting-automation-05","alt":"Спальня у режимі зі зниженою яскравістю","caption":"Після акцентної сцени світло зменшується, але центральний напис ще утримує композицію."},{"file":"bedroom-lighting-automation-06","alt":"Спальня після завершення світлового сценарію","caption":"Фінальний стан повертає інтер’єр до стриманого режиму з видимими меблями та полицями."}]},
-        {"anchor":"lighting-automation-scenarios","nav":"Автоматизація освітлення","title":"Світло змінює<br>атмосферу.","context":"У цьому проєкті автоматизація читається через послідовність керованих світлових груп, показану у відео.","decision":"Контурне LED-світло, напис у центральній панелі, підсвічення полиць і стельові групи вмикаються у визначеному порядку та змінюють інтенсивність. Відео підтверджує сценарій світла, але не називає систему керування, протокол чи датчики.","benefit":"Одна спальня отримує кілька станів: приглушений вечірній режим, виразну акцентну сцену та м’яке завершення без одночасного ввімкнення всіх джерел.","images":[]}
-     ],
-      "outcome": "Відео демонструє послідовність світлових режимів: кілька груп поступово переводять спальню від приглушеного стану до виразного акцентного освітлення. Ніша, полиці та центральний напис стають частиною вечірньої композиції."
+        {
+          "anchor": "entrance-hall-concealed-storage",
+          "nav": "Передпокій",
+          "title": "Місце для речей<br>біля входу.",
+          "context": "У передпокої важливо зручно перевзутися, залишити верхній одяг і швидко знайти дрібниці перед виходом. Відкрите зберігання тут легко створює візуальний безлад.",
+          "decision": "Високі шафи мають рівні темні фасади. Поруч розміщено лаву із зеленою м’якою подушкою, дзеркало й полицю для невеликих речей. Деревний рисунок стелі та спрямовані світильники роблять вхідну зону виразною без зайвого декору.",
+          "benefit": "Щоденні речі залишаються біля входу, а шафи не перетворюють коридор на склад меблів.",
+          "images": [
+            {
+              "file": "entry-bench",
+              "alt": "Передпокій з лавою, зеленою подушкою та дзеркалом",
+              "caption": "Лава й полиця створюють зручне місце для короткої зупинки біля входу."
+            },
+            {
+              "file": "entry-storage",
+              "alt": "Темні шафи на всю висоту в передпокої дворівневої квартири",
+              "caption": "Глухі фасади приховують речі й утворюють спокійне тло коридору."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-room-green-chairs-display",
+          "nav": "Їдальня",
+          "title": "Великий стіл<br>для спільного часу.",
+          "context": "Їдальня займає помітне місце на нижньому рівні. Її композицію видно і від сходів, і з боку вікна, тому стіл, світло та зберігання мають узгоджуватися між собою.",
+          "decision": "Зелені крісла пом’якшують темну деревну стіну. Над столом підвішено кільцеві світильники на похилих тросах. Навпроти скляна вітрина з тонким каркасом дає місце для посуду й предметів, які хочеться залишити на виду.",
+          "benefit": "Їдальня однаково доречна для звичайної вечері та довгої розмови з гостями. Вітрина підтримує житловий характер простору, а світильники чітко позначають зону столу.",
+          "images": [
+            {
+              "file": "dining-table",
+              "alt": "Обідній стіл із зеленими кріслами під кільцевими світильниками",
+              "caption": "Темна стіна й зелена оббивка зосереджують увагу на столі."
+            },
+            {
+              "file": "dining-display",
+              "alt": "Скляна вітрина з відкритими полицями навпроти їдальні",
+              "caption": "Вітрина для посуду та декору продовжує тонку графіку сходів."
+            }
+          ]
+        },
+        {
+          "anchor": "open-staircase-between-levels",
+          "nav": "Відкриті сходи",
+          "title": "Два рівні,<br>пов’язані сходами.",
+          "context": "Сходи розташовані поруч зі столом. Суцільна глуха конструкція в цьому місці візуально відділила б їдальню від решти нижнього рівня.",
+          "decision": "Відкритий марш із темними металевими елементами й деревними сходинками залишає просвіти між частинами конструкції. Тонкі вертикалі повторюються у вітрині та підтримують загальну графіку інтер’єру.",
+          "benefit": "Перехід нагору залишається частиною житлового простору. З боку столу зберігається відчуття глибини, а сходи стають помітною архітектурною деталлю.",
+          "images": [
+            {
+              "file": "stair-dining",
+              "alt": "Вид збоку на їдальню та відкриті сходи в дворівневій квартирі",
+              "caption": "Сходи прилягають до їдальні, не відгороджуючи її суцільною стіною."
+            },
+            {
+              "file": "open-stair",
+              "alt": "Відкритий сходовий марш уздовж обіднього столу",
+              "caption": "Просвіти й тонкі металеві елементи зберігають видимість простору за сходами."
+            }
+          ]
+        },
+        {
+          "anchor": "main-bedroom-timber-headboard",
+          "nav": "Основна спальня",
+          "title": "Тепле дерево<br>навколо ліжка.",
+          "context": "Основна спальня продовжує темну палітру квартири, але м’які тканини та велике вікно роблять її спокійнішою за спільні зони.",
+          "decision": "Узголів’я оформлено гладкими деревними панелями й вертикальними рейками. Темна поверхня з прожилками проходить за тумбами, а круглі підвісні світильники позначають обидва боки ліжка. Біля вікна розміщено крісло для читання.",
+          "benefit": "Спальня має чіткий центр і окремий куточок для відпочинку біля денного світла. Приліжкові підвіси звільняють поверхні тумб.",
+          "images": [
+            {
+              "file": "main-bedroom",
+              "alt": "Основна спальня з деревними панелями та круглими приліжковими підвісами",
+              "caption": "Панелі, рейки та світильники формують симетричне обрамлення ліжка."
+            },
+            {
+              "file": "main-bedroom-window",
+              "alt": "Ліжко й крісло біля великого вікна основної спальні",
+              "caption": "Світло від вікна врівноважує темні поверхні, а крісло додає місце для читання."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-dressing-desk-mirrors",
+          "nav": "Туалетний столик",
+          "title": "Ранкові збори<br>у власному темпі.",
+          "context": "Туалетний столик розташований у тій самій кімнаті, що й ліжко. Йому потрібні власна поверхня та дзеркало, але без відчуття ще одного великого меблевого блоку.",
+          "decision": "Тонка темна стільниця стоїть біля вікна. Вертикальні дзеркала в металевому обрамленні продовжують лінії узголів’я, а м’яке крісло в теплій оббивці відрізняє цю зону від темних тумб.",
+          "benefit": "Косметика й речі для зборів мають окреме місце. Столик користується денним світлом і залишається частиною єдиної композиції спальні.",
+          "images": [
+            {
+              "file": "dressing-desk",
+              "alt": "Туалетний столик біля деревного узголів’я основної спальні",
+              "caption": "Легка стільниця й м’яке крісло розміщені поруч із ліжком."
+            },
+            {
+              "file": "dressing-mirror",
+              "alt": "Туалетний столик із вертикальним дзеркалом поруч із вікном",
+              "caption": "Дзеркальні площини продовжують вертикалі стінових панелей."
+            }
+          ]
+        },
+        {
+          "anchor": "green-bedroom-gaming-inspired-interior",
+          "nav": "Зелена спальня",
+          "title": "Кімната з власним<br>ігровим настроєм.",
+          "context": "В одній зі спалень графітова палітра квартири отримує яскравий зелений акцент. Ігрова тема зосереджена біля узголів’я, а основні меблі залишаються стриманими.",
+          "decision": "Світловий напис розміщено на зеленій стіні над ліжком. Металева перфорована стійка та відкриті полиці дають місце для колекції. Поруч висока шафа з рівними сірими фасадами приховує повсякденні речі.",
+          "benefit": "Інтереси мешканця стають видимою частиною кімнати. Водночас закрите зберігання допомагає залишити місце для відпочинку охайним.",
+          "images": [
+            {
+              "file": "green-bedroom",
+              "alt": "Зелена спальня зі світловим написом і полицями біля ліжка",
+              "caption": "Зелена стіна й напис позначають особистий характер спальні."
+            },
+            {
+              "file": "green-bedroom-window",
+              "alt": "Ліжко біля вікна в зеленій спальні з темними стелажами",
+              "caption": "Нейтральне ліжко й денне світло врівноважують яскравий акцент."
+            }
+          ]
+        },
+        {
+          "anchor": "green-bedroom-workspace-display-storage",
+          "nav": "Робоче місце",
+          "title": "Стіл і колекція<br>під рукою.",
+          "context": "Ця спальня поєднує сон із роботою за комп’ютером. Для робочого місця й предметів колекції потрібна окрема ділянка, щоб не займати поверхні біля ліжка.",
+          "decision": "Стіл стоїть навпроти ліжка біля високого стелажа. Відкриті секції різної висоти вміщують книги й моделі, а металева сітка підтримує індустріальну тему кімнати.",
+          "benefit": "Робоче місце має власне зберігання. Колекція залишається на виду й не займає стільницю повністю.",
+          "images": [
+            {
+              "file": "green-workspace",
+              "alt": "Робочий стіл і стелаж для колекції в зеленій спальні",
+              "caption": "Стіл і полиці зібрані в одну робочу зону навпроти ліжка."
+            },
+            {
+              "file": "green-display",
+              "alt": "Відкриті полиці з моделями біля комп’ютерного місця",
+              "caption": "Комірки різного розміру дають місце для книг і предметів колекції."
+            }
+          ]
+        },
+        {
+          "anchor": "violet-bedroom-personal-interior",
+          "nav": "Фіолетова спальня",
+          "title": "Фіолетова ніша<br>та відкриті полиці.",
+          "context": "Інша спальня має м’якший колірний акцент і виразну нішу за узголів’ям. Її настрій відрізняється від зеленої кімнати, хоча меблі використовують споріднені темні профілі та деревні поверхні.",
+          "decision": "Фіолетова площина обрамляє ліжко й світловий напис. Відкриті стелажі розміщено поряд із зоною сну, а шафа з темними фасадами стоїть навпроти. Дзеркало на стику меблів відбиває вікно.",
+          "benefit": "Кімната має особистий характер і достатньо різних місць для зберігання. Закриті фасади залишають увагу на ніші та улюблених предметах.",
+          "images": [
+            {
+              "file": "violet-bedroom",
+              "alt": "Фіолетова спальня з написом над ліжком і підвісним кріслом",
+              "caption": "Колір ніші та відкриті полиці виділяють зону сну."
+            },
+            {
+              "file": "violet-storage",
+              "alt": "Темна шафа й робоча ніша навпроти ліжка фіолетової спальні",
+              "caption": "Шафа, дзеркало та робоче місце займають протилежну стіну."
+            }
+          ]
+        },
+        {
+          "anchor": "violet-bedroom-study-hanging-chair",
+          "nav": "Навчання й відпочинок",
+          "title": "Власне місце<br>для паузи.",
+          "context": "Окрім ліжка, у фіолетовій спальні є робочий стіл і місце біля вікна, де можна змінити заняття та відпочити.",
+          "decision": "Стіл вбудовано в меблеву нішу з полицями над робочою поверхнею. На іншому боці кімнати підвісне крісло з м’якою подушкою стоїть біля вікна та невеликого столика.",
+          "benefit": "Навчання, хобі та відпочинок мають окремі місця в одній кімнаті. Крісло дає альтернативу сидінню за столом або на ліжку.",
+          "images": [
+            {
+              "file": "violet-desk",
+              "alt": "Робоча ніша з полицями у фіолетовій спальні",
+              "caption": "Полиці та стіл утворюють компактну зону для занять."
+            },
+            {
+              "file": "violet-hanging-chair",
+              "alt": "Підвісне крісло біля вікна у фіолетовій спальні",
+              "caption": "Крісло біля вікна створює окремий куточок для відпочинку."
+            }
+          ]
+        },
+        {
+          "anchor": "shower-room-dark-stone-glass",
+          "nav": "Душова",
+          "title": "Темний кам’яний рисунок<br>за склом.",
+          "context": "Санвузол продовжує палітру темного дерева й зелених відтінків. Тут важливо розділити мокру зону та залишити читабельними деталі в глибоких тонах.",
+          "decision": "Душ відділено прозорим склом у темному профілі. На акцентній стіні великий рисунок зеленуватих прожилок, поруч поверхні з деревною фактурою та ніша з відкритими полицями. Лінія світла зверху підкреслює рельєф рисунка.",
+          "benefit": "Скло зберігає видимість усієї кімнати, а полицям і сидінню відведено місце в самій душовій зоні.",
+          "images": [
+            {
+              "file": "shower-glass",
+              "alt": "Скляна душова з темною стіною із зеленими прожилками",
+              "caption": "Прозора перегородка розділяє зони, не перекриваючи акцентну стіну."
+            },
+            {
+              "file": "shower-seat",
+              "alt": "Сидіння й полиці в душовій із деревними поверхнями",
+              "caption": "Полиці та місце для сидіння розташовані поруч із душем."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-vanity-mirror-lighting",
+          "nav": "Умивальна зона",
+          "title": "Дзеркало та світло<br>для щоденних ритуалів.",
+          "context": "У темному санвузлі умивальна зона потребує виразного локального світла. Біля раковини також важливо мати місце для рушників і засобів догляду.",
+          "decision": "Підвісна тумба поєднує шухляди з відкритою нижньою полицею. Дзеркало продовжує вертикаль над стільницею, а невеликі підвіси підкреслюють її край. Зелений текстиль пов’язує цю зону з акцентною стіною душової.",
+          "benefit": "Речі для догляду мають власне місце поруч із раковиною. Підвісна тумба залишає підлогу відкритою, а локальне світло виділяє робочу поверхню.",
+          "images": [
+            {
+              "file": "vanity-mirror",
+              "alt": "Підвісна тумба з відкритою полицею та дзеркалом у темному санвузлі",
+              "caption": "Тумба поєднує приховане зберігання з відкритою полицею для рушників."
+            },
+            {
+              "file": "vanity-light",
+              "alt": "Підвісні світильники біля дзеркала й раковини",
+              "caption": "Невеликі світильники додають локальне світло в умивальній зоні."
+            }
+          ]
+        },
+        {
+          "anchor": "accent-lighting-sequence",
+          "nav": "Світловий сценарій",
+          "title": "Одна спальня.<br>Кілька станів світла.",
+          "context": "Фіолетова спальня має окрему відеовізуалізацію освітлення. Вона показує, як та сама кімната змінюється без перестановки меблів.",
+          "decision": "Спочатку з’являються рожевий контур ніші й напис над ліжком. Далі світло по черзі розкриває полиці та куточок із підвісним кріслом. Наприкінці акценти згасають, і кімната повертається до спокійнішого стану.",
+          "benefit": "Світловий сценарій показує, як поєднати акцентні джерела для спокійного вечора та виразнішого освітлення кімнати. Це дає змогу узгодити бажану атмосферу перед добором обладнання.",
+          "images": [
+            {
+              "file": "bedroom-lighting-automation-03",
+              "alt": "Фіолетова спальня з увімкненим написом і підсвіченими полицями",
+              "caption": "Акцентний стан у відеовізуалізації: напис і полиці розкривають композицію кімнати."
+            },
+            {
+              "file": "bedroom-lighting-automation-06",
+              "alt": "Та сама спальня після згасання акцентного освітлення",
+              "caption": "Завершення сценарію повертає кімнату до приглушеного світла."
+            }
+          ],
+          "video": {
+            "file": "lighting-scenario-visualisation.mp4",
+            "poster": "lighting-scenario-poster.webp",
+            "alt": "Відеовізуалізація послідовності освітлення фіолетової спальні",
+            "caption": "Проєктна відеовізуалізація: контур ніші, світловий напис, полиці та поступове згасання."
+          }
+        },
+        {
+          "anchor": "lighting-curtains-heating-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Сценарії під звички<br>мешканців.",
+          "context": "Поєднання підвісів, спрямованих світильників і декоративного підсвічення дає основу для різних режимів у їдальні та спальнях. Їх можна розвивати як окреме завдання автоматизації.",
+          "decision": "Для вечері можна передбачити окремий режим світла над столом, для роботи за комп’ютером інший баланс локального й загального світла. За наявності сумісних приводів до цих режимів можна додати штори, а зональне керування опаленням налаштувати під розклад кімнат.",
+          "benefit": "Потенційна система допоможе простіше перемикатися між звичними заняттями. Окремий технічний проєкт визначить склад обладнання, зв’язок між зонами та доцільність додаткових функцій, зокрема захисту від протікання й охорони."
+        }
+      ],
+      "outcome_title": "Два рівні<br>з різними настроями.",
+      "outcome": "Історія квартири охоплює передпокій, їдальню та відкриті сходи, три спальні з індивідуальними меблями й робочими місцями, душову та умивальну зону. Темні поверхні й тонкі металеві елементи пов’язують кімнати, а зелений і фіолетовий кольори залишають кожній власний характер. Відеосценарій спальні доповнює інтер’єрну частину проєкту роботою зі світлом.",
+      "faq": [
+        {
+          "question": "Як пов’язані два рівні квартири?",
+          "answer": "На нижньому рівні їдальня розташована поруч із відкритими сходами. Три спальні належать до верхнього рівня. Сходи залишаються видимою частиною спільного простору."
+        },
+        {
+          "question": "Що об’єднує кімнати з різними кольорами?",
+          "answer": "Деревні поверхні, графітові фасади та тонкі металеві профілі повторюються в їдальні, передпокої й спальнях. Зелений і фіолетовий акценти відрізняють особисті кімнати, не змінюючи загальну палітру матеріалів."
+        },
+        {
+          "question": "Як організовано робочі місця у спальнях?",
+          "answer": "Зелена кімната має стіл із сусіднім стелажем для книг і колекції. У фіолетовій кімнаті стіл інтегровано в меблеву нішу, а підвісне крісло біля вікна дає окреме місце для відпочинку."
+        },
+        {
+          "question": "Що саме показує відео освітлення?",
+          "answer": "Відеовізуалізація демонструє послідовність світла у фіолетовій спальні: контур ніші, напис, полиці та локальні акценти. Це проєктний світловий сценарій, а не підтвердження змонтованої smart-home системи."
+        },
+        {
+          "question": "З чого почати подібний проєкт квартири?",
+          "answer": "Покажіть нам плани обох рівнів і розкажіть, як користуватиметесь спільними та особистими кімнатами. Обговоримо сходи, зберігання, робочі місця й потрібні режими освітлення, щоб узгодити склад дизайн-проєкту."
+        }
+      ],
+      "source_note": "Internal: expansion of existing bedroom-lighting-automation, not a second object. User confirmed two-level apartment, Lviv,2021 and approved expanding this case. 22 selected source renders from 2021_Піскор; dining/stair, hall, main bedroom, green bedroom variant2, violet bedroom, bathroom variant3. Existing lighting video matches violet room. Only design/visualisation is evidenced; no installed systems. Area withheld: two handwritten surveys lack an unambiguous total/stair opening; request pending. Source/selection audit: /tmp/piskor-next-house.2o8M8e/intake.md."
     },
     "en": {
-      "eyebrow": "Automation · Lighting scenes",
-      "title": "A lighting scene<br><span>for a bedroom.</span>",
-      "summary": "A controlled bedroom lighting scene: a dimmed start, pink perimeter light, an illuminated statement and a gradual reveal of open shelving.",
-      "location": null,
-      "area": "not applicable",
-      "property": "Interior automation scenario",
-      "cover": "bedroom-lighting-automation-03",
-      "video": {"file":"lighting-scenario-visualisation.mp4","poster":"lighting-scenario-poster.webp","alt":"Video visualisation of the bedroom lighting scene","caption":"Lighting-scene video visualisation"},
-      "cover_alt": "Bedroom lighting scene with illuminated shelving and a statement light",
-      "intro_title": "Light as direction.<br>A scene that changes the room.",
-      "intro": "The lighting scene directs a sequence of states within one interior. The room begins almost dark, then a pink perimeter glow appears, the statement above the bed turns on and the open shelving gradually comes into view. The sequence closes in a dimmed mode with precise points of light.",
-      "technical_note": "The system brings together LED perimeter light at the headboard niche and along the upper shelving line, the illuminated statement in the central panel, shelf lighting on both sides, and general and accent ceiling light. Intensity and activation order shape one composed scene, moving the bedroom from a quiet baseline to a distinctive evening atmosphere.",
+      "eyebrow": "Interior design · Duplex apartment",
+      "title": "A two-level loft<br><span>in Lviv.</span>",
+      "summary": "A duplex apartment with an open staircase, a dining room for evenings together and three bedrooms with distinct moods. Dark timber finishes, graphite and green accents connect the rooms; a bedroom lighting sequence adds a separate evening atmosphere.",
+      "location": "Lviv",
+      "area": null,
+      "property": "Duplex apartment",
+      "cover": "dining-table",
+      "cover_alt": "Dining room in a Lviv duplex apartment with green chairs and an open staircase",
+      "intro_title": "Shared space below.<br>Personal rooms above.",
+      "intro": "On the lower level, the dining room sits beside the open staircase. Upstairs, each bedroom has its own character: restrained timber panels, green light and gaming references, or a violet recess with a hanging chair. Repeated finishes connect these different rooms, while bespoke furniture combines rest with storage and a place to work.",
       "chapters": [
-        {"anchor":"lighting-baseline","nav":"Baseline state","title":"Darkness that<br>sets the scene.","context":"The sequence begins at a minimal light level: the bed, shelves and lounge area are only partially legible in the dark interior.","decision":"A controlled start without a full-room flash keeps the room intimate and sets the point of departure for the next layers of light.","benefit":"The bedroom retains its evening atmosphere while the transition reads as one considered sequence of light.","images":[{"file":"bedroom-lighting-automation-01","alt":"Bedroom in a dimmed starting state","caption":"The starting state leaves only furniture silhouettes and faint perimeter accents visible."},{"file":"bedroom-lighting-automation-02","alt":"Bedroom with pink light at the headboard niche","caption":"The first light layer outlines the niche and turns attention toward the centre of the room."}]},
-        {"anchor":"accent-lighting-sequence","nav":"Accent sequence","title":"Light gathers<br>the composition.","context":"After the baseline layer, accents reveal the architecture of the headboard wall and the open storage system.","decision":"The illuminated statement becomes the central visual element, while the shelves on both sides add depth. The pink perimeter works as a background line; local sources highlight objects and materials.","benefit":"The same bedroom gains a distinct atmosphere for rest, visual focus and displaying a collection without changing its furniture.","images":[{"file":"bedroom-lighting-automation-03","alt":"Bedroom with illuminated statement and lit shelving","caption":"The statement and shelving form the central accent scene."},{"file":"bedroom-lighting-automation-04","alt":"Bedroom accent scene with pink perimeter light","caption":"Perimeter light gives depth to the niche while the shelves remain a separate layer."}]},
-       {"anchor":"dimming-and-reset","nav":"Scene completion","title":"Controlling atmosphere,<br>not only brightness.","context":"The final part of the video lowers the intensity: the statement and pink accents quieten, and the room returns to a darker state.","decision":"The scene works as a sequence with a rise and a fade. The order in which groups appear, and the return to a calm state, are as important as the act of switching them on.","benefit":"The lighting supports different moments in the bedroom, from a strong visual scene to a softer end-of-evening mode.","images":[{"file":"bedroom-lighting-automation-05","alt":"Bedroom in a reduced-brightness scene","caption":"After the accent scene, the light drops while the central statement still holds the composition."},{"file":"bedroom-lighting-automation-06","alt":"Bedroom after the lighting scene ends","caption":"The final state returns the interior to a restrained mode with furniture and shelving still legible."}]},
-        {"anchor":"lighting-automation-scenarios","nav":"Lighting automation","title":"Light changes<br>the atmosphere.","context":"In this project, automation is visible through the sequence of controllable lighting groups shown in the video.","decision":"Perimeter LED light, the illuminated statement, shelf lighting and ceiling groups activate in a defined order and change intensity. The video confirms the lighting scene, but does not identify the control system, protocol or sensors.","benefit":"One bedroom gains several states: a dimmed evening mode, a strong accent scene and a soft ending without every source switching on at once.","images":[]}
-     ],
-      "outcome": "The video demonstrates a sequence of lighting states: several groups move the bedroom from a dim setting to a more expressive accent scene. Light brings the niche, shelving and central statement into the evening composition."
+        {
+          "anchor": "entrance-hall-concealed-storage",
+          "nav": "Entrance hall",
+          "title": "A place for belongings<br>beside the door.",
+          "context": "An entrance hall needs somewhere to change shoes, put away coats and find small essentials before leaving. Too much open storage can quickly make it feel cluttered.",
+          "decision": "Tall cupboards have flat dark fronts. A bench with a green upholstered cushion sits beside a mirror and a small shelf. Timber ceiling finishes and directional lights give the entrance a clear character without extra decoration.",
+          "benefit": "Everyday belongings stay close to the door, while the cupboards read as a quiet wall rather than a collection of separate units.",
+          "images": [
+            {
+              "file": "entry-bench",
+              "alt": "Entrance bench with a green cushion and mirror",
+              "caption": "A bench and shelf provide a useful stopping point beside the entrance."
+            },
+            {
+              "file": "entry-storage",
+              "alt": "Full-height dark cupboards in the duplex entrance hall",
+              "caption": "Closed fronts conceal belongings and create a calm backdrop to the hall."
+            }
+          ]
+        },
+        {
+          "anchor": "dining-room-green-chairs-display",
+          "nav": "Dining room",
+          "title": "A generous table<br>for time together.",
+          "context": "The dining room is a prominent part of the lower level. Seen from the stairs and the window, its table, lighting and storage need to work together.",
+          "decision": "Green upholstered chairs soften the dark timber wall. Ring pendants hang above the table on angled cables. Opposite, a glass-front cabinet with a slender frame holds tableware and objects worth keeping on display.",
+          "benefit": "The room suits an everyday meal as well as a long conversation with guests. The cabinet keeps it domestic in character, while the pendants clearly define the table area.",
+          "images": [
+            {
+              "file": "dining-table",
+              "alt": "Dining table with green chairs beneath ring pendants",
+              "caption": "The dark wall and green upholstery draw attention to the table."
+            },
+            {
+              "file": "dining-display",
+              "alt": "Glass-front display cabinet opposite the dining table",
+              "caption": "Tableware and objects sit within a frame that echoes the staircase."
+            }
+          ]
+        },
+        {
+          "anchor": "open-staircase-between-levels",
+          "nav": "Open staircase",
+          "title": "Two levels joined<br>by an open stair.",
+          "context": "The staircase stands beside the dining table. A solid enclosed structure here would visually separate the dining room from the rest of the lower level.",
+          "decision": "An open flight with dark metal elements and timber treads leaves views through the structure. Slender verticals repeat in the display cabinet and carry the same graphic detail through the interior.",
+          "benefit": "The route upstairs remains part of the living space. The dining area keeps its sense of depth, and the stair becomes a visible architectural feature.",
+          "images": [
+            {
+              "file": "stair-dining",
+              "alt": "Side view of the dining room and open staircase in the duplex",
+              "caption": "The stairs sit alongside the dining room without a solid dividing wall."
+            },
+            {
+              "file": "open-stair",
+              "alt": "Open stair flight along the dining table",
+              "caption": "Gaps and slim metal elements preserve views beyond the stairs."
+            }
+          ]
+        },
+        {
+          "anchor": "main-bedroom-timber-headboard",
+          "nav": "Main bedroom",
+          "title": "Warm timber<br>around the bed.",
+          "context": "The main bedroom continues the apartment’s dark palette, with soft textiles and a large window giving it a quieter mood than the shared rooms.",
+          "decision": "Smooth timber panels and vertical slats frame the headboard. A dark veined surface runs behind the bedside units, and circular pendant lights mark each side of the bed. A reading chair stands by the window.",
+          "benefit": "The bed has a clear setting, with a separate place to relax near daylight. Suspended bedside lights leave the tops of the units free.",
+          "images": [
+            {
+              "file": "main-bedroom",
+              "alt": "Main bedroom with timber panels and circular bedside pendants",
+              "caption": "Panels, slats and pendants create a balanced setting for the bed."
+            },
+            {
+              "file": "main-bedroom-window",
+              "alt": "Bed and reading chair beside the large main-bedroom window",
+              "caption": "Daylight balances the dark finishes, with a chair for reading nearby."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-dressing-desk-mirrors",
+          "nav": "Dressing table",
+          "title": "A place to get ready<br>at your own pace.",
+          "context": "A dressing table shares the room with the bed. It needs its own surface and mirror without becoming another large piece of furniture.",
+          "decision": "A slim dark tabletop sits beside the window. Vertical mirrors in metal frames continue the lines of the headboard, while a warmly upholstered chair distinguishes this corner from the dark bedside units.",
+          "benefit": "Cosmetics and daily essentials have a separate home. The table benefits from daylight and remains part of the bedroom’s overall composition.",
+          "images": [
+            {
+              "file": "dressing-desk",
+              "alt": "Dressing table beside the timber headboard in the main bedroom",
+              "caption": "A light tabletop and upholstered chair sit close to the bed."
+            },
+            {
+              "file": "dressing-mirror",
+              "alt": "Dressing table with a tall mirror beside the bedroom window",
+              "caption": "Mirrors continue the vertical lines of the wall panels."
+            }
+          ]
+        },
+        {
+          "anchor": "green-bedroom-gaming-inspired-interior",
+          "nav": "Green bedroom",
+          "title": "A bedroom with<br>a gaming identity.",
+          "context": "In one bedroom, the apartment’s graphite palette gains a bright green accent. Gaming references concentrate around the headboard, while the main furniture remains restrained.",
+          "decision": "An illuminated statement sits on the green wall above the bed. A perforated metal upright and open shelves provide space for a collection. A tall wardrobe with flat grey fronts conceals everyday belongings.",
+          "benefit": "The resident’s interests become a visible part of the room. Closed storage helps keep the area for rest tidy.",
+          "images": [
+            {
+              "file": "green-bedroom",
+              "alt": "Green bedroom with an illuminated statement and bedside shelving",
+              "caption": "The green wall and statement give the bedroom a personal identity."
+            },
+            {
+              "file": "green-bedroom-window",
+              "alt": "Bed beside the window in a green bedroom with dark shelving",
+              "caption": "A neutral bed and daylight balance the bright accent."
+            }
+          ]
+        },
+        {
+          "anchor": "green-bedroom-workspace-display-storage",
+          "nav": "Workspace",
+          "title": "A desk with<br>the collection close by.",
+          "context": "This bedroom combines sleep with computer work. A separate area for the desk and collection keeps the bedside surfaces free.",
+          "decision": "The desk sits opposite the bed alongside tall shelving. Open compartments of different heights hold books and models; perforated metal carries the room’s industrial detail into the workspace.",
+          "benefit": "The desk has its own storage. The collection stays visible without taking over the entire work surface.",
+          "images": [
+            {
+              "file": "green-workspace",
+              "alt": "Desk and collection shelving in the green bedroom",
+              "caption": "The desk and shelves form a dedicated workspace opposite the bed."
+            },
+            {
+              "file": "green-display",
+              "alt": "Open display shelves with models beside a computer desk",
+              "caption": "Compartments of different sizes accommodate books and collection pieces."
+            }
+          ]
+        },
+        {
+          "anchor": "violet-bedroom-personal-interior",
+          "nav": "Violet bedroom",
+          "title": "A violet recess<br>and open shelves.",
+          "context": "Another bedroom has a softer colour accent and a distinct recess behind the headboard. Its mood differs from the green room, though the furniture uses related dark profiles and timber surfaces.",
+          "decision": "Violet surfaces frame the bed and illuminated statement. Open shelves stand beside the sleeping area, with a dark-fronted wardrobe opposite. A mirror between furniture elements reflects the window.",
+          "benefit": "The room has its own identity and a range of storage options. Closed fronts keep the focus on the recess and favourite objects.",
+          "images": [
+            {
+              "file": "violet-bedroom",
+              "alt": "Violet bedroom with an illuminated statement and hanging chair",
+              "caption": "Colour and open shelving give the sleeping area a distinct setting."
+            },
+            {
+              "file": "violet-storage",
+              "alt": "Dark wardrobe and study niche opposite the violet bedroom bed",
+              "caption": "A wardrobe, mirror and desk occupy the opposite wall."
+            }
+          ]
+        },
+        {
+          "anchor": "violet-bedroom-study-hanging-chair",
+          "nav": "Study and relaxation",
+          "title": "A corner for<br>a change of pace.",
+          "context": "Alongside the bed, the violet bedroom includes a desk and a place by the window to take a break.",
+          "decision": "The desk is integrated into a furniture niche with shelves above. Across the room, a hanging chair with a soft cushion sits beside the window and a small table.",
+          "benefit": "Study, hobbies and rest each have a place within the same room. The chair offers an alternative to sitting at the desk or on the bed.",
+          "images": [
+            {
+              "file": "violet-desk",
+              "alt": "Study niche with shelving in the violet bedroom",
+              "caption": "Shelves and a desk create a compact place for study."
+            },
+            {
+              "file": "violet-hanging-chair",
+              "alt": "Hanging chair beside the violet bedroom window",
+              "caption": "A chair near the window provides a separate corner for a break."
+            }
+          ]
+        },
+        {
+          "anchor": "shower-room-dark-stone-glass",
+          "nav": "Shower room",
+          "title": "A dark stone pattern<br>behind clear glass.",
+          "context": "The shower room continues the palette of dark timber and green tones. Separating the wet area while keeping details legible matters in this deep colour scheme.",
+          "decision": "Clear glass in a dark frame encloses the shower. Large greenish veins run across the feature wall, beside timber-textured surfaces and an open shelving niche. A line of light above brings out the stone pattern.",
+          "benefit": "The glass preserves views across the room, with shelves and a seat located within the shower area.",
+          "images": [
+            {
+              "file": "shower-glass",
+              "alt": "Glass shower enclosure with a dark green-veined feature wall",
+              "caption": "A clear partition separates the wet area without hiding the feature wall."
+            },
+            {
+              "file": "shower-seat",
+              "alt": "Seat and shelving in a shower with timber-textured surfaces",
+              "caption": "Shelves and a place to sit are positioned alongside the shower."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-vanity-mirror-lighting",
+          "nav": "Vanity area",
+          "title": "Mirror and light<br>for daily routines.",
+          "context": "In a dark bathroom, the basin area needs a distinct layer of local light. Towels and care products also need a place close at hand.",
+          "decision": "A suspended vanity combines drawers with an open lower shelf. A tall mirror rises above the counter, with small pendant lights along its edge. Green textiles connect this area with the shower’s feature wall.",
+          "benefit": "Daily essentials have a home beside the basin. The suspended unit keeps the floor open, and local light defines the countertop.",
+          "images": [
+            {
+              "file": "vanity-mirror",
+              "alt": "Suspended vanity with an open shelf and mirror in the dark bathroom",
+              "caption": "The vanity combines concealed storage with an open towel shelf."
+            },
+            {
+              "file": "vanity-light",
+              "alt": "Small pendant lights beside the bathroom mirror and basin",
+              "caption": "Pendant lights add a local layer around the basin."
+            }
+          ]
+        },
+        {
+          "anchor": "accent-lighting-sequence",
+          "nav": "Lighting sequence",
+          "title": "One bedroom.<br>Several lighting states.",
+          "context": "The violet bedroom has a dedicated lighting visualisation. It shows how the same room changes without moving any furniture.",
+          "decision": "The pink recess outline and headboard statement appear first. Light then reveals the shelves and hanging-chair corner in sequence. The accents fade at the end, returning the room to a quieter state.",
+          "benefit": "The lighting sequence shows how accents can combine for a quiet evening or a more expressive room setting. It lets the desired atmosphere be agreed before choosing equipment.",
+          "images": [
+            {
+              "file": "bedroom-lighting-automation-03",
+              "alt": "Violet bedroom with the statement and shelf lighting switched on",
+              "caption": "An accent state in the visualisation reveals the statement and shelving."
+            },
+            {
+              "file": "bedroom-lighting-automation-06",
+              "alt": "The same bedroom after the accent lights fade",
+              "caption": "The end of the sequence returns the room to a dimmer state."
+            }
+          ],
+          "video": {
+            "file": "lighting-scenario-visualisation.mp4",
+            "poster": "lighting-scenario-poster.webp",
+            "alt": "Lighting-sequence visualisation for the violet bedroom",
+            "caption": "Design visualisation: recess outline, statement light, shelves and a gradual fade."
+          }
+        },
+        {
+          "anchor": "lighting-curtains-heating-automation-potential",
+          "nav": "Automation potential",
+          "title": "Scenes shaped around<br>daily habits.",
+          "context": "Pendants, directional fixtures and decorative lighting provide a basis for different modes in the dining room and bedrooms. These could be developed as a separate automation brief.",
+          "decision": "A dinner setting could use the table lighting independently, with a different balance of local and general light for computer work. Compatible drives could bring curtains into these scenes, while zoned heating could follow the schedule of each room.",
+          "benefit": "A potential control system could make familiar activities easier to switch between. A separate technical design would define the equipment, connections between zones and the value of additional functions such as leak protection and security."
+        }
+      ],
+      "outcome_title": "Two levels<br>with distinct moods.",
+      "outcome": "The apartment story covers the entrance hall, dining room and open staircase, three bedrooms with bespoke furniture and work areas, and the shower and vanity zones. Dark surfaces and slender metal elements connect the rooms; green and violet accents give personal spaces their own character. The bedroom video adds a designed lighting sequence to the interior story.",
+      "faq": [
+        {
+          "question": "How are the two apartment levels connected?",
+          "answer": "The dining room sits beside the open staircase on the lower level. The three bedrooms belong to the upper level. The stair remains a visible part of the shared space."
+        },
+        {
+          "question": "What connects rooms with different colours?",
+          "answer": "Timber surfaces, graphite fronts and slender metal profiles repeat in the dining room, entrance hall and bedrooms. Green and violet distinguish personal rooms while retaining a shared palette of finishes."
+        },
+        {
+          "question": "How do the bedrooms accommodate work?",
+          "answer": "The green room has a desk beside shelving for books and a collection. In the violet room, a desk is integrated into a furniture niche, while a hanging chair by the window provides a separate place to relax."
+        },
+        {
+          "question": "What does the lighting video demonstrate?",
+          "answer": "The visualisation shows the violet bedroom’s lighting sequence: recess outline, statement, shelving and local accents. It is a designed lighting scene, not evidence of an installed smart-home system."
+        },
+        {
+          "question": "How can we start a similar apartment project?",
+          "answer": "Share plans of both levels and tell us how you expect to use shared and personal rooms. We can discuss stairs, storage, workspaces and lighting modes to define the scope of the interior design."
+        }
+      ],
+      "source_note": "Internal: same sources, scope and confirmation limits as the Ukrainian story. Existing lighting case expanded in place, not duplicated. User-confirmed Lviv/2021/duplex apartment. Floor area remains unconfirmed and is omitted from local review pending a reliable total or an explicit exception."
     }
   },
   "vesteros-house": {

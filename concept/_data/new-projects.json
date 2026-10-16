@@ -1,4 +1,500 @@
 {
+  "aurum-blue-apartment-lviv": {
+    "uk": {
+      "eyebrow": "Дизайн квартири · Львів",
+      "title": "Синій акцент.<br><span>Квартира Aurum.</span>",
+      "summary": "Квартира у Львові, де насичений синій поєднує кімнати, а кожна має власний характер. Кухня збирає родину за столом із м’якою посадкою, спальня вміщує бібліотеку й робоче місце, а дитяча залишає простір для навчання та відпочинку.",
+      "cover": "kitchen-overview",
+      "cover_alt": "Синя кухня Aurum з дерев’яною стільницею, візерунковим фартухом і м’якою обідньою зоною",
+      "location": "Львів",
+      "area": "77 м²",
+      "property": "Квартира",
+      "intro_title": "Колір об’єднує.<br>Планування розділяє побут.",
+      "intro": "У квартирі Aurum спільне життя й особисті заняття мають окремі місця. Кухня з обідньою зоною відділена від спальні та дитячої коридором. Поруч із житловими кімнатами є основний санвузол і технічне приміщення, а гостьовий санвузол розташований біля кухні. Синя палітра, рамкові фасади й світлі стелі пов’язують ці різні за функцією простори.",
+      "chapters": [
+        {
+          "anchor": "apartment-layout-private-rooms",
+          "nav": "Планування",
+          "title": "Спільні зустрічі.<br>Особистий простір.",
+          "context": "На 77 м² важливо розподілити не лише меблі, а й щоденні маршрути. Окрема кухня дозволяє спілкуватися й готувати, не займаючи спальню чи дитячу.",
+          "decision": "Коридор з’єднує сім функціональних зон: кухню, спальню, дитячу, два санвузли, технічне приміщення та вхідну частину. Шафи й побутове обладнання отримали визначені місця, а розташування дверей узгоджене з меблями.",
+          "benefit": "Кожна кімната зберігає свою функцію. Прання й зберігання не потребують місця посеред житлової зони, а до спалень можна пройти, не перетинаючи кухню."
+        },
+        {
+          "anchor": "blue-kitchen-dining",
+          "nav": "Кухня й обідня зона",
+          "title": "Кухня, у якій<br>хочеться залишитися.",
+          "context": "У кухні площею 17 м² є місце і для приготування їжі, і для неквапливих зустрічей. М’яка посадка біля столу надає обідній зоні характеру невеликої вітальні.",
+          "decision": "Кутова кухня поєднує високі шафи, вбудовану техніку й дерев’яну стільницю. Відкриті полиці розривають суцільну лінію фасадів, а візерункова плитка додає деталей у робочій зоні. Біля вікна розташовані стіл, стільці й диван; підвісні світильники виділяють місце для зустрічей.",
+          "benefit": "На стільниці залишається робочий простір, а основне зберігання зібране в меблях по периметру. За столом зручно поснідати, поговорити після роботи чи залишитися поруч із тим, хто готує.",
+          "images": [
+            {
+              "file": "kitchen-worktop",
+              "alt": "Кутова синя кухня Aurum із відкритими полицями, дерев’яною стільницею та візерунковим фартухом",
+              "caption": "Кутова робоча зона й високі шафи об’єднані синіми фасадами."
+            },
+            {
+              "file": "kitchen-overview",
+              "alt": "Кухня Aurum у Львові з синіми фасадами, столом, стільцями й м’яким диваном",
+              "caption": "Обідній стіл із м’якою посадкою поруч із робочою зоною."
+            },
+            {
+              "file": "kitchen-dining",
+              "alt": "Обідня зона квартири Aurum з диваном, дерев’яним столом і підвісними світильниками",
+              "caption": "Диван і підвіси створюють окреме місце для сімейних зустрічей."
+            },
+            {
+              "file": "kitchen-window",
+              "alt": "Кухня Aurum із виходом біля вікна, відкритими полицями та обідньою зоною",
+              "caption": "Полиці, зелень і світло біля вікна пом’якшують насичену палітру."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-blue-panels-wardrobe",
+          "nav": "Спальня",
+          "title": "Синій фон<br>для спокійного вечора.",
+          "context": "Спальня площею 22 м² поєднує місце для сну з особистими заняттями. Її насичені акценти врівноважують світлі стіни, стеля й текстиль.",
+          "decision": "Узголів’я доповнює велика декоративна композиція, а приховане світло підкреслює верхню частину стіни. Сині шафи із довгими ручками утворюють цілісну площину; біля вікна є місце для крісла й столу.",
+          "benefit": "Одяг має окремий місткий блок зберігання, тому зона ліжка залишається вільною від додаткових комодів. Для читання чи короткої роботи не потрібно переходити в іншу кімнату.",
+          "images": [
+            {
+              "file": "bedroom-window",
+              "alt": "Спальня Aurum з ліжком, композицією над узголів’ям, білими стелажами й кріслом біля вікна",
+              "caption": "Світлі поверхні врівноважують сині акценти в кімнаті."
+            },
+            {
+              "file": "bedroom-wardrobe",
+              "alt": "Синя шафа в спальні Aurum з довгими металевими ручками й підсвічуванням над узголів’ям",
+              "caption": "Шафа сприймається як частина стіни, а не окремий предмет."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-library-home-workspace",
+          "nav": "Бібліотека й робоче місце",
+          "title": "Книги поруч.<br>Робочий стіл біля світла.",
+          "context": "Зберігання в спальні охоплює не лише одяг. Для книжок, медіа й особистих речей потрібні полиці різного розміру та зручний доступ.",
+          "decision": "Білі відкриті стелажі обрамляють синій медіаблок. Нижні закриті секції приховують дрібні речі, а робочий стіл із кріслом розташований поруч із вікном. Склад меблів узгоджений у кресленнях індивідуальних виробів.",
+          "benefit": "Книжки й робочі матеріали залишаються під рукою. Зберігання використовує висоту стіни, а не забирає додаткову площу кімнати.",
+          "images": [
+            {
+              "file": "bedroom-library",
+              "alt": "Бібліотека в спальні Aurum з білими стелажами та синім медіаблоком",
+              "caption": "Відкриті полиці й закриті секції поєднані в одній композиції."
+            },
+            {
+              "file": "bedroom-workspace",
+              "alt": "Робоче місце в спальні Aurum біля бібліотеки з синім столом та офісним кріслом",
+              "caption": "Місце для роботи розташоване поряд із книжками й природним світлом."
+            }
+          ]
+        },
+        {
+          "anchor": "child-bedroom-custom-storage",
+          "nav": "Дитяча кімната",
+          "title": "Виразна кімната<br>з місцем для своїх речей.",
+          "context": "Дитяча площею 16 м² має власний настрій. Ботанічний малюнок і м’яке узголів’я відрізняють її від дорослої спальні, зберігаючи спільну синю палітру.",
+          "decision": "Ліжко розташоване біля акцентної стіни, а синя шафа використовує всю доступну висоту. Відкриті полиці й низькі секції для книжок доповнюють закрите зберігання. Геометричний килим об’єднує меблі в межах кімнати.",
+          "benefit": "Одяг, книжки й особисті речі мають різні місця зберігання. Це допомагає залишити вільний простір біля ліжка, не перетворюючи кімнату на ряд окремих шаф.",
+          "images": [
+            {
+              "file": "child-bedroom",
+              "alt": "Дитяча Aurum з ботанічними шпалерами, м’яким узголів’ям і відкритими книжковими полицями",
+              "caption": "Ботанічний малюнок додає кімнаті власного характеру."
+            },
+            {
+              "file": "child-wardrobe",
+              "alt": "Дитяча кімната Aurum із синьою шафою до стелі та ліжком біля вікна",
+              "caption": "Шафа до стелі збирає основне зберігання в одну площину."
+            }
+          ]
+        },
+        {
+          "anchor": "child-window-desk-reading",
+          "nav": "Навчання й читання",
+          "title": "Свій стіл<br>біля вікна.",
+          "context": "У дитячій навчання й відпочинок відбуваються поруч. Робоче місце потребує світла, доступу до книжок і власної поверхні для занять.",
+          "decision": "Стіл розташований біля вікна, поряд із відкритими полицями. Низькі книжкові секції продовжують композицію біля ліжка, а місце для сидіння дозволяє змінювати заняття, не переставляючи меблі.",
+          "benefit": "Робоча поверхня не займає прохід через кімнату. Книжку чи навчальні матеріали можна взяти з сусідньої полиці, а після занять перейти до читання й відпочинку.",
+          "images": [
+            {
+              "file": "child-window-desk",
+              "alt": "Робочий стіл біля вікна в дитячій Aurum з книжковими секціями й відкритими полицями",
+              "caption": "Стіл поруч із вікном і полицями для щоденних занять."
+            },
+            {
+              "file": "child-reading",
+              "alt": "Крісло, книжкові полиці та ліжко в дитячій квартири Aurum",
+              "caption": "Робоче місце й читання включені в спільну меблеву композицію."
+            }
+          ]
+        },
+        {
+          "anchor": "entry-hall-custom-storage",
+          "nav": "Передпокій і зберігання",
+          "title": "Зручний початок<br>кожного повернення.",
+          "context": "Передпокій зв’язує всі кімнати, тому його меблі мають допомагати щодня, не перетворюючи прохід на склад речей.",
+          "decision": "Сині панелі й двері поєднані з комодом, круглим дзеркалом і місцем для сидіння. Відкриті поверхні залишені для речей, якими користуються часто, а закриті секції беруть на себе решту зберігання. Картини й теплі фактури роблять коридор продовженням житлових кімнат.",
+          "benefit": "Біля входу можна покласти ключі, перевірити вигляд у дзеркалі й сісти, щоб перевзутися. Для цих звичних дій не потрібні додаткові меблі посеред проходу.",
+          "images": [
+            {
+              "file": "entry-mirror",
+              "alt": "Синій комод і кругле дзеркало в передпокої квартири Aurum",
+              "caption": "Комод і дзеркало формують місце для щоденних дрібниць."
+            },
+            {
+              "file": "entry-storage",
+              "alt": "Коридор Aurum із синіми меблями, картинами й настільною лампою",
+              "caption": "Зберігання й мистецтво включені в оформлення коридору."
+            },
+            {
+              "file": "entry-door",
+              "alt": "Сині двері та консоль із лампою в передпокої Aurum",
+              "caption": "Спільна палітра поєднує двері з меблями й панелями."
+            },
+            {
+              "file": "entry-gallery",
+              "alt": "Передпокій Aurum із картинами на синій стіні й вбудованим місцем для сидіння",
+              "caption": "Місце для сидіння інтегроване в меблеву композицію."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-shower-wood-textures",
+          "nav": "Основний санвузол",
+          "title": "Темна плитка.<br>Теплі фактури поруч.",
+          "context": "Основний санвузол має компактну площу, але вміщує душову зону, умивальник і туалет. Контраст матеріалів допомагає відокремити функції без зайвих перегородок.",
+          "decision": "Темна душова площина поєднана з оздобленням під дерево та дерев’яною тумбою. Скляна перегородка відділяє душ від умивальника; велике дзеркало й світла стеля підтримують відчуття відкритості. Прив’язки води та зливу узгоджені з розташуванням сантехніки.",
+          "benefit": "Кожен елемент має визначене місце, а тумба дає закрите зберігання біля умивальника. Скло залишає кімнату візуально цілісною, одночасно відокремлюючи мокру зону.",
+          "images": [
+            {
+              "file": "bathroom-vanity",
+              "alt": "Основний санвузол Aurum з дерев’яною тумбою, дзеркалом і темною скляною душовою перегородкою",
+              "caption": "Дерев’яна тумба пом’якшує темне оформлення душової зони."
+            },
+            {
+              "file": "bathroom-shower",
+              "alt": "Душова зона й підвісний унітаз у санвузлі Aurum із темною плиткою та оздобленням під дерево",
+              "caption": "Душ, умивальник і туалет узгоджені в компактному плануванні."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-bathroom-patterned-tiles",
+          "nav": "Гостьовий санвузол",
+          "title": "Маленький простір<br>із власною деталлю.",
+          "context": "Другий санвузол розташований біля кухні й спільного маршруту через квартиру. Для нього обрана виразна комбінація візерункової плитки, темних площин і дерева.",
+          "decision": "Підвісну сантехніку доповнюють велике дзеркало й вузькі відкриті полиці. Плитка з графічним візерунком оформлює нижню частину стін, а підсвічування виділяє вертикальне зберігання.",
+          "benefit": "Гостям не потрібно користуватися основним санвузлом біля спалень. Полиці дають місце для необхідних речей, не займаючи вузький прохід.",
+          "images": [
+            {
+              "file": "guest-bath-shelves",
+              "alt": "Гостьовий санвузол Aurum з вузькими полицями, великим дзеркалом і графічною плиткою",
+              "caption": "Вузькі полиці використовують висоту компактного приміщення."
+            },
+            {
+              "file": "guest-bath-mirror",
+              "alt": "Гостьовий санвузол Aurum із великим дзеркалом, підвісною сантехнікою та візерунковою плиткою",
+              "caption": "Дзеркало й підвісні елементи залишають більше видимого простору."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-technical-coordination",
+          "nav": "Світло й побут",
+          "title": "Світло для роботи<br>й відпочинку.",
+          "context": "Готувати, читати й відпочивати при одному верхньому світлі незручно. У проєкті загальне освітлення доповнене локальними джерелами, а побутове обладнання має окремі прив’язки.",
+          "decision": "План світла розділяє стельові групи, підвіси й підсвічування меблів; місця керування передбачені біля входів і ліжок. Розетки узгоджені з кухонною технікою, робочими місцями та пральним обладнанням у технічному приміщенні.",
+          "benefit": "Локальне світло дозволяє обрати освітлення для конкретного заняття. Прив’язка розеток до меблів допомагає заздалегідь уникнути подовжувачів у проходах."
+        },
+        {
+          "anchor": "lighting-climate-water-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Комфортне керування<br>без зайвих функцій.",
+          "context": "Окремі групи світла, вологі зони й розподілені кімнати дають основу для подальшого інженерного опрацювання. Розумні сценарії варто обирати під звички родини.",
+          "decision": "Можливі доповнення: світлові сцени для вечері й читання, нічне світло в коридорі, зональне керування опаленням та узгодження клімату й вентиляції. Також можна розглянути приводи штор, контроль входу й сповіщення про протікання біля кухні, санвузлів і пральної техніки. Ці сценарії потребують окремого інженерного проєкту.",
+          "benefit": "Погоджені завчасно сценарії допомагають визначити кабелі й точки керування до оздоблення. Замовник може обмежитися функціями, які спрощують його щоденний побут."
+        }
+      ],
+      "outcome_title": "Квартира, у якій<br>деталі працюють разом.",
+      "outcome": "Дизайн Aurum поєднує планування, матеріали, індивідуальні меблі, освітлення та побутові прив’язки. Синя палітра пов’язує окремі кімнати, а кухня для зустрічей, спальня з бібліотекою, дитяча й господарський блок дають кожному заняттю своє місце.",
+      "faq": [
+        {
+          "question": "Що об’єднує кімнати Aurum?",
+          "answer": "Насичений синій повторюється у кухонних фасадах, шафах, дверях і панелях. Світлі стелі, теплі фактури й відкриті полиці врівноважують його, тому кімнати мають спільну палітру, але різний настрій."
+        },
+        {
+          "question": "Як визначено площу квартири?",
+          "answer": "77 м² після округлення суми площ семи приміщень із таблиці підлог. У неї входять кухня, спальня, дитяча, коридор, два санвузли й технічне приміщення."
+        },
+        {
+          "question": "Де розташовані місця для роботи й навчання?",
+          "answer": "У спальні робочий стіл розташований біля вікна поруч із бібліотекою. У дитячій є окремий стіл біля вікна з полицями й книжковими секціями."
+        },
+        {
+          "question": "Чому в квартирі два санвузли?",
+          "answer": "Основний санвузол із душовою розташований поруч із приватними кімнатами. Гостьовий примикає до кухні, тому спільна й приватна частини мають зручніші окремі маршрути."
+        },
+        {
+          "question": "Що передбачає інженерне опрацювання?",
+          "answer": "Плани узгоджують групи світла, місця вимикачів і розеток, кухонну та пральну техніку, воду й зливи з меблями та сантехнікою. Потенційні smart-home сценарії описані окремо й не подані як встановлене обладнання."
+        },
+        {
+          "question": "Як обговорити дизайн своєї квартири?",
+          "answer": "Розкажіть PISKOR Architect про площу, склад родини й те, як хочете користуватися кімнатами. Наявний план допоможе обговорити зберігання, робочі місця та потрібний склад дизайн-проєкту."
+        }
+      ],
+      "source_note": "Internal: owner confirmed Lviv and2021. Drive1sq1ZRuy6c129NmWTvgqOXUS-uieF-qeP; all38PDFs2-39 rendered and visually reviewed; key plans6,7,8,10,12 and furniture21-28 examined. Area sheet12:16+3+4.6+22+17+2.8+12=77.4m² rounds77. No double counting. Twenty standalone embedded final visualization image streams from sheets29-39, no page crops/frames/drawings/reference images. Earlier dark raw kitchen scheme excluded in favour of coherent blue album scheme.24albumframes compared with545publishedframes; minimum64bitdHash9, all nearest pairs visually checked as unrelated. Bedroom/library belongs to same22m²room, child study belongs to same16m²room. Automation potential only, no construction completion/install claim. No factual view from window claim. Local review only; noPR/publication. Full source provenance/tmp/piskor-aurum.yWlJo4/intake.md."
+    },
+    "en": {
+      "eyebrow": "Apartment interior · Lviv",
+      "title": "Aurum<br><span>in blue.</span>",
+      "summary": "An apartment in Lviv connected by deep blue, with a different mood in each room. The kitchen brings the family together around upholstered dining seating. A bedroom library and desk make room for personal interests, while the child's room has separate places for study and rest.",
+      "cover": "kitchen-overview",
+      "cover_alt": "Blue Aurum kitchen with a timber worktop, patterned backsplash and upholstered dining seating",
+      "location": "Lviv",
+      "area": "77 m²",
+      "property": "Apartment",
+      "intro_title": "A shared palette.<br>Separate places for daily life.",
+      "intro": "Aurum gives family time and personal activities their own spaces. A corridor separates the kitchen and dining area from the bedroom and child's room. The main bathroom and utility room sit beside the private rooms; a guest bathroom is close to the kitchen. Blue cabinetry, framed fronts and light ceilings connect these different functions.",
+      "chapters": [
+        {
+          "anchor": "apartment-layout-private-rooms",
+          "nav": "Layout",
+          "title": "Space to gather.<br>Rooms of your own.",
+          "context": "In a 77 m² apartment, everyday routes matter as much as furniture placement. A separate kitchen allows conversation and cooking without taking over the bedroom or child's room.",
+          "decision": "The corridor connects seven functional areas: kitchen, bedroom, child's room, two bathrooms, utility room and entrance hall. Storage and household appliances have defined positions, with door swings coordinated around the furniture.",
+          "benefit": "Each room keeps its purpose. Laundry and storage do not need to occupy the middle of a living space, and bedrooms can be reached without crossing the kitchen."
+        },
+        {
+          "anchor": "blue-kitchen-dining",
+          "nav": "Kitchen and dining",
+          "title": "A kitchen worth<br>staying in.",
+          "context": "The 17 m² kitchen has space for preparing food and unhurried conversation. Upholstered dining seating gives it some of the comfort of a small sitting room.",
+          "decision": "The corner kitchen combines tall cabinets, integrated appliances and a timber worktop. Open shelves break up the run of fronts, while patterned tiles add detail around the work area. A table, chairs and sofa sit by the window; pendants define the dining area.",
+          "benefit": "The worktop retains useful preparation space, with most storage arranged around the perimeter. The table is a place for breakfast, a conversation after work or company for the person cooking.",
+          "images": [
+            {
+              "file": "kitchen-worktop",
+              "alt": "Blue corner kitchen in Aurum with open shelves, timber worktop and patterned backsplash",
+              "caption": "Blue fronts connect the corner work area with the tall cabinets."
+            },
+            {
+              "file": "kitchen-overview",
+              "alt": "Aurum kitchen in Lviv with blue cabinetry, a table, chairs and an upholstered sofa",
+              "caption": "Soft dining seating sits alongside the kitchen work area."
+            },
+            {
+              "file": "kitchen-dining",
+              "alt": "Aurum dining area with a sofa, timber table and pendant lights",
+              "caption": "A sofa and pendants define a place for family gatherings."
+            },
+            {
+              "file": "kitchen-window",
+              "alt": "Aurum kitchen with window-side access, open shelves and dining seating",
+              "caption": "Open shelves, plants and window light soften the deep palette."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-blue-panels-wardrobe",
+          "nav": "Bedroom",
+          "title": "A blue backdrop<br>for a quiet evening.",
+          "context": "The 22 m² bedroom combines sleep with personal activities. Light walls, ceiling and textiles balance its deeper accents.",
+          "decision": "A large decorative composition sits above the headboard, with concealed light marking the upper wall. Blue wardrobes with long handles form a continuous surface. An armchair and desk occupy the window side of the room.",
+          "benefit": "A dedicated wardrobe keeps clothing storage together, leaving the bed area free of additional chests. Reading or a short work session does not require a move to another room.",
+          "images": [
+            {
+              "file": "bedroom-window",
+              "alt": "Aurum bedroom with a bed, headboard artwork, white shelves and an armchair by the window",
+              "caption": "Light surfaces balance the blue accents."
+            },
+            {
+              "file": "bedroom-wardrobe",
+              "alt": "Blue bedroom wardrobe in Aurum with long metal handles and light above the headboard",
+              "caption": "The wardrobe reads as part of the wall rather than a separate item."
+            }
+          ]
+        },
+        {
+          "anchor": "bedroom-library-home-workspace",
+          "nav": "Library and desk",
+          "title": "Books close by.<br>A desk near daylight.",
+          "context": "Bedroom storage includes more than clothing. Books, media and personal objects need shelves of different sizes and easy access.",
+          "decision": "White open shelving frames a blue media unit. Lower closed sections hide smaller items; a desk and chair sit near the window. Bespoke furniture drawings coordinate these pieces as a composition.",
+          "benefit": "Books and work materials stay within reach. Storage uses the height of the wall instead of taking more floor space.",
+          "images": [
+            {
+              "file": "bedroom-library",
+              "alt": "Aurum bedroom library with white shelves and a blue media unit",
+              "caption": "Open shelves and closed cabinets share one composition."
+            },
+            {
+              "file": "bedroom-workspace",
+              "alt": "Desk and office chair beside the library in the Aurum bedroom",
+              "caption": "The work area sits beside the books and natural light."
+            }
+          ]
+        },
+        {
+          "anchor": "child-bedroom-custom-storage",
+          "nav": "Child's room",
+          "title": "A room with character<br>and space for belongings.",
+          "context": "The 16 m² child's room has a mood of its own. Botanical wallpaper and a soft headboard distinguish it from the adult bedroom while retaining the shared blue palette.",
+          "decision": "The bed sits against an accent wall and a blue wardrobe uses the available height. Open shelves and low book storage complement the closed cabinets. A geometric rug brings the furniture together.",
+          "benefit": "Clothing, books and personal objects have different storage places. The area beside the bed stays open without filling the room with separate cabinets.",
+          "images": [
+            {
+              "file": "child-bedroom",
+              "alt": "Aurum child's room with botanical wallpaper, an upholstered headboard and open bookshelves",
+              "caption": "Botanical wallpaper gives the room its own character."
+            },
+            {
+              "file": "child-wardrobe",
+              "alt": "Child's room in Aurum with a full-height blue wardrobe and bed beside the window",
+              "caption": "A full-height wardrobe gathers the main storage into one surface."
+            }
+          ]
+        },
+        {
+          "anchor": "child-window-desk-reading",
+          "nav": "Study and reading",
+          "title": "A desk of their own<br>by the window.",
+          "context": "Study and rest happen close together in the child's room. The desk needs light, access to books and a clear surface for everyday activities.",
+          "decision": "The desk sits by the window beside open shelves. Low book sections continue the composition near the bed, with seating that allows a change of activity without rearranging the room.",
+          "benefit": "The work surface stays out of the route through the room. Books and study materials are on the adjoining shelves, with a place to read or rest after lessons.",
+          "images": [
+            {
+              "file": "child-window-desk",
+              "alt": "Window-side desk in the Aurum child's room with book storage and open shelves",
+              "caption": "A desk near the window and shelves for everyday study."
+            },
+            {
+              "file": "child-reading",
+              "alt": "Chair, bookshelves and bed in the Aurum child's room",
+              "caption": "Study and reading fit into the same furniture arrangement."
+            }
+          ]
+        },
+        {
+          "anchor": "entry-hall-custom-storage",
+          "nav": "Entrance and storage",
+          "title": "An easy return<br>at the end of the day.",
+          "context": "The entrance hall connects every room. Its furniture needs to support daily routines without turning the route through the apartment into a storage area.",
+          "decision": "Blue panels and doors sit alongside a chest, round mirror and built-in seat. Open surfaces hold frequently used items; closed sections store the rest. Artwork and warm textures make the corridor feel connected to the living rooms.",
+          "benefit": "There is a place to put keys, check the mirror and sit to change shoes. These everyday tasks do not need extra furniture standing in the passage.",
+          "images": [
+            {
+              "file": "entry-mirror",
+              "alt": "Blue chest and round mirror in the Aurum entrance hall",
+              "caption": "A chest and mirror make a place for everyday essentials."
+            },
+            {
+              "file": "entry-storage",
+              "alt": "Aurum corridor with blue furniture, artwork and a table lamp",
+              "caption": "Storage and artwork are part of the corridor design."
+            },
+            {
+              "file": "entry-door",
+              "alt": "Blue doors and a console with a lamp in the Aurum hall",
+              "caption": "A shared palette connects doors, furniture and wall panels."
+            },
+            {
+              "file": "entry-gallery",
+              "alt": "Aurum entrance hall with artwork on a blue wall and a built-in seat",
+              "caption": "A seat is integrated into the furniture composition."
+            }
+          ]
+        },
+        {
+          "anchor": "bathroom-shower-wood-textures",
+          "nav": "Main bathroom",
+          "title": "Dark tiles<br>beside warm textures.",
+          "context": "The compact main bathroom accommodates a shower, basin and toilet. Material contrasts distinguish the functions without unnecessary partitions.",
+          "decision": "A dark shower surface sits beside timber-look finishes and a wooden vanity. A glass screen separates the shower from the basin; a large mirror and light ceiling keep the room visually open. Water and drainage positions follow the sanitary layout.",
+          "benefit": "Each fixture has a defined place, with closed storage beside the basin. Glass separates the wet area while keeping the room visually connected.",
+          "images": [
+            {
+              "file": "bathroom-vanity",
+              "alt": "Aurum main bathroom with a wooden vanity, mirror and dark glass shower screen",
+              "caption": "A wooden vanity softens the dark shower setting."
+            },
+            {
+              "file": "bathroom-shower",
+              "alt": "Shower and wall-hung toilet in the Aurum bathroom with dark tiles and timber-look finishes",
+              "caption": "Shower, basin and toilet fit a coordinated compact layout."
+            }
+          ]
+        },
+        {
+          "anchor": "guest-bathroom-patterned-tiles",
+          "nav": "Guest bathroom",
+          "title": "A small room<br>with its own detail.",
+          "context": "The second bathroom sits near the kitchen and the shared route through the apartment. Patterned tiles, dark surfaces and timber give it a distinct character.",
+          "decision": "Wall-hung fixtures sit alongside a large mirror and narrow open shelves. Graphic tiles cover the lower walls, while shelf lighting defines vertical storage.",
+          "benefit": "Guests do not need to use the main bathroom beside the bedrooms. Shelves provide space for essentials without occupying the narrow passage.",
+          "images": [
+            {
+              "file": "guest-bath-shelves",
+              "alt": "Aurum guest bathroom with narrow shelves, a large mirror and graphic tiles",
+              "caption": "Narrow shelving uses the height of the small room."
+            },
+            {
+              "file": "guest-bath-mirror",
+              "alt": "Guest bathroom in Aurum with a large mirror, wall-hung fixtures and patterned tiles",
+              "caption": "A mirror and suspended fixtures leave more space visible."
+            }
+          ]
+        },
+        {
+          "anchor": "layered-lighting-technical-coordination",
+          "nav": "Lighting and daily routines",
+          "title": "Lighting for work<br>and rest.",
+          "context": "Cooking, reading and resting need different light. General lighting is complemented by local sources, with household equipment given specific connection points.",
+          "decision": "The lighting plan separates ceiling groups, pendants and furniture lighting; controls are positioned near entrances and beds. Socket locations follow kitchen appliances, desks and laundry equipment in the utility room.",
+          "benefit": "Local sources allow light to match the activity. Coordinating sockets with furniture helps avoid trailing extensions across circulation routes."
+        },
+        {
+          "anchor": "lighting-climate-water-automation-potential",
+          "nav": "Automation potential",
+          "title": "Useful controls<br>without unnecessary features.",
+          "context": "Separate lighting groups, wet areas and distinct rooms provide a basis for further engineering design. Smart routines should follow the family's habits.",
+          "decision": "Possible additions include dinner and reading scenes, night lighting in the corridor, heating zones and coordinated climate and ventilation controls. Motorised curtains, entrance monitoring and leak alerts near the kitchen, bathrooms and laundry could also be considered. These potential additions require a separate engineering design.",
+          "benefit": "Agreeing these routines early helps define wiring and control locations before finishes. The owner can keep only the functions that make daily life easier."
+        }
+      ],
+      "outcome_title": "An apartment where<br>the details work together.",
+      "outcome": "Aurum combines layout, materials, bespoke furniture, lighting and household connections. Blue links the separate rooms, while a sociable kitchen, bedroom library, child's room and utility space give daily activities their own places.",
+      "faq": [
+        {
+          "question": "What connects the Aurum rooms?",
+          "answer": "Deep blue repeats across kitchen fronts, wardrobes, doors and panels. Light ceilings, warm textures and open shelving balance it, giving the rooms a shared palette with different moods."
+        },
+        {
+          "question": "How was the apartment area calculated?",
+          "answer": "77 m² is the rounded sum of seven room areas in the floor-finish schedule. It covers the kitchen, bedroom, child's room, corridor, two bathrooms and utility room."
+        },
+        {
+          "question": "Where are the work and study areas?",
+          "answer": "The bedroom has a desk near the window beside the library. The child's room has a separate window-side desk with shelving and book storage."
+        },
+        {
+          "question": "Why does the apartment have two bathrooms?",
+          "answer": "The main bathroom with a shower sits near the private rooms. The guest bathroom adjoins the kitchen, providing more convenient routes for the shared and private parts of the home."
+        },
+        {
+          "question": "What does the technical design coordinate?",
+          "answer": "The plans coordinate lighting groups, switches, sockets, kitchen and laundry appliances, water and drainage with furniture and sanitary fixtures. Potential smart-home routines are described separately and are not presented as installed equipment."
+        },
+        {
+          "question": "How can I discuss my apartment interior?",
+          "answer": "Tell PISKOR Architect about the size of your apartment, your household and how you want to use the rooms. An existing plan helps discuss storage, work areas and the right design scope."
+        }
+      ],
+      "source_note": "Internal: same scope/evidence as Ukrainian. OwnerconfirmedLviv2021; room schedule sheet12 sums77.4m² rounds77. Bedroom library and desk are in same22m²room; child's desk in same16m²room. Twenty distinct standalone embedded final renders, not PDFpages; alternate dark kitchen excluded. All38PDFs reviewed. No duplicate among545published frames after visual nearest-match check. No installedautomation/completedconstruction claim. Localreviewonly."
+    }
+  },
   "bartativ-house-reconstruction": {
     "uk": {
       "eyebrow": "Реконструкція будинку · Бартатів",

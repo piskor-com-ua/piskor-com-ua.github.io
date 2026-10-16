@@ -1,4 +1,298 @@
 {
+  "pine-house-soluky": {
+    "uk": {
+      "eyebrow": "Архітектура будинку · Солуки",
+      "title": "Дім серед сосен.<br><span>Солуки.</span>",
+      "summary": "Будинок із низькими схилами даху, глибокими звисами й критою терасою. Деревні площини, темний камінь і світлі стіни поєднують фасади з лісовим оточенням. Від в’їзду до місця відпочинку кожна зовнішня зона має власну роль.",
+      "cover": "arrival-facade",
+      "cover_alt": "Будинок серед сосен у Солуках із широким дахом, кам’яними опорами та деревними фасадами",
+      "location": "Солуки",
+      "property": "Приватний будинок",
+      "intro_title": "Більше життя<br>просто неба.",
+      "intro": "Тераса займає місце вздовж скління: м’яка посадка ближче до саду, обідній стіл під спільним накриттям. Інша сторона будинку звернена до в’їзду й критого паркування. Між ними повторюються кам’яні опори та деревна підшивка, тому господарська й відпочинкова частини виглядають як один архітектурний задум.",
+      "chapters": [
+        {
+          "anchor": "sheltered-entrance-low-roof",
+          "nav": "Вхід і силует",
+          "title": "Широкий дах<br>об’єднує вхідні зони.",
+          "context": "Будинок відкривається до подвір’я невисокими об’ємами. Схили даху й горизонтальні звиси залишають сосни помітною частиною композиції.",
+          "decision": "Вхід заглиблений під накриття; до нього ведуть широкі сходинки. Темні кам’яні опори виділяють цей фрагмент серед білих стін і вертикального деревного оздоблення. Підшивка даху продовжується над зовнішніми проходами, а темна крайка чітко окреслює його форму.",
+          "benefit": "Перед дверима є захищене місце, де можна зупинитися з речами. Вхід легко впізнати з подвір’я, хоча він не виступає окремим масивним ґанком.",
+          "images": [
+            {
+              "file": "entrance-canopy",
+              "alt": "Заглиблений вхід до будинку в Солуках під деревною підшивкою даху поруч із критим паркуванням",
+              "caption": "Сходинки й кам’яні опори позначають вхід під спільним накриттям."
+            },
+            {
+              "file": "arrival-facade",
+              "alt": "Фронтальний ракурс будинку серед сосен із низькими схилами даху та білими стінами",
+              "caption": "Горизонтальні звиси пов’язують окремі частини фасаду."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-terrace-lounge-dining",
+          "nav": "Тераса для відпочинку",
+          "title": "Сісти з кавою.<br>Залишитися на вечерю.",
+          "context": "Крита тераса має місце і для короткої перерви, і для тривалої зустрічі за столом. Ці сценарії зібрані вздовж фасадного скління.",
+          "decision": "Низький диван із круглими столиками звернений до саду. Далі під тим самим накриттям стоїть обідній стіл зі стільцями. Деревний настил поєднує посадку, а відкрита крайка тераси залишає вид на газон і дерева. Широкий звис даху прикриває мебльовану частину зверху.",
+          "benefit": "Для вечері надворі не потрібно звільняти диванну зону. Хтось може залишитися за столом, а хтось перейти ближче до саду, не виходячи з простору спілкування.",
+          "images": [
+            {
+              "file": "terrace-lounge",
+              "alt": "М’який диван і обідній стіл під накриттям тераси будинку в Солуках",
+              "caption": "М’яка посадка й обідній стіл мають окремі місця на спільній терасі."
+            },
+            {
+              "file": "terrace-dining-depth",
+              "alt": "Поздовжній вид критої тераси з диваном, столиками та обідньою посадкою біля скління",
+              "caption": "Настил і деревна підшивка продовжують терасу вздовж фасаду."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-stone-facade-garden",
+          "nav": "Фасади й оточення",
+          "title": "Деревні площини<br>на тлі темного каменю.",
+          "context": "Матеріали розрізняють легкі фасадні площини й опори накриттів. Одна палітра проходить навколо будинку, а не закінчується біля головного входу.",
+          "decision": "Вертикальне деревне оздоблення чергується зі світлими стінами та темними рамами скління. Груба кам’яна фактура зосереджена на опорах; поряд із цоколем розміщені валуни й низькі посадки. Тонка темна крайка даху збирає ці різні поверхні в чіткий силует.",
+          "benefit": "Будинок має виразний характер і з боку саду. Великі площини залишаються спокійними, а фактура стає помітною ближче до входів і місць відпочинку.",
+          "images": [
+            {
+              "file": "garden-timber-facade",
+              "alt": "Садовий фасад будинку в Солуках із вертикальним деревним оздобленням, кам’яною опорою та валунами",
+              "caption": "Вертикальні фасадні площини поєднані з газоном і низькими посадками."
+            },
+            {
+              "file": "garden-roof-composition",
+              "alt": "Кутовий ракурс будинку з білими стінами, темним каменем і різновисокими схилами даху",
+              "caption": "Матеріали повторюються на сусідніх фасадах під спільною темною крайкою даху."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-parking-entrance-route",
+          "nav": "Паркування й підхід",
+          "title": "Від автомобіля<br>до входу під накриттям.",
+          "context": "Паркування входить у загальну композицію подвір’я. Його накриття повторює деревну підшивку й кам’яні опори будинку.",
+          "decision": "Місце для автомобіля розташоване поруч із вхідною частиною. Площина мощення підводить до сходинок, а звиси підкреслюють напрямок руху вздовж фасаду. Газон і камені відділяють озеленені ділянки від під’їзду.",
+          "benefit": "З речами можна підійти до дверей коротким маршрутом. Паркування має визначене місце біля входу й не займає терасу з диваном та обіднім столом.",
+          "images": [
+            {
+              "file": "entrance-steps-roof",
+              "alt": "Широкі сходинки й деревна підшивка накриття біля входу до будинку в Солуках",
+              "caption": "Сходинки підводять із подвір’я до захищеного входу."
+            },
+            {
+              "file": "covered-carport",
+              "alt": "Автомобіль під критим паркуванням поруч із входом і кам’яними опорами будинку",
+              "caption": "Навіс для автомобіля продовжує матеріали й лінії основної будівлі."
+            }
+          ]
+        },
+        {
+          "anchor": "entrance-gate-private-boundary",
+          "nav": "Межа приватності",
+          "title": "Приватне подвір’я<br>за стриманою огорожею.",
+          "context": "З боку вулиці будинок сприймається разом з огорожею. Вона прикриває нижню частину подвір’я, залишаючи видимими дерева й лінії даху.",
+          "decision": "Темні горизонтальні секції поєднані з кам’яними стовпами. Пішохідний вхід і широкі ворота читаються як окремі частини одного фронту. Матеріал опор повторює акценти біля будинку, а вертикальне озеленення пом’якшує межу ділянки.",
+          "benefit": "В’їзд і підхід мають зрозумілі місця. Огорожа дає подвір’ю візуальну приватність і підтримує архітектуру будинку, замість конкурувати з нею.",
+          "images": [
+            {
+              "file": "street-boundary",
+              "alt": "Вид на будинок у Солуках за темною горизонтальною огорожею з кам’яними стовпами серед сосен",
+              "caption": "Огорожа прикриває подвір’я, залишаючи відкритим силует даху."
+            },
+            {
+              "file": "pedestrian-gate",
+              "alt": "Пішохідний вхід і ворота з темними горизонтальними секціями між кам’яними стовпами",
+              "caption": "Ворота й хвіртка повторюють темні та кам’яні елементи фасадів."
+            }
+          ]
+        },
+        {
+          "anchor": "outdoor-lighting-access-automation-potential",
+          "nav": "Потенціал автоматизації",
+          "title": "Світло для повернення.<br>Окрема сцена для тераси.",
+          "context": "Вхід, паркування й тераса використовуються по-різному. Для них доречні окремі сценарії зовнішнього освітлення.",
+          "decision": "Як подальше оснащення можна передбачити сцену повернення: світло біля воріт, на підході та сходинках. Вечірній режим тераси залишав би м’яке локальне освітлення біля посадки. Керування доступом можна узгодити з воротами після вибору приводу й пристроїв безпеки. Це рекомендовані можливості окремого інженерного проєкту, а не заявлена встановлена автоматизація.",
+          "benefit": "Мешканці могли б обирати освітлення під конкретну дію, не вмикаючи все подвір’я. Для воріт окремо потрібно погодити безпечне закривання та можливість ручного відкривання: зручність доступу починається з надійного щоденного користування."
+        }
+      ],
+      "outcome_title": "Архітектура будинку<br>разом із подвір’ям.",
+      "outcome": "Фасади, тераса, паркування та огорожа мають спільні матеріали й пропорції. Вхідна сторона організовує прибуття додому, садова дає місце для відпочинку надворі. Саме ці зовнішні простори й архітектурні рішення складають історію будинку в Солуках.",
+      "faq": [
+        {
+          "question": "Що охоплює архітектурна історія будинку?",
+          "answer": "Зовнішній образ будинку, композицію дахів і накриттів, фасадні матеріали, мебльовану терасу, підхід із паркування та огорожу з окремими воротами й хвірткою."
+        },
+        {
+          "question": "Як тераса підходить для різних способів відпочинку?",
+          "answer": "Під спільним накриттям є обідній стіл і окрема низька м’яка посадка. Вони розташовані вздовж скління й об’єднані настилом, тому можна вечеряти за столом або відпочивати ближче до саду."
+        },
+        {
+          "question": "Що пов’язує фасади з подвір’ям?",
+          "answer": "Деревна підшивка повторюється над входами й терасою, а темні кам’яні опори продовжуються у стовпах огорожі. Газон, валуни й низькі посадки доповнюють цю палітру біля будинку."
+        },
+        {
+          "question": "Яку автоматизацію можна додати?",
+          "answer": "Окремі сцени світла для повернення додому й вечора на терасі, а також узгоджене керування воротами. Це потенціал подальшого оснащення з окремим добором обладнання; встановлені системи цим кейсом не заявляються."
+        },
+        {
+          "question": "Чи можна застосувати такий підхід до іншої ділянки?",
+          "answer": "Поєднання критої тераси, захищеного входу й узгоджених фасадів можна розглянути для вашого будинку. Розміщення залежатиме від дерев, рельєфу, напрямків огляду й під’їзду; ці умови визначаємо на початку роботи."
+        }
+      ],
+      "source_note": "Internal: owner approved publication without area on2026-10-16, as a case-specific exception. Reviewed source folder Солуки 2021 supplies place and year; owner approved the reviewed case for publication. Ten original exterior renders, all individually reviewed and assigned once to five paired galleries. No interior, construction completion or installed automation claim. Outdoor lighting and gate access are potential only; other engineering categories remain unconfirmed. No area estimate or placeholder. No reused frame found against523 published originals, with manual closest-match review. Source inventory and IDs: /tmp/piskor-soluky.5rUeqg/intake.md."
+    },
+    "en": {
+      "eyebrow": "Residential architecture · Soluky",
+      "title": "A home among pines.<br><span>Soluky.</span>",
+      "summary": "A house with low roof slopes, deep eaves and a sheltered terrace. Timber surfaces, dark stone and light walls connect the elevations with their wooded setting. From the entrance to outdoor seating, each part of the grounds has a distinct purpose.",
+      "cover": "arrival-facade",
+      "cover_alt": "House among pines in Soluky with broad eaves, stone-faced supports and timber elevations",
+      "location": "Soluky",
+      "property": "Private house",
+      "intro_title": "More room<br>for life outdoors.",
+      "intro": "The terrace follows the glazing, with low seating closer to the garden and a dining table under the same canopy. Another side faces the entrance and covered parking. Stone-faced supports and timber soffits recur between them, giving the practical and leisure areas a shared architectural character.",
+      "chapters": [
+        {
+          "anchor": "sheltered-entrance-low-roof",
+          "nav": "Entrance and silhouette",
+          "title": "A broad roof<br>connects the entrance spaces.",
+          "context": "Low volumes face the courtyard. Sloping roofs and horizontal eaves keep the pines visible as part of the composition.",
+          "decision": "The entrance is recessed beneath a canopy and reached by broad steps. Dark stone-faced supports distinguish it from white walls and vertical timber surfaces. Timber soffits continue over the outdoor routes, while a dark roof edge gives the silhouette a clear outline.",
+          "benefit": "There is a sheltered place to pause with bags before opening the door. The entrance is easy to identify from the courtyard without a bulky projecting porch.",
+          "images": [
+            {
+              "file": "entrance-canopy",
+              "alt": "Recessed entrance beneath a timber soffit beside covered parking at the house in Soluky",
+              "caption": "Steps and stone-faced supports mark the sheltered entrance."
+            },
+            {
+              "file": "arrival-facade",
+              "alt": "Front view of the house among pines with low roof slopes and white walls",
+              "caption": "Horizontal eaves connect the different parts of the elevation."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-terrace-lounge-dining",
+          "nav": "Outdoor living",
+          "title": "Coffee on the sofa.<br>Dinner under the same roof.",
+          "context": "The covered terrace accommodates a short break as well as a longer meal. Both settings follow the glazed elevation.",
+          "decision": "A low sofa and round tables face the garden. Further along, a dining table and chairs sit beneath the same canopy. Timber decking connects the seating areas, with an open edge towards the lawn and trees. Broad eaves cover the furnished part of the terrace.",
+          "benefit": "An outdoor meal does not require clearing the lounge area. Some guests can stay at the table while others move closer to the garden, still sharing the same space.",
+          "images": [
+            {
+              "file": "terrace-lounge",
+              "alt": "Outdoor sofa and dining table beneath the covered terrace of the Soluky house",
+              "caption": "Lounge seating and dining have separate places on one terrace."
+            },
+            {
+              "file": "terrace-dining-depth",
+              "alt": "View along the covered terrace with a sofa, low tables and dining chairs beside glazing",
+              "caption": "Decking and timber soffits extend the terrace along the elevation."
+            }
+          ]
+        },
+        {
+          "anchor": "timber-stone-facade-garden",
+          "nav": "Elevations and garden",
+          "title": "Timber surfaces<br>beside textured dark stone.",
+          "context": "Materials distinguish broad wall surfaces from the canopy supports. The same palette continues around the house rather than stopping at the front door.",
+          "decision": "Vertical timber surfaces alternate with light walls and dark glazing frames. Rough stone texture is concentrated on the supports, with boulders and low planting near the base of the house. A thin dark roof edge draws the different surfaces into a clear silhouette.",
+          "benefit": "The house has a distinct character from the garden too. Broad surfaces stay restrained, with closer views revealing texture around entrances and outdoor seating.",
+          "images": [
+            {
+              "file": "garden-timber-facade",
+              "alt": "Garden elevation in Soluky with vertical timber surfaces, a stone-faced support and boulders",
+              "caption": "Vertical wall surfaces meet lawn and low planting."
+            },
+            {
+              "file": "garden-roof-composition",
+              "alt": "Corner view of white walls, dark stone and overlapping roof slopes at the Soluky house",
+              "caption": "Materials recur on adjacent elevations beneath a dark roof edge."
+            }
+          ]
+        },
+        {
+          "anchor": "covered-parking-entrance-route",
+          "nav": "Parking and approach",
+          "title": "From the car<br>to a sheltered entrance.",
+          "context": "Covered parking belongs to the courtyard composition. Its canopy repeats the timber soffits and stone-faced supports of the house.",
+          "decision": "The car space sits beside the entrance area. Paving leads towards the steps, and the eaves emphasise the route along the elevation. Lawn and stones separate planted areas from the driveway.",
+          "benefit": "The route to the door is short when carrying bags. Parking has a defined place beside the entrance and does not occupy the terrace with its sofa and dining table.",
+          "images": [
+            {
+              "file": "entrance-steps-roof",
+              "alt": "Broad entrance steps beneath a timber-lined canopy at the house in Soluky",
+              "caption": "Steps lead from the courtyard to the sheltered entrance."
+            },
+            {
+              "file": "covered-carport",
+              "alt": "Car beneath a parking canopy beside the entrance and stone-faced supports",
+              "caption": "The carport continues the materials and lines of the house."
+            }
+          ]
+        },
+        {
+          "anchor": "entrance-gate-private-boundary",
+          "nav": "A private courtyard",
+          "title": "A quiet boundary<br>around the courtyard.",
+          "context": "From the street, the house and boundary are seen together. The fence screens the lower courtyard while leaving trees and roof lines visible.",
+          "decision": "Dark horizontal panels meet stone-faced posts. A pedestrian entrance and wide vehicle gate read as separate parts of the same frontage. The posts repeat the material accents near the house, with upright planting softening the boundary.",
+          "benefit": "Arrival on foot and by car has clearly defined places. The fence provides visual privacy and supports the house architecture rather than competing with it.",
+          "images": [
+            {
+              "file": "street-boundary",
+              "alt": "Soluky house behind a dark horizontal fence with stone-faced posts among pines",
+              "caption": "The boundary screens the courtyard while leaving the roof silhouette visible."
+            },
+            {
+              "file": "pedestrian-gate",
+              "alt": "Pedestrian entrance and dark horizontal vehicle gate between stone-faced posts",
+              "caption": "Gate and pedestrian entrance repeat the dark and stone elements of the elevations."
+            }
+          ]
+        },
+        {
+          "anchor": "outdoor-lighting-access-automation-potential",
+          "nav": "Automation potential",
+          "title": "Light for arriving home.<br>A separate terrace scene.",
+          "context": "The entrance, parking and terrace serve different activities. Each could have its own outdoor lighting scene.",
+          "decision": "Future equipment could provide an arrival scene for the gate, approach and steps. A terrace evening mode could retain softer local light around the seating. Access control could be coordinated with the gates after selecting a drive and safety devices. These are recommendations for a separate engineering design, not claims of installed automation.",
+          "benefit": "Residents could select light for the activity rather than illuminate the whole courtyard. Safe gate closing and manual opening would need to be agreed separately, so convenient access starts with dependable everyday operation."
+        }
+      ],
+      "outcome_title": "The house and its grounds<br>as one architectural composition.",
+      "outcome": "Elevations, terrace, parking and boundary share materials and proportions. The entrance side organises arrival, while the garden side provides space for outdoor leisure. These external spaces and architectural decisions form the story of the Soluky house.",
+      "faq": [
+        {
+          "question": "What does this architectural case cover?",
+          "answer": "The exterior composition, roofs and canopies, elevation materials, furnished terrace, approach from parking and boundary with separate vehicle and pedestrian entrances."
+        },
+        {
+          "question": "How does the terrace accommodate different activities?",
+          "answer": "A dining table and separate low lounge seating share one canopy. They follow the glazing and are connected by decking, allowing meals at the table and relaxed seating closer to the garden."
+        },
+        {
+          "question": "What connects the house with its grounds?",
+          "answer": "Timber soffits recur above entrances and the terrace. Dark stone-faced supports are echoed by the boundary posts, with lawn, boulders and low planting completing the palette around the house."
+        },
+        {
+          "question": "What automation could be added?",
+          "answer": "Separate lighting scenes for arrival and terrace evenings, with coordinated gate control. These are potential additions requiring their own equipment design; the case does not claim installed systems."
+        },
+        {
+          "question": "Could this approach work on another site?",
+          "answer": "A sheltered terrace, protected entrance and coordinated elevations can be explored for your house. Their arrangement depends on trees, terrain, views and vehicle access, which we examine at the start of the project."
+        }
+      ],
+      "source_note": "Internal: owner-approved release without area on2026-10-16; case-specific exception only. See Ukrainian source_note for source identity, image review, duplicate checks and limits. English has identical scope."
+    }
+  },
   "shenc-park-yavoriv": {
     "uk": {
       "eyebrow": "Дизайн ресторану й номерів · Яворів",

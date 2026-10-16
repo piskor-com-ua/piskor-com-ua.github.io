@@ -20,7 +20,16 @@
       "inLanguage": ["uk", "en"],
       "publisher": {"@id": {{ '/#organization' | absolute_url | jsonify }}}
     }
-    {% unless page.home %},
+    {% if page.not_found %},
+    {
+      "@type": "WebPage",
+      "@id": {{ page.url | absolute_url | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "inLanguage": {{ page.lang | jsonify }},
+      "isPartOf": {"@id": {{ '/#website' | absolute_url | jsonify }}}
+    }
+    {% elsif page.home != true %},
     {% if page.catalog %}
     {
       "@type": "CollectionPage",
@@ -59,7 +68,7 @@
         {% endunless %}
       ]
     }
-    {% endunless %}
+    {% endif %}
   ]
 }
 </script>

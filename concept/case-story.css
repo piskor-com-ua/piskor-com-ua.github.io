@@ -39,3 +39,6 @@
 .pine-house-soluky-page #covered-terrace-lounge-dining .case-images img{aspect-ratio:1/1;object-position:center}
 .pine-house-soluky-page .case-images img[src*="/terrace-lounge-"]{object-position:left center}
 .pine-house-soluky-page .case-images img[src*="/covered-carport-"]{object-position:left center}
+.pdf-project-page.shingle-house-pidriasne-page .case-images img{aspect-ratio:2/1;object-fit:cover}
+.shingle-house-pidriasne-page #sunken-terrace-fire-lounge .case-images img{aspect-ratio:3/2}
+.shingle-house-pidriasne-page .project-cover img{object-position:center;aspect-ratio:2/1;height:auto}

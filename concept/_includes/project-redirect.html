@@ -1,0 +1,10 @@
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+{% include seo.html %}
+<meta http-equiv="refresh" content="0;url={{ page.redirect_to }}">
+<script>
+const destination = {{ page.redirect_to | jsonify }};
+const lightingAnchors = ['#lighting-baseline', '#accent-lighting-sequence', '#dimming-and-reset', '#lighting-automation-scenarios'];
+const fragment = lightingAnchors.includes(location.hash) ? '#accent-lighting-sequence' : location.hash;
+location.replace(destination + location.search + fragment);
+</script></head>
+<body><main><h1>{{ page.title }}</h1><p><a href="{{ page.redirect_to }}">{% if page.lang == 'en' %}Explore the full apartment story{% else %}Переглянути повну історію квартири{% endif %}</a></p></main></body>

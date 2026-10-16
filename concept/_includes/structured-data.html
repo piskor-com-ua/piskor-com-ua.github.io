@@ -1,3 +1,4 @@
+{% assign structured_path = page.redirect_to | default: page.url %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -39,8 +40,8 @@
     {% else %}
     {
       "@type": "CreativeWork",
-      "@id": {{ page.url | absolute_url | append: '#project' | jsonify }},
-      "url": {{ page.url | absolute_url | jsonify }},
+      "@id": {{ structured_path | absolute_url | append: '#project' | jsonify }},
+      "url": {{ structured_path | absolute_url | jsonify }},
       "name": {{ page.title | jsonify }},
       "description": {{ page.description | jsonify }},
       "inLanguage": {{ page.lang | jsonify }},
@@ -55,7 +56,7 @@
         {"@type": "ListItem", "position": 1, "name": {% if page.lang == 'en' %}"Home"{% else %}"Головна"{% endif %}, "item": {% if page.lang == 'en' %}{{ '/en/' | absolute_url | jsonify }}{% else %}{{ '/' | absolute_url | jsonify }}{% endif %}},
         {"@type": "ListItem", "position": 2, "name": {% if page.lang == 'en' %}"Portfolio"{% else %}"Портфоліо"{% endif %}, "item": {% if page.lang == 'en' %}{{ '/en/portfolio/' | absolute_url | jsonify }}{% else %}{{ '/portfolio/' | absolute_url | jsonify }}{% endif %}}
         {% unless page.catalog %},
-        {"@type": "ListItem", "position": 3, "name": {{ page.card_title | default: page.title | jsonify }}, "item": {{ page.url | absolute_url | jsonify }}}
+        {"@type": "ListItem", "position": 3, "name": {{ page.card_title | default: page.title | jsonify }}, "item": {{ structured_path | absolute_url | jsonify }}}
         {% endunless %}
       ]
     }

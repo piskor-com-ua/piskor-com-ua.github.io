@@ -259,6 +259,54 @@ class PagespeedEvidenceTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             extract_public_reports(html + embedded_html(lhr(run=1), desktop))
 
+    def test_parser_derives_modes_after_slots_move_and_reports_are_nested_json(self):
+        mobile, desktop = lhr(), lhr('desktop')
+        # The live October report moved mobile to [4][0] and desktop to [4][4].
+        # Deeper serialization/dictionary wrappers must not change either mode.
+        data = [None] * 5
+        data[4] = [None] * 5
+        data[4][0] = {'payload': json.dumps(json.dumps({'report': mobile}))}
+        data[4][4] = [desktop]
+        html = '<script>AF_initDataCallback({data:' + json.dumps(data) + '});</script>'
+        reports = extract_public_reports(html)
+        self.assertEqual(reports, {'mobile': mobile, 'desktop': desktop})
+        self.assertEqual(summarize_lhr(reports['mobile'], URL, 'mobile')['validation_errors'], [])
+        # Root JSON need not be an array, and repeated identical payloads are safe.
+        for root in ({'reports': [mobile, json.dumps(desktop), mobile]},
+                     json.dumps({'reports': [mobile, desktop]})):
+            with self.subTest(root_type=type(root).__name__):
+                html = '<script>AF_initDataCallback({data:' + json.dumps(root) + '});</script>'
+                self.assertEqual(extract_public_reports(html), reports)
+
+    def test_parser_rejects_unknown_modes_and_conflicting_duplicate_reports(self):
+        for settings in ({}, None, {'formFactor': 'tablet'}, {'formFactor': None},
+                         {'formFactor': 'mobile', 'emulatedFormFactor': 'desktop'}):
+            report = lhr()
+            report['configSettings'] = settings
+            html = '<script>AF_initDataCallback({data:' + json.dumps({'report': report}) + '});</script>'
+            with self.subTest(settings=settings), self.assertRaisesRegex(ValueError, 'form factor'):
+                extract_public_reports(html)
+        html = '<script>AF_initDataCallback({data:' + json.dumps([lhr(), {'nested': json.dumps(lhr(run=1))}]) + '});</script>'
+        with self.assertRaisesRegex(ValueError, 'Ambiguous embedded mobile'):
+            extract_public_reports(html)
+        # Python considers True == 1, but an invalid boolean audit score is not
+        # the same report as a valid numeric score, regardless of traversal order.
+        boolean_score = lhr()
+        boolean_score['audits']['weighted']['score'] = True
+        for reports in ([lhr(), boolean_score], [boolean_score, lhr()]):
+            html = '<script>AF_initDataCallback({data:' + json.dumps(reports) + '});</script>'
+            with self.assertRaisesRegex(ValueError, 'Ambiguous embedded mobile'):
+                extract_public_reports(html)
+
+    def test_parser_keeps_partial_modes_and_legacy_form_factor_without_executing_code(self):
+        desktop = lhr('desktop')
+        desktop['configSettings']['emulatedFormFactor'] = desktop['configSettings'].pop('formFactor')
+        html = '<script>AF_initDataCallback({data:' + json.dumps({'payload': desktop}) + '});</script>'
+        self.assertEqual(extract_public_reports(html), {'desktop': desktop})
+        expression = '(() => ' + json.dumps(lhr()) + ')()'
+        with self.assertRaises(ValueError):
+            extract_public_reports('<script>AF_initDataCallback({data:' + json.dumps(expression) + '});</script>')
+
     def test_runtime_404_english_variant_exists_before_generated_index_and_deduplicates_queries(self):
         (self.site / '404.html').write_text('<html lang="uk"><h1>Немає</h1></html>')
         (self.site / 'not-found.js').write_text(Path('concept/not-found.js').read_text())
@@ -290,6 +338,18 @@ class PagespeedEvidenceTest(unittest.TestCase):
         self.assertEqual(summary['metrics']['lcp'], 1201)
         self.assertEqual(summary['agentic']['weighted_total'], 5)
         self.assertEqual(summary['agentic']['weighted_passed'], 5)
+
+    @unittest.skipUnless(Path('output/all-pages/design-preservation/public-ui-iab-087-baseline/public-report.html').is_file(),
+                         'Existing moved-slot PSI HTML fixture is local-only')
+    def test_current_real_public_psi_report_has_both_actual_modes(self):
+        path = Path('output/all-pages/design-preservation/public-ui-iab-087-baseline/public-report.html')
+        reports = extract_public_reports(path.read_text())
+        self.assertEqual(set(reports), {'mobile', 'desktop'})
+        for mode, expected in [('mobile', (932, 1201, 932)), ('desktop', (271, 284, 313.9799054894646))]:
+            summary = summarize_lhr(reports[mode], 'https://piskor.com.ua/portfolio/', mode)
+            self.assertEqual(summary['validation_errors'], [])
+            self.assertEqual(tuple(summary['metrics'][key] for key in ('fcp', 'lcp', 'speed_index')), expected)
+            self.assertEqual(summary['agentic']['weighted_passed'], 5)
 
     def test_five_distinct_current_reports_each_mode_are_required_without_rounding(self):
         self.populate()

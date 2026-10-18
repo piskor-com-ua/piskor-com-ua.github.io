@@ -47,6 +47,50 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /noindex/);
           assert.equal(await page.locator('[data-lang="' + locale + '"]').getAttribute('aria-current'), 'page');
           assert.equal(await page.locator('[data-lang="' + opposite + '"]').getAttribute('href'), oppositePath);
+          const languageLayout = await page.evaluate(async () => {
+            await document.fonts.ready;
+            const glyph = element => {
+              const range = document.createRange();
+              range.selectNodeContents(element);
+              return range.getBoundingClientRect().toJSON();
+            };
+            return [...document.querySelectorAll('#app .language [data-lang]')].map(link => {
+              const box = link.getBoundingClientRect().toJSON();
+              const text = glyph(link);
+              const original = document.createElement('button');
+              original.textContent = link.textContent;
+              original.tabIndex = -1;
+              original.setAttribute('aria-hidden', 'true');
+              // Reconstruct the original button's font, padding, minimum box
+              // and active underline. Native button text centering supplies
+              // the reference missing from old snapshots of control boxes.
+              original.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;'
+                + 'left:' + box.x + 'px;top:' + box.y + 'px;margin:0;padding:12px 3px;'
+                + 'min-width:' + (innerWidth <= 700 ? '32px' : '0') + ';'
+                + 'min-height:' + (innerWidth <= 700 ? '44px' : '0') + ';'
+                + 'border-bottom:' + getComputedStyle(link).borderBottom;
+              link.parentElement.append(original);
+              try {
+                return { language: link.dataset.lang, box, text,
+                  originalBox: original.getBoundingClientRect().toJSON(), originalText: glyph(original) };
+              } finally {
+                original.remove();
+              }
+            });
+          });
+          assert.equal(languageLayout.length, 2);
+          for (const control of languageLayout) {
+            assert.ok(Math.abs(control.box.width - control.originalBox.width) <= .5, label + ': language control width changed');
+            assert.ok(Math.abs(control.box.height - control.originalBox.height) <= .5, label + ': language control height changed');
+            for (const coordinate of ['x', 'y', 'width', 'height']) {
+              assert.ok(Math.abs(control.text[coordinate] - control.originalText[coordinate]) <= 1,
+                label + ': ' + control.language + ' text differs from original button ' + coordinate);
+            }
+            if (width === 390) {
+              assert.equal(control.box.width, 32);
+              assert.equal(control.box.height, 44);
+            }
+          }
           assert.ok(await page.locator('#hero-title').isVisible());
           assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), null);
           assert.ok(await page.locator('#architecture-services h2').textContent());
@@ -67,21 +111,25 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           assert.notEqual(media.loading, 'lazy');
           assert.ok(media.picture, label + ': responsive hero picture missing');
           if (width === 390) {
-            assert.deepEqual(fontRequests, [], label + ': mobile system fonts must not fetch desktop fonts');
             const typography = await page.evaluate(() => ({
               heading: getComputedStyle(document.querySelector('#hero-title')).fontWeight,
               eyebrow: getComputedStyle(document.querySelector('.eyebrow')).fontWeight,
               family: getComputedStyle(document.body).fontFamily,
+              headingSize: parseFloat(getComputedStyle(document.querySelector('#hero-title')).fontSize),
+              hero: document.querySelector('.hero').getBoundingClientRect().toJSON(),
               picture: document.querySelector('.hero-picture').getBoundingClientRect().toJSON(),
-              copy: document.querySelector('.hero-copy').getBoundingClientRect().toJSON(),
+              position: getComputedStyle(document.querySelector('.hero-picture img')).objectPosition,
+              fit: getComputedStyle(document.querySelector('.hero-picture img')).objectFit,
             }));
             assert.equal(typography.heading, '300');
             assert.equal(typography.eyebrow, '400');
-            assert.ok(typography.family.includes('system-ui'));
-            assert.ok(typography.picture.width <= 320.01);
-            assert.ok(Math.abs(typography.picture.width / typography.picture.height - 2) < .01);
-            assert.ok(typography.picture.top >= typography.copy.bottom);
-            assert.ok(typography.picture.bottom <= 900, label + ': mobile photo missing from first viewport');
+            assert.ok(typography.family.includes('Roboto'), label + ': original mobile font changed');
+            assert.ok(Math.abs(typography.headingSize - 50.31) < .05, label + ': original mobile heading scale changed');
+            assert.equal(typography.hero.height, 900, label + ': original full-height hero changed');
+            assert.equal(typography.picture.width, 390);
+            assert.equal(typography.picture.height, typography.hero.height);
+            assert.equal(typography.position, '61% 50%');
+            assert.equal(typography.fit, 'cover');
           }
           await page.screenshot({ path: path.join(output, 'home-' + label + '.jpg'), type: 'jpeg' });
           if (javascript) {
@@ -115,9 +163,8 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.equal(await hero.evaluate(image => image.currentSrc), media.src, label + ': locale switch changed prepared media');
             assert.ok((await hero.getAttribute('alt')).includes(opposite === 'uk' ? 'Концептуальний' : 'Concept house'));
             await page.locator('[data-lang="' + locale + '"]').click();
-            // A compact hero can place the story within its real approach
-            // margin after a user opens the menu or changes language. Only
-            // distant media must remain unfetched after that explicit intent.
+            // Reconcile restored scroll after intent against the real approach
+            // margin; distant media must remain unfetched.
             const storyDistance = await page.locator('.story').evaluate(story => story.getBoundingClientRect().top - innerHeight);
             if (storyDistance >= 320) assert.deepEqual(storyRequests, [], label + ': distant story media loaded');
             // A real scroll begins loading before the story enters the viewport.
@@ -194,7 +241,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.ok(await page.locator('#hero-title').isVisible());
           }
           assert.deepEqual(errors, [], label);
-          results.push({ route, locale, width, javascript, media, initialStoryRequests, storyRequests, controllerRequests, fontRequests, automationBiodynamic, errors });
+          results.push({ route, locale, width, javascript, media, languageLayout, initialStoryRequests, storyRequests, controllerRequests, fontRequests, automationBiodynamic, errors });
         } catch (error) {
           await page.screenshot({ path: path.join(output, 'home-failure-' + label + '.jpg'), type: 'jpeg' });
           const diagnostics = await page.evaluate(() => {

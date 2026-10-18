@@ -4,7 +4,13 @@
   if (!measurementId || !/^G-[A-Z0-9]+$/.test(measurementId)) return;
 
   const key = 'piskor-analytics-choice-v1';
-  const isEnglish = document.documentElement.lang.toLowerCase().startsWith('en');
+  // Consent runs before the deferred 404 controller updates <html lang>.
+  // URLSearchParams.get uses the first value, matching not-found.js exactly.
+  const isNotFound = document.body.classList.contains('not-found-page');
+  const requested = isNotFound ? new URLSearchParams(location.search).get('lang') : null;
+  const isEnglish = isNotFound
+    ? requested === 'en' || (requested !== 'uk' && /^\/en(?:\/|$)/.test(location.pathname))
+    : document.documentElement.lang.toLowerCase().startsWith('en');
   const copy = isEnglish ? {
     title: 'Your privacy choices',
     description: 'We use Google Analytics to understand how visitors use this site. If you allow analytics, Google receives page views and interactions, along with browser, device and approximate location data. Analytics stays off until you choose.',

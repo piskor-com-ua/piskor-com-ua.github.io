@@ -74,7 +74,7 @@ for page in output.rglob('*.html'):
     assert len(early) == 1, str(page) + ': missing early consent controller'
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
     font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
-    assert all(n.attrs.get('media') == '(min-width: 701px)' for n in font_preloads), str(page) + ': mobile must use its native font stack without a webfont preload'
+    assert all(not n.attrs.get('media') for n in font_preloads), str(page) + ': original Roboto must remain available in both viewport modes'
     images = root.find(lambda n: n.tag == 'img' and n.attrs.get('src', '').startswith('/assets/'))
     for image in images:
         attrs = image.attrs

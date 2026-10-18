@@ -10,7 +10,7 @@ from PIL import Image
 import tinycss2
 from prepare_public_assets import (prepare_public_assets, bundle_catalog_styles, COVER_SIZES, CARD_SIZES,
                                    CaseImageContexts, image_style_rules, case_image_style,
-                                   crop_aware_sizes, compact_mobile_sizes, catalog_image_sizes,
+                                   crop_aware_sizes, catalog_image_sizes,
                                    CATALOG_FRAME_RATIO, home_hero_crops, UnsupportedImageStyle)
 from fingerprint_resources import fingerprint_resources
 from optimize_assets import optimize_assets
@@ -113,7 +113,7 @@ class PublicAssetsTest(unittest.TestCase):
             for index, picture in enumerate(pictures):
                 source = picture.find(lambda n: n.tag == 'source')[0].attrs
                 fallback = picture.find(lambda n: n.tag == 'img')[0].attrs
-                self.assertEqual(source['sizes'], compact_mobile_sizes(COVER_SIZES, 4 / 3) if index == 0 else CARD_SIZES)
+                self.assertEqual(source['sizes'], COVER_SIZES if index == 0 else CARD_SIZES)
                 self.assertEqual(source['sizes'], fallback['sizes'])
                 self.assertEqual(source['media'], '(max-width: 700px)')
                 self.assertIn('/case-cover/' if index == 0 else '/case-media/', source['srcset'])
@@ -130,7 +130,7 @@ class PublicAssetsTest(unittest.TestCase):
                         self.assertEqual(image.width, int(descriptor[:-1]))
                         self.assertEqual(image.width / image.height, 4 / 3)
                         widths.append(image.width)
-                self.assertEqual(widths, [320, 448, 512, 576, 640, 960, 2000] if index == 0 else [640, 960, 1440, 2000])
+                self.assertEqual(widths, [640, 768, 960, 1440, 2000] if index == 0 else [640, 960, 1440, 2000])
                 self.assertEqual(fallback['alt'], 'Той самий простір')
             gallery = pictures[1].find(lambda n: n.tag == 'img')[0]
             self.assertEqual((gallery.attrs['loading'], gallery.attrs['decoding']), ('lazy', 'async'))
@@ -146,7 +146,7 @@ class PublicAssetsTest(unittest.TestCase):
             self.assertLess(text.index('data-case-cover-preload'), text.index('as="font"'))
         self.assertEqual({path: path.read_bytes() for path in originals}, originals)
 
-    def test_compact_cover_context_isolated_from_gallery_and_later_catalog_without_upscaling(self):
+    def test_cover_density_context_isolated_from_gallery_and_later_catalog_without_upscaling(self):
         for name, width in (('shared', 1200), ('small', 600)):
             Image.new('RGB', (width, width * 3 // 4), '#258878').save(self.output / ('assets/' + name + '.webp'))
         head = '<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>'
@@ -165,21 +165,20 @@ class PublicAssetsTest(unittest.TestCase):
         cover = root.find(lambda n:'project-cover' in n.attrs.get('class', '').split())[0]
         cover_source = cover.find(lambda n:n.tag == 'source')[0].attrs
         gallery_source = gallery.find(lambda n:n.tag == 'source')[0].attrs
-        self.assertIn('448w', cover_source['srcset'])
-        self.assertIn('512w', cover_source['srcset'])
+        self.assertIn('768w', cover_source['srcset'])
         self.assertIn('960w', cover_source['srcset'])
-        self.assertNotIn('448w', gallery_source['srcset'])
+        self.assertNotIn('768w', gallery_source['srcset'])
         catalog_sources = Document(catalog.read_text()).root.find(lambda n:n.tag == 'source')
-        self.assertIn('448w', catalog_sources[0].attrs['srcset'])
-        self.assertIn('/case-cover/compact-full/', catalog_sources[0].attrs['srcset'])
-        self.assertNotIn('448w', catalog_sources[1].attrs['srcset'])
+        self.assertIn('768w', catalog_sources[0].attrs['srcset'])
+        self.assertIn('/case-cover/catalog/', catalog_sources[0].attrs['srcset'])
+        self.assertNotIn('768w', catalog_sources[1].attrs['srcset'])
         self.assertNotIn('/case-cover/', catalog_sources[1].attrs['srcset'])
         self.assertEqual(catalog_sources[0].attrs['sizes'], catalog_sources[1].attrs['sizes'])
         preload = root.find(lambda n:n.tag == 'link' and n.attrs.get('as') == 'image')[0].attrs
         self.assertEqual((preload['imagesrcset'], preload['imagesizes']), (cover_source['srcset'], cover_source['sizes']))
         small_source = Document(small.read_text()).root.find(lambda n:n.tag == 'source')[0].attrs
-        self.assertEqual([entry.strip().split()[1] for entry in small_source['srcset'].split(',')], ['320w', '448w', '512w', '576w', '600w'])
-        self.assertFalse(any(self.output.glob('assets/responsive/case-cover/compact-full/small-640.avif')))
+        self.assertEqual([entry.strip().split()[1] for entry in small_source['srcset'].split(',')], ['600w'])
+        self.assertFalse(any(self.output.glob('assets/responsive/case-cover/small-640.avif')))
 
     def test_cover_and_gallery_profiles_keep_independent_bytes_and_persistent_cache_in_both_orders(self):
         source = self.output / 'assets/shared.webp'
@@ -251,7 +250,7 @@ class PublicAssetsTest(unittest.TestCase):
             sources = [case.find(lambda n:n.tag == 'source')[0], *catalog.find(lambda n:n.tag == 'source')]
             urls = [node.attrs['srcset'].split()[0] for node in sources]
             self.assertEqual(len(set(urls)), 3)
-            self.assertIn('/compact-full/catalog/', urls[1])
+            self.assertIn('/case-cover/catalog/', urls[1])
             self.assertNotIn('/case-cover/', urls[2])
             encoded = [(self.output / url.lstrip('/')).read_bytes() for url in urls]
             self.assertNotEqual(encoded[0], encoded[1])
@@ -261,46 +260,30 @@ class PublicAssetsTest(unittest.TestCase):
             else:
                 self.assertEqual(encoded, first_bytes)
             pictures = catalog.find(lambda n:n.tag == 'picture')
-            self.assertTrue(all(node.attrs.get('class') == 'mobile-overview' for node in pictures))
+            self.assertTrue(all('class' not in node.attrs for node in pictures))
             self.assertEqual(sources[1].attrs['sizes'], sources[2].attrs['sizes'])
 
-    def test_compact_sizes_fit_full_source_including_portrait_and_panorama(self):
-        for native in ((1080, 810), (1733, 1790), (1080, 1283), (2000, 1000), (2400, 800)):
-            sizes = compact_mobile_sizes(COVER_SIZES, native[0] / native[1])
-            mobile, *desktop = re.split(r', (?=\(min-width:|91vw)', sizes)
-            self.assertEqual(', '.join(desktop), '(min-width: 1956px) calc(100vw - 176px), 91vw')
-            factor, cap = map(float, re.search(r'\* ([\d.]+)\), ([\d.]+)px', mobile).groups())
-            for viewport in (320, 390, 412, 700):
-                frame = (min(viewport - 48, 320), min(viewport - 48, 320) / 2)
-                # Independent rectangle fit: scale both source axes equally
-                # until one reaches the frame, leaving every source pixel visible.
-                scale = min(frame[0] / native[0], frame[1] / native[1])
-                fitted_width = native[0] * scale
-                self.assertAlmostEqual(min((viewport - 48) * factor, cap), fitted_width, places=6)
-                self.assertLessEqual(native[1] * scale, frame[1] + 1e-8)
-        with self.assertRaises(ValueError):
-            compact_mobile_sizes(COVER_SIZES, 0)
-
-    def test_catalog_desktop_sizes_supply_full_crop_width_at_each_layout_breakpoint(self):
+    def test_catalog_sizes_supply_original_full_width_crop_in_both_layouts(self):
         for native in ((1080, 1283), (1733, 1790), (1080, 810), (1600, 900), (2000, 1000)):
             ratio = native[0] / native[1]
             sizes = catalog_image_sizes(ratio)
-            # The mobile source remains contain-sized, independently of the
-            # larger desktop source width needed to fill the 1.42 cover frame.
-            self.assertEqual(sizes.split(', (min-width:')[0],
-                             compact_mobile_sizes(CARD_SIZES, ratio).split(', (min-width:')[0])
+            mobile_vw, mobile_px = map(float, re.search(r"calc\(([\d.]+)vw - ([\d.]+)px\)", sizes).groups())
             desktop = sizes.split(', (min-width:')[1]
             large_vw, large_px, normal_vw, normal_px = map(float, re.findall(r'([\d.]+)(?:vw|px)', desktop)[1:])
-            for viewport in (701, 1440, 1956):
-                box_width = (viewport - 204) / 2 if viewport >= 1956 else (viewport * .91 - 28) / 2
+            for viewport in (320, 390, 412, 700, 701, 1440, 1956):
+                box_width = (viewport - 48 if viewport <= 700 else
+                             (viewport - 204) / 2 if viewport >= 1956 else (viewport * .91 - 28) / 2)
                 box_height = box_width / CATALOG_FRAME_RATIO
                 expected = max(box_width, box_height * ratio)
-                declared = ((viewport * large_vw / 100 - large_px) / 2 if viewport >= 1956
-                            else (viewport * normal_vw / 100 - normal_px) / 2)
+                declared = ((viewport * mobile_vw / 100 - mobile_px) if viewport <= 700 else
+                            (viewport * large_vw / 100 - large_px) / 2 if viewport >= 1956 else
+                            (viewport * normal_vw / 100 - normal_px) / 2)
                 self.assertAlmostEqual(declared, expected, places=4)
                 self.assertGreaterEqual(declared + .0001, box_width)
             if ratio <= CATALOG_FRAME_RATIO:
-                self.assertEqual(sizes, compact_mobile_sizes(CARD_SIZES, ratio))
+                self.assertEqual(sizes, CARD_SIZES)
+        with self.assertRaises(ValueError):
+            catalog_image_sizes(0)
 
     def test_catalog_desktop_crop_contract_matches_shared_source_css(self):
         # The build runs this probe before preparing assets. Changing the shared
@@ -332,22 +315,22 @@ class PublicAssetsTest(unittest.TestCase):
         def save(image, filename, format=None, **kwargs):
             if format == 'AVIF':
                 encodes.append(str(filename))
-                self.assertEqual(kwargs['quality'], 45)
+                self.assertEqual(kwargs['quality'], 50)
             return original_save(image, filename, format, **kwargs)
         with patch.object(Image.Image, 'save', save):
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 1)
-            first = (self.output / 'assets/responsive/case-cover/compact-full/photo-64.avif').read_bytes()
+            first = (self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes()
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 1)
-            self.assertEqual((self.output / 'assets/responsive/case-cover/compact-full/photo-64.avif').read_bytes(), first)
+            self.assertEqual((self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes(), first)
             Image.new('RGB', (64, 48), '#754832').save(path)
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 2)
-            self.assertNotEqual((self.output / 'assets/responsive/case-cover/compact-full/photo-64.avif').read_bytes(), first)
+            self.assertNotEqual((self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes(), first)
         self.assertTrue((self.output.parent / 'output/image-cache/responsive-avif-v1').is_dir())
         self.assertFalse(any(p.name.startswith('.') and p.name != '.nojekyll' for p in self.output.rglob('*')))
 
@@ -392,7 +375,7 @@ class PublicAssetsTest(unittest.TestCase):
         with patch.object(Image.Image, 'save', count_avif):
             result = prepare_public_assets(self.output)
         self.assertCountEqual(encodes, [((960, 640), 60), ((1280, 853), 60), ((1440, 960), 60), ((1536, 1024), 60),
-                                      *[((width, width // 2), 45) for width in (320, 448, 512, 576, 640, 960, 1536)]])
+                                      ((636, 1024), 45), ((736, 1024), 45), ((1036, 1024), 45)])
         self.assertEqual(result['responsive_home_heroes'], 2)
         self.assertEqual(result['responsive_case_images'], 0)
         fingerprint_resources(self.output)
@@ -402,26 +385,27 @@ class PublicAssetsTest(unittest.TestCase):
         sources = [node.attrs for node in root.find(lambda n: n.tag == 'source')]
         picture_source = sources[-1]
         preload = root.find(lambda n: n.tag == 'link' and n.attrs.get('as') == 'image')
-        self.assertEqual(len(preload), 2)
-        self.assertEqual(len(sources), 2)
-        for link, prepared, media in zip(preload, sources, ('(max-width: 700px)', '(700px < width)')):
+        self.assertEqual(len(preload), 4)
+        self.assertEqual(len(sources), 4)
+        for link, prepared, media in zip(preload, sources, ('(width <= 450px)', '(450px < width <= 480px)', '(480px < width <= 700px)', '(700px < width)')):
             self.assertEqual(link.attrs['imagesrcset'], prepared['srcset'])
             self.assertEqual(link.attrs['imagesizes'], prepared['sizes'])
             self.assertEqual(link.attrs['media'], media)
             self.assertNotIn('href', link.attrs)
         # These intervals form an exclusive partition, including fractional
         # widths that would fall into gaps in min-width:451px-style queries.
-        for viewport_width, expected_branch in ((320, 0), (450.5, 0), (700, 0), (700.5, 1)):
-            active = [viewport_width <= 700, 700 < viewport_width]
+        for viewport_width, expected_branch in ((450, 0), (450.5, 1), (480, 1), (480.5, 2), (700, 2), (700.5, 3)):
+            active = [viewport_width <= 450, 450 < viewport_width <= 480,
+                      480 < viewport_width <= 700, 700 < viewport_width]
             self.assertEqual([index for index, matches in enumerate(active) if matches], [expected_branch])
-        for candidate in sources[0]['srcset'].split(','):
-            url, descriptor = candidate.strip().split()
+        for prepared, expected in zip(sources[:3], ((636, 1024), (736, 1024), (1036, 1024))):
+            self.assertEqual(len(prepared['srcset'].split(',')), 1)
+            url, descriptor = prepared['srcset'].split()
             with Image.open(self.output / url.split('?')[0].lstrip('/')) as encoded:
-                self.assertEqual(encoded.width / encoded.height, 2)
+                self.assertEqual(encoded.size, expected)
                 self.assertEqual(descriptor, str(encoded.width) + 'w')
-                self.assertIn('-crop-0-128-1536-896-', url)
         self.assertNotIn('media', picture_source)
-        self.assertIn('min(calc((100vw - 48px) * 1), 320px)', picture_source['sizes'])
+        self.assertIn('clamp(1110px, 150svh, 1500px)', picture_source['sizes'])
         self.assertIn('clamp(1140px, 150svh, 1800px)', picture_source['sizes'])
         self.assertEqual(image['sizes'], picture_source['sizes'])
         self.assertEqual((image['width'], image['height']), ('1536', '1024'))
@@ -434,22 +418,24 @@ class PublicAssetsTest(unittest.TestCase):
         en_sources = [node.attrs for node in Document(en.read_text()).root.find(lambda n: n.tag == 'source')]
         self.assertEqual(sources, en_sources)
 
-    def test_mobile_hero_crop_matches_compact_box_coordinates_without_upscaling(self):
+    def test_mobile_hero_crop_preserves_original_visible_coordinates_without_resampling(self):
         html = '<head>' + self.hero_styles() + '</head><body><main><section class="hero"><div class="hero-picture"><img></div></section></main></body>'
         context = CaseImageContexts(html)
         path = next(iter(context.paths.values()))
         crops = home_hero_crops(self.output, html, path, 1536, 1024)
-        self.assertEqual(crops, [(700, (0, 128, 1536, 896))])
+        self.assertEqual(crops, [(450, (549, 0, 1185, 1024)), (480, (488, 0, 1224, 1024)), (700, (305, 0, 1341, 1024))])
         for viewport_width in (320, 390, 450, Fraction(901, 2), 480, Fraction(961, 2), 600, 700):
             crop = next(crop for maximum, crop in crops if viewport_width <= maximum)
             for viewport_height in (320, 740, 823, 844, 1000, 1400):
-                frame_width = min(viewport_width - 48, 320)
-                frame_height = Fraction(frame_width, 2)
-                # The original 3:2 photograph fills a 2:1 frame by keeping its
-                # whole width and cropping 128 rows above/below at vertical 50%.
-                self.assertEqual(Fraction(1024 - 768, 2), crop[1])
-                self.assertEqual(Fraction(frame_width, 1536), Fraction(frame_height, 768))
-                self.assertGreaterEqual(1536, frame_width * 3)
+                hero_height = min(1000, max(740, viewport_height))
+                visible_native_width = Fraction(viewport_width * 1024, hero_height)
+                crop_width = crop[2] - crop[0]
+                self.assertGreaterEqual(crop_width, visible_native_width)
+                original_left = Fraction(61, 100) * (1536 - visible_native_width)
+                cropped_left = crop[0] + Fraction(61, 100) * (crop_width - visible_native_width)
+                self.assertEqual(original_left, cropped_left)
+                self.assertEqual((crop[1], crop[3]), (0, 1024))
+                self.assertEqual(Fraction(hero_height, crop[3] - crop[1]), Fraction(hero_height, 1024))
 
     def test_mobile_hero_crop_rejects_unproven_geometry_before_encoding(self):
         Image.new('RGB', (1536, 1024), '#258878').save(self.output / 'assets/house-concept.webp')
@@ -472,6 +458,7 @@ class PublicAssetsTest(unittest.TestCase):
                     '@media(max-width:700px){img.expanded{height:80%}}',
                     '@media(max-width:700px){.hero-picture picture{height:90%}}',
                     'img:nth-child(3){height:80%}',
+                    'img:nth-child(5){height:80%}',
                     'img{width:80%}', '.hero{animation:move 1s}', '@starting-style{.hero{height:10px}}', '@import url(/unknown.css);'):
             with self.subTest(css=css):
                 html = head + '<style>' + css + '</style>' + body

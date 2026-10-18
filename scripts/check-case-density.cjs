@@ -132,15 +132,6 @@ print(json.dumps(result))
               const boxWidth = rect.width - parseFloat(style.borderLeftWidth) - parseFloat(style.borderRightWidth) - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
               const boxHeight = rect.height - parseFloat(style.borderTopWidth) - parseFloat(style.borderBottomWidth) - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
               if (boxWidth <= 0 || boxHeight <= 0) throw Error('Image geometry is unavailable without scrolling');
-              const overview = image.closest('picture.mobile-overview');
-              if (overview && innerWidth <= 700) {
-                const frame = overview.getBoundingClientRect();
-                const expectedWidth = Math.min(innerWidth - 48, 320);
-                if (Math.abs(frame.width - expectedWidth) > 1 || Math.abs(frame.height - expectedWidth / 2) > 1)
-                  errors.push('Compact overview lost its shared 320×160 frame');
-                if (style.objectFit !== 'contain' || rect.width > frame.width + 1 || rect.height > frame.height + 1)
-                  errors.push('Compact overview clips or stretches its full photograph');
-              }
               const sourceHeightWidth = boxHeight * native.width / native.height;
               const referenceWidth = style.objectFit === 'cover' ? Math.max(boxWidth, sourceHeightWidth)
                 : style.objectFit === 'contain' ? Math.min(boxWidth, sourceHeightWidth) : boxWidth;

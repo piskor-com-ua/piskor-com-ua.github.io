@@ -116,6 +116,67 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       await page.locator('.language a').filter({ hasText: language === 'en' ? 'UA' : 'EN' }).click();
       assert.equal(await page.locator('html').getAttribute('lang'), language === 'en' ? 'uk' : 'en');
     }
+    const notFoundConsent = [];
+    for (const [route, language, status] of [
+      ['/404.html?lang=en', 'en', 200], ['/404.html?lang=uk', 'uk', 200],
+      ['/404.html?lang=en&lang=uk', 'en', 200], ['/404.html?lang=uk&lang=en', 'uk', 200],
+      ['/en/consent-regression-missing/', 'en', 404],
+      ['/consent-regression-missing/?lang=en', 'en', 404],
+      ['/consent-regression-missing/', 'uk', 404],
+      ['/en/consent-regression-missing/?lang=uk', 'uk', 404],
+      ['/en/consent-regression-missing/?lang=en&lang=uk', 'en', 404],
+      ['/en/consent-regression-missing/?lang=uk&lang=en', 'uk', 404],
+      ['/en/consent-regression-missing/?lang=unknown', 'en', 404]
+    ]) {
+      const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+      try {
+        // Model Pages' custom missing-document fallback only for these exact
+        // nonexistent paths; all scripts/styles remain real generated assets.
+        if (status === 404) await context.route(url =>
+          ['/consent-regression-missing/', '/en/consent-regression-missing/'].includes(url.pathname), request =>
+          request.request().resourceType() === 'document'
+            ? request.fulfill({ status: 404, contentType: 'text/html', path: '_site/404.html' })
+            : request.continue());
+        const probe = await context.newPage();
+        const analyticsRequests = [];
+        await context.route(/https:\/\/(?:[^/]+\.)?(?:googletagmanager\.com|google-analytics\.com|analytics\.google\.com)\//, route => {
+          analyticsRequests.push(route.request().url());
+          return route.abort();
+        });
+        const response = await probe.goto(origin + route);
+        assert.equal(response.status(), status, route);
+        const english = language === 'en';
+        assert.equal(await probe.locator('html').getAttribute('lang'), language, route);
+        assert.equal(await probe.locator('#error-title span').first().textContent(), english ? 'This page' : 'Цієї сторінки', route);
+        assert.equal(await probe.locator('.error-header-nav a').first().textContent(), english ? 'Portfolio' : 'Портфоліо', route);
+        const banner = probe.locator('.analytics-consent');
+        assert.ok(await banner.isVisible(), route + ': first-visit consent missing');
+        assert.equal(await banner.locator('h2').textContent(), english ? 'Your privacy choices' : 'Ваш вибір щодо аналітики', route);
+        assert.equal(await banner.getAttribute('aria-label'), english ? 'Analytics privacy preferences' : 'Налаштування приватності аналітики', route);
+        assert.equal(await banner.locator('[data-choice="accepted"]').textContent(), english ? 'Allow analytics' : 'Дозволити аналітику', route);
+        assert.equal(await banner.locator('[data-choice="rejected"]').textContent(), english ? 'Reject analytics' : 'Відхилити аналітику', route);
+        assert.equal(await banner.locator('a').textContent(), english ? 'Google Privacy Policy ↗' : 'Політика конфіденційності Google ↗', route);
+        const assertNoAnalytics = async () => {
+          assert.deepEqual(analyticsRequests, [], route + ': analytics requested without consent');
+          assert.equal(await probe.locator('script[src*="googletagmanager"]').count(), 0, route);
+          assert.equal(await probe.evaluate(() => typeof window.gtag), 'undefined', route);
+          assert.ok(!(await context.cookies()).some(cookie => cookie.name === '_ga' || cookie.name.startsWith('_ga_')), route);
+        };
+        await assertNoAnalytics();
+        await banner.locator('[data-choice="rejected"]').click();
+        assert.equal(await probe.evaluate(() => localStorage.getItem('piskor-analytics-choice-v1')), 'rejected', route);
+        await assertNoAnalytics();
+        const reloadResponse = await probe.reload();
+        assert.equal(reloadResponse.status(), status, route);
+        assert.equal(await probe.locator('html').getAttribute('lang'), language, route);
+        assert.equal(await banner.isVisible(), false, route);
+        assert.equal(await probe.locator('.analytics-preferences').getAttribute('aria-label'), english ? 'Analytics preferences' : 'Налаштування аналітики', route);
+        await assertNoAnalytics();
+        notFoundConsent.push({ route, status, language, firstParameterWins: true, analyticsRequests: 0, rejectionPersisted: true });
+      } finally {
+        await context.close();
+      }
+    }
     const consentContext = await browser.newContext();
     const consentPage = await consentContext.newPage();
     let tagRequests = 0;
@@ -145,7 +206,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, compatibilityPages, nativeFonts, preloadChecks, releaseSample, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, compatibilityPages, nativeFonts, preloadChecks, releaseSample, notFoundConsent, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
     await browser.close();
     browser = null;

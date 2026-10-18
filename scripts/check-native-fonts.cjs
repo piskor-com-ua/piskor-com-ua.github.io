@@ -1,4 +1,4 @@
-// Initial rendering contract only; blocked media makes this no PSI evidence.
+// Original Roboto rendering contract; blocked media makes this no PSI evidence.
 const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 
@@ -22,16 +22,12 @@ module.exports = async function checkNativeFonts(browser, origin) {
         await page.evaluate(() => document.fonts.ready);
         const result = await page.evaluate(() => ({
           family: getComputedStyle(document.body).fontFamily,
-          custom: [...document.body.querySelectorAll('*')].filter(node => getComputedStyle(node).fontFamily.includes('Roboto'))
-            .slice(0, 5).map(node => ({ tag: node.tagName, id: node.id, class: node.getAttribute('class') })),
+          preloads: [...document.querySelectorAll('link[rel="preload"][as="font"]')]
+            .map(link => ({ href: link.getAttribute('href'), media: link.media })),
         }));
-        if (width <= 700) {
-          assert.deepEqual(fonts, [], route + ': mobile attempted a webfont request');
-          assert.ok(result.family.includes('system-ui'), route + ': mobile body lost its native font stack');
-          assert.deepEqual(result.custom, [], route + ': component reintroduced a custom font');
-        } else {
-          assert.ok(result.family.includes('Roboto'), route + ': desktop lost its original font family');
-        }
+        assert.ok(result.family.includes('Roboto'), route + ': original font family changed');
+        assert.ok(result.preloads.some(link => link.href.includes('roboto-light')), route + ': original light-font preload missing');
+        assert.ok(result.preloads.every(link => link.media === ''), route + ': original font preload restricted by viewport');
         rows.push({ route, width, family: result.family, fontRequests: [...fonts] });
       }
     } finally {

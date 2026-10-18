@@ -16,9 +16,11 @@ mkdirSync(values.output, { recursive: true });
   for (const [index, route] of routes.entries()) {
     const filename = path.resolve(values.output, 'mobile-' + (index + 1) + '.json');
     await new Promise((resolve, reject) => {
-      const child = spawn(path.resolve('node_modules/.bin/lighthouse'), [origin + route, '--quiet',
+      const args = [origin + route, '--quiet',
         '--chrome-flags=--headless', '--output=json', '--output-path=' + filename,
-        '--only-categories=performance,accessibility,best-practices,seo,agentic-browsing'], { stdio: 'inherit' });
+        '--only-categories=performance,accessibility,best-practices,seo,agentic-browsing'];
+      if (route === '/portfolio/') args.push('--save-assets');
+      const child = spawn(path.resolve('node_modules/.bin/lighthouse'), args, { stdio: 'inherit' });
       child.on('error', reject);
       child.on('exit', code => code === 0 ? resolve() : reject(Error('Lighthouse exited ' + code)));
     });

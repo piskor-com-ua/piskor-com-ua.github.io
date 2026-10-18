@@ -13,3 +13,7 @@
 .catalog-year-heading h2{font-size:clamp(32px,4vw,54px);font-weight:300;letter-spacing:-.035em;color:var(--mint)}
 .catalog-year-heading>span{font-size:11px;color:var(--muted)}
 @media(max-width:700px){.catalog-projects article+article{margin-top:48px}.catalog-projects .portfolio-card h3{font-size:32px}.catalog-page .project-title h1{font-size:39px}.catalog-years{gap:20px}.catalog-years-links{gap:22px}.catalog-years a{min-height:56px;font-size:14px}.catalog-year-group{scroll-margin-top:0}.catalog-year-group+.catalog-year-group{margin-top:64px}.catalog-year-heading{margin-bottom:28px}.catalog-year-heading>span{display:none}}
+
+/* Keep offscreen cards in the document; render their contents near the viewport.
+   Remember measured heights and leave room for keyboard focus outside each card. */
+@media screen{.catalog-projects .portfolio-card{content-visibility:auto;contain-intrinsic-block-size:auto 700px;overflow-clip-margin:12px}}

@@ -6,6 +6,7 @@ import re
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
+from catalog_css import catalog_classes, prune_catalog_css
 
 
 FONT_NAMES = ('roboto-light', 'roboto-regular')
@@ -92,14 +93,17 @@ def subset_fonts(output):
 def inline_catalog_styles(output):
     """Inline the small shared bundle, preserving order and absolute asset URLs."""
     output = generated_root(output)
+    pages = sorted(path for path in output.rglob('*.html')
+                   if CATALOG_SHEET.search(path.read_text()))
     css = (output / 'catalog-bundle.css').read_text()
+    css = prune_catalog_css(css, catalog_classes(output, pages))
     css = re.sub(r'url\(\s*(["\']?)(assets/)', r'url(\1/\2', css)
     if '</style' in css.lower():
         raise ValueError('Catalog stylesheet contains an HTML style terminator')
     digest = hashlib.sha256(css.encode()).hexdigest()[:12]
     style = '<style data-catalog-styles="' + digest + '">' + css + '</style>'
     count = 0
-    for page in output.rglob('*.html'):
+    for page in pages:
         html, replaced = CATALOG_SHEET.subn(lambda _: style, page.read_text())
         if replaced:
             page.write_text(html)

@@ -11,3 +11,9 @@
 @media(max-width:360px){.project-page .header{gap:10px}.project-page .header .logo{width:130px}.project-page .project-nav{gap:8px}.project-page .project-nav a[href="#contact"]{display:none}}
 /* Keep language controls inside the mobile header across font rasterizers. */
 @media(max-width:700px){.project-page .header{gap:10px}.project-page .header .logo{flex-shrink:1;min-width:110px}.project-page .project-nav{gap:12px}.project-page .project-nav a{display:inline-flex;align-items:center;min-height:44px}}
+/* Mobile overview keeps the whole project photograph inside one shared frame. */
+@media(max-width:700px){
+body.project-page .project-cover picture.mobile-overview,.catalog-page .portfolio-card-image{display:flex;align-items:center;justify-content:center;width:min(calc(100vw - 48px),320px);height:min(calc((100vw - 48px)/2),160px);aspect-ratio:2;margin-inline:auto}
+.catalog-page .portfolio-card-image picture.mobile-overview{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+body.project-page .project-cover picture.mobile-overview>img,.catalog-page .portfolio-card-image picture.mobile-overview>img{display:block;width:auto;height:100%;max-width:100%;aspect-ratio:auto;object-fit:contain;object-position:center;transform:none}
+}

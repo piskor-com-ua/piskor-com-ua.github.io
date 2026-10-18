@@ -6,6 +6,7 @@ permalink: /robots.txt
 # Indexing policy is controlled by indexing_enabled in _config.yml.
 User-agent: *
 Allow: /
+Content-Signal: {{ site.ai_content_signals }}
 {% if site.indexing_enabled == true %}
 Sitemap: {{ '/sitemap.xml' | absolute_url }}
 {% endif %}

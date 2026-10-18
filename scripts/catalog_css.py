@@ -8,6 +8,28 @@ import tinycss2
 
 
 WORDS = re.compile(r'[\w-]+', re.UNICODE)
+CLASS_MUTATION = re.compile(r'\.classList\.(add|remove|toggle|replace)\s*\(\s*')
+
+
+def safe_class_mutations(script):
+    """Literal names and literal hyphen prefixes are the bounded supported cases.
+
+    An arbitrary expression cannot be inferred from script words. Retain the
+    complete stylesheet rather than silently removing one of its runtime states.
+    """
+    for mutation in CLASS_MUTATION.finditer(script):
+        argument = script[mutation.end():]
+        if mutation[1] != 'toggle':
+            # add/remove may take several class names; replace takes two. Do not
+            # mistake a literal first argument for proof about later arguments.
+            name = r'''(?:"[\w-]+"|'[\w-]+')'''
+            if not re.match(name + r'(?:\s*,\s*' + name + r')*\s*\)', argument):
+                return False
+            continue
+        literal = re.match(r'''(["'])([\w-]+)\1\s*([,+)])''', argument)
+        if not literal or literal[3] == '+' and not literal[2].endswith('-'):
+            return False
+    return True
 
 
 class CatalogTokens(HTMLParser):
@@ -40,8 +62,8 @@ def catalog_classes(output, pages):
 
     Keep all script words as possible dynamic classes. Escaped script words
     cannot be proven absent, so fall back to the full stylesheet for those.
-    Controllers must keep dynamic class names literal rather than assembling
-    them from fragments; new controllers need the same review as new styles.
+    Literal names and literal hyphen prefixes are supported. Arbitrary classList
+    expressions retain full CSS; new controllers need the same review as styles.
     """
     output = Path(output).resolve()
     classes = set()
@@ -61,7 +83,7 @@ def catalog_classes(output, pages):
                 return None
             scripts.append(path.read_text())
         for script in scripts:
-            if re.search(r'\\(?:u|x)', script):
+            if re.search(r'\\(?:u|x)', script) or not safe_class_mutations(script):
                 return None
             classes.update(WORDS.findall(script))
     return classes
@@ -88,7 +110,9 @@ def _possible(tokens, classes):
     required = {tokens[index + 1].value for index, token in enumerate(tokens[:-1])
                 if token.type == 'literal' and token.value == '.'
                 and tokens[index + 1].type == 'ident'}
-    return required.issubset(classes)
+    prefixes = {name for name in classes if name.endswith('-')}
+    return all(name in classes or any(name.startswith(prefix) for prefix in prefixes)
+               for name in required)
 
 
 def prune_catalog_css(css, classes):

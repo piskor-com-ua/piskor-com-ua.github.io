@@ -18,7 +18,7 @@ description: Цієї сторінки немає. Перейдіть до пр�
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="preload" href="/assets/roboto-light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/roboto-light.woff2" as="font" type="font/woff2" crossorigin media="(min-width: 701px)">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/not-found.css">
 </head>
@@ -61,7 +61,7 @@ description: Цієї сторінки немає. Перейдіть до пр�
       </div>
     </nav>
   </main>
-  <footer class="footer error-footer">
+  <footer class="footer error-footer" id="contact">
     <span>© {{ site.time | date: '%Y' }} PISKOR Architect</span>
     <a href="tel:+380974781005">+380 97 478 10 05 <span aria-hidden="true">↗</span></a>
   </footer>

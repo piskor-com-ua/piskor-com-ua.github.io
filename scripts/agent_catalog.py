@@ -92,7 +92,10 @@ def generate_agent_catalog(output):
              '## Navigation', '',
              '- [Портфоліо](https://piskor.com.ua/portfolio/)',
              '- [Portfolio](https://piskor.com.ua/en/portfolio/)',
-             '- [Контакти / Contact](https://piskor.com.ua/#contact)', '']
+             '- [Контакти / Contact](https://piskor.com.ua/#contact)', '',
+             '## Agent skills', '',
+             '- [Agent Skills discovery index](https://piskor.com.ua/.well-known/agent-skills/index.json)',
+             '- [Portfolio browsing guide](https://piskor.com.ua/agent-skills/piskor-portfolio/SKILL.md)', '']
     for language, heading in [('uk', 'Проєкти українською'), ('en', 'Projects in English')]:
         lines += ['## ' + heading, '']
         lines += ['- [' + p['name'].replace('[', '').replace(']', '') + '](https://piskor.com.ua' + p['url'] + '): ' + p['label']

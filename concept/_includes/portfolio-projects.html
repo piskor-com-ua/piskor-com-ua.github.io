@@ -1,4 +1,9 @@
 {%- assign localized_projects = site.projects | where: 'lang', page.lang -%}
-{%- assign dated_projects = localized_projects | where_exp: 'project', 'project.project_year != nil' | sort: 'project_id' | sort: 'project_year' | reverse -%}
+{%- assign dated_groups = localized_projects | where_exp: 'project', 'project.project_year != nil' | group_by: 'project_year' | sort: 'name' | reverse -%}
+{%- assign dated_projects = '' | split: ',' -%}
+{%- for year_group in dated_groups -%}
+  {%- assign year_projects = year_group.items | sort: 'project_id' | reverse -%}
+  {%- assign dated_projects = dated_projects | concat: year_projects -%}
+{%- endfor -%}
 {%- assign undated_projects = localized_projects | where_exp: 'project', 'project.project_year == nil' | sort: 'project_id' -%}
 {%- assign projects = dated_projects | concat: undated_projects -%}

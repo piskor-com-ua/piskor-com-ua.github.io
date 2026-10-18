@@ -22,8 +22,17 @@ def optimize_assets(output):
              if p.is_file() and p.suffix in TEXT_SUFFIXES}
     referenced = {m['asset'] for text in texts.values()
                   for m in ASSET_URL.finditer(text)}
-    candidates = sorted(p for p in assets.rglob('*')
-                        if p.is_file() and p.suffix in MEDIA_SUFFIXES)
+    # New picture derivatives must not displace an already published card URL:
+    # cached HTML can still request that URL after this deployment.
+    def canonical_order(path):
+        relative = path.relative_to(output).as_posix()
+        # New mobile cover profiles must also come after the existing gallery
+        # derivatives, preserving their URLs when bytes happen to be identical.
+        family = (2 if relative.startswith('assets/responsive/case-cover/') else
+                  1 if relative.startswith(('assets/responsive/case-media/', 'assets/responsive/home-media/')) else 0)
+        return family, relative
+    candidates = sorted((p for p in assets.rglob('*')
+                         if p.is_file() and p.suffix in MEDIA_SUFFIXES), key=canonical_order)
     # Fail before removing anything if the artifact already has broken media URLs.
     for reference in referenced:
         target = output / reference
@@ -33,7 +42,18 @@ def optimize_assets(output):
         if path.is_symlink() or not path.resolve().is_relative_to(assets):
             raise ValueError(f'Unsafe generated asset: {path}')
 
+    # A first catalog card can switch to a compact profile while month-cached
+    # HTML still requests its original AVIF. Keep the generated legacy family,
+    # even when unreferenced or byte-identical to another current image. Do not
+    # add these paths to `referenced`: unused names must not become new dedup
+    # canonical URLs and displace a previously referenced path.
+    legacy_avif = {p for p in candidates if p.suffix == '.avif'
+                   and p.relative_to(output).as_posix().startswith('assets/responsive/')
+                   and not p.relative_to(output).as_posix().startswith((
+                       'assets/responsive/case-media/', 'assets/responsive/home-media/',
+                       'assets/responsive/case-cover/'))}
     unused = [p for p in candidates if p.relative_to(output).as_posix() not in referenced
+              and p not in legacy_avif
               and p.name not in {'roboto-light.ttf', 'roboto-regular.ttf',
                                  'roboto-light.woff2', 'roboto-regular.woff2'}]
     aliases, fingerprints = {}, {}
@@ -53,7 +73,8 @@ def optimize_assets(output):
         if rewritten != text:
             path.write_text(rewritten)
 
-    removed = unused + [output / reference for reference in aliases]
+    removed_aliases = [output / reference for reference in aliases if output / reference not in legacy_avif]
+    removed = unused + removed_aliases
     saved_bytes = sum(p.stat().st_size for p in removed)
     for path in removed:
         path.unlink()
@@ -62,4 +83,4 @@ def optimize_assets(output):
         for match in ASSET_URL.finditer(path.read_text()):
             if not (output / match['asset']).is_file():
                 raise ValueError(f'Broken optimized media URL in {path}: {match[0]}')
-    return {'unused': len(unused), 'duplicates': len(aliases), 'saved_bytes': saved_bytes}
+    return {'unused': len(unused), 'duplicates': len(removed_aliases), 'saved_bytes': saved_bytes}

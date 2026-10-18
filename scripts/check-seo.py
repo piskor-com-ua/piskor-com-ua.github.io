@@ -6,6 +6,9 @@ import json
 import re
 import xml.etree.ElementTree as ET
 from urllib.robotparser import RobotFileParser
+from compatibility_pages import COMPATIBILITY_ROUTES, validate_compatibility_pages
+
+validate_compatibility_pages('_site', markdown_alternatives=True)
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -36,8 +39,10 @@ for route, lang in routes.items():
     page = Page((Path('_site') / route.lstrip('/') / 'index.html').read_text())
     assert len(page.titles) == 1
     title = page.titles[0]
-    assert title not in titles and not any(word in title.lower() for word in ['concept', 'концепт'])
-    titles.add(title)
+    assert not any(word in title.lower() for word in ['concept', 'концепт'])
+    if route not in COMPATIBILITY_ROUTES:
+        assert title not in titles
+        titles.add(title)
     assert next(a['lang'] for t, a in page.tags if t == 'html') == lang
     meta = {a.get('name', a.get('property')): a.get('content') for t, a in page.tags if t == 'meta'}
     assert meta['description'] and meta['og:title'] == title and meta['twitter:title'] == title
@@ -45,7 +50,7 @@ for route, lang in routes.items():
     links = [a for t, a in page.tags if t == 'link']
     canonical = [a['href'] for a in links if a.get('rel') == 'canonical']
     refresh = [a['content'] for t, a in page.tags if t == 'meta' and a.get('http-equiv') == 'refresh']
-    canonical_route = route
+    canonical_route = COMPATIBILITY_ROUTES.get(route, route)
     if refresh:
         assert len(refresh) == 1 and refresh[0].startswith('0;url=/'), route
         canonical_route = refresh[0].removeprefix('0;url=')

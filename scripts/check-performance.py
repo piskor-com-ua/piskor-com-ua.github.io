@@ -6,6 +6,18 @@ import json
 import re
 from PIL import Image
 from agent_catalog import Document
+from first_paint import (HOME_INLINE_PAGES, HOME_INLINE_MARKER, PAGE_INLINE_MARKER,
+                         page_critical_profile, validate_home_inline_scripts, validate_page_inline_scripts)
+
+
+def card_label_text(node):
+    """Keep real text-node boundaries; Node.text() invents spaces between tags."""
+    if isinstance(node, str):
+        return node
+    if node.tag in {'script', 'style'} or 'hidden' in node.attrs or node.attrs.get('aria-hidden') == 'true':
+        return ''
+    return ''.join(card_label_text(child) for child in node.children)
+
 
 output = Path('_site')
 catalog = json.loads((output / 'project-catalog.json').read_text())
@@ -24,10 +36,35 @@ assert all(languages == {'uk', 'en'} for languages in pairs.values())
 assert (output / 'llms.txt').read_text().startswith('# PISKOR Architect\n')
 assert all('https://piskor.com.ua' + p['url'] in (output / 'llms.txt').read_text() for p in catalog['projects'])
 
+expected_catalog_orders = {}
+for language, prefix in [('uk', ''), ('en', 'en/')]:
+    localized = [project for project in catalog['projects'] if project['language'] == language]
+    # Sort a composite unique key; never depend on a second sort preserving ties.
+    ordered = sorted(localized, key=lambda project: (project['year'], project['id']), reverse=True)
+    expected_catalog_orders[prefix + 'portfolio/index.html'] = [project['id'] for project in ordered]
+    for year in {project['year'] for project in ordered}:
+        expected_catalog_orders[prefix + 'portfolio/' + str(year) + '/index.html'] = [
+            project['id'] for project in ordered if project['year'] == year]
+checked_catalog_orders = set()
+
 cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
-    agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
+    external_agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
+    inline_controllers = root.find(lambda n: n.tag == 'script' and (HOME_INLINE_MARKER in n.attrs or PAGE_INLINE_MARKER in n.attrs))
+    inline_agents = [node for node in inline_controllers if node.attrs.get(HOME_INLINE_MARKER, node.attrs.get(PAGE_INLINE_MARKER)) == 'agent-tools.js']
+    if page.relative_to(output).as_posix() in HOME_INLINE_PAGES:
+        validate_home_inline_scripts(output, page.read_text())
+        assert all(HOME_INLINE_MARKER in node.attrs for node in inline_controllers), str(page) + ': wrong home inline marker'
+        assert not external_agents and len(inline_agents) == 1, str(page) + ': home agent execution coverage'
+    elif page_critical_profile(output, page, page.read_text()):
+        validate_page_inline_scripts(output, page, page.read_text())
+        assert all(PAGE_INLINE_MARKER in node.attrs for node in inline_controllers), str(page) + ': wrong page inline marker'
+        assert not external_agents and len(inline_agents) == 1, str(page) + ': page agent execution coverage'
+    else:
+        assert not inline_controllers, str(page) + ': unmeasured page must retain external controllers'
+        assert len(external_agents) <= 1, str(page) + ': duplicate external agent controller'
+    agents = external_agents + inline_agents
     for rel, href in [('ard', '/.well-known/ard.json'), ('ai-catalog', '/.well-known/ai-catalog.json')]:
         discovery = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == rel)
         assert len(discovery) == (1 if agents else 0), str(page) + ': discovery coverage'
@@ -36,6 +73,8 @@ for page in output.rglob('*.html'):
     early = root.find(lambda n: n.tag == 'script' and 'data-consent-inline' in n.attrs)
     assert len(early) == 1, str(page) + ': missing early consent controller'
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
+    font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
+    assert all(n.attrs.get('media') == '(min-width: 701px)' for n in font_preloads), str(page) + ': mobile must use its native font stack without a webfont preload'
     images = root.find(lambda n: n.tag == 'img' and n.attrs.get('src', '').startswith('/assets/'))
     for image in images:
         attrs = image.attrs
@@ -57,13 +96,19 @@ for page in output.rglob('*.html'):
             assert attrs.get('loading') != 'lazy', str(page) + ': lazy LCP image'
     page_cards = root.find(lambda n: n.has_class('portfolio-card-cover'))
     if page_cards:
+        relative = page.relative_to(output).as_posix()
+        assert relative in expected_catalog_orders, str(page) + ': unexpected catalog route'
+        ordered_links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
+        assert [card.attrs.get('data-project-id') for card in ordered_links] == expected_catalog_orders[relative], str(page) + ': catalog must sort year DESC, project_id DESC'
+        checked_catalog_orders.add(relative)
         assert page_cards[0].attrs.get('loading') == 'eager'
         assert page_cards[0].attrs.get('fetchpriority') == 'high'
         assert all(c.attrs.get('loading') == 'lazy' for c in page_cards[1:])
         links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
         for card in links:
             heading = card.find(lambda n: n.tag == 'h3')
-            assert len(heading) == 1 and card.attrs.get('aria-label') == heading[0].text(), str(page) + ': card accessible name'
+            label = ' '.join(card_label_text(card).split())
+            assert len(heading) == 1 and card.attrs.get('aria-label') == label, str(page) + ': card accessible name must match its real text-node boundaries'
         sheets = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'stylesheet')
         assert not sheets, str(page) + ': render-blocking catalog stylesheet'
         styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)
@@ -89,15 +134,21 @@ for page in output.rglob('*.html'):
             assert sources[0].attrs.get('media') == '(max-width: 700px)'
             assert sources[0].attrs.get('sizes') == fallback.attrs['sizes']
             alternatives = sources[0].attrs['srcset'].split(',')
-            assert len(alternatives) == len(fallback.attrs['srcset'].split(','))
-            for entry, webp in zip(alternatives, fallback.attrs['srcset'].split(',')):
+            webp_candidates = []
+            for webp in fallback.attrs['srcset'].split(','):
+                with Image.open(output / urlsplit(webp.strip().split()[0]).path.lstrip('/')) as original:
+                    webp_candidates.append(original.size)
+            native_width, native_height = max(webp_candidates)
+            descriptors = set()
+            for entry in alternatives:
                 reference, descriptor = entry.strip().split()
-                assert descriptor == webp.strip().split()[1]
+                assert descriptor not in descriptors, str(page) + ': repeated AVIF candidate'
+                descriptors.add(descriptor)
                 target = output / urlsplit(reference).path.lstrip('/')
-                webp_path = output / urlsplit(webp.strip().split()[0]).path.lstrip('/')
-                with Image.open(target) as opened, Image.open(webp_path) as original:
+                with Image.open(target) as opened:
                     assert opened.format == 'AVIF' and descriptor == str(opened.width) + 'w'
-                    assert opened.size == original.size, str(page) + ': format geometry differs'
+                    assert opened.width <= native_width, str(page) + ': upscaled overview'
+                    assert abs(opened.height - round(native_height * opened.width / native_width)) <= 1, str(page) + ': overview must retain its full source frame'
                 assert parse_qs(urlsplit(reference).query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]]
     for node in root.find(lambda n: n.tag in {'img', 'script', 'link', 'button', 'video', 'source'}):
         for key in ['src', 'href', 'data-full', 'poster']:
@@ -108,6 +159,8 @@ for page in output.rglob('*.html'):
             target = output / url.path.lstrip('/')
             if target.is_file() and target.suffix in {'.webp', '.avif', '.png', '.svg', '.ico', '.woff2', '.mp4', '.css', '.js'}:
                 assert parse_qs(url.query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]], value
+
+assert checked_catalog_orders == set(expected_catalog_orders), 'Missing UA/EN full or year catalog order verification'
 
 css = (output / 'style.css').read_text()
 background = re.search(r'\.contact\{background:(#[a-f0-9]{6});', css)[1]

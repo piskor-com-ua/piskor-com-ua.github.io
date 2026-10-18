@@ -22,9 +22,10 @@
 <link rel="stylesheet" href="/analytics-consent.css">
 <script src="/analytics-consent.js" data-measurement-id="{{ site.google_analytics_id }}" defer></script>
 
-{% unless page.not_found or page.redirect_to %}
+{% unless page.redirect_to %}
 {% if site.webmcp_origin_trial_token and site.webmcp_origin_trial_token != empty %}<meta http-equiv="origin-trial" content="{{ site.webmcp_origin_trial_token | escape }}">{% endif %}
 <link rel="ard" href="/.well-known/ard.json">
 <link rel="ai-catalog" href="/.well-known/ai-catalog.json">
+<link rel="agent-skills" type="application/json" href="/.well-known/agent-skills/index.json">
 <script src="/agent-tools.js" defer></script>
 {% endunless %}

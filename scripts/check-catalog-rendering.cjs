@@ -4,6 +4,7 @@ const { mkdirSync } = require('node:fs');
 async function assertNamedCardLinks(page, label) {
   // DOM text/backend IDs do not measure or reveal offscreen descendants.
   const titles = await page.locator('.catalog-projects a.portfolio-card h3').allTextContents();
+  const labels = await page.locator('.catalog-projects a.portfolio-card').evaluateAll(cards => cards.map(card => card.getAttribute('aria-label')));
   const cdp = await page.context().newCDPSession(page);
   try {
     const { root } = await cdp.send('DOM.getDocument', { depth: 0 });
@@ -16,7 +17,8 @@ async function assertNamedCardLinks(page, label) {
     for (let index = 0; index < descriptions.length; index++) {
       const node = accessible.get(descriptions[index].node.backendNodeId);
       assert.equal(node?.role?.value, 'link', label + ': card absent from native AX: ' + titles[index]);
-      assert.equal(normalize(node?.name?.value || ''), normalize(titles[index]), label + ': native AX card name differs from heading');
+      assert.ok(normalize(labels[index] || '').includes(normalize(titles[index])), label + ': card label omits heading');
+      assert.equal(normalize(node?.name?.value || ''), normalize(labels[index] || ''), label + ': native AX card name differs from complete visible label');
     }
     return descriptions.length;
   } finally {
@@ -53,7 +55,9 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
           const heading = card.querySelector('h3');
           const box = card.getBoundingClientRect(), cover = image.getBoundingClientRect(), title = heading.getBoundingClientRect();
           const imageContainer = image.closest('.portfolio-card-image');
-          const frame = imageContainer.getBoundingClientRect(), frameStyle = getComputedStyle(imageContainer);
+          const frame = imageContainer.getBoundingClientRect(), frameStyle = getComputedStyle(imageContainer), imageStyle = getComputedStyle(image);
+          const compact = innerWidth <= 700 && !!image.closest('picture.mobile-overview');
+          const expectedWidth = Math.min(innerWidth - 48, 320);
           // The existing hover treatment scales the bitmap inside an overflow
           // clip. Test its painted bounds, not the intentionally larger bitmap.
           const clipX = ['hidden', 'clip'].includes(frameStyle.overflowX);
@@ -64,11 +68,15 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
             cover: cover.width > 0 && cover.height > 0, title: title.width > 0 && title.height > 0,
             horizontal: box.left >= -.5 && box.right <= innerWidth + .5,
             containsImage: paintedLeft >= box.left - 1 && paintedRight <= box.right + 1,
-            fillsImageFrame: cover.left <= frame.left + 1 && cover.right >= frame.right - 1 && cover.top <= frame.top + 1 && cover.bottom >= frame.bottom - 1,
+            correctImageFraming: compact
+              ? imageStyle.objectFit === 'contain' && imageStyle.transform === 'none'
+                && Math.abs(frame.width - expectedWidth) <= 1 && Math.abs(frame.height - expectedWidth / 2) <= 1
+                && cover.left >= frame.left - 1 && cover.right <= frame.right + 1 && cover.top >= frame.top - 1 && cover.bottom <= frame.bottom + 1
+              : cover.left <= frame.left + 1 && cover.right >= frame.right - 1 && cover.top <= frame.top + 1 && cover.bottom >= frame.bottom - 1,
             containsTitle: title.left >= box.left - 1 && title.right <= box.right + 1,
             details: { card: box.toJSON(), image: cover.toJSON(), title: title.toJSON(),
               imageContainer: frame.toJSON(), overflowX: frameStyle.overflowX,
-              transform: getComputedStyle(image).transform, hover: card.matches(':hover'),
+              objectFit: imageStyle.objectFit, transform: imageStyle.transform, hover: card.matches(':hover'),
               project: card.dataset.projectId } };
         });
         for (const [key, value] of Object.entries(geometry)) if (key !== 'details') assert.ok(value, label + ': revealed card ' + key + ' ' + JSON.stringify(geometry.details));
@@ -160,11 +168,29 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
         // DOM order/count alone does not force rendering of skipped descendants.
         for (let index = 0; index < count; index++) await reveal(articles.nth(index));
 
+        // Axe's visible-text extraction joins actual text nodes, unlike the
+        // static document helper. Run only after fresh AX/focus checks and the
+        // card walk: its layout queries must not hide a skipped-content bug.
+        await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
+        const labelAudit = await page.evaluate(async () => {
+          const result = await axe.run('.catalog-projects', {
+            runOnly: { type: 'rule', values: ['label-content-name-mismatch'] },
+          });
+          return {
+            violations: result.violations.flatMap(rule => rule.nodes.map(node => ({ target: node.target, summary: node.failureSummary }))),
+            incomplete: result.incomplete.flatMap(rule => rule.nodes.map(node => node.target)),
+            passed: result.passes.reduce((total, rule) => total + rule.nodes.length, 0),
+          };
+        });
+        assert.deepEqual(labelAudit.violations, [], label + ': visible labels differ from accessible names');
+        assert.deepEqual(labelAudit.incomplete, [], label + ': label audit incomplete');
+        assert.equal(labelAudit.passed, count, label + ': label audit must exercise every card');
+
         await page.emulateMedia({ media: 'print' });
         const printVisibility = await cards.evaluateAll(elements => elements.map(element => getComputedStyle(element).contentVisibility));
         assert.ok(printVisibility.every(value => value === 'visible'), label + ': print skips catalog content');
         assert.deepEqual(errors, [], label + ': browser errors');
-        results.push({ route, width, cards: count, accessibleCards, yearAnchors: anchors.length, firstVisitConsent: true, keyboardFocus: true, print: true });
+        results.push({ route, width, cards: count, accessibleCards, labelAudit, yearAnchors: anchors.length, firstVisitConsent: true, keyboardFocus: true, print: true });
       } catch (error) {
         await page.screenshot({ path: output + '/catalog-failure-' + label + '.jpg', type: 'jpeg' }).catch(() => {});
         throw new Error(label + ': ' + error.message, { cause: error });

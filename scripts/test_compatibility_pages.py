@@ -9,6 +9,7 @@ import unittest
 from agent_content import generate_agent_content, markdown_path
 from compatibility_pages import (COMPATIBILITY_ROUTES, ORIGIN, prepare_compatibility_pages,
                                  validate_compatibility_pages)
+from first_paint import inline_page_critical_scripts
 
 
 class CompatibilityPagesTests(unittest.TestCase):
@@ -70,6 +71,32 @@ class CompatibilityPagesTests(unittest.TestCase):
         self.assertEqual((self.root / 'project-catalog.json').read_bytes(), catalog)
         self.assertEqual({path.relative_to(self.root) for path in self.root.rglob('*.html')}, files)
         self.assertEqual(prepare_compatibility_pages(self.root), 2)  # Same prepared bytes are idempotent.
+
+    def test_exact_inline_controllers_are_preserved_and_tampering_aborts_all_copies(self):
+        for name in ('agent-tools.js', 'portfolio.js'):
+            (self.root / name).write_bytes((Path('concept') / name).read_bytes())
+        for route in self.originals:
+            html = self.path(route).read_text()
+            digest = hashlib.sha256((self.root / 'agent-tools.js').read_bytes()).hexdigest()[:12]
+            portfolio_digest = hashlib.sha256((self.root / 'portfolio.js').read_bytes()).hexdigest()[:12]
+            html = html.replace('/agent-tools.js?v=prepared', '/agent-tools.js?v=' + digest)
+            html = html.replace('<script src="/url-compat.js',
+                                '<script src="/portfolio.js?v=' + portfolio_digest + '" defer></script><script src="/url-compat.js')
+            self.path(route).write_text(html)
+        self.assertEqual(inline_page_critical_scripts(self.root), 2)
+        aliases = {route: self.path(route).read_bytes() for route in COMPATIBILITY_ROUTES}
+        english = next(route for route in self.originals if route.startswith('/en/'))
+        original = self.path(english).read_text()
+        self.path(english).write_text(original.replace('data-source-sha256="', 'data-source-sha256="wrong', 1))
+        with self.assertRaises(ValueError):
+            prepare_compatibility_pages(self.root)
+        self.assertEqual({route: self.path(route).read_bytes() for route in aliases}, aliases)
+        self.path(english).write_text(original)
+        self.assertEqual(prepare_compatibility_pages(self.root), 2)
+        self.assertEqual(validate_compatibility_pages(self.root), 2)
+        for alias, target in COMPATIBILITY_ROUTES.items():
+            self.assertEqual(self.path(alias).read_bytes(), self.path(target).read_bytes())
+            self.assertIn('data-inline-page-critical="agent-tools.js"', self.path(alias).read_text())
 
     def test_per_route_markdown_is_the_only_allowed_final_html_difference(self):
         prepare_compatibility_pages(self.root)

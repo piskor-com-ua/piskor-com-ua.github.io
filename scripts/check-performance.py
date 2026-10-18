@@ -6,7 +6,8 @@ import json
 import re
 from PIL import Image
 from agent_catalog import Document
-from first_paint import HOME_INLINE_PAGES, HOME_INLINE_MARKER, validate_home_inline_scripts
+from first_paint import (HOME_INLINE_PAGES, HOME_INLINE_MARKER, PAGE_INLINE_MARKER,
+                         page_critical_profile, validate_home_inline_scripts, validate_page_inline_scripts)
 
 
 def card_label_text(node):
@@ -50,11 +51,16 @@ cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
     external_agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
-    inline_controllers = root.find(lambda n: n.tag == 'script' and HOME_INLINE_MARKER in n.attrs)
-    inline_agents = [node for node in inline_controllers if node.attrs[HOME_INLINE_MARKER] == 'agent-tools.js']
+    inline_controllers = root.find(lambda n: n.tag == 'script' and (HOME_INLINE_MARKER in n.attrs or PAGE_INLINE_MARKER in n.attrs))
+    inline_agents = [node for node in inline_controllers if node.attrs.get(HOME_INLINE_MARKER, node.attrs.get(PAGE_INLINE_MARKER)) == 'agent-tools.js']
     if page.relative_to(output).as_posix() in HOME_INLINE_PAGES:
         validate_home_inline_scripts(output, page.read_text())
+        assert all(HOME_INLINE_MARKER in node.attrs for node in inline_controllers), str(page) + ': wrong home inline marker'
         assert not external_agents and len(inline_agents) == 1, str(page) + ': home agent execution coverage'
+    elif page_critical_profile(output, page, page.read_text()):
+        validate_page_inline_scripts(output, page, page.read_text())
+        assert all(PAGE_INLINE_MARKER in node.attrs for node in inline_controllers), str(page) + ': wrong page inline marker'
+        assert not external_agents and len(inline_agents) == 1, str(page) + ': page agent execution coverage'
     else:
         assert not inline_controllers, str(page) + ': unmeasured page must retain external controllers'
         assert len(external_agents) <= 1, str(page) + ': duplicate external agent controller'

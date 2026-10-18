@@ -8,7 +8,7 @@ from fingerprint_resources import fingerprint_resources
 from agent_catalog import generate_agent_catalog
 from agent_discovery import generate_agent_discovery, SKILL_PATH, MANIFEST_PATHS
 from optimize_assets import optimize_assets
-from first_paint import inline_consent, subset_fonts, inline_catalog_styles, inline_page_styles, inline_home_critical_scripts
+from first_paint import inline_consent, subset_fonts, inline_catalog_styles, inline_page_styles, inline_critical_scripts
 from agent_content import generate_agent_content, MARKDOWN_ROOT, POPPY_PATH
 from agent_api import generate_agent_api, API_PATHS, API_CATALOG_PATH, API_DOC_PATH
 from compatibility_pages import prepare_compatibility_pages
@@ -33,7 +33,7 @@ print(f"Optimized media: {optimization['unused']} unused files, "
       f"{optimization['duplicates']} exact duplicates removed; "
       f"{optimization['saved_bytes']:,} bytes saved")
 print(f'Versioned {fingerprint_resources(out)} media/font resources')
-print(f'Inline home critical scripts: {inline_home_critical_scripts(out)} pages')
+print(f'Inline critical scripts: {inline_critical_scripts(out)}')
 print(f'Inline catalog styles: {inline_catalog_styles(out)} pages')
 print(f'Inline page styles: {inline_page_styles(out)} stylesheets')
 print(f'Canonical compatibility copies: {prepare_compatibility_pages(out)} pages')

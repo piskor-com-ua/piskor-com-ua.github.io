@@ -196,10 +196,10 @@ HOME_INLINE_MARKER = 'data-inline-home-critical'
 HOME_EXTERNAL_SCRIPT = re.compile(r'<script\b(?P<attrs>[^>]*)>\s*</script\s*>', re.I)
 
 
-def _home_critical_payload(output):
+def _critical_payload(output, names, marker):
     """Exact shared sources, without defer/currentScript timing assumptions."""
     sources, payload = {}, []
-    for name in HOME_CRITICAL_SCRIPTS:
+    for name in names:
         source = (output / name).read_bytes().decode('utf-8')
         if re.search(r'</script\b', source, re.I):
             raise ValueError('Home controller contains an HTML script terminator: ' + name)
@@ -210,11 +210,15 @@ def _home_critical_payload(output):
         # Inline classic scripts ignore defer. DOM-ready callbacks preserve the
         # original source order, an interactive complete DOM, and before-load
         # registration of native tools and compatibility/hash listeners.
-        payload.append('<script ' + HOME_INLINE_MARKER + '="' + name
+        payload.append('<script ' + marker + '="' + name
                        + '" data-source-sha256="' + digest + '">\n'
                        + "document.addEventListener('DOMContentLoaded', () => {\n"
                        + source + '\n}, { once: true });\n</script>\n')
     return sources, ''.join(payload)
+
+
+def _home_critical_payload(output):
+    return _critical_payload(output, HOME_CRITICAL_SCRIPTS, HOME_INLINE_MARKER)
 
 
 def validate_home_inline_scripts(output, html):
@@ -240,8 +244,7 @@ def validate_home_inline_scripts(output, html):
     ExternalScripts().feed(html)
 
 
-def inline_home_critical_scripts(output):
-    """Inline only the two measured home routes, keeping all other pages intact."""
+def _plan_home_critical_scripts(output):
     output = generated_root(output)
     sources, payload = _home_critical_payload(output)
     from html.parser import HTMLParser
@@ -291,7 +294,209 @@ def inline_home_critical_scripts(output):
         updated = updated[:index] + payload + updated[index:]
         validate_home_inline_scripts(output, updated)
         plans.append((page, updated))
-    # Validate both routes before changing either one.
+    return plans
+
+
+def inline_home_critical_scripts(output):
+    """Keep the existing home-only API and exact home output contract."""
+    plans = _plan_home_critical_scripts(output)
     for page, updated in plans:
         page.write_bytes(updated.encode('utf-8'))
     return len(plans)
+
+
+PAGE_INLINE_MARKER = 'data-inline-page-critical'
+PAGE_CRITICAL_PROFILES = {
+    'case': ('agent-tools.js', 'portfolio.js'),
+    'catalog': ('agent-tools.js',),
+    'not-found': ('agent-tools.js',),
+}
+
+
+def _page_script_tags(html):
+    """Retain script ancestry: regex offsets cannot prove an active head."""
+    from html.parser import HTMLParser
+
+    class Scripts(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.stack, self.scripts = [], []
+
+        def handle_starttag(self, tag, attrs):
+            if tag == 'script':
+                self.scripts.append((attrs, tuple(name for name, _ in self.stack),
+                                     any(inert for _, inert in self.stack)))
+            if tag not in {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+                           'link', 'meta', 'param', 'source', 'track', 'wbr'}:
+                self.stack.append((tag, 'inert' in dict(attrs)))
+
+        def handle_endtag(self, tag):
+            for index in range(len(self.stack) - 1, -1, -1):
+                if self.stack[index][0] == tag:
+                    del self.stack[index:]
+                    break
+
+    parser = Scripts()
+    parser.feed(html)
+    return parser.scripts
+
+
+def _validate_page_external_scripts(output, html, profile, before_inline=False):
+    """Review every external dependency, including retained defer controllers.
+
+    Moving code to DOM-ready would reverse its execution order relative to any
+    unreviewed external defer/module/classic script. Only these explicit source
+    inventories are safe, in their original order and directly in active head.
+    """
+    critical = PAGE_CRITICAL_PROFILES[profile] if before_inline else ()
+    if profile == 'case':
+        allowed = (critical, critical + ('url-compat.js',))
+    elif profile == 'not-found':
+        allowed = (('not-found.js',) + critical,)
+    else:
+        allowed = (critical,)
+    ordered = []
+    for attributes, ancestry, inert in _page_script_tags(html):
+        attrs = dict(attributes)
+        if 'src' not in attrs:
+            continue
+        reference = urlsplit(unescape(attrs['src']))
+        name = reference.path.lstrip('/')
+        if (name not in {name for inventory in allowed for name in inventory}
+                or reference.scheme or reference.netloc or reference.path != '/' + name
+                or set(attrs) != {'src', 'defer'} or len(attributes) != 2
+                or ancestry != ('html', 'head') or inert):
+            raise ValueError('Unsupported page external dependency/context: ' + attrs['src'])
+        source = output / name
+        if not source.is_file():
+            raise ValueError('Missing retained page controller: ' + name)
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()[:12]
+        if reference.query != 'v=' + digest or reference.fragment:
+            raise ValueError('Page external controller URL does not match its source hash: ' + name)
+        ordered.append(name)
+    if tuple(ordered) not in allowed:
+        raise ValueError('Page external dependency coverage/order differs')
+
+
+def page_critical_profile(output, page, html):
+    """Recognize only explicit route/body combinations; aliases stay external."""
+    from html.parser import HTMLParser
+
+    class Body(HTMLParser):
+        classes = set()
+        redirect = False
+
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            if tag == 'body':
+                self.classes = set(attrs.get('class', '').split())
+            if tag == 'meta' and attrs.get('http-equiv', '').lower() == 'refresh':
+                self.redirect = True
+
+    parser = Body()
+    parser.feed(html)
+    if parser.redirect:
+        return None
+    relative = Path(page).relative_to(output).as_posix()
+    if relative == '404.html' and 'not-found-page' in parser.classes:
+        return 'not-found'
+    if ('catalog-page' in parser.classes and 'project-page' in parser.classes
+            and re.fullmatch(r'(?:en/)?portfolio/(?:\d{4}/)?index\.html', relative)):
+        return 'catalog'
+    if ('project-page' in parser.classes and 'catalog-page' not in parser.classes
+            and re.fullmatch(r'(?:en/)?portfolio/\d{4}/[^/]+/index\.html', relative)):
+        return 'case'
+    return None
+
+
+def validate_page_inline_scripts(output, page, html):
+    """Validate exact sources, hash, order, once wrapper and complete-DOM timing."""
+    output = generated_root(output)
+    profile = page_critical_profile(output, page, html)
+    if profile is None:
+        raise ValueError('Unknown page family cannot inline controllers: ' + str(page))
+    names = PAGE_CRITICAL_PROFILES[profile]
+    _, payload = _critical_payload(output, names, PAGE_INLINE_MARKER)
+    actual = re.findall(r'<script\b[^>]*\b' + PAGE_INLINE_MARKER + r'=["\']([^"\']+)["\']', html, re.I)
+    if tuple(actual) != names or HOME_INLINE_MARKER in html:
+        raise ValueError('Page inline controller coverage/order differs')
+    closing = list(re.finditer(r'</body\s*>', html, re.I))
+    if len(closing) != 1 or not html[:closing[0].start()].endswith(payload):
+        raise ValueError('Page inline source/hash/DOM-ready wrapper/body position differs')
+    for attrs, ancestry, inert in _page_script_tags(html):
+        if PAGE_INLINE_MARKER in dict(attrs) and (ancestry != ('html', 'body') or inert):
+            raise ValueError('Page inline controller is not in active body context')
+    _validate_page_external_scripts(output, html, profile)
+
+
+def _plan_page_critical_scripts(output):
+    from html.parser import HTMLParser
+
+    class ScriptAttributes(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            self.attributes = attrs
+
+    output = generated_root(output)
+    plans, cache = [], {}
+    for page in sorted(output.rglob('*.html')):
+        html = page.read_bytes().decode('utf-8')
+        profile = page_critical_profile(output, page, html)
+        if profile is None:
+            if PAGE_INLINE_MARKER in html:
+                raise ValueError('Unknown page family has inline controllers: ' + str(page))
+            continue
+        if PAGE_INLINE_MARKER in html or HOME_INLINE_MARKER in html:
+            raise ValueError('Page controllers already inlined or use the wrong family')
+        _validate_page_external_scripts(output, html, profile, before_inline=True)
+        names = PAGE_CRITICAL_PROFILES[profile]
+        if profile not in cache:
+            cache[profile] = _critical_payload(output, names, PAGE_INLINE_MARKER)
+        sources, payload = cache[profile]
+        body = re.search(r'<body\b', html, re.I)
+        ordered = []
+
+        def remove(match):
+            parser = ScriptAttributes()
+            parser.feed(match[0])
+            attrs = dict(parser.attributes)
+            reference = urlsplit(unescape(attrs.get('src', '')))
+            name = reference.path.lstrip('/')
+            if name not in names:
+                return match[0]
+            if (reference.scheme or reference.netloc or reference.path != '/' + name
+                    or set(attrs) != {'src', 'defer'} or len(parser.attributes) != 2
+                    or body is None or match.start() >= body.start()):
+                raise ValueError('Unsupported page script attributes/location: ' + name)
+            if reference.query != 'v=' + sources[name][1][:12] or reference.fragment:
+                raise ValueError('Page controller URL does not match its source hash: ' + name)
+            ordered.append(name)
+            return ''
+
+        updated = HOME_EXTERNAL_SCRIPT.sub(remove, html)
+        if tuple(ordered) != names:
+            raise ValueError('Expected each deferred page controller once in source order: ' + str(page))
+        closing = list(re.finditer(r'</body\s*>', updated, re.I))
+        if len(closing) != 1:
+            raise ValueError('Expected one page body end: ' + str(page))
+        index = closing[0].start()
+        updated = updated[:index] + payload + updated[index:]
+        validate_page_inline_scripts(output, page, updated)
+        plans.append((page, updated))
+    return plans
+
+
+def inline_page_critical_scripts(output):
+    """Inline known cases/catalogs/404; unknown pages and external assets remain."""
+    plans = _plan_page_critical_scripts(output)
+    for page, updated in plans:
+        page.write_bytes(updated.encode('utf-8'))
+    return len(plans)
+
+
+def inline_critical_scripts(output):
+    """Validate all home and page plans before changing any generated HTML."""
+    homes = _plan_home_critical_scripts(output)
+    pages = _plan_page_critical_scripts(output)
+    for page, updated in homes + pages:
+        page.write_bytes(updated.encode('utf-8'))
+    return {'home': len(homes), 'page': len(pages)}

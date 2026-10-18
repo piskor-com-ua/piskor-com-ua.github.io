@@ -5,6 +5,7 @@ import hashlib
 
 from agent_catalog import Document
 from agent_content import markdown_path
+from first_paint import PAGE_INLINE_MARKER, validate_page_inline_scripts
 
 
 ORIGIN = 'https://piskor.com.ua'
@@ -38,13 +39,19 @@ def _target(output, route):
     canonical = root.find(lambda node: node.tag == 'link' and node.attrs.get('rel') == 'canonical')
     refresh = root.find(lambda node: node.tag == 'meta' and node.attrs.get('http-equiv', '').lower() == 'refresh')
     agents = root.find(lambda node: node.tag == 'script' and urlsplit(node.attrs.get('src', '')).path == '/agent-tools.js')
+    inline = root.find(lambda node: node.tag == 'script' and PAGE_INLINE_MARKER in node.attrs)
+    valid_agents = len(agents) == 1 and not inline
+    if inline:
+        validate_page_inline_scripts(output, _page(output, route), content.decode('utf-8'))
+        valid_agents = not agents and len([node for node in inline
+                                          if node.attrs[PAGE_INLINE_MARKER] == 'agent-tools.js']) == 1
     compatibility = root.find(lambda node: node.tag == 'script' and urlsplit(node.attrs.get('src', '')).path == '/url-compat.js')
     controller = output / 'url-compat.js'
     if not controller.is_file():
         raise ValueError('Compatibility target needs its prepared shared controller: ' + route)
     controller_url = '/url-compat.js?v=' + hashlib.sha256(controller.read_bytes()).hexdigest()[:12]
     if (len(html) != 1 or html[0].attrs.get('lang') != language or len(canonical) != 1
-            or canonical[0].attrs.get('href') != ORIGIN + route or refresh or len(agents) != 1 or len(compatibility) != 1
+            or canonical[0].attrs.get('href') != ORIGIN + route or refresh or not valid_agents or len(compatibility) != 1
             or compatibility[0].attrs.get('src') != controller_url or 'defer' not in compatibility[0].attrs
             or not root.find(lambda node: node.tag == 'main' and node.attrs.get('id') == 'main')
             or not root.find(lambda node: node.attrs.get('id') == 'contact')):

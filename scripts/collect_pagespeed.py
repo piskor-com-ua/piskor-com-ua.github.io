@@ -194,13 +194,13 @@ def public_report_id(report_url):
 
 
 def extract_public_reports(html):
-    """Decode embedded JSON arrays/JSON strings; never evaluate JavaScript."""
+    """Walk embedded JSON and derive modes from reports, never JS or slot indexes."""
     starts = list(re.finditer(r'AF_initDataCallback\s*\(\s*\{', html))
     reports = {}
     decoder = json.JSONDecoder()
     for index, start in enumerate(starts):
         stop = starts[index + 1].start() if index + 1 < len(starts) else len(html)
-        data_match = re.search(r'\bdata\s*:\s*(?=\[)', html[start.end():stop])
+        data_match = re.search(r'\bdata\s*:\s*', html[start.end():stop])
         if not data_match:
             continue
         offset = start.end() + data_match.end()
@@ -208,17 +208,33 @@ def extract_public_reports(html):
             data, _ = decoder.raw_decode(html, offset)
         except json.JSONDecodeError:
             continue
-        for strategy, position in [('mobile', 4), ('desktop', 3)]:
-            try:
-                encoded = data[4][position][9]
-                lhr = json.loads(encoded) if isinstance(encoded, str) else encoded
-            except (IndexError, KeyError, TypeError, json.JSONDecodeError):
-                continue
-            if not isinstance(lhr, dict) or 'audits' not in lhr or 'requestedUrl' not in lhr:
-                continue
-            if strategy in reports and reports[strategy] != lhr:
-                raise ValueError('Ambiguous embedded ' + strategy + ' reports')
-            reports[strategy] = lhr
+        pending = [data]
+        while pending:
+            value = pending.pop()
+            if isinstance(value, dict):
+                if 'audits' not in value or 'requestedUrl' not in value:
+                    pending.extend(value.values())
+                    continue
+                settings = value.get('configSettings')
+                if not isinstance(settings, dict):
+                    raise ValueError('Embedded Lighthouse report has unknown form factor')
+                strategy = settings.get('formFactor', settings.get('emulatedFormFactor'))
+                if strategy not in STRATEGIES:
+                    raise ValueError('Embedded Lighthouse report has unknown form factor')
+                if ('emulatedFormFactor' in settings and settings['emulatedFormFactor'] != strategy):
+                    raise ValueError('Embedded Lighthouse report has conflicting form factors')
+                if strategy in reports and canonical(reports[strategy]) != canonical(value):
+                    raise ValueError('Ambiguous embedded ' + strategy + ' reports')
+                reports[strategy] = value
+            elif isinstance(value, list):
+                pending.extend(value)
+            elif isinstance(value, str) and value.lstrip().startswith(('{', '[', '"')):
+                # PSI can nest serialized JSON inside other JSON strings. Parse
+                # only complete JSON values; script expressions remain inert.
+                try:
+                    pending.append(json.loads(value))
+                except json.JSONDecodeError:
+                    continue
     if not reports:
         raise ValueError('No embedded public PSI Lighthouse reports found')
     return reports

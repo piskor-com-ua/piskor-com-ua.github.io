@@ -3,6 +3,8 @@ indexing_enabled: false
 url: https://piskor.com.ua
 baseurl: ""
 google_analytics_id: G-S3T2GHM4H3
+# Public first-party token from Chrome Origin Trials. Empty until registration completes.
+webmcp_origin_trial_token: ""
 source: concept
 destination: _site
 encoding: utf-8

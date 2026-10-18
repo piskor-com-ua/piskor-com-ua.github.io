@@ -14,6 +14,10 @@ if not (args.artifact / '.nojekyll').is_file():
 
 
 class Preview(SimpleHTTPRequestHandler):
+    # Match normal persistent connections; HTTP/1.0 otherwise adds a fresh
+    # connection to every resource in Lighthouse's network simulation.
+    protocol_version = 'HTTP/1.1'
+
     def __init__(self, *request_args, **kwargs):
         super().__init__(*request_args, directory=str(args.artifact), **kwargs)
 

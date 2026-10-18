@@ -3,6 +3,7 @@ const { spawn } = require('node:child_process');
 const { readFileSync, mkdirSync, writeFileSync } = require('node:fs');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
+const checkCatalogRendering = require('./check-catalog-rendering.cjs');
 
 (async () => {
   const origin = 'http://127.0.0.1:4176';
@@ -17,6 +18,7 @@ const assert = require('node:assert/strict');
       }
     }
     browser = await chromium.launch({ headless: true });
+    const catalogRendering = await checkCatalogRendering(browser, origin);
     const preloadChecks = [];
     for (const [route, width, deviceScaleFactor] of [
       ['/portfolio/', 390, 1], ['/portfolio/', 412, 1.75], ['/en/portfolio/', 390, 2],
@@ -89,7 +91,9 @@ const assert = require('node:assert/strict');
       assert.ok(!scripts.some(url => url.includes('/project-catalog.json')));
       await page.locator('.catalog-years a[href="#year-2025"]').click();
       const card = page.locator('a.portfolio-card[data-project-id="zamartynivska-apartment"]');
-      const cardName = await card.getByRole('heading').innerText();
+      // The link name is available even while CV skips its offscreen heading.
+      const cardName = await card.getAttribute('aria-label');
+      assert.ok(cardName);
       await page.getByRole('link', { name: cardName, exact: true }).click();
       const trigger = page.locator('[data-gallery]').first();
       await trigger.click();
@@ -135,7 +139,7 @@ const assert = require('node:assert/strict');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, preloadChecks, releaseSample, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, catalogRendering, preloadChecks, releaseSample, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
   } catch (error) {
     if (page) {

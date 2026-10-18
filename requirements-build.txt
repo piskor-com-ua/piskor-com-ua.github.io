@@ -1,3 +1,4 @@
 Pillow==12.2.0
 fonttools[woff]==4.67.0
 brotli==1.2.0
+tinycss2==1.5.1

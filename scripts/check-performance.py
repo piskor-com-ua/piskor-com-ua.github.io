@@ -62,8 +62,8 @@ for page in output.rglob('*.html'):
         assert all(c.attrs.get('loading') == 'lazy' for c in page_cards[1:])
         links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
         for card in links:
-            label = card.attrs['aria-labelledby']
-            assert card.find(lambda n: n.tag == 'h3' and n.attrs.get('id') == label)
+            heading = card.find(lambda n: n.tag == 'h3')
+            assert len(heading) == 1 and card.attrs.get('aria-label') == heading[0].text(), str(page) + ': card accessible name'
         sheets = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'stylesheet')
         assert not sheets, str(page) + ': render-blocking catalog stylesheet'
         styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)

@@ -30,6 +30,10 @@ test('shared template renders useful, localized HTML without a browser', () => {
     assert.match(html, /data-lang="en" href="\/en\/" lang="en" hreflang="en"/);
     assert.match(html, new RegExp('data-lang="' + locale + '"[^>]+aria-current="page"'));
     assert.match(html, /class="menu-button" href="#mobile-menu"/);
+    assert.match(html, /aria-label="UA — Українська">UA<\/a>/);
+    assert.match(html, /aria-label="EN — English">EN<\/a>/);
+    assert.doesNotMatch(html, /<button data-service="[^"]*"[^>]*aria-label=/);
+    assert.equal((html.match(/<button data-service="[^"]*" aria-haspopup="dialog">/g) || []).length, 4);
     assert.doesNotMatch(html, /class="menu-button"[^>]+aria-expanded=/);
     assert.match(html, /<main id="main">/);
     assert.match(html, /id="our-approach"/);
@@ -162,4 +166,13 @@ test('story media waits for approach, flushes latest frame, and resets stale loc
   vm.runInContext('resetStoryMedia();storyMediaInitializing=true;pendingStoryImage={key:"model"};activateStoryMedia(true);pendingStoryImage={key:"night"};storyMediaInitializing=false;activateStoryMedia(true)', context);
   assert.deepEqual(shown.at(-1), ['night', false], 'Initial scroll / locale reconciliation must flush only its final frame');
   assert.equal(shown.filter(([key]) => key === 'model').length, 0);
+});
+
+
+test('homepage declares ordered inert controllers and a separate early compatibility script', () => {
+  const html = fs.readFileSync(path.join(source, '_includes/homepage.html'), 'utf8');
+  assert.match(html, /<template id="home-controllers"><script src="\/story\.js"><\/script><script src="\/automation\.js"><\/script><script src="\/app\.js"><\/script><\/template>/);
+  assert.match(html, /<script src="\/home-bootstrap\.js" defer><\/script>/);
+  assert.match(html, /<script src="\/url-compat\.js" defer><\/script>/);
+  assert.match(html, /body:not\(\[data-home-enhanced\]\) \.mobile-menu:target/);
 });

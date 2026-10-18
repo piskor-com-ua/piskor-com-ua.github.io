@@ -447,7 +447,7 @@ def home_hero_crops(output, html, image_path, width, height):
     # horizontal object-position exactly, without fractional-pixel resampling:
     # left + .61*(cropWidth-visibleWidth) == .61*(1536-visibleWidth).
     crops = []
-    for maximum in (480, 700):
+    for maximum in (450, 480, 700):
         minimum = math.ceil(height * maximum / 740)
         removed = ((width - minimum) // 100) * 100
         crop_width = width - removed
@@ -527,7 +527,7 @@ def prepare_public_assets(output):
         return variants, mobile_variants
 
     @lru_cache(maxsize=None)
-    def avif_variants(reference, namespace='case-media', crop=None):
+    def avif_variants(reference, namespace='case-media', crop=None, case_cover=False):
         """Use the largest existing source, preserving every original/full URL.
 
         Keep a separate namespace from catalog covers, whose input can be a
@@ -536,7 +536,8 @@ def prepare_public_assets(output):
         """
         width, height = dimensions(reference)
         target = output / reference.split('?')[0].split('#')[0].lstrip('/')
-        recipe = f'responsive-avif-v1:pillow-{PILLOW_VERSION}:quality-60:speed-6:threads-2'
+        quality = 45 if namespace == 'home-media' and crop else 60
+        recipe = f'responsive-avif-v1:pillow-{PILLOW_VERSION}:quality-{quality}:speed-6:threads-2'
         if crop:
             if not (0 <= crop[0] < crop[2] <= width and 0 <= crop[1] < crop[3] <= height):
                 raise ValueError('Invalid source-pixel crop')
@@ -556,6 +557,11 @@ def prepare_public_assets(output):
         original = None
         # Retain a full-native candidate for high-DPR phones; never upscale.
         widths = ((width,) if crop else (960, 1280, 1440, width)) if namespace == 'home-media' else (640, 960, 1440, 2200, width)
+        if case_cover:
+            # Bridge 640→960 only for LCP covers. The memoized context keeps a
+            # shared gallery image's advertised candidate list unchanged; the
+            # persistent encoding recipe remains identical for existing widths.
+            widths += (768,)
         for size in sorted({min(width, size) for size in widths}):
             wanted = (size, round(height * size / width))
             cached = cache_folder / (digest + '-' + str(size) + '.avif')
@@ -573,11 +579,11 @@ def prepare_public_assets(output):
                         original = ImageOps.exif_transpose(opened).convert('RGB')
                         if crop:
                             original = original.crop(crop)
-                resized = original.resize(wanted, Image.Resampling.LANCZOS)
+                resized = original.copy() if original.size == wanted else original.resize(wanted, Image.Resampling.LANCZOS)
                 with tempfile.NamedTemporaryFile(dir=cache_folder, suffix='.avif', delete=False) as temporary:
                     temporary_path = Path(temporary.name)
                 try:
-                    resized.save(temporary_path, 'AVIF', quality=60, speed=6, max_threads=2)
+                    resized.save(temporary_path, 'AVIF', quality=quality, speed=6, max_threads=2)
                     temporary_path.replace(cached)
                 finally:
                     temporary_path.unlink(missing_ok=True)
@@ -685,7 +691,7 @@ def prepare_public_assets(output):
                                                                          for descriptor, url in legacy.items()))
                 markup = attribute(markup, 'sizes', sizes)
                 namespace = 'home-media' if context == 'home-hero' else 'case-media'
-                variants = avif_variants(largest, namespace)
+                variants = avif_variants(largest, namespace, case_cover=context == 'cover')
                 if native_only:
                     variants = variants[-1:]
                 mobile_srcset = escape(', '.join(url + ' ' + str(w) + 'w'
@@ -698,7 +704,8 @@ def prepare_public_assets(output):
                         crop_sizes = f'max(100vw, clamp({740 * crop_ratio:g}px, {100 * crop_ratio:g}svh, {1000 * crop_ratio:g}px))'
                         crop_variants = avif_variants(largest, namespace, crop)
                         crop_srcset = escape(', '.join(url + ' ' + str(w) + 'w' for url, w in crop_variants), quote=True)
-                        crop_media = '(width <= 480px)' if maximum == 480 else '(480px < width <= 700px)'
+                        crop_media = {450: '(width <= 450px)', 480: '(450px < width <= 480px)',
+                                      700: '(480px < width <= 700px)'}[maximum]
                         sources.append((crop_media, crop_srcset, crop_sizes))
                     sources.append((None, mobile_srcset, sizes))
                 markup = ('<picture>' + ''.join('<source type="image/avif"' + (' media="' + query + '"' if query else '')

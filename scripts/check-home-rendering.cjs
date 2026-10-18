@@ -17,10 +17,11 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           deviceScaleFactor: 1,
         });
         const page = await context.newPage();
-        const errors = [], storyRequests = [];
+        const errors = [], storyRequests = [], controllerRequests = [];
         let initialStoryRequests = null, automationBiodynamic = null;
         page.on('request', request => {
           const pathname = new URL(request.url()).pathname;
+          if (/^\/(?:story|automation|app)\.js$/.test(pathname)) controllerRequests.push(pathname);
           if (/^\/assets\/(?:v2\/|automation\/|(?:interior|house)-concept\.webp)/.test(pathname)) storyRequests.push(pathname);
         });
         page.on('pageerror', error => errors.push(error.message));
@@ -30,17 +31,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
         const oppositePath = opposite === 'uk' ? '/' : '/en/';
         const label = (javascript ? 'enhanced' : 'native') + '-' + locale + '-' + width;
         try {
-          // Pause only the enhancement script in this test, then identify the
-          // parsed heading. Its identity must survive normal script startup.
-          let releaseEnhancement;
-          if (javascript) {
-            const gate = new Promise(resolve => { releaseEnhancement = resolve; });
-            await page.route(/\/app\.js(?:\?|$)/, async request => {
-              await gate;
-              await request.continue();
-            });
-          }
-          const response = await page.goto(origin + route, { waitUntil: javascript ? 'commit' : 'load' });
+          const response = await page.goto(origin + route, { waitUntil: 'load' });
           assert.equal(response.status(), 200, label);
           const source = await response.text();
           assert.match(source, /<h1 id="hero-title">/, label + ': heading must be in delivered HTML');
@@ -48,8 +39,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           await page.locator('#hero-title').waitFor();
           if (javascript) {
             await page.evaluate(() => { window.__parsedHomeHeading = document.querySelector('#hero-title'); });
-            releaseEnhancement();
-            await page.waitForLoadState('load');
+            assert.deepEqual(controllerRequests, [], label + ': inert controller scripts fetched before intent');
             assert.ok(await page.evaluate(() => window.__parsedHomeHeading === document.querySelector('#hero-title')), label + ': first enhancement replaced SSR content');
           }
           assert.equal(await page.locator('html').getAttribute('lang'), locale);
@@ -57,7 +47,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           assert.equal(await page.locator('[data-lang="' + locale + '"]').getAttribute('aria-current'), 'page');
           assert.equal(await page.locator('[data-lang="' + opposite + '"]').getAttribute('href'), oppositePath);
           assert.ok(await page.locator('#hero-title').isVisible());
-          assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), javascript ? 'false' : null);
+          assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), null);
           assert.ok(await page.locator('#architecture-services h2').textContent());
           assert.ok(await page.locator('#contact a[href="tel:+380974781005"]').isVisible());
           assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label + ': horizontal overflow');
@@ -83,6 +73,23 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             const reject = page.getByRole('button', { name: locale === 'uk' ? 'Відхилити аналітику' : 'Reject analytics', exact: true });
             assert.ok(await reject.isVisible(), label + ': first-visit consent hidden');
             await reject.click();
+            assert.deepEqual(controllerRequests, [], label + ': consent action loaded unrelated controllers');
+            // The first relevant click must perform its action after enhancement.
+            if (width === 390) {
+              await page.locator('.menu-button').click();
+              await page.locator('#mobile-menu').waitFor({ state: 'visible' });
+              assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), 'true');
+              await page.locator('.menu-button').click();
+              await page.locator('#mobile-menu').waitFor({ state: 'hidden' });
+            } else {
+              await page.locator('[data-lang="' + opposite + '"]').click();
+              await page.waitForFunction(() => document.body.dataset.homeEnhanced === 'true');
+              assert.equal(await page.locator('html').getAttribute('lang'), opposite, label + ': first language click was lost');
+              assert.equal(new URL(page.url()).pathname, oppositePath);
+              await page.locator('[data-lang="' + locale + '"]').click();
+            }
+            if (width === 390) assert.ok(await page.evaluate(() => window.__parsedHomeHeading === document.querySelector('#hero-title')), label + ': first enhancement replaced SSR content');
+            assert.deepEqual(controllerRequests, ['/story.js', '/automation.js', '/app.js'], label + ': controllers must load once and in dependency order');
             await page.locator('[data-lang="' + opposite + '"]').click();
             assert.equal(new URL(page.url()).pathname, oppositePath);
             assert.equal(await page.locator('html').getAttribute('lang'), opposite);
@@ -165,7 +172,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.ok(await page.locator('#hero-title').isVisible());
           }
           assert.deepEqual(errors, [], label);
-          results.push({ route, locale, width, javascript, media, initialStoryRequests, storyRequests, automationBiodynamic, errors });
+          results.push({ route, locale, width, javascript, media, initialStoryRequests, storyRequests, controllerRequests, automationBiodynamic, errors });
         } catch (error) {
           await page.screenshot({ path: path.join(output, 'home-failure-' + label + '.jpg'), type: 'jpeg' });
           const diagnostics = await page.evaluate(() => {
@@ -223,9 +230,10 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
   for (const locale of ['uk', 'en']) {
     const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
     const page = await context.newPage();
-    const requests = [];
+    const requests = [], controllers = [];
     page.on('request', request => {
       const pathname = new URL(request.url()).pathname;
+      if (/^\/(?:story|automation|app)\.js$/.test(pathname)) controllers.push(pathname);
       if (/^\/assets\/(?:v2\/|automation\/|house-concept\.webp)/.test(pathname)) requests.push(pathname);
     });
     try {
@@ -233,7 +241,44 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
       await page.goto(origin + route);
       await page.locator('.hero-picture img').evaluate(image => image.decode());
       assert.deepEqual(requests, [], locale + ': skipping directly to contacts loaded hidden story media');
-      results.push({ route, locale, width: 390, javascript: true, hashEntry: 'contact', storyRequests: requests });
+      assert.deepEqual(controllers, [], locale + ': contacts unnecessarily loaded story controllers');
+      const initialControllers = [...controllers];
+      await page.evaluate(() => {
+        const bottom = scrollY + document.querySelector('.story').getBoundingClientRect().bottom;
+        window.scrollTo({ top: bottom + 500, behavior: 'instant' });
+      });
+      await page.waitForFunction(() => document.body.dataset.homeEnhanced === 'true');
+      assert.deepEqual(controllers, ['/story.js', '/automation.js', '/app.js'], locale + ': approaching from below must load controllers once');
+      results.push({ route, locale, width: 390, javascript: true, hashEntry: 'contact', initialControllerRequests: initialControllers, controllerRequests: controllers });
+    } finally {
+      await context.close();
+    }
+  }
+  for (const locale of ['uk', 'en']) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+    const page = await context.newPage();
+    let attempts = 0;
+    await page.route(/\/app\.js(?:\?|$)/, async request => {
+      attempts++;
+      if (attempts === 1) await request.abort('failed');
+      else await request.continue();
+    });
+    try {
+      await page.goto(origin + (locale === 'uk' ? '/' : '/en/'));
+      await page.locator('.menu-button').click();
+      await page.locator('#home-interaction-status').waitFor({ state: 'visible' });
+      await page.locator('#mobile-menu').waitFor({ state: 'visible' });
+      assert.equal(new URL(page.url()).hash, '#mobile-menu');
+      assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), null);
+      // The next public click retries the failed controller without reloading
+      // successful classic scripts (whose const declarations cannot run twice).
+      await page.locator('.menu-button').click();
+      await page.waitForFunction(() => document.body.dataset.homeEnhanced === 'true');
+      assert.equal(attempts, 2);
+      assert.equal(await page.locator('#home-interaction-status').count(), 0);
+      assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), 'true');
+      await page.locator('#mobile-menu').waitFor({ state: 'visible' });
+      results.push({ locale, width: 390, javascript: true, failedControllerRetry: true, attempts });
     } finally {
       await context.close();
     }

@@ -4,6 +4,7 @@ const { mkdirSync } = require('node:fs');
 async function assertNamedCardLinks(page, label) {
   // DOM text/backend IDs do not measure or reveal offscreen descendants.
   const titles = await page.locator('.catalog-projects a.portfolio-card h3').allTextContents();
+  const labels = await page.locator('.catalog-projects a.portfolio-card').evaluateAll(cards => cards.map(card => card.getAttribute('aria-label')));
   const cdp = await page.context().newCDPSession(page);
   try {
     const { root } = await cdp.send('DOM.getDocument', { depth: 0 });
@@ -16,7 +17,8 @@ async function assertNamedCardLinks(page, label) {
     for (let index = 0; index < descriptions.length; index++) {
       const node = accessible.get(descriptions[index].node.backendNodeId);
       assert.equal(node?.role?.value, 'link', label + ': card absent from native AX: ' + titles[index]);
-      assert.equal(normalize(node?.name?.value || ''), normalize(titles[index]), label + ': native AX card name differs from heading');
+      assert.ok(normalize(labels[index] || '').includes(normalize(titles[index])), label + ': card label omits heading');
+      assert.equal(normalize(node?.name?.value || ''), normalize(labels[index] || ''), label + ': native AX card name differs from complete visible label');
     }
     return descriptions.length;
   } finally {

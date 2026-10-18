@@ -127,7 +127,7 @@ class PublicAssetsTest(unittest.TestCase):
                         self.assertEqual(image.width, int(descriptor[:-1]))
                         self.assertEqual(image.width / image.height, 4 / 3)
                         widths.append(image.width)
-                self.assertEqual(widths, [640, 960, 1440, 2000])
+                self.assertEqual(widths, [640, 768, 960, 1440, 2000] if index == 0 else [640, 960, 1440, 2000])
                 self.assertEqual(fallback['alt'], 'Той самий простір')
             gallery = pictures[1].find(lambda n: n.tag == 'img')[0]
             self.assertEqual((gallery.attrs['loading'], gallery.attrs['decoding']), ('lazy', 'async'))
@@ -143,6 +143,35 @@ class PublicAssetsTest(unittest.TestCase):
             self.assertLess(text.index('data-case-cover-preload'), text.index('as="font"'))
         self.assertEqual({path: path.read_bytes() for path in originals}, originals)
 
+    def test_cover_768_context_isolated_from_prior_gallery_and_catalog_without_upscaling(self):
+        for name, width in (('shared', 1200), ('small', 600)):
+            Image.new('RGB', (width, width * 3 // 4), '#258878').save(self.output / ('assets/' + name + '.webp'))
+        head = '<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>'
+        image = '<img src="/assets/shared.webp" alt="Same source">'
+        case = self.output / 'case.html'
+        case.write_text(head + '<body class="project-page"><div class="gallery-grid">' + image
+                        + '</div><figure class="project-cover">' + image + '</figure></body>')
+        catalog = self.output / 'catalog.html'
+        catalog.write_text(head + '<img class="portfolio-card-cover" src="/assets/shared.webp">')
+        small = self.output / 'small.html'
+        small.write_text(head + '<body class="project-page"><figure class="project-cover">'
+                         '<img src="/assets/small.webp"></figure></body>')
+        prepare_public_assets(self.output)
+        root = Document(case.read_text()).root
+        gallery = root.find(lambda n:'gallery-grid' in n.attrs.get('class', '').split())[0]
+        cover = root.find(lambda n:'project-cover' in n.attrs.get('class', '').split())[0]
+        cover_source = cover.find(lambda n:n.tag == 'source')[0].attrs
+        gallery_source = gallery.find(lambda n:n.tag == 'source')[0].attrs
+        self.assertIn('768w', cover_source['srcset'])
+        self.assertIn('960w', cover_source['srcset'])
+        self.assertNotIn('768w', gallery_source['srcset'])
+        self.assertNotIn('768w', Document(catalog.read_text()).root.find(lambda n:n.tag == 'source')[0].attrs['srcset'])
+        preload = root.find(lambda n:n.tag == 'link' and n.attrs.get('as') == 'image')[0].attrs
+        self.assertEqual((preload['imagesrcset'], preload['imagesizes']), (cover_source['srcset'], cover_source['sizes']))
+        small_source = Document(small.read_text()).root.find(lambda n:n.tag == 'source')[0].attrs
+        self.assertEqual([entry.strip().split()[1] for entry in small_source['srcset'].split(',')], ['600w'])
+        self.assertFalse(any(self.output.glob('assets/responsive/case-media/small-768.avif')))
+
     def test_case_encoding_cache_reuses_bytes_and_invalidates_changed_source(self):
         path = self.output / 'assets/photo.webp'
         Image.new('RGB', (64, 48), '#258878').save(path)
@@ -154,6 +183,7 @@ class PublicAssetsTest(unittest.TestCase):
         def save(image, filename, format=None, **kwargs):
             if format == 'AVIF':
                 encodes.append(str(filename))
+                self.assertEqual(kwargs['quality'], 60)
             return original_save(image, filename, format, **kwargs)
         with patch.object(Image.Image, 'save', save):
             page.write_text(html)
@@ -205,14 +235,19 @@ class PublicAssetsTest(unittest.TestCase):
         en.parent.mkdir()
         en.write_text(html)
         original_save = Image.Image.save
+        original_resize = Image.Image.resize
         encodes = []
         def count_avif(image, filename, format=None, **kwargs):
             if format == 'AVIF':
-                encodes.append(image.size)
+                encodes.append((image.size, kwargs['quality']))
             return original_save(image, filename, format, **kwargs)
-        with patch.object(Image.Image, 'save', count_avif):
+        def resize(image, size, *args, **kwargs):
+            self.assertNotIn(image.size, {(636, 1024), (736, 1024), (1036, 1024)}, 'Native mobile crops must not be resampled')
+            return original_resize(image, size, *args, **kwargs)
+        with patch.object(Image.Image, 'save', count_avif), patch.object(Image.Image, 'resize', resize):
             result = prepare_public_assets(self.output)
-        self.assertCountEqual(encodes, [(960, 640), (1280, 853), (1440, 960), (1536, 1024), (736, 1024), (1036, 1024)])
+        self.assertCountEqual(encodes, [((960, 640), 60), ((1280, 853), 60), ((1440, 960), 60), ((1536, 1024), 60),
+                                      ((636, 1024), 45), ((736, 1024), 45), ((1036, 1024), 45)])
         self.assertEqual(result['responsive_home_heroes'], 2)
         self.assertEqual(result['responsive_case_images'], 0)
         fingerprint_resources(self.output)
@@ -222,14 +257,20 @@ class PublicAssetsTest(unittest.TestCase):
         sources = [node.attrs for node in root.find(lambda n: n.tag == 'source')]
         picture_source = sources[-1]
         preload = root.find(lambda n: n.tag == 'link' and n.attrs.get('as') == 'image')
-        self.assertEqual(len(preload), 3)
-        self.assertEqual(len(sources), 3)
-        for link, prepared, media in zip(preload, sources, ('(width <= 480px)', '(480px < width <= 700px)', '(700px < width)')):
+        self.assertEqual(len(preload), 4)
+        self.assertEqual(len(sources), 4)
+        for link, prepared, media in zip(preload, sources, ('(width <= 450px)', '(450px < width <= 480px)', '(480px < width <= 700px)', '(700px < width)')):
             self.assertEqual(link.attrs['imagesrcset'], prepared['srcset'])
             self.assertEqual(link.attrs['imagesizes'], prepared['sizes'])
             self.assertEqual(link.attrs['media'], media)
             self.assertNotIn('href', link.attrs)
-        for prepared, dimensions in zip(sources[:2], ((736, 1024), (1036, 1024))):
+        # These intervals form an exclusive partition, including fractional
+        # widths that would fall into gaps in min-width:451px-style queries.
+        for viewport_width, expected_branch in ((450, 0), (450.5, 1), (480, 1), (480.5, 2), (700, 2), (700.5, 3)):
+            active = [viewport_width <= 450, 450 < viewport_width <= 480,
+                      480 < viewport_width <= 700, 700 < viewport_width]
+            self.assertEqual([index for index, matches in enumerate(active) if matches], [expected_branch])
+        for prepared, dimensions in zip(sources[:3], ((636, 1024), (736, 1024), (1036, 1024))):
             self.assertEqual(len(prepared['srcset'].split(',')), 1)
             url, descriptor = prepared['srcset'].split()
             with Image.open(self.output / url.split('?')[0].lstrip('/')) as encoded:
@@ -254,11 +295,11 @@ class PublicAssetsTest(unittest.TestCase):
         context = CaseImageContexts(html)
         path = next(iter(context.paths.values()))
         crops = home_hero_crops(self.output, html, path, 1536, 1024)
-        self.assertEqual(crops, [(480, (488, 0, 1224, 1024)), (700, (305, 0, 1341, 1024))])
-        for viewport_width in (320, 390, 480, Fraction(961, 2), 600, 700):
-            crop = crops[0 if viewport_width <= 480 else 1][1]
+        self.assertEqual(crops, [(450, (549, 0, 1185, 1024)), (480, (488, 0, 1224, 1024)), (700, (305, 0, 1341, 1024))])
+        for viewport_width in (320, 390, 450, Fraction(901, 2), 480, Fraction(961, 2), 600, 700):
+            crop = next(crop for maximum, crop in crops if viewport_width <= maximum)
             crop_width = crop[2] - crop[0]
-            for viewport_height in (320, 740, 823, 1000, 1400):
+            for viewport_height in (320, 740, 823, 844, 1000, 1400):
                 hero_height = min(1000, max(740, viewport_height))
                 visible_native_width = Fraction(viewport_width * 1024, hero_height)
                 self.assertGreaterEqual(crop_width, visible_native_width)

@@ -79,7 +79,7 @@ for page in output.rglob('*.html'):
         links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
         for card in links:
             heading = card.find(lambda n: n.tag == 'h3')
-            assert len(heading) == 1 and card.attrs.get('aria-label') == heading[0].text(), str(page) + ': card accessible name'
+            assert len(heading) == 1 and card.attrs.get('aria-label') == card.text(), str(page) + ': card accessible name must include its complete visible label'
         sheets = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'stylesheet')
         assert not sheets, str(page) + ': render-blocking catalog stylesheet'
         styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)

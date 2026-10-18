@@ -15,12 +15,12 @@
   <link rel="stylesheet" href="/mobile.css">
   <link rel="stylesheet" href="/automation.css">
   <link rel="stylesheet" href="/portfolio.css">
-  <script src="/story.js" defer></script>
-  <script src="/automation.js" defer></script>
-  <script src="/app.js" defer></script>
+  <template id="home-controllers"><script src="/story.js"></script><script src="/automation.js"></script><script src="/app.js"></script></template>
+  <script src="/home-bootstrap.js" defer></script>
   <script src="/url-compat.js" defer></script>
 </head>
 <body>
   <div id="app" data-home-render=""></div>
-  <noscript><style>.story{height:auto}.story-sticky{position:relative}.mobile-menu:target{visibility:visible;opacity:1}body:has(.mobile-menu:target) .header{position:fixed;background:var(--ink)}</style></noscript>
+  <style>body:not([data-home-enhanced]) .mobile-menu:target{visibility:visible;opacity:1}body:not([data-home-enhanced]):has(.mobile-menu:target) .header{position:fixed;background:var(--ink)}</style>
+  <noscript><style>.story{height:auto}.story-sticky{position:relative}</style></noscript>
 </body>

@@ -45,6 +45,9 @@ for path in out.rglob('*'):
         assert resource.is_file(), f'Missing resource in {path}: {reference}'
 assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noindex'
 assert {p.relative_to(out).as_posix() for p in out.rglob('*.md')} == {SKILL_PATH}
+hidden_files = {p.relative_to(out).as_posix() for p in out.rglob('*')
+                if p.is_file() and any(part.startswith('.') for part in p.relative_to(out).parts)}
+assert hidden_files == {'.nojekyll', *MANIFEST_PATHS}, f'Unexpected hidden public files: {hidden_files}'
 for path in out.rglob('*'):
     if path.is_file():
         assert path.relative_to(out).as_posix() in {*MANIFEST_PATHS, SKILL_PATH} or path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.woff2', '.mp4'} or path.name in {'piskor-logo.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'llms.txt', 'project-catalog.json', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'

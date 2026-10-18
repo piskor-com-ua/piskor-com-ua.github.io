@@ -68,6 +68,28 @@ for page in output.rglob('*.html'):
         assert not sheets, str(page) + ': render-blocking catalog stylesheet'
         styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)
         assert len(styles) == 1, str(page) + ': missing shared inline catalog styles'
+        fonts = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
+        assert {urlsplit(n.attrs['href']).path for n in fonts} == {
+            '/assets/fonts/roboto-light-subset.woff2', '/assets/fonts/roboto-regular-subset.woff2'}
+        pictures = root.find(lambda n: n.tag == 'picture' and n.find(lambda child: child.has_class('portfolio-card-cover')))
+        assert len(pictures) == len(page_cards), str(page) + ': missing responsive format fallback'
+        for picture in pictures:
+            sources = picture.find(lambda n: n.tag == 'source')
+            fallback = picture.find(lambda n: n.tag == 'img')[0]
+            assert len(sources) == 1 and sources[0].attrs.get('type') == 'image/avif'
+            assert sources[0].attrs.get('media') == '(max-width: 700px)'
+            assert sources[0].attrs.get('sizes') == fallback.attrs['sizes']
+            alternatives = sources[0].attrs['srcset'].split(',')
+            assert len(alternatives) == len(fallback.attrs['srcset'].split(','))
+            for entry, webp in zip(alternatives, fallback.attrs['srcset'].split(',')):
+                reference, descriptor = entry.strip().split()
+                assert descriptor == webp.strip().split()[1]
+                target = output / urlsplit(reference).path.lstrip('/')
+                webp_path = output / urlsplit(webp.strip().split()[0]).path.lstrip('/')
+                with Image.open(target) as opened, Image.open(webp_path) as original:
+                    assert opened.format == 'AVIF' and descriptor == str(opened.width) + 'w'
+                    assert opened.size == original.size, str(page) + ': format geometry differs'
+                assert parse_qs(urlsplit(reference).query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]]
     for node in root.find(lambda n: n.tag in {'img', 'script', 'link', 'button', 'video', 'source'}):
         for key in ['src', 'href', 'data-full', 'poster']:
             value = node.attrs.get(key, '')
@@ -75,7 +97,7 @@ for page in output.rglob('*.html'):
             if not value.startswith('/') or url.scheme or url.netloc:
                 continue
             target = output / url.path.lstrip('/')
-            if target.is_file() and target.suffix in {'.webp', '.png', '.svg', '.ico', '.woff2', '.mp4', '.css', '.js'}:
+            if target.is_file() and target.suffix in {'.webp', '.avif', '.png', '.svg', '.ico', '.woff2', '.mp4', '.css', '.js'}:
                 assert parse_qs(url.query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]], value
 
 css = (output / 'style.css').read_text()

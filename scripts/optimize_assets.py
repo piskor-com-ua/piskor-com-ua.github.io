@@ -4,11 +4,11 @@ import hashlib
 import re
 
 TEXT_SUFFIXES = {'.html', '.css', '.js', '.json'}
-MEDIA_SUFFIXES = {'.webp', '.png', '.svg', '.ttf', '.woff2', '.mp4'}
+MEDIA_SUFFIXES = {'.webp', '.avif', '.png', '.svg', '.ttf', '.woff2', '.mp4'}
 # Includes srcset, data-full, posters, JSON-LD and literal JS/CSS asset URLs.
 ASSET_URL = re.compile(
     r'(?P<prefix>(?:\.\./)*|\./|/)?'
-    r'(?P<asset>assets/[\w./%-]+\.(?:webp|png|svg|ico|ttf|woff2|mp4))'
+    r'(?P<asset>assets/[\w./%-]+\.(?:webp|avif|png|svg|ico|ttf|woff2|mp4))'
     r'(?=$|[\s\"\'<>(),?#`\\])'
 )
 
@@ -39,7 +39,7 @@ def optimize_assets(output):
     aliases, fingerprints = {}, {}
     for path in candidates:
         reference = path.relative_to(output).as_posix()
-        if reference not in referenced or path.suffix not in {'.webp', '.png'}:
+        if reference not in referenced or path.suffix not in {'.webp', '.avif', '.png'}:
             continue
         digest = (path.suffix, hashlib.sha256(path.read_bytes()).digest())
         if digest in fingerprints:

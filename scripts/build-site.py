@@ -50,7 +50,7 @@ hidden_files = {p.relative_to(out).as_posix() for p in out.rglob('*')
 assert hidden_files == {'.nojekyll', *MANIFEST_PATHS}, f'Unexpected hidden public files: {hidden_files}'
 for path in out.rglob('*'):
     if path.is_file():
-        assert path.relative_to(out).as_posix() in {*MANIFEST_PATHS, SKILL_PATH} or path.suffix in {'.html', '.css', '.js', '.webp', '.ttf', '.woff2', '.mp4'} or path.name in {'piskor-logo.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'llms.txt', 'project-catalog.json', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
+        assert path.relative_to(out).as_posix() in {*MANIFEST_PATHS, SKILL_PATH} or path.suffix in {'.html', '.css', '.js', '.webp', '.avif', '.ttf', '.woff2', '.mp4'} or path.name in {'piskor-logo.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png', 'Roboto-LICENSE.txt', '.nojekyll', 'sitemap.xml', 'robots.txt', 'llms.txt', 'project-catalog.json', 'whatsapp.svg', 'viber.svg'}, f'Non-public file: {path}'
 print(f'Validated {len(list(out.rglob("*")))} artifact entries')
 print(f'Publication contains {sum(p.is_file() for p in out.rglob("*"))} files')
 subprocess.run([sys.executable, 'scripts/check-seo.py'], check=True)

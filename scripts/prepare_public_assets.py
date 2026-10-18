@@ -51,19 +51,22 @@ def prepare_public_assets(output):
         relative = target.parent.relative_to(output / 'assets')
         folder = output / 'assets' / 'responsive' / relative
         folder.mkdir(parents=True, exist_ok=True)
-        variants = []
+        variants, mobile_variants = [], []
         with Image.open(target) as opened:
             original = ImageOps.exif_transpose(opened).convert('RGB')
             for size in sorted({min(width, size) for size in (480, 640, 960, 1440)}):
+                resized = original.resize((size, round(height * size / width)), Image.Resampling.LANCZOS)
                 if size == width:
                     url = reference
                 else:
                     path = folder / (stem + '-' + str(size) + '.webp')
-                    original.resize((size, round(height * size / width)), Image.Resampling.LANCZOS).save(
-                        path, 'WEBP', quality=86, method=6)
+                    resized.save(path, 'WEBP', quality=86, method=6)
                     url = '/' + path.relative_to(output).as_posix()
                 variants.append((url, size))
-        return variants
+                mobile = folder / (stem + '-' + str(size) + '.avif')
+                resized.save(mobile, 'AVIF', quality=60, speed=6, max_threads=2)
+                mobile_variants.append(('/' + mobile.relative_to(output).as_posix(), size))
+        return variants, mobile_variants
 
     count = 0
     for page in output.rglob('*.html'):
@@ -77,9 +80,12 @@ def prepare_public_assets(output):
             width, height = dimensions(source)
             markup = attribute(attribute(markup, 'width', width), 'height', height)
             if 'portfolio-card-cover' in attrs.get('class', '').split():
-                variants = card_variants(source)
+                variants, mobile_variants = card_variants(source)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + str(w) + 'w' for url, w in variants))
                 markup = attribute(markup, 'sizes', CARD_SIZES)
+                mobile_srcset = escape(', '.join(url + ' ' + str(w) + 'w' for url, w in mobile_variants), quote=True)
+                markup = ('<picture><source type="image/avif" media="(max-width: 700px)" '
+                          'srcset="' + mobile_srcset + '" sizes="' + escape(CARD_SIZES, quote=True) + '">' + markup + '</picture>')
                 count += 1
             elif attrs.get('srcset'):
                 entries = []

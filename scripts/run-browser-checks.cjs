@@ -28,6 +28,17 @@ const assert = require('node:assert/strict');
     for (const language of ['uk', 'en']) {
       const prefix = language === 'en' ? '/en' : '';
       await page.goto(origin + prefix + '/portfolio/');
+      for (const width of [390, 1440]) {
+        await page.setViewportSize({ width, height: 844 });
+        await page.waitForFunction(extension => {
+          const image = document.querySelector('.portfolio-card-cover');
+          return image.complete && image.naturalWidth > 0 && new URL(image.currentSrc).pathname.endsWith(extension);
+        }, width === 390 ? '.avif' : '.webp');
+        const image = page.locator('.portfolio-card-cover').first();
+        await image.evaluate(image => image.decode());
+        assert.ok((await image.evaluate(image => image.currentSrc)).includes(width === 390 ? '.avif?' : '.webp?'));
+      }
+      await page.setViewportSize({ width: 390, height: 844 });
       const scripts = [];
       page.on('request', request => scripts.push(request.url()));
       const reject = page.getByRole('button', { name: language === 'en' ? 'Reject analytics' : 'Відхилити аналітику', exact: true });

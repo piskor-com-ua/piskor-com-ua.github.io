@@ -15,7 +15,7 @@ def fingerprint_resources(output):
         raise ValueError('Only a generated Pages artifact may be fingerprinted')
     versions = {}
     for path in (output / 'assets').rglob('*'):
-        if path.is_file() and path.suffix in {'.webp', '.png', '.svg', '.woff2', '.ttf', '.mp4', '.ico'}:
+        if path.is_file() and path.suffix in {'.webp', '.avif', '.png', '.svg', '.woff2', '.ttf', '.mp4', '.ico'}:
             versions[path.relative_to(output).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
     for path in output.rglob('*'):
         if path.is_file() and path.suffix in TEXT_SUFFIXES:

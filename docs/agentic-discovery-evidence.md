@@ -18,13 +18,13 @@
 - UA desktop та EN mobile 390 px: мова, кейс із каталогу, відсутність горизонтального переповнення, eager-перша обкладинка, галерея, ArrowRight/Escape і повернення фокуса.
 - Один локальний mobile Lighthouse 13.5.0 / Chrome 155 на gzip preview: Performance/Accessibility/Best Practices 100, SEO 69, CLS 0; `ard-schema` — pass. FCP 0,90 с, LCP 1,88 с, SI 1,43 с. Це діагностичний запуск без production CDN/HTTPS, не парний benchmark і не доказ відсутності регресії чи досягнення мобільного SI ≤1 с.
 
-## Незавершена зовнішня передумова
+## Production Origin Trial
 
-WebMCP Origin Trial активний для Chrome 149–162 до 30.03.2027. Офіційна сторінка працює в неавторизованому Codex Browser. Вхід у Google в Chrome успішний, але авторизована сторінка реєстрації залишається на `Loading`; токен не видано і не додано. Це не підтверджена production-активація.
+WebMCP Origin Trial активний для Chrome 149–162 до 30.03.2027. Після проблеми завантаження авторизованої форми користувач самостійно отримав і надав токен. Два third-party варіанти відхилені; коректний first-party токен додано в цей самий PR. Перевірені метадані: origin `https://piskor.com.ua:443`, feature `WebMCP`, expiry `2027-03-30T00:00:00Z`, без `isThirdParty` та `isSubdomain`. Перевірка метаданих ще не підтверджує активацію та підпис Chrome на production.
 
-До отримання справжнього токена два WebMCP-аудити у звичайному Lighthouse залишаються N/A. `form-coverage` теж залишається N/A: форми не додавалися. Нативний виклик у сумісному Codex Browser і локальна компіляція схем не замінюють перевірку production Origin Trial.
+У початковому локальному Lighthouse до додавання токена два WebMCP-аудити залишалися N/A. `form-coverage` теж залишається N/A: форми не додавалися. Нативний виклик у сумісному Codex Browser і локальна компіляція схем не замінюють перевірку production Origin Trial; токен прив'язаний до живого origin і не активує API на localhost.
 
-Для завершення: отримати first-party токен для `https://piskor.com.ua` без субдоменів і third-party matching, додати в тому самому PR, повторити CI, дочекатися Pages deployment та перевірити токен, ресурси й Agentic Browsing у production. Cloudflare змінювати лише після мерджу; `noindex` залишається.
+Для завершення релізу: повторити CI з токеном, дочекатися Pages deployment та перевірити токен, ресурси й Agentic Browsing у production. Cloudflare змінювати лише після мерджу; `noindex` залишається.
 
 ## Джерела
 

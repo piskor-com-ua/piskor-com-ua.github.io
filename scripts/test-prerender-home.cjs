@@ -171,8 +171,47 @@ test('story media waits for approach, flushes latest frame, and resets stale loc
 
 test('homepage declares ordered inert controllers and a separate early compatibility script', () => {
   const html = fs.readFileSync(path.join(source, '_includes/homepage.html'), 'utf8');
-  assert.match(html, /<template id="home-controllers"><script src="\/story\.js"><\/script><script src="\/automation\.js"><\/script><script src="\/app\.js"><\/script><\/template>/);
+  const stylesheet = '<link rel="stylesheet" href="/automation.css" data-home-deferred-style="automation">';
+  assert.ok(html.includes('<template id="home-controllers">' + stylesheet + '<script src="/story.js"></script><script src="/automation.js"></script><script src="/app.js"></script></template>'));
+  assert.ok(html.includes('<noscript>' + stylesheet + '</noscript>'));
   assert.match(html, /<script src="\/home-bootstrap\.js" defer><\/script>/);
   assert.match(html, /<script src="\/url-compat\.js" defer><\/script>/);
   assert.match(html, /body:not\(\[data-home-enhanced\]\) \.mobile-menu:target/);
+});
+
+test('deferred stylesheet failure keeps native navigation and retry loads CSS before controllers once', async () => {
+  const appended = [], handlers = {}, nodes = new Map();
+  let enhanced = false, nativeClicks = 0;
+  const button = { isConnected: true, click() { nativeClicks++; }, matches: () => true, hasAttribute: () => enhanced };
+  const sources = ['story', 'automation', 'app'].map(name => ({ src: '/' + name + '.js?v=source' }));
+  const document = {
+    documentElement: { lang: 'uk' }, body: { dataset: {}, append(node) { nodes.set(node.id, node); } },
+    getElementById(id) { return id === 'home-controllers' ? { content: { querySelectorAll(selector) { return selector === 'script[src]' ? sources : [{ href: '/automation.css?v=source' }]; } } } : nodes.get(id); },
+    querySelector(selector) { return selector === '.story' ? { getBoundingClientRect: () => ({ top: 2000, bottom: 12000 }) } : button; },
+    createElement(tagName) { return { tagName, style: {}, setAttribute() {}, remove() { nodes.delete(this.id); } }; },
+    head: { append(node) { appended.push(node); } },
+    addEventListener(name, fn) { handlers[name] = fn; }, removeEventListener() {},
+  };
+  const context = vm.createContext({ document, innerHeight: 900, scrollY: 0, location: { hash: '' },
+    addEventListener() {}, removeEventListener() {}, IntersectionObserver: class { observe() {} disconnect() {} } });
+  vm.runInContext(fs.readFileSync(path.join(source, 'home-bootstrap.js'), 'utf8'), context);
+  const tick = () => new Promise(resolve => setImmediate(resolve));
+  const click = () => handlers.click({ target: { closest: () => button }, preventDefault() {}, stopImmediatePropagation() {} });
+  assert.equal(appended.length, 0, 'Initial HTML must not fetch controls CSS or JS');
+  click(); assert.equal(appended.length, 1); assert.equal(appended[0].tagName, 'link');
+  appended[0].onerror(); await tick();
+  assert.equal(nativeClicks, 1, 'Failed CSS must preserve the native anchor action');
+  assert.ok(nodes.has('home-interaction-status'));
+  click(); assert.equal(appended.length, 2); assert.equal(appended[1].tagName, 'link');
+  appended[1].onload(); await tick();
+  for (let index = 0; index < sources.length; index++) {
+    const script = appended[index + 2];
+    assert.equal(script.tagName, 'script'); assert.equal(script.src, sources[index].src); assert.equal(script.async, false);
+    if (index === 2) enhanced = true;
+    script.onload(); await tick();
+  }
+  assert.equal(appended.length, 5, 'Retry must not duplicate successfully loaded controllers');
+  assert.equal(document.body.dataset.homeEnhanced, 'true');
+  assert.equal(nativeClicks, 2, 'Successful retry must replay the first requested action');
+  assert.equal(nodes.has('home-interaction-status'), false);
 });

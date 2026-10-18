@@ -16,6 +16,7 @@ VIEWPORT = re.compile(r'<meta\b(?=[^>]*\bname=["\']viewport["\'])[^>]*>', re.I)
 IMAGE_PRELOAD = re.compile(r'<link\b(?=[^>]*\brel=["\']preload["\'])(?=[^>]*\bas=["\']image["\'])[^>]*>', re.I)
 CARD_SIZES = '(max-width: 700px) calc(100vw - 48px), (min-width: 1956px) calc((100vw - 204px) / 2), calc((91vw - 28px) / 2)'
 COVER_SIZES = '(max-width: 700px) calc(100vw - 48px), (min-width: 1956px) calc(100vw - 176px), 91vw'
+CATALOG_FRAME_RATIO = 1.42
 VOID_ELEMENTS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 
 
@@ -349,6 +350,30 @@ def crop_aware_sizes(kind, source_ratio, style):
     return f'(max-width: 700px) {mobile}, (min-width: 1956px) {large}, {desktop}'
 
 
+def compact_mobile_sizes(legacy_sizes, source_ratio):
+    """Describe the full photograph inside the shared 320×160 mobile frame.
+
+    Keep every desktop branch verbatim. With contain, the source-pixel width
+    is the smaller of the frame width and its height times the source ratio.
+    """
+    if not math.isfinite(source_ratio) or source_ratio <= 0:
+        raise ValueError('Compact cover requires a positive native aspect ratio')
+    factor = min(1, source_ratio / 2)
+    mobile = f'min(calc((100vw - 48px) * {factor:.10g}), {320 * factor:.10g}px)'
+    branches = split_css_list(legacy_sizes)
+    if re.match(r'^\(\s*max-width\s*:\s*700px\s*\)', branches[0]):
+        branches.pop(0)
+    return '(max-width: 700px) ' + mobile + ', ' + ', '.join(branches)
+
+
+def catalog_image_sizes(source_ratio):
+    """Match desktop cover cropping and the unchanged mobile contain frame."""
+    desktop = crop_aware_sizes('gallery', source_ratio, {
+        'height': 'auto', 'aspect-ratio': str(CATALOG_FRAME_RATIO), 'object-fit': 'cover',
+    })
+    return compact_mobile_sizes(desktop, source_ratio)
+
+
 def home_hero_crops(output, html, image_path, width, height):
     """Prove the existing hero geometry before removing never-visible pixels.
 
@@ -363,8 +388,10 @@ def home_hero_crops(output, html, image_path, width, height):
         ('', '.hero-picture'): {'position': 'absolute', 'inset': '0'},
         ('', '.hero-picture img'): {'height': '100%', 'width': '100%', 'object-fit': 'cover', 'object-position': '58%56%'},
         ('media:(min-width:1800px)', '.hero'): {'max-height': 'none'},
-        ('media:(max-width:700px)', '.hero'): {'height': '100svh', 'min-height': '740px', 'max-height': '1000px'},
-        ('media:(max-width:700px)', '.hero-picture img'): {'object-position': '61%50%'},
+        ('media:(max-width:700px)', '.hero'): {'height': 'auto', 'min-height': '0', 'max-height': 'none', 'display': 'flex', 'flex-direction': 'column', 'padding': '112px24px24px'},
+        ('media:(max-width:700px)', '.hero-picture'): {'position': 'relative', 'inset': 'auto', 'width': 'min(100%,320px)', 'height': 'auto', 'aspect-ratio': '2/1', 'overflow': 'hidden'},
+        ('media:(max-width:700px)', '.hero-picture picture'): {'display': 'block', 'width': '100%', 'height': '100%'},
+        ('media:(max-width:700px)', '.hero-picture img'): {'display': 'block', 'width': '100%', 'height': '100%', 'object-fit': 'cover', 'object-position': '61%50%'},
         ('media:(prefers-reduced-motion:reduce)', '*'): {'transition': 'none!important', 'animation': 'none!important'},
     }
     found = {}
@@ -372,7 +399,33 @@ def home_hero_crops(output, html, image_path, width, height):
                 'aspect-ratio', 'transform', 'translate', 'scale', 'rotate', 'inset', 'left', 'right', 'top', 'bottom',
                 'position', 'box-sizing', 'display', 'overflow', 'all', 'zoom', 'contain', 'content-visibility', 'flex',
                 'block-size', 'inline-size', 'min-block-size', 'max-block-size', 'min-inline-size', 'max-inline-size', 'writing-mode'}
-    paths = [image_path[:index] for index in range(1, len(image_path) + 1)]
+    # The generated picture is part of the final geometry contract as well as
+    # the original image path. Its new selectors deliberately style this wrapper.
+    wrapped_path = (*image_path[:-1], {'tag': 'picture', 'attrs': {}, 'index': image_path[-1]['index']},
+                    {**image_path[-1], 'index': 3})  # Mobile and desktop sources precede the image.
+    paths = [path[:index] for path in (image_path, wrapped_path) for index in range(1, len(path) + 1)]
+    # These fixed components live outside the hero image ancestry. An absent
+    # arbitrary state class (for example .expanded) is never such a proof.
+    nonhero_classes = {'logo', 'scene-images', 'material-chip', 'approach-image', 'approach-steps',
+                       'device-effects', 'system-map', 'scene-preview', 'system-summary',
+                       'portfolio-card-image', 'portfolio-card', 'project-cover', 'gallery-grid',
+                       'project-lightbox', 'project-page', 'catalog-page', 'case-chapter-heading',
+                       'case-story-copy', 'scenario-note', 'skip', 'language', 'service-row', 'contact-top',
+                       'header', 'mobile-menu'}
+    path_classes = {name for path in paths for name in path[-1]['attrs'].get('class', '').split()}
+    def nonhero_scope(selector):
+        try:
+            compounds = [compound for compound, _ in selector_steps(selector)]
+        except UnsupportedImageStyle:
+            return False  # Sibling relationships cannot prove ancestry.
+        for compound in compounds:
+            tokens = tinycss2.parse_component_value_list(compound)
+            for first, second in zip(tokens, tokens[1:]):
+                # Only positive, top-level classes count; :not(.scope) does not.
+                if (first.type == 'literal' and first.value == '.' and second.type == 'ident'
+                        and second.value in nonhero_classes - path_classes):
+                    return True
+        return False
     def visit(items, condition=''):
         for rule in items:
             if rule.type == 'error':
@@ -402,27 +455,42 @@ def home_hero_crops(output, html, image_path, width, height):
                 try:
                     applies = any(selector_match(selector, path)[0] for path in paths)
                 except UnsupportedImageStyle:
+                    if nonhero_scope(selector):
+                        continue
                     try:
-                        compounds = [compound for compound, _ in selector_steps(selector)]
+                        target = selector_steps(selector)[-1][0]
                     except UnsupportedImageStyle:
-                        compounds = []
-                    disjoint = False
-                    for compound in compounds:
-                        prefix = re.match(r'^(?:[a-zA-Z][\w-]*|\*)?(?:[.#][\w-]+)*', compound)[0]
-                        attribute_name = re.match(r'^\[([\w-]+)', compound)
-                        if ((prefix and all(not compound_match(prefix, path)[0] for path in paths))
-                                or (attribute_name and all(attribute_name[1] not in path[-1]['attrs'] for path in paths))):
-                            disjoint = True
-                    if disjoint:
+                        target = ''
+                    tag = re.match(r'^[a-zA-Z][\w-]*', target)
+                    if tag and all(path[-1]['tag'] != tag[0].lower() for path in paths):
                         continue
                     raise ValueError('Home hero crop cannot prove CSS selector: ' + selector)
                 if applies:
                     key = (condition, selector)
-                    if key in found:
+                    if key in found and set(found[key]) & set(declarations):
                         raise ValueError('Home hero crop requires review of repeated geometry selector: ' + selector)
-                    found[key] = declarations
-                elif re.search(r'\.hero(?:-picture)?(?![\w-])', selector) and not re.search(r':{1,2}(?:before|after)\b', selector):
-                    raise ValueError('Home hero crop requires review of conditional geometry selector: ' + selector)
+                    found.setdefault(key, {}).update(declarations)
+                elif not re.search(r':{1,2}(?:before|after)\b', selector):
+                    # Existing dialog/menu scroll lock changes no dimensions
+                    # of the explicit mobile picture frame. Do not generalize
+                    # this exception to other body states or declarations.
+                    if condition == '' and selector == 'body.locked' and declarations == {'overflow': 'hidden'}:
+                        continue
+                    if nonhero_scope(selector):
+                        continue
+                    # A descendant such as .hero .text-link cannot change an
+                    # ancestor/image box. Still reject unrendered hero states
+                    # on a known target, regardless of conditional class order.
+                    compounds = [compound for compound, _ in selector_steps(selector)]
+                    def known_compound(compound):
+                        tag = re.match(r'^(?:[a-zA-Z][\w-]*|\*)', compound)
+                        anchors = ([tag[0]] if tag else []) + re.findall(r'[.#][\w-]+', compound)
+                        return any(compound_match(anchor, path)[0] for anchor in anchors for path in paths)
+                    known_target = known_compound(compounds[-1])
+                    conditional_selector = any(re.search(r'[.#\[:]', compound) for compound in compounds)
+                    hero_selector = re.search(r'\.hero(?:-picture)?(?![\w-])', selector)
+                    if known_target and (conditional_selector or hero_selector):
+                        raise ValueError('Home hero crop requires review of conditional geometry selector: ' + selector)
     output = Path(output).resolve()
     for match in re.finditer(r'<link\b[^>]*>|<style\b[^>]*>(.*?)</style\s*>', html, re.I | re.S):
         css = match[1]
@@ -443,17 +511,9 @@ def home_hero_crops(output, html, image_path, width, height):
         raise ValueError('Home hero crop requires review of inline ancestor/image styles')
     if (width, height) != (1536, 1024):
         raise ValueError('Home hero crop requires review of changed native image dimensions')
-    # Keep the full native height. Integer origins preserve the original 61%
-    # horizontal object-position exactly, without fractional-pixel resampling:
-    # left + .61*(cropWidth-visibleWidth) == .61*(1536-visibleWidth).
-    crops = []
-    for maximum in (450, 480, 700):
-        minimum = math.ceil(height * maximum / 740)
-        removed = ((width - minimum) // 100) * 100
-        crop_width = width - removed
-        left = removed * 61 // 100
-        crops.append((maximum, (left, 0, left + crop_width, height)))
-    return crops
+    # The mobile frame is exactly 2:1. Keep every source column and the central
+    # 768 source rows, matching its unchanged vertical 50% object-position.
+    return [(700, (0, 128, 1536, 896))]
 
 
 class Tag(HTMLParser):
@@ -536,7 +596,8 @@ def prepare_public_assets(output):
         """
         width, height = dimensions(reference)
         target = output / reference.split('?')[0].split('#')[0].lstrip('/')
-        quality = 50 if namespace == 'case-cover' else 45 if namespace == 'home-media' and crop else 60
+        compact = namespace in {'case-cover/compact-full', 'case-cover/compact-full/catalog'}
+        quality = 45 if compact or namespace == 'home-media' and crop else 60
         recipe = f'responsive-avif-v1:pillow-{PILLOW_VERSION}:quality-{quality}:speed-6:threads-2'
         if crop:
             if not (0 <= crop[0] < crop[2] <= width and 0 <= crop[1] < crop[3] <= height):
@@ -556,12 +617,9 @@ def prepare_public_assets(output):
         variants = []
         original = None
         # Retain a full-native candidate for high-DPR phones; never upscale.
-        widths = ((width,) if crop else (960, 1280, 1440, width)) if namespace == 'home-media' else (640, 960, 1440, 2200, width)
-        if namespace == 'case-cover':
-            # Bridge 640→960 only for LCP covers. The memoized context keeps a
-            # shared gallery image's advertised candidate list unchanged; the
-            # gallery's q60 encoding cache remains independent of this profile.
-            widths += (768,)
+        widths = ((320, 448, 512, 576, 640, 960, width) if compact or namespace == 'home-media' and crop
+                  else (960, 1280, 1440, width) if namespace == 'home-media'
+                  else (640, 960, 1440, 2200, width))
         for size in sorted({min(width, size) for size in widths}):
             wanted = (size, round(height * size / width))
             cached = cache_folder / (digest + '-' + str(size) + '.avif')
@@ -620,17 +678,22 @@ def prepare_public_assets(output):
             if 'portfolio-card-cover' in attrs.get('class', '').split():
                 variants, mobile_variants = card_variants(source)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + str(w) + 'w' for url, w in variants))
-                markup = attribute(markup, 'sizes', CARD_SIZES)
+                sizes = catalog_image_sizes(width / height)
+                markup = attribute(markup, 'sizes', sizes)
+                if cover_preload is None:
+                    # Only the first rendered catalog card needs the smaller
+                    # cover profile. Later cards retain their published q60 URLs.
+                    mobile_variants = avif_variants(source, 'case-cover/compact-full/catalog')
                 mobile_srcset = escape(', '.join(url + ' ' + str(w) + 'w' for url, w in mobile_variants), quote=True)
                 if cover_preload is None:
                     # Derive from the rendered first card, including year/locale order.
                     # No href: older browsers must not fetch an unselected fallback.
                     cover_preload = ('<link rel="preload" as="image" type="image/avif" '
                                      'media="(max-width: 700px)" imagesrcset="' + mobile_srcset +
-                                     '" imagesizes="' + escape(CARD_SIZES, quote=True) +
+                                     '" imagesizes="' + escape(sizes, quote=True) +
                                      '" fetchpriority="high" data-catalog-cover-preload>')
-                markup = ('<picture><source type="image/avif" media="(max-width: 700px)" '
-                          'srcset="' + mobile_srcset + '" sizes="' + escape(CARD_SIZES, quote=True) + '">' + markup + '</picture>')
+                markup = ('<picture class="mobile-overview"><source type="image/avif" media="(max-width: 700px)" '
+                          'srcset="' + mobile_srcset + '" sizes="' + escape(sizes, quote=True) + '">' + markup + '</picture>')
                 count += 1
             elif attrs.get('srcset'):
                 entries = []
@@ -690,7 +753,10 @@ def prepare_public_assets(output):
                             markup = attribute(markup, 'srcset', ', '.join(url + ' ' + descriptor
                                                                          for descriptor, url in legacy.items()))
                 markup = attribute(markup, 'sizes', sizes)
-                namespace = 'home-media' if context == 'home-hero' else 'case-cover' if context == 'cover' else 'case-media'
+                if context in {'cover', 'home-hero'}:
+                    sizes = compact_mobile_sizes(sizes, 2 if context == 'home-hero' else native_width / native_height)
+                    markup = attribute(markup, 'sizes', sizes)
+                namespace = 'home-media' if context == 'home-hero' else 'case-cover/compact-full' if context == 'cover' else 'case-media'
                 variants = avif_variants(largest, namespace)
                 if native_only:
                     variants = variants[-1:]
@@ -700,15 +766,13 @@ def prepare_public_assets(output):
                 if context == 'home-hero':
                     sources = []
                     for maximum, crop in hero_crops:
-                        crop_ratio = (crop[2] - crop[0]) / native_height
-                        crop_sizes = f'max(100vw, clamp({740 * crop_ratio:g}px, {100 * crop_ratio:g}svh, {1000 * crop_ratio:g}px))'
+                        crop_sizes = sizes
                         crop_variants = avif_variants(largest, namespace, crop)
                         crop_srcset = escape(', '.join(url + ' ' + str(w) + 'w' for url, w in crop_variants), quote=True)
-                        crop_media = {450: '(width <= 450px)', 480: '(450px < width <= 480px)',
-                                      700: '(480px < width <= 700px)'}[maximum]
+                        crop_media = '(max-width: ' + str(maximum) + 'px)'
                         sources.append((crop_media, crop_srcset, crop_sizes))
                     sources.append((None, mobile_srcset, sizes))
-                markup = ('<picture>' + ''.join('<source type="image/avif"' + (' media="' + query + '"' if query else '')
+                markup = ('<picture' + (' class="mobile-overview"' if context == 'cover' else '') + '>' + ''.join('<source type="image/avif"' + (' media="' + query + '"' if query else '')
                                                + ' srcset="' + srcset + '" sizes="' + escape(source_sizes, quote=True) + '">'
                                                for query, srcset, source_sizes in sources) + markup + '</picture>')
                 if context in {'cover', 'home-hero'} and cover_preload is None:

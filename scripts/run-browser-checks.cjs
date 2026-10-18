@@ -5,6 +5,8 @@ const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const checkCatalogRendering = require('./check-catalog-rendering.cjs');
 const checkHomeRendering = require('./check-home-rendering.cjs');
+const checkCompatibilityPages = require('./check-compatibility-pages.cjs');
+const checkNativeFonts = require('./check-native-fonts.cjs');
 
 (async () => {
   const origin = 'http://127.0.0.1:4176';
@@ -19,8 +21,10 @@ const checkHomeRendering = require('./check-home-rendering.cjs');
       }
     }
     browser = await chromium.launch({ headless: true });
+    const nativeFonts = await checkNativeFonts(browser, origin);
     const homeRendering = await checkHomeRendering(browser, origin);
     const catalogRendering = await checkCatalogRendering(browser, origin);
+    const compatibilityPages = await checkCompatibilityPages(browser, origin);
     const preloadChecks = [];
     for (const [route, width, deviceScaleFactor] of [
       ['/portfolio/', 390, 1], ['/portfolio/', 412, 1.75], ['/en/portfolio/', 390, 2],
@@ -141,7 +145,7 @@ const checkHomeRendering = require('./check-home-rendering.cjs');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, preloadChecks, releaseSample, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, compatibilityPages, nativeFonts, preloadChecks, releaseSample, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
     await browser.close();
     browser = null;

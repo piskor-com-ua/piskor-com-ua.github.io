@@ -67,6 +67,8 @@ for page in output.rglob('*.html'):
     early = root.find(lambda n: n.tag == 'script' and 'data-consent-inline' in n.attrs)
     assert len(early) == 1, str(page) + ': missing early consent controller'
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
+    font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
+    assert all(n.attrs.get('media') == '(min-width: 701px)' for n in font_preloads), str(page) + ': mobile must use its native font stack without a webfont preload'
     images = root.find(lambda n: n.tag == 'img' and n.attrs.get('src', '').startswith('/assets/'))
     for image in images:
         attrs = image.attrs
@@ -126,15 +128,21 @@ for page in output.rglob('*.html'):
             assert sources[0].attrs.get('media') == '(max-width: 700px)'
             assert sources[0].attrs.get('sizes') == fallback.attrs['sizes']
             alternatives = sources[0].attrs['srcset'].split(',')
-            assert len(alternatives) == len(fallback.attrs['srcset'].split(','))
-            for entry, webp in zip(alternatives, fallback.attrs['srcset'].split(',')):
+            webp_candidates = []
+            for webp in fallback.attrs['srcset'].split(','):
+                with Image.open(output / urlsplit(webp.strip().split()[0]).path.lstrip('/')) as original:
+                    webp_candidates.append(original.size)
+            native_width, native_height = max(webp_candidates)
+            descriptors = set()
+            for entry in alternatives:
                 reference, descriptor = entry.strip().split()
-                assert descriptor == webp.strip().split()[1]
+                assert descriptor not in descriptors, str(page) + ': repeated AVIF candidate'
+                descriptors.add(descriptor)
                 target = output / urlsplit(reference).path.lstrip('/')
-                webp_path = output / urlsplit(webp.strip().split()[0]).path.lstrip('/')
-                with Image.open(target) as opened, Image.open(webp_path) as original:
+                with Image.open(target) as opened:
                     assert opened.format == 'AVIF' and descriptor == str(opened.width) + 'w'
-                    assert opened.size == original.size, str(page) + ': format geometry differs'
+                    assert opened.width <= native_width, str(page) + ': upscaled overview'
+                    assert abs(opened.height - round(native_height * opened.width / native_width)) <= 1, str(page) + ': overview must retain its full source frame'
                 assert parse_qs(urlsplit(reference).query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]]
     for node in root.find(lambda n: n.tag in {'img', 'script', 'link', 'button', 'video', 'source'}):
         for key in ['src', 'href', 'data-full', 'poster']:

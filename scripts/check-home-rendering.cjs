@@ -17,10 +17,11 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           deviceScaleFactor: 1,
         });
         const page = await context.newPage();
-        const errors = [], storyRequests = [], controllerRequests = [];
+        const errors = [], storyRequests = [], controllerRequests = [], fontRequests = [];
         let initialStoryRequests = null, automationBiodynamic = null;
         page.on('request', request => {
           const pathname = new URL(request.url()).pathname;
+          if (request.resourceType() === 'font') fontRequests.push(pathname);
           if (/^\/(?:story|automation|app)\.js$/.test(pathname)) controllerRequests.push(pathname);
           if (/^\/assets\/(?:v2\/|automation\/|(?:interior|house)-concept\.webp)/.test(pathname)) storyRequests.push(pathname);
         });
@@ -65,6 +66,23 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
           assert.equal(media.priority, 'high');
           assert.notEqual(media.loading, 'lazy');
           assert.ok(media.picture, label + ': responsive hero picture missing');
+          if (width === 390) {
+            assert.deepEqual(fontRequests, [], label + ': mobile system fonts must not fetch desktop fonts');
+            const typography = await page.evaluate(() => ({
+              heading: getComputedStyle(document.querySelector('#hero-title')).fontWeight,
+              eyebrow: getComputedStyle(document.querySelector('.eyebrow')).fontWeight,
+              family: getComputedStyle(document.body).fontFamily,
+              picture: document.querySelector('.hero-picture').getBoundingClientRect().toJSON(),
+              copy: document.querySelector('.hero-copy').getBoundingClientRect().toJSON(),
+            }));
+            assert.equal(typography.heading, '300');
+            assert.equal(typography.eyebrow, '400');
+            assert.ok(typography.family.includes('system-ui'));
+            assert.ok(typography.picture.width <= 320.01);
+            assert.ok(Math.abs(typography.picture.width / typography.picture.height - 2) < .01);
+            assert.ok(typography.picture.top >= typography.copy.bottom);
+            assert.ok(typography.picture.bottom <= 900, label + ': mobile photo missing from first viewport');
+          }
           await page.screenshot({ path: path.join(output, 'home-' + label + '.jpg'), type: 'jpeg' });
           if (javascript) {
             initialStoryRequests = [...storyRequests];
@@ -97,7 +115,11 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.equal(await hero.evaluate(image => image.currentSrc), media.src, label + ': locale switch changed prepared media');
             assert.ok((await hero.getAttribute('alt')).includes(opposite === 'uk' ? 'Концептуальний' : 'Concept house'));
             await page.locator('[data-lang="' + locale + '"]').click();
-            assert.deepEqual(storyRequests, [], label + ': locale switch loaded offscreen story media');
+            // A compact hero can place the story within its real approach
+            // margin after a user opens the menu or changes language. Only
+            // distant media must remain unfetched after that explicit intent.
+            const storyDistance = await page.locator('.story').evaluate(story => story.getBoundingClientRect().top - innerHeight);
+            if (storyDistance >= 320) assert.deepEqual(storyRequests, [], label + ': distant story media loaded');
             // A real scroll begins loading before the story enters the viewport.
             await page.evaluate(() => {
               const top = scrollY + document.querySelector('.story').getBoundingClientRect().top;
@@ -172,7 +194,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.ok(await page.locator('#hero-title').isVisible());
           }
           assert.deepEqual(errors, [], label);
-          results.push({ route, locale, width, javascript, media, initialStoryRequests, storyRequests, controllerRequests, automationBiodynamic, errors });
+          results.push({ route, locale, width, javascript, media, initialStoryRequests, storyRequests, controllerRequests, fontRequests, automationBiodynamic, errors });
         } catch (error) {
           await page.screenshot({ path: path.join(output, 'home-failure-' + label + '.jpg'), type: 'jpeg' });
           const diagnostics = await page.evaluate(() => {
@@ -279,6 +301,39 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
       assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), 'true');
       await page.locator('#mobile-menu').waitFor({ state: 'visible' });
       results.push({ locale, width: 390, javascript: true, failedControllerRetry: true, attempts });
+    } finally {
+      await context.close();
+    }
+  }
+  for (const locale of ['uk', 'en']) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+    const page = await context.newPage();
+    let attempts = 0;
+    const requests = [];
+    await page.route(/\/automation\.css(?:\?|$)/, async request => {
+      attempts++;
+      if (attempts === 1) await request.abort('failed');
+      else await request.continue();
+    });
+    page.on('request', request => {
+      const pathname = new URL(request.url()).pathname;
+      if (/^\/(?:automation\.css|story\.js|automation\.js|app\.js)$/.test(pathname)) requests.push(pathname);
+    });
+    try {
+      await page.goto(origin + (locale === 'uk' ? '/' : '/en/'));
+      assert.deepEqual(requests, [], locale + ': interaction stylesheet fetched before intent');
+      await page.locator('.menu-button').click();
+      await page.locator('#home-interaction-status').waitFor({ state: 'visible' });
+      await page.locator('#mobile-menu').waitFor({ state: 'visible' });
+      assert.equal(new URL(page.url()).hash, '#mobile-menu');
+      assert.deepEqual(requests, ['/automation.css'], locale + ': controllers loaded without their stylesheet');
+      await page.locator('.menu-button').click();
+      await page.waitForFunction(() => document.body.dataset.homeEnhanced === 'true');
+      assert.equal(attempts, 2);
+      assert.deepEqual(requests, ['/automation.css', '/automation.css', '/story.js', '/automation.js', '/app.js']);
+      assert.equal(await page.locator('#home-interaction-status').count(), 0);
+      assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'), 'true');
+      results.push({ locale, width: 390, javascript: true, failedStylesheetRetry: true, attempts, requests });
     } finally {
       await context.close();
     }

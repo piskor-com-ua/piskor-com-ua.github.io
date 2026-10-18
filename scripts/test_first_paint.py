@@ -163,6 +163,34 @@ class FirstPaintTests(unittest.TestCase):
         self.assertNotIn('.home-state', case)
         self.assertNotIn('.unknown-state', case)
 
+    def test_deferred_home_styles_keep_versioned_template_and_native_fallback_links(self):
+        (self.root / 'base.css').write_text('body{color:black}')
+        automation = '.device-biodynamic .visual-image{filter:sepia(.22)}'
+        (self.root / 'automation.css').write_text(automation)
+        link = '<link rel="stylesheet" href="/automation.css?v=actualhash" data-home-deferred-style="automation">'
+        page = self.root / 'index.html'
+        page.write_text('<head><link rel="stylesheet" href="/base.css">'
+                        '<noscript>' + link + '</noscript>'
+                        '<template id="home-controllers">' + link
+                        + '<script src="/app.js?v=actualjs"></script></template></head><body>Home</body>')
+        self.assertEqual(inline_page_styles(self.root), 1)
+        html = page.read_text()
+        self.assertIn('<noscript>' + link + '</noscript>', html)
+        self.assertIn('<template id="home-controllers">' + link, html)
+        self.assertNotIn(automation, html)
+        self.assertEqual((self.root / 'automation.css').read_text(), automation)
+        self.assertEqual(inline_page_styles(self.root), 0)
+        for wrong in [link.replace('automation"', 'other"'), link.replace('/automation.css', '/base.css')]:
+            page.write_text('<template>' + wrong + '</template>')
+            with self.assertRaises(ValueError):
+                inline_page_styles(self.root)
+        page.write_text('<body>Home</body>')
+        case = self.root / 'portfolio/2026/case/index.html'
+        case.parent.mkdir(parents=True)
+        case.write_text('<body class="project-page">' + link + '</body>')
+        with self.assertRaises(ValueError):
+            inline_page_styles(self.root)
+
 
 if __name__ == '__main__':
     unittest.main()

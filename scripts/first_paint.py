@@ -163,6 +163,14 @@ def inline_page_styles(output):
             target = (output / parsed.path.lstrip('/')).resolve()
             if not target.is_relative_to(output.resolve()) or not target.is_file():
                 raise ValueError('Missing local stylesheet: ' + href[1])
+            deferred = re.search(r'\bdata-home-deferred-style=["\']([^"\']*)["\']', match[0], re.I)
+            if deferred:
+                # These links intentionally remain links inside the inert
+                # controller template and its no-JS fallback. Converting the
+                # template link to a style would leave enhancement unstyled.
+                if family != 'home' or deferred[1] != 'automation' or parsed.path != '/automation.css':
+                    raise ValueError('Unsupported deferred homepage stylesheet: ' + href[1])
+                return match[0]
             key = (family, target)
             if key not in cache:
                 css = prune_catalog_css(target.read_text(), family_classes[family])

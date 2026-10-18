@@ -2,8 +2,8 @@
 (() => {
   const template=document.getElementById('home-controllers');
   if(!template)return;
-  const sources=[...template.content.querySelectorAll('script[src]')];
-  let pending=null,loaded=0,ready=false,bypass=false,observer;
+  const sources=[...template.content.querySelectorAll('script[src]')],styles=[...template.content.querySelectorAll('link[rel=stylesheet]')];
+  let pending=null,loaded=0,loadedStyles=0,ready=false,bypass=false,observer;
   const story=document.querySelector('.story');
   function nearStory(){
     if(!story)return false;
@@ -21,6 +21,14 @@
     if(ready)return Promise.resolve();
     if(pending)return pending;
     pending=(async()=>{
+      while(loadedStyles<styles.length){
+        await new Promise((resolve,reject)=>{
+          const link=document.createElement('link');link.rel='stylesheet';link.href=styles[loadedStyles].href;
+          link.onload=()=>{loadedStyles++;resolve();};
+          link.onerror=()=>{link.remove();reject(new Error('Homepage stylesheet unavailable'));};
+          document.head.append(link);
+        });
+      }
       while(loaded<sources.length){
         const source=sources[loaded];
         await new Promise((resolve,reject)=>{

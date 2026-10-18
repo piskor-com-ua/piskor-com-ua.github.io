@@ -55,7 +55,9 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
           const heading = card.querySelector('h3');
           const box = card.getBoundingClientRect(), cover = image.getBoundingClientRect(), title = heading.getBoundingClientRect();
           const imageContainer = image.closest('.portfolio-card-image');
-          const frame = imageContainer.getBoundingClientRect(), frameStyle = getComputedStyle(imageContainer);
+          const frame = imageContainer.getBoundingClientRect(), frameStyle = getComputedStyle(imageContainer), imageStyle = getComputedStyle(image);
+          const compact = innerWidth <= 700 && !!image.closest('picture.mobile-overview');
+          const expectedWidth = Math.min(innerWidth - 48, 320);
           // The existing hover treatment scales the bitmap inside an overflow
           // clip. Test its painted bounds, not the intentionally larger bitmap.
           const clipX = ['hidden', 'clip'].includes(frameStyle.overflowX);
@@ -66,11 +68,15 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
             cover: cover.width > 0 && cover.height > 0, title: title.width > 0 && title.height > 0,
             horizontal: box.left >= -.5 && box.right <= innerWidth + .5,
             containsImage: paintedLeft >= box.left - 1 && paintedRight <= box.right + 1,
-            fillsImageFrame: cover.left <= frame.left + 1 && cover.right >= frame.right - 1 && cover.top <= frame.top + 1 && cover.bottom >= frame.bottom - 1,
+            correctImageFraming: compact
+              ? imageStyle.objectFit === 'contain' && imageStyle.transform === 'none'
+                && Math.abs(frame.width - expectedWidth) <= 1 && Math.abs(frame.height - expectedWidth / 2) <= 1
+                && cover.left >= frame.left - 1 && cover.right <= frame.right + 1 && cover.top >= frame.top - 1 && cover.bottom <= frame.bottom + 1
+              : cover.left <= frame.left + 1 && cover.right >= frame.right - 1 && cover.top <= frame.top + 1 && cover.bottom >= frame.bottom - 1,
             containsTitle: title.left >= box.left - 1 && title.right <= box.right + 1,
             details: { card: box.toJSON(), image: cover.toJSON(), title: title.toJSON(),
               imageContainer: frame.toJSON(), overflowX: frameStyle.overflowX,
-              transform: getComputedStyle(image).transform, hover: card.matches(':hover'),
+              objectFit: imageStyle.objectFit, transform: imageStyle.transform, hover: card.matches(':hover'),
               project: card.dataset.projectId } };
         });
         for (const [key, value] of Object.entries(geometry)) if (key !== 'details') assert.ok(value, label + ': revealed card ' + key + ' ' + JSON.stringify(geometry.details));

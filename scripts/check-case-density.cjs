@@ -1,5 +1,7 @@
-// Geometry/selection verification only. Image/media/font downloads are blocked;
-// this helper does not produce performance, visual-quality or HTTP evidence.
+// Geometry/selection verification only. Images use empty SVG stubs with the
+// real file-header dimensions; media/font downloads are blocked. This preserves
+// decoded intrinsic sizing without pixel decoding or missing-image alt text.
+// This helper does not produce performance, visual-quality or HTTP evidence.
 const { chromium } = require('playwright');
 const { execFileSync } = require('node:child_process');
 const { readFileSync, writeFileSync, mkdirSync } = require('node:fs');
@@ -18,8 +20,14 @@ const origin = new URL(positionals[0]).origin;
 const site = path.resolve(values.site);
 const widths = values.widths.split(',').map(Number);
 if (widths.some(width => !Number.isInteger(width) || width < 300)) throw Error('Invalid viewport widths');
-const routes = values.routes ? values.routes.split(',') : [...new Set(JSON.parse(readFileSync(path.join(site, 'project-catalog.json'))).projects.map(project => project.url))];
-if (!routes.length || routes.some(route => !/^\/(?:en\/)?portfolio\/\d{4}\/[\w-]+\/$/.test(route))) throw Error('Use canonical case routes');
+const projects = JSON.parse(readFileSync(path.join(site, 'project-catalog.json'))).projects;
+const caseRoutes = [...new Set(projects.map(project => project.url))];
+const catalogRoutes = ['', 'en/'].flatMap(prefix => [
+  '/' + prefix + 'portfolio/',
+  ...[...new Set(projects.map(project => project.year))].map(year => '/' + prefix + 'portfolio/' + year + '/'),
+]);
+const routes = values.routes ? values.routes.split(',') : [...caseRoutes, ...catalogRoutes];
+if (!routes.length || routes.some(route => !/^\/(?:en\/)?portfolio\/(?:\d{4}\/(?:[\w-]+\/)?)?$/.test(route))) throw Error('Use generated case or catalog routes');
 
 // Read image headers only, without decoding pixels or requesting remote assets.
 const dimensions = JSON.parse(execFileSync(values.python, ['-c', String.raw`
@@ -44,13 +52,25 @@ print(json.dumps(result))
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: dpr });
       await context.route('**/*', route => {
         const request = route.request();
-        if (['image', 'media', 'font'].includes(request.resourceType()) || new URL(request.url()).origin !== origin) return route.abort();
+        if (new URL(request.url()).origin !== origin || ['media', 'font'].includes(request.resourceType())) return route.abort();
+        if (request.resourceType() === 'image') {
+          const size = dimensions[decodeURI(new URL(request.url()).pathname)];
+          if (!size) return route.abort();
+          return route.fulfill({ contentType: 'image/svg+xml', body:
+            '<svg xmlns="http://www.w3.org/2000/svg" width="' + size[0] + '" height="' + size[1] + '"></svg>' });
+        }
         return route.continue();
       });
       const page = await context.newPage();
       for (const route of routes) {
         await page.goto(origin + route, { waitUntil: 'domcontentloaded' });
         await page.evaluate(async () => {
+          // Offscreen cards deliberately skip layout in normal browsing. This
+          // geometry-only probe must inspect their real image boxes as well.
+          for (const card of document.querySelectorAll('.portfolio-card')) card.style.contentVisibility = 'visible';
+          const images = [...document.querySelectorAll('.project-cover img,.gallery-grid img,.portfolio-card-cover')];
+          for (const image of images) image.loading = 'eager';
+          await Promise.all(images.map(image => image.decode()));
           await document.fonts.ready;
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         });
@@ -92,7 +112,7 @@ print(json.dumps(result))
           }
           const filePath = url => decodeURI(new URL(url, location.href).pathname);
           const output = [];
-          for (const image of document.querySelectorAll('.project-cover img,.gallery-grid img')) {
+          for (const image of document.querySelectorAll('.project-cover img,.gallery-grid img,.portfolio-card-cover')) {
             const errors = [];
             try {
               const source = [...(image.closest('picture')?.querySelectorAll('source') || [])].find(source =>
@@ -112,7 +132,18 @@ print(json.dumps(result))
               const boxWidth = rect.width - parseFloat(style.borderLeftWidth) - parseFloat(style.borderRightWidth) - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
               const boxHeight = rect.height - parseFloat(style.borderTopWidth) - parseFloat(style.borderBottomWidth) - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
               if (boxWidth <= 0 || boxHeight <= 0) throw Error('Image geometry is unavailable without scrolling');
-              const referenceWidth = style.objectFit === 'cover' ? Math.max(boxWidth, boxHeight * native.width / native.height) : boxWidth;
+              const overview = image.closest('picture.mobile-overview');
+              if (overview && innerWidth <= 700) {
+                const frame = overview.getBoundingClientRect();
+                const expectedWidth = Math.min(innerWidth - 48, 320);
+                if (Math.abs(frame.width - expectedWidth) > 1 || Math.abs(frame.height - expectedWidth / 2) > 1)
+                  errors.push('Compact overview lost its shared 320×160 frame');
+                if (style.objectFit !== 'contain' || rect.width > frame.width + 1 || rect.height > frame.height + 1)
+                  errors.push('Compact overview clips or stretches its full photograph');
+              }
+              const sourceHeightWidth = boxHeight * native.width / native.height;
+              const referenceWidth = style.objectFit === 'cover' ? Math.max(boxWidth, sourceHeightWidth)
+                : style.objectFit === 'contain' ? Math.min(boxWidth, sourceHeightWidth) : boxWidth;
               const declared = declaredWidth(source?.sizes || image.sizes);
               const fullNative = candidates.length === 1 && !!source;
               if (!fullNative && declared + 1 < referenceWidth) errors.push('sizes understates cropped source width');
@@ -133,6 +164,7 @@ print(json.dumps(result))
           probe.remove();
           return output;
         }, { dimensions, dpr });
+        if (!images.length) throw Error('No generated case/catalog images at ' + route);
         rows.push({ route, width, dpr, images });
       }
       await context.close();
@@ -142,7 +174,9 @@ print(json.dumps(result))
   }
   mkdirSync(path.dirname(values.output), { recursive: true });
   const failures = rows.flatMap(row => row.images.filter(image => image.errors.length).map(image => ({ route: row.route, width: row.width, dpr: row.dpr, ...image })));
-  const summary = { kind: 'geometry-only-media-font-requests-blocked', cases: routes.length, viewports: widths,
+  const summary = { kind: 'geometry-only-header-sized-image-stubs-media-fonts-blocked', pages: routes.length,
+    cases: routes.filter(route => caseRoutes.includes(route)).length,
+    catalogs: routes.filter(route => catalogRoutes.includes(route)).length, viewports: widths,
     checkedImages: rows.reduce((total, row) => total + row.images.length, 0), failures: failures.length };
   writeFileSync(values.output, JSON.stringify({ summary, failures, rows }, null, 2) + '\n');
   console.log(JSON.stringify(summary));

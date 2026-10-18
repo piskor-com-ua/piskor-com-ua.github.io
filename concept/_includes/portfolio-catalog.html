@@ -4,7 +4,7 @@
 {% if page.year %}{% assign projects = projects | where: 'project_year', page.year %}{% endif %}
 {% assign year_groups = projects | group_by: 'project_year' %}
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#16232a">
-<link rel="preload" href="/assets/roboto-light.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/roboto-regular.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/portfolio.css"><link rel="stylesheet" href="/catalog.css">
+<link rel="preload" href="/assets/roboto-light.woff2" as="font" type="font/woff2" crossorigin media="(min-width: 701px)"><link rel="preload" href="/assets/roboto-regular.woff2" as="font" type="font/woff2" crossorigin media="(min-width: 701px)"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/portfolio.css"><link rel="stylesheet" href="/catalog.css">
 {% include seo.html %}
 <link rel="icon" href="/assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">

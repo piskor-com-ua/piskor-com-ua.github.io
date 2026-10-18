@@ -15,11 +15,11 @@ Omit max-requests to collect all missing runs sequentially. HTTP/API errors stop
 the invocation immediately; a saved quota stop requires explicit operator retry.
 Exit 2 means acceptance is pending/failed, never a successful all-pages result.
 
-The official PSI v5 category enum lists only performance, accessibility,
-best-practices and seo. API reports may therefore omit Agentic Browsing. That
-case remains failed-or-missing-agentic even after five fast API reports; import
-actual public-UI evidence with Agentic coverage instead of rerunning the API or
-inventing an undocumented category. Distinct settings families are not merged.
+The official PSI v5 Discovery document (revision 20261013, checked 2026-10-18)
+includes AGENTIC_BROWSING. Request all five current categories, excluding the
+deprecated PWA category. Parameter validity does not prove a successful API run:
+old/partial responses without actual Agentic coverage remain missing, even with
+five fast reports. Distinct settings families are not merged.
 """
 import argparse
 from datetime import datetime, timezone
@@ -34,13 +34,14 @@ import re
 import statistics
 import sys
 from urllib.error import HTTPError, URLError
-from urllib.parse import parse_qsl, quote, urlencode, urlsplit
+from urllib.parse import parse_qsl, quote, urlencode, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 
 API = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
 STRATEGIES = ('mobile', 'desktop')
-CATEGORIES = ('performance', 'accessibility', 'best-practices', 'seo')
+# Primary metadata: https://pagespeedonline.googleapis.com/$discovery/rest?version=v5
+CATEGORIES = ('PERFORMANCE', 'ACCESSIBILITY', 'BEST_PRACTICES', 'SEO', 'AGENTIC_BROWSING')
 METRICS = {'fcp': 'first-contentful-paint', 'lcp': 'largest-contentful-paint',
            'speed_index': 'speed-index', 'tbt': 'total-blocking-time', 'cls': 'cumulative-layout-shift'}
 
@@ -153,9 +154,33 @@ def inventory(site, origin, revision, deployed_at=None):
             pages.append({**error_page, 'route': route, 'url': origin.rstrip('/') + route,
                           'language': 'en', 'runtime_variant': True})
             seen.add(route)
-    return {'schema_version': 1, 'revision': revision, 'artifact_hash': digest(signatures),
-            'origin': origin.rstrip('/'), 'deployed_at': deployed_at,
-            'html_file_count': html_count, 'page_count': len(pages), 'pages': pages}
+    manifest = {'schema_version': 1, 'revision': revision, 'artifact_hash': digest(signatures),
+                'origin': origin.rstrip('/'), 'deployed_at': deployed_at,
+                'html_file_count': html_count, 'page_count': len(pages), 'pages': pages}
+    declared_redirects(manifest)
+    return manifest
+
+
+def declared_redirects(manifest):
+    """Recognize only declared aliases with an agreeing, real content target."""
+    pages = {page['url']: page for page in manifest['pages']}
+    origin = urlsplit(manifest['origin'])
+    targets = {}
+    for page in pages.values():
+        if not page.get('redirect_hint'):
+            continue
+        hint = re.fullmatch(r'0;url=(\S+)', page['redirect_hint'], re.I)
+        target = urljoin(page['url'], hint[1]) if hint else None
+        parsed = urlsplit(target or '')
+        canonical = urljoin(page['url'], page.get('canonical') or '')
+        if (not target or (parsed.scheme, parsed.netloc) != (origin.scheme, origin.netloc)
+                or canonical != target or target not in pages
+                or pages[target].get('redirect_hint')):
+            raise ValueError('Declared redirect needs an agreeing same-origin canonical content target: ' + page['url'])
+        if page.get('language') not in {'uk', 'en'} or pages[target].get('language') != page['language']:
+            raise ValueError('Declared redirect must preserve its known uk/en language: ' + page['url'])
+        targets[page['url']] = target
+    return targets
 
 
 def public_report_id(report_url):
@@ -228,15 +253,15 @@ def agentic_coverage(lhr):
             'weighted_passed': passed, 'audits': audits}
 
 
-def summarize_lhr(lhr, exact_url, strategy):
+def summarize_lhr(lhr, exact_url, strategy, expected_redirect=None):
     errors = []
     if lhr.get('runtimeError'):
         errors.append('runtime-error')
     requested, final = lhr.get('requestedUrl'), lhr.get('finalUrl')
     if requested != exact_url:
         errors.append('requested-url-mismatch')
-    if final != exact_url:
-        errors.append('redirected' if final else 'missing-final-url')
+    if final != (expected_redirect or exact_url):
+        errors.append(('unexpected-redirect-target' if expected_redirect else 'redirected') if final else 'missing-final-url')
     settings = lhr.get('configSettings', {})
     if settings.get('formFactor', settings.get('emulatedFormFactor')) != strategy:
         errors.append('strategy-mismatch')
@@ -271,7 +296,7 @@ def summarize_lhr(lhr, exact_url, strategy):
 def save_report(output, manifest, exact_url, strategy, lhr, source, report_id):
     if exact_url not in {page['url'] for page in manifest['pages']}:
         raise ValueError('Exact requested URL is not in this inventory')
-    summary = summarize_lhr(lhr, exact_url, strategy)
+    summary = summarize_lhr(lhr, exact_url, strategy, declared_redirects(manifest).get(exact_url))
     identity = {'revision': manifest['revision'], 'artifact_hash': manifest['artifact_hash'],
                 'url': exact_url, 'strategy': strategy, 'settings_hash': summary['settings_hash'],
                 'source': source['kind'], 'report_id': report_id}
@@ -301,6 +326,14 @@ def load_records(output):
 
 def freshness_errors(record, manifest):
     errors = list(record['validation_errors'])
+    expected = declared_redirects(manifest).get(record['url'])
+    if expected:
+        if record.get('final_url') == expected:
+            # Older cached records treated every redirect as invalid. Reclassify
+            # only that error using the current declaration, retaining all others.
+            errors = [error for error in errors if error != 'redirected']
+        else:
+            errors.append('unexpected-redirect-target' if record.get('final_url') else 'missing-final-url')
     if not manifest.get('deployed_at'):
         errors.append('deployment-time-unverified')
     else:
@@ -314,7 +347,9 @@ def freshness_errors(record, manifest):
 
 def build_matrix(manifest, records, runs=5, threshold=1000):
     rows = []
+    redirects = declared_redirects(manifest)
     for page in manifest['pages']:
+        expected = redirects.get(page['url'])
         for strategy in STRATEGIES:
             matching = [record for record in records if record['url'] == page['url'] and record['strategy'] == strategy]
             current = [record for record in matching if record['revision'] == manifest['revision'] and record['artifact_hash'] == manifest['artifact_hash']]
@@ -349,6 +384,10 @@ def build_matrix(manifest, records, runs=5, threshold=1000):
                 status = 'invalid-evidence'
             elif group_results[0]['valid_runs'] < runs:
                 status = 'pending'
+            elif expected:
+                # These metrics describe the final document. Neither its speed
+                # nor finalUrl establishes the alias's total entry timing/chain.
+                status = 'expected-routing-entry-timing-unverified'
             elif not group_results[0]['performance_pass']:
                 status = 'failed-performance'
             elif not group_results[0]['agentic_pass']:
@@ -356,6 +395,9 @@ def build_matrix(manifest, records, runs=5, threshold=1000):
             else:
                 status = 'passed'
             rows.append({'route': page['route'], 'url': page['url'], 'strategy': strategy, 'status': status,
+                         'kind': 'declared-redirect' if expected else 'content',
+                         **({'expected_redirect': expected, 'entry_timing_status': 'unverified',
+                             'canonical_cohort': {'url': expected, 'strategy': strategy}} if expected else {}),
                          'canonical': page.get('canonical'), 'redirect_hint': page.get('redirect_hint'),
                          'previous_artifact_reports_diagnostic_only': len(matching) - len(current),
                          'previous_artifact_reports': [
@@ -363,10 +405,14 @@ def build_matrix(manifest, records, runs=5, threshold=1000):
                                                            'settings_hash', 'metrics', 'agentic', 'source_details')}
                              for record in matching if record not in current],
                          'settings_groups': group_results})
+    content_rows = [row for row in rows if row['kind'] == 'content']
     return {'revision': manifest['revision'], 'artifact_hash': manifest['artifact_hash'],
             'deployed_at': manifest.get('deployed_at'), 'required_runs_per_strategy': runs,
             'threshold_ms_exclusive': threshold, 'pages': len(manifest['pages']),
             'html_files': manifest.get('html_file_count'), 'rows': rows,
+            'content_pages': len(manifest['pages']) - len(redirects), 'declared_aliases': len(redirects),
+            'content_rows': len(content_rows), 'alias_rows': len(rows) - len(content_rows),
+            'all_content_pages_pass': bool(content_rows) and all(row['status'] == 'passed' for row in content_rows),
             'passed_rows': sum(row['status'] == 'passed' for row in rows),
             'all_pages_pass': bool(rows) and all(row['status'] == 'passed' for row in rows)}
 
@@ -378,7 +424,9 @@ def write_matrix(output, manifest, runs=5, threshold=1000):
              f"Revision: `{manifest['revision']}`; artifact: `{manifest['artifact_hash']}`.", '',
              f"Requested URLs: {len(manifest['pages'])}; generated HTML files: {manifest.get('html_file_count', 'unknown')}. Runtime language variants remain separate URLs.", '',
              f'Required: {runs} distinct reports per strategy, each FCP/LCP/SI < {threshold} ms, valid direct-page HTTP evidence, and applicable weighted Agentic audits passed.',
-             'Missing, redirected, failed, stale, or mixed-settings evidence is not a pass. Earlier artifact reports remain diagnostic only.', '',
+             'Missing, unexpected redirects, failed, stale, or mixed-settings evidence is not a pass. Earlier artifact reports remain diagnostic only.', '',
+             f"Content states: {matrix['content_pages']} ({matrix['content_rows']} mode rows); declared aliases: {matrix['declared_aliases']} ({matrix['alias_rows']} mode rows). All URL states remain listed.",
+             'Declared-alias metrics are final-document diagnostics, not proof of entry timing or redirect-chain correctness. Their canonical cohort is measured separately; alias entry timing remains unverified and prevents universal acceptance.', '',
              '| Route | Strategy | Status | Valid runs | FCP min–max, ms | LCP min–max, ms | SI min–max, ms |',
              '|---|---|---|---:|---|---|---|']
     for row in matrix['rows']:
@@ -387,7 +435,7 @@ def write_matrix(output, manifest, runs=5, threshold=1000):
             value = group['metrics'][name] if group else None
             return str(value['min']) + '–' + str(value['max']) if value else 'pending'
         lines.append(f"| {row['route']} | {row['strategy']} | {row['status']} | {group['valid_runs'] if group else 0}/{runs} | {span('fcp')} | {span('lcp')} | {span('speed_index')} |")
-    lines += ['', f"Passed rows: {matrix['passed_rows']}/{len(matrix['rows'])}. All pages pass: {matrix['all_pages_pass']}.",
+    lines += ['', f"Passed rows: {matrix['passed_rows']}/{len(matrix['rows'])}. All content pages pass: {matrix['all_content_pages_pass']}. All pages pass: {matrix['all_pages_pass']}.",
               'Full precision, settings families, actual weighted/unweighted/N/A Agentic audits, URLs, HTTP statuses and exclusions are in matrix.json.', '']
     target = Path(output) / 'matrix.md'
     target.write_text('\n'.join(lines))
@@ -439,16 +487,21 @@ def collect(output, manifest, runs, threshold, urls=None, max_requests=None, ret
     if not requested.issubset(known):
         raise ValueError('Requested URL is not in the exact inventory')
     requests = 0
-    for page in manifest['pages']:
-        if page['url'] not in requested:
-            continue
-        for strategy in STRATEGIES:
-            existing = [record for record in records if record['revision'] == manifest['revision']
-                        and record['artifact_hash'] == manifest['artifact_hash'] and record['url'] == page['url']
-                        and record['strategy'] == strategy and not freshness_errors(record, manifest)]
-            # Do not keep retrying a slow completed cohort to manufacture five passes.
-            count = len({record['fetch_time'] for record in existing})
-            for _ in range(max(0, runs - count)):
+    # Spread repeated URL/mode keys across the inventory without concurrency,
+    # cache-busting or extra calls. Freshness is still checked on every result.
+    for round_index in range(runs):
+        for page in manifest['pages']:
+            if page['url'] not in requested:
+                continue
+            for strategy in STRATEGIES:
+                existing = [record for record in records if record['revision'] == manifest['revision']
+                            and record['artifact_hash'] == manifest['artifact_hash'] and record['url'] == page['url']
+                            and record['strategy'] == strategy and not freshness_errors(record, manifest)]
+                # Cached and unfavorable completed cohorts keep their places:
+                # do not retry a slow result to manufacture passing reports.
+                count = len({record['fetch_time'] for record in existing})
+                if count > round_index:
+                    continue
                 if max_requests is not None and requests >= max_requests:
                     return write_matrix(output, manifest, runs, threshold)
                 lhr, error = api_request(page['url'], strategy, key)

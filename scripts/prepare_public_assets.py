@@ -527,7 +527,7 @@ def prepare_public_assets(output):
         return variants, mobile_variants
 
     @lru_cache(maxsize=None)
-    def avif_variants(reference, namespace='case-media', crop=None, case_cover=False):
+    def avif_variants(reference, namespace='case-media', crop=None):
         """Use the largest existing source, preserving every original/full URL.
 
         Keep a separate namespace from catalog covers, whose input can be a
@@ -536,7 +536,7 @@ def prepare_public_assets(output):
         """
         width, height = dimensions(reference)
         target = output / reference.split('?')[0].split('#')[0].lstrip('/')
-        quality = 45 if namespace == 'home-media' and crop else 60
+        quality = 50 if namespace == 'case-cover' else 45 if namespace == 'home-media' and crop else 60
         recipe = f'responsive-avif-v1:pillow-{PILLOW_VERSION}:quality-{quality}:speed-6:threads-2'
         if crop:
             if not (0 <= crop[0] < crop[2] <= width and 0 <= crop[1] < crop[3] <= height):
@@ -557,10 +557,10 @@ def prepare_public_assets(output):
         original = None
         # Retain a full-native candidate for high-DPR phones; never upscale.
         widths = ((width,) if crop else (960, 1280, 1440, width)) if namespace == 'home-media' else (640, 960, 1440, 2200, width)
-        if case_cover:
+        if namespace == 'case-cover':
             # Bridge 640→960 only for LCP covers. The memoized context keeps a
             # shared gallery image's advertised candidate list unchanged; the
-            # persistent encoding recipe remains identical for existing widths.
+            # gallery's q60 encoding cache remains independent of this profile.
             widths += (768,)
         for size in sorted({min(width, size) for size in widths}):
             wanted = (size, round(height * size / width))
@@ -690,8 +690,8 @@ def prepare_public_assets(output):
                             markup = attribute(markup, 'srcset', ', '.join(url + ' ' + descriptor
                                                                          for descriptor, url in legacy.items()))
                 markup = attribute(markup, 'sizes', sizes)
-                namespace = 'home-media' if context == 'home-hero' else 'case-media'
-                variants = avif_variants(largest, namespace, case_cover=context == 'cover')
+                namespace = 'home-media' if context == 'home-hero' else 'case-cover' if context == 'cover' else 'case-media'
+                variants = avif_variants(largest, namespace)
                 if native_only:
                     variants = variants[-1:]
                 mobile_srcset = escape(', '.join(url + ' ' + str(w) + 'w'

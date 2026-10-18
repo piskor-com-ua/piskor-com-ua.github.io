@@ -88,6 +88,26 @@ class OptimizeAssetsTest(unittest.TestCase):
         self.assertFalse((self.output / derivative).exists())
         self.assertEqual(html.read_text().count('/' + legacy), 2)
 
+    def test_new_cover_profile_never_displaces_existing_gallery_home_or_catalog_url(self):
+        existing = [
+            'assets/responsive/case-media/portfolio/case/photo-640.avif',
+            'assets/responsive/home-media/home-960.avif',
+            'assets/responsive/portfolio/catalog/cover-640.avif',
+        ]
+        new = []
+        for index, old in enumerate(existing):
+            fresh = 'assets/responsive/case-cover/profile-' + str(index) + '.avif'
+            payload = ('identical pair ' + str(index)).encode()
+            self.write(old, payload)
+            self.write(fresh, payload)
+            new.append(fresh)
+        html = self.write('index.html', ''.join('<source srcset="/' + url + ' 640w">' for url in existing + new))
+        self.assertEqual(optimize_assets(self.output)['duplicates'], 3)
+        for old, fresh in zip(existing, new):
+            self.assertTrue((self.output / old).is_file())
+            self.assertFalse((self.output / fresh).exists())
+            self.assertEqual(html.read_text().count('/' + old), 2)
+
 
 if __name__ == '__main__':
     unittest.main()

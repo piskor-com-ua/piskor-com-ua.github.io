@@ -114,6 +114,7 @@ class PublicAssetsTest(unittest.TestCase):
                 self.assertEqual(source['sizes'], COVER_SIZES if index == 0 else CARD_SIZES)
                 self.assertEqual(source['sizes'], fallback['sizes'])
                 self.assertEqual(source['media'], '(max-width: 700px)')
+                self.assertIn('/case-cover/' if index == 0 else '/case-media/', source['srcset'])
                 self.assertEqual(fallback['src'].split('?')[0], '/assets/photo-1440.webp')
                 self.assertIn('photo-2200.webp?v=', fallback['srcset'])
                 self.assertIn('photo-1440.webp?v=', fallback['srcset'])
@@ -170,7 +171,48 @@ class PublicAssetsTest(unittest.TestCase):
         self.assertEqual((preload['imagesrcset'], preload['imagesizes']), (cover_source['srcset'], cover_source['sizes']))
         small_source = Document(small.read_text()).root.find(lambda n:n.tag == 'source')[0].attrs
         self.assertEqual([entry.strip().split()[1] for entry in small_source['srcset'].split(',')], ['600w'])
-        self.assertFalse(any(self.output.glob('assets/responsive/case-media/small-768.avif')))
+        self.assertFalse(any(self.output.glob('assets/responsive/case-cover/small-768.avif')))
+
+    def test_cover_and_gallery_profiles_keep_independent_bytes_and_persistent_cache_in_both_orders(self):
+        source = self.output / 'assets/shared.webp'
+        pattern = bytes((index * 37 + index // 19) % 256 for index in range(96 * 72 * 3))
+        Image.frombytes('RGB', (96, 72), pattern).save(source, 'WEBP', lossless=True)
+        original = source.read_bytes()
+        page = self.output / 'index.html'
+        image = '<img src="/assets/shared.webp" alt="Unchanged source">'
+        cover = '<figure class="project-cover">' + image + '</figure>'
+        gallery = '<div class="gallery-grid">' + image + '</div>'
+        first_bytes = None
+        for order in ((cover, gallery), (gallery, cover)):
+            page.write_text('<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>'
+                            '<body class="project-page">' + ''.join(order) + '</body>')
+            if first_bytes is None:
+                prepare_public_assets(self.output)
+            else:
+                with patch.object(Image.Image, 'save', side_effect=AssertionError('Both profiles must reuse their own cache')):
+                    prepare_public_assets(self.output)
+            root = Document(page.read_text()).root
+            paths = {}
+            for role, class_name in (('cover', 'project-cover'), ('gallery', 'gallery-grid')):
+                container = root.find(lambda n:class_name in n.attrs.get('class', '').split())[0]
+                prepared = container.find(lambda n:n.tag == 'source')[0].attrs
+                url, width = prepared['srcset'].split()
+                self.assertEqual(width, '96w')
+                self.assertIn('/case-cover/' if role == 'cover' else '/case-media/', url)
+                paths[role] = self.output / url.lstrip('/')
+                with Image.open(paths[role]) as encoded:
+                    self.assertEqual(encoded.size, (96, 72))
+                self.assertEqual(container.find(lambda n:n.tag == 'img')[0].attrs['src'], '/assets/shared.webp')
+            current_bytes = {role:path.read_bytes() for role,path in paths.items()}
+            self.assertNotEqual(current_bytes['cover'], current_bytes['gallery'])
+            if first_bytes is None:
+                first_bytes = current_bytes
+            else:
+                self.assertEqual(current_bytes, first_bytes)
+            preload = root.find(lambda n:n.tag == 'link' and n.attrs.get('as') == 'image')[0].attrs
+            self.assertIn('/case-cover/', preload['imagesrcset'])
+        self.assertEqual(source.read_bytes(), original)
+        self.assertEqual(len(list((self.output.parent / 'output/image-cache/responsive-avif-v1').glob('*.avif'))), 2)
 
     def test_case_encoding_cache_reuses_bytes_and_invalidates_changed_source(self):
         path = self.output / 'assets/photo.webp'
@@ -183,22 +225,22 @@ class PublicAssetsTest(unittest.TestCase):
         def save(image, filename, format=None, **kwargs):
             if format == 'AVIF':
                 encodes.append(str(filename))
-                self.assertEqual(kwargs['quality'], 60)
+                self.assertEqual(kwargs['quality'], 50)
             return original_save(image, filename, format, **kwargs)
         with patch.object(Image.Image, 'save', save):
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 1)
-            first = (self.output / 'assets/responsive/case-media/photo-64.avif').read_bytes()
+            first = (self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes()
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 1)
-            self.assertEqual((self.output / 'assets/responsive/case-media/photo-64.avif').read_bytes(), first)
+            self.assertEqual((self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes(), first)
             Image.new('RGB', (64, 48), '#754832').save(path)
             page.write_text(html)
             prepare_public_assets(self.output)
             self.assertEqual(len(encodes), 2)
-            self.assertNotEqual((self.output / 'assets/responsive/case-media/photo-64.avif').read_bytes(), first)
+            self.assertNotEqual((self.output / 'assets/responsive/case-cover/photo-64.avif').read_bytes(), first)
         self.assertTrue((self.output.parent / 'output/image-cache/responsive-avif-v1').is_dir())
         self.assertFalse(any(p.name.startswith('.') and p.name != '.nojekyll' for p in self.output.rglob('*')))
 

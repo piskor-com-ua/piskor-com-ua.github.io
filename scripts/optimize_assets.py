@@ -26,8 +26,11 @@ def optimize_assets(output):
     # cached HTML can still request that URL after this deployment.
     def canonical_order(path):
         relative = path.relative_to(output).as_posix()
-        new_family = relative.startswith(('assets/responsive/case-media/', 'assets/responsive/home-media/'))
-        return new_family, relative
+        # New mobile cover profiles must also come after the existing gallery
+        # derivatives, preserving their URLs when bytes happen to be identical.
+        family = (2 if relative.startswith('assets/responsive/case-cover/') else
+                  1 if relative.startswith(('assets/responsive/case-media/', 'assets/responsive/home-media/')) else 0)
+        return family, relative
     candidates = sorted((p for p in assets.rglob('*')
                          if p.is_file() and p.suffix in MEDIA_SUFFIXES), key=canonical_order)
     # Fail before removing anything if the artifact already has broken media URLs.

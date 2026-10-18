@@ -73,6 +73,15 @@ for page in output.rglob('*.html'):
             '/assets/fonts/roboto-light-subset.woff2', '/assets/fonts/roboto-regular-subset.woff2'}
         pictures = root.find(lambda n: n.tag == 'picture' and n.find(lambda child: child.has_class('portfolio-card-cover')))
         assert len(pictures) == len(page_cards), str(page) + ': missing responsive format fallback'
+        preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'image')
+        assert len(preloads) == 1, str(page) + ': preload only the first mobile cover'
+        preload = preloads[0].attrs
+        first_source = pictures[0].find(lambda n: n.tag == 'source')[0].attrs
+        for link_key, source_key in [('imagesrcset', 'srcset'), ('imagesizes', 'sizes'), ('type', 'type'), ('media', 'media')]:
+            assert preload.get(link_key) == first_source[source_key], str(page) + ': preload does not match selected cover'
+        assert preload.get('fetchpriority') == 'high' and 'href' not in preload
+        html = page.read_text()
+        assert html.index('name="viewport"') < html.index('data-catalog-cover-preload') < html.index('as="font"')
         for picture in pictures:
             sources = picture.find(lambda n: n.tag == 'source')
             fallback = picture.find(lambda n: n.tag == 'img')[0]
@@ -112,5 +121,5 @@ for selector in [r'\.contact-top \.eyebrow', r'\.contact-main p']:
     assert (high + .05) / (low + .05) >= 4.5
 assert '.ttf' not in css and 'font-display:swap' in css
 subsets = [output / 'assets/fonts' / (name + '-subset.woff2') for name in ('roboto-light', 'roboto-regular')]
-assert sum(path.stat().st_size for path in subsets) <= 40000, 'Recheck the first-paint font budget before expanding character coverage'
+assert sum(path.stat().st_size for path in subsets) <= 26000, 'Recheck the first-paint font budget before expanding character coverage'
 print(f'Performance contracts: {len(pairs)} bilingual projects, {cards} responsive cards, actual image dimensions, resource versions and contact contrast verified')

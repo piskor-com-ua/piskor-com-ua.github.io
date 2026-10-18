@@ -3,6 +3,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from fontTools.ttLib import TTFont
+from fontTools.pens.recordingPen import DecomposingRecordingPen
 from first_paint import inline_consent, subset_fonts, inline_catalog_styles
 
 
@@ -52,6 +53,14 @@ class FirstPaintTests(unittest.TestCase):
                     if code in source.getBestCmap():
                         self.assertIn(code, font.getBestCmap())
                         self.assertEqual(source['hmtx'][source.getBestCmap()[code]], font['hmtx'][font.getBestCmap()[code]])
+                        original_pen = DecomposingRecordingPen(source.getGlyphSet())
+                        subset_pen = DecomposingRecordingPen(font.getGlyphSet())
+                        source.getGlyphSet()[source.getBestCmap()[code]].draw(original_pen)
+                        font.getGlyphSet()[font.getBestCmap()[code]].draw(subset_pen)
+                        self.assertEqual(original_pen.value, subset_pen.value)
+                self.assertNotIn('fpgm', font)
+                self.assertNotIn('prep', font)
+                self.assertIn('GPOS', font)
             self.assertEqual(original.read_bytes(), (Path('concept/assets') / original.name).read_bytes())
             self.assertLess(len(before), original.stat().st_size)
         # Repeating a generated build step must not change font bytes.

@@ -17,6 +17,27 @@ const assert = require('node:assert/strict');
       }
     }
     browser = await chromium.launch({ headless: true });
+    const preloadChecks = [];
+    for (const [route, width, deviceScaleFactor] of [
+      ['/portfolio/', 390, 1], ['/portfolio/', 412, 1.75], ['/en/portfolio/', 390, 2],
+      ['/portfolio/2025/', 700, 2], ['/en/portfolio/2026/', 701, 1], ['/portfolio/', 1440, 2]
+    ]) {
+      const probeContext = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor });
+      const probe = await probeContext.newPage();
+      const requests = [];
+      probe.on('request', request => requests.push(request.url()));
+      await probe.goto(origin + route);
+      await probe.locator('.portfolio-card-cover').first().evaluate(image => image.decode());
+      const result = await probe.locator('.portfolio-card-cover').first().evaluate(image => ({
+        src: image.currentSrc,
+        entries: performance.getEntriesByName(image.currentSrc).map(entry => entry.initiatorType)
+      }));
+      assert.equal(requests.filter(url => url === result.src).length, 1, 'Cover fetched more than once: ' + route);
+      assert.deepEqual(result.entries, [width <= 700 ? 'link' : 'img'], 'Preload must match picture selection');
+      assert.ok(new URL(result.src).pathname.endsWith(width <= 700 ? '.avif' : '.webp'));
+      preloadChecks.push({ route, width, deviceScaleFactor, ...result });
+      await probeContext.close();
+    }
     const context = await browser.newContext();
     const errors = [];
     page = await context.newPage();
@@ -24,6 +45,27 @@ const assert = require('node:assert/strict');
     page.on('response', response => { if (response.status() >= 400) errors.push(response.status() + ' ' + response.url()); });
     const checkGrid = vm.runInThisContext('(' + readFileSync('scripts/check-portfolio-grid.js', 'utf8') + ')');
     const matrix = await checkGrid(page, origin);
+    const sampleRoutes = JSON.parse(readFileSync('scripts/release-sample.json'));
+    assert.equal(new Set(sampleRoutes).size, 10);
+    for (const required of ['/', '/en/', '/portfolio/', '/en/portfolio/']) assert.ok(sampleRoutes.includes(required));
+    const releaseSample = [];
+    for (const route of sampleRoutes) {
+      for (const width of [390, 1440]) {
+        await page.setViewportSize({ width, height: 900 });
+        const response = await page.goto(origin + route);
+        assert.equal(response.status(), 200, route);
+        await page.locator('h1').waitFor();
+        await page.evaluate(() => document.fonts.ready);
+        assert.equal(await page.locator('html').getAttribute('lang'), route.startsWith('/en/') ? 'en' : 'uk');
+        assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /noindex/);
+        assert.ok(await page.locator('link[rel="canonical"]').getAttribute('href'));
+        assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), route + ': overflow');
+        const image = page.locator('.hero-picture img,.portfolio-card-cover,.project-cover img').first();
+        if (await image.count()) await image.evaluate(image => image.decode());
+        await page.screenshot({ path: 'output/browser/sample-' + sampleRoutes.indexOf(route) + '-' + width + '.jpg', type: 'jpeg' });
+        releaseSample.push({ route, width, status: response.status() });
+      }
+    }
     mkdirSync('output/browser', { recursive: true });
     for (const language of ['uk', 'en']) {
       const prefix = language === 'en' ? '/en' : '';
@@ -93,7 +135,7 @@ const assert = require('node:assert/strict');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, preloadChecks, releaseSample, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
   } catch (error) {
     if (page) {

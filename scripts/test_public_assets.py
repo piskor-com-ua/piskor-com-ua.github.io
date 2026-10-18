@@ -24,7 +24,7 @@ class PublicAssetsTest(unittest.TestCase):
         Image.new('RGB', (1080, 810), '#258878').save(image)
         original = image.read_bytes()
         page = self.output / 'index.html'
-        page.write_text('<img class="portfolio-card-cover" src="/assets/cover-1440.webp" width="2970" height="2100" loading="eager">')
+        page.write_text('<head><meta name="viewport" content="width=device-width, initial-scale=1"></head><img class="portfolio-card-cover" src="/assets/cover-1440.webp" width="2970" height="2100" loading="eager">')
         result = prepare_public_assets(self.output)
         text = page.read_text()
         self.assertEqual(result['unique_covers'], 1)
@@ -47,6 +47,34 @@ class PublicAssetsTest(unittest.TestCase):
                 self.assertEqual(prepared.format, 'AVIF')
                 self.assertEqual(prepared.width, int(descriptor[:-1]))
                 self.assertEqual(prepared.width / prepared.height, 4 / 3)
+
+    def test_preload_follows_first_card_per_page_and_survives_fingerprinting(self):
+        for name in ('first', 'year'):
+            Image.new('RGB', (480, 360), name == 'first' and '#258878' or '#754832').save(self.output / ('assets/' + name + '.webp'))
+        head = '<head><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="font" href="/font.woff2"></head>'
+        card = lambda name: '<img class="portfolio-card-cover" src="/assets/' + name + '.webp">'
+        pages = {'index.html': head + card('first') + card('year'),
+                 'year.html': head + card('year'), 'case.html': head + '<img src="/assets/first.webp">'}
+        for name, html in pages.items():
+            (self.output / name).write_text(html)
+        prepare_public_assets(self.output)
+        fingerprint_resources(self.output)
+        for name in ('index.html', 'year.html'):
+            html = (self.output / name).read_text()
+            root = Document(html).root
+            links = root.find(lambda n: n.tag == 'link' and n.attrs.get('as') == 'image')
+            self.assertEqual(len(links), 1)
+            link = links[0].attrs
+            source = root.find(lambda n: n.tag == 'source')[0].attrs
+            self.assertEqual(link['imagesrcset'], source['srcset'])
+            self.assertIn('.avif?v=', link['imagesrcset'])
+            self.assertEqual(link['imagesizes'], source['sizes'])
+            self.assertEqual((link['type'], link['media']), (source['type'], source['media']))
+            self.assertEqual(link['fetchpriority'], 'high')
+            self.assertNotIn('href', link)
+            self.assertLess(html.index('data-catalog-cover-preload'), html.index('as="font"'))
+        self.assertNotIn('as="image"', (self.output / 'case.html').read_text())
+        self.assertIn('/year-480.avif', (self.output / 'year.html').read_text())
 
     def test_nested_fingerprints_follow_bytes_and_keep_paths(self):
         image = self.output / 'assets/cover.webp'
@@ -73,6 +101,25 @@ class PublicAssetsTest(unittest.TestCase):
         optimize_assets(self.output)
         self.assertTrue(font.exists())
         self.assertTrue((self.output / 'assets/cover.avif').exists())
+
+    def test_logo_preserves_transparency_original_and_intrinsic_ratio(self):
+        logo = self.output / 'assets/piskor-logo.png'
+        artwork = Image.new('RGBA', (924, 234), (150, 200, 180, 128))
+        artwork.putpixel((0, 0), (50, 60, 70, 0))
+        artwork.save(logo)
+        original = logo.read_bytes()
+        page = self.output / 'index.html'
+        page.write_text('<img src="/assets/piskor-logo.png" alt="PISKOR">')
+        prepare_public_assets(self.output)
+        attrs = Document(page.read_text()).root.find(lambda n: n.tag == 'img')[0].attrs
+        self.assertEqual((attrs['width'], attrs['height']), ('924', '234'))
+        self.assertEqual(attrs['src'], '/assets/piskor-logo.png')
+        self.assertEqual(logo.read_bytes(), original)
+        source = Document(page.read_text()).root.find(lambda n: n.tag == 'source')[0].attrs
+        self.assertEqual(source['type'], 'image/webp')
+        with Image.open(self.output / source['srcset'].lstrip('/')) as image, Image.open(logo) as before:
+            self.assertEqual(image.size, before.size)
+            self.assertEqual(image.convert('RGBA').tobytes(), before.convert('RGBA').tobytes())
 
     def test_queries_and_fragments_survive_versioning(self):
         (self.output / 'assets/cover.webp').write_bytes(b'picture')

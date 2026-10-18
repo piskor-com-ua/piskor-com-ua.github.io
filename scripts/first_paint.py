@@ -70,6 +70,8 @@ def subset_fonts(output):
             required = characters.intersection(font.getBestCmap())
             options = subset.Options()
             options.flavor = 'woff2'
+            # Keep outlines, shaping and metrics; omit legacy grid-fitting bytecode.
+            options.hinting = False
             worker = subset.Subsetter(options=options)
             worker.populate(unicodes=sorted(required))
             worker.subset(font)

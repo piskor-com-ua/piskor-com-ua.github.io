@@ -7,6 +7,7 @@ import re
 from PIL import Image, ImageOps
 
 IMG = re.compile(r'<img\b[^>]*>', re.I)
+VIEWPORT = re.compile(r'<meta\b(?=[^>]*\bname=["\']viewport["\'])[^>]*>', re.I)
 CARD_SIZES = '(max-width: 700px) calc(100vw - 48px), (min-width: 1956px) calc((100vw - 204px) / 2), calc((91vw - 28px) / 2)'
 
 
@@ -43,6 +44,18 @@ def prepare_public_assets(output):
             return ImageOps.exif_transpose(image).size
 
     @lru_cache(maxsize=None)
+    def lossless_logo(reference):
+        target = output / reference.lstrip('/')
+        folder = output / 'assets' / 'responsive'
+        folder.mkdir(parents=True, exist_ok=True)
+        with Image.open(target) as original:
+            # Resampling this flat transparent artwork creates more colours and
+            # larger files. The full-resolution lossless encoding is smaller.
+            path = folder / 'piskor-logo.webp'
+            original.save(path, 'WEBP', lossless=True, method=6, exact=True)
+        return '/' + path.relative_to(output).as_posix()
+
+    @lru_cache(maxsize=None)
     def card_variants(reference):
         target = output / reference.lstrip('/')
         width, height = dimensions(reference)
@@ -70,8 +83,9 @@ def prepare_public_assets(output):
 
     count = 0
     for page in output.rglob('*.html'):
+        cover_preload = None
         def image_markup(match):
-            nonlocal count
+            nonlocal count, cover_preload
             markup = match.group(0)
             attrs = Tag(markup).attrs
             source = attrs.get('src', '')
@@ -79,11 +93,20 @@ def prepare_public_assets(output):
                 return markup
             width, height = dimensions(source)
             markup = attribute(attribute(markup, 'width', width), 'height', height)
+            if source == '/assets/piskor-logo.png':
+                return ('<picture><source type="image/webp" srcset="' + escape(lossless_logo(source), quote=True) + '">' + markup + '</picture>')
             if 'portfolio-card-cover' in attrs.get('class', '').split():
                 variants, mobile_variants = card_variants(source)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + str(w) + 'w' for url, w in variants))
                 markup = attribute(markup, 'sizes', CARD_SIZES)
                 mobile_srcset = escape(', '.join(url + ' ' + str(w) + 'w' for url, w in mobile_variants), quote=True)
+                if cover_preload is None:
+                    # Derive from the rendered first card, including year/locale order.
+                    # No href: older browsers must not fetch an unselected fallback.
+                    cover_preload = ('<link rel="preload" as="image" type="image/avif" '
+                                     'media="(max-width: 700px)" imagesrcset="' + mobile_srcset +
+                                     '" imagesizes="' + escape(CARD_SIZES, quote=True) +
+                                     '" fetchpriority="high" data-catalog-cover-preload>')
                 markup = ('<picture><source type="image/avif" media="(max-width: 700px)" '
                           'srcset="' + mobile_srcset + '" sizes="' + escape(CARD_SIZES, quote=True) + '">' + markup + '</picture>')
                 count += 1
@@ -101,7 +124,13 @@ def prepare_public_assets(output):
                     unique.setdefault(descriptor, url)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + d for d, url in unique.items()))
             return markup
-        page.write_text(IMG.sub(image_markup, page.read_text()))
+        html = IMG.sub(image_markup, page.read_text())
+        if cover_preload:
+            viewport = VIEWPORT.search(html)
+            if not viewport:
+                raise ValueError('Responsive cover preload requires an early viewport: ' + str(page))
+            html = html[:viewport.end()] + cover_preload + html[viewport.end():]
+        page.write_text(html)
     return {'responsive_cards': count, 'unique_covers': card_variants.cache_info().currsize}
 
 

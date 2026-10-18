@@ -24,6 +24,17 @@ assert all(languages == {'uk', 'en'} for languages in pairs.values())
 assert (output / 'llms.txt').read_text().startswith('# PISKOR Architect\n')
 assert all('https://piskor.com.ua' + p['url'] in (output / 'llms.txt').read_text() for p in catalog['projects'])
 
+expected_catalog_orders = {}
+for language, prefix in [('uk', ''), ('en', 'en/')]:
+    localized = [project for project in catalog['projects'] if project['language'] == language]
+    # Sort a composite unique key; never depend on a second sort preserving ties.
+    ordered = sorted(localized, key=lambda project: (project['year'], project['id']), reverse=True)
+    expected_catalog_orders[prefix + 'portfolio/index.html'] = [project['id'] for project in ordered]
+    for year in {project['year'] for project in ordered}:
+        expected_catalog_orders[prefix + 'portfolio/' + str(year) + '/index.html'] = [
+            project['id'] for project in ordered if project['year'] == year]
+checked_catalog_orders = set()
+
 cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
@@ -57,6 +68,11 @@ for page in output.rglob('*.html'):
             assert attrs.get('loading') != 'lazy', str(page) + ': lazy LCP image'
     page_cards = root.find(lambda n: n.has_class('portfolio-card-cover'))
     if page_cards:
+        relative = page.relative_to(output).as_posix()
+        assert relative in expected_catalog_orders, str(page) + ': unexpected catalog route'
+        ordered_links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
+        assert [card.attrs.get('data-project-id') for card in ordered_links] == expected_catalog_orders[relative], str(page) + ': catalog must sort year DESC, project_id DESC'
+        checked_catalog_orders.add(relative)
         assert page_cards[0].attrs.get('loading') == 'eager'
         assert page_cards[0].attrs.get('fetchpriority') == 'high'
         assert all(c.attrs.get('loading') == 'lazy' for c in page_cards[1:])
@@ -108,6 +124,8 @@ for page in output.rglob('*.html'):
             target = output / url.path.lstrip('/')
             if target.is_file() and target.suffix in {'.webp', '.avif', '.png', '.svg', '.ico', '.woff2', '.mp4', '.css', '.js'}:
                 assert parse_qs(url.query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]], value
+
+assert checked_catalog_orders == set(expected_catalog_orders), 'Missing UA/EN full or year catalog order verification'
 
 css = (output / 'style.css').read_text()
 background = re.search(r'\.contact\{background:(#[a-f0-9]{6});', css)[1]

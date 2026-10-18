@@ -4,7 +4,7 @@ import unittest
 
 from fontTools.ttLib import TTFont
 from fontTools.pens.recordingPen import DecomposingRecordingPen
-from first_paint import inline_consent, subset_fonts, inline_catalog_styles
+from first_paint import inline_consent, subset_fonts, inline_catalog_styles, inline_page_styles
 
 
 class FirstPaintTests(unittest.TestCase):
@@ -69,9 +69,99 @@ class FirstPaintTests(unittest.TestCase):
         self.assertEqual(first, {p.name: p.read_bytes() for p in (assets / 'fonts').glob('*.woff2')})
 
     def test_source_directories_cannot_be_rewritten(self):
-        for function in (inline_consent, subset_fonts, inline_catalog_styles):
+        for function in (inline_consent, subset_fonts, inline_catalog_styles, inline_page_styles):
             with self.assertRaises(ValueError):
                 function(Path('concept'))
+
+    def test_page_styles_keep_cascade_dynamic_states_and_relative_resources(self):
+        (self.root / 'styles').mkdir()
+        (self.root / 'styles/first.css').write_text('.used{background:url(../assets/bg.webp?v=abc)}.future:focus-visible{color:red}.absent{color:blue}')
+        (self.root / 'second.css').write_text('.used{color:green}@media print{.future{display:block}}')
+        (self.root / 'controller.js').write_text('element.classList.add("future");')
+        page = self.root / 'index.html'
+        page.write_text('<head><link rel="stylesheet" href="/styles/first.css?v=a"><style>.used{color:red}</style><link rel="stylesheet" href="/second.css?v=b" media="screen"><script src="/controller.js"></script></head><body class="used">Actual content</body>')
+        self.assertEqual(inline_page_styles(self.root), 2)
+        html = page.read_text()
+        self.assertIn('/assets/bg.webp?v=abc', html)
+        self.assertIn('.future:focus-visible', html)
+        self.assertNotIn('.absent', html)
+        self.assertLess(html.index('background:'), html.index('.used{color:red}'))
+        self.assertLess(html.index('.used{color:red}'), html.index('.used{color:green}'))
+        self.assertIn('media="screen"', html)
+        self.assertIn('Actual content', html)
+        self.assertEqual(inline_page_styles(self.root), 0)
+
+    def test_page_families_keep_both_languages_all_cases_and_their_dynamic_states(self):
+        (self.root / 'shared.css').write_text(
+            '@font-face{font-family:Brand;src:url(/font.woff2)}body{color:black}'
+            '.home-uk{color:red}.home-en{color:blue}.home-open:focus-visible{outline:0}'
+            '.case-one{color:red}.case-two{color:blue}.gallery-open:hover{color:green}'
+            '.not-found-page{color:red}.error-open{color:blue}.unused{display:none}'
+            ':is(.future-state,a){color:inherit}')
+        (self.root / 'home.js').write_text('element.classList.add("home-open");')
+        (self.root / 'case.js').write_text('element.classList.add("gallery-open");')
+        (self.root / 'error.js').write_text('element.classList.add("error-open");')
+        fixtures = {
+            'index.html': ('home-uk', 'home'),
+            'en/index.html': ('home-en', None),
+            'portfolio/2026/first/index.html': ('project-page case-one', 'case'),
+            'en/portfolio/2025/second/index.html': ('project-page case-two', None),
+            '404.html': ('not-found-page', 'error'),
+            'old-alias/index.html': ('alias', None),
+        }
+        for relative, (classes, controller) in fixtures.items():
+            page = self.root / relative
+            page.parent.mkdir(parents=True, exist_ok=True)
+            script = '<script src="/' + controller + '.js"></script>' if controller else ''
+            page.write_text('<head><link rel="stylesheet" href="/shared.css">' + script
+                            + '</head><body class="' + classes + '">Content</body>')
+        self.assertEqual(inline_page_styles(self.root), len(fixtures))
+        for relative in ('index.html', 'en/index.html'):
+            html = (self.root / relative).read_text()
+            for selector in ('.home-uk', '.home-en', '.home-open:focus-visible'):
+                self.assertIn(selector, html)
+            for selector in ('.case-one', '.gallery-open', '.not-found-page', '.error-open'):
+                self.assertNotIn(selector, html)
+        for relative in ('portfolio/2026/first/index.html', 'en/portfolio/2025/second/index.html'):
+            html = (self.root / relative).read_text()
+            for selector in ('.case-one', '.case-two', '.gallery-open:hover'):
+                self.assertIn(selector, html)
+            for selector in ('.home-uk', '.home-open', '.not-found-page', '.error-open'):
+                self.assertNotIn(selector, html)
+        error = (self.root / '404.html').read_text()
+        self.assertIn('.not-found-page', error)
+        self.assertIn('.error-open', error)
+        self.assertNotIn('.home-uk', error)
+        self.assertNotIn('.case-one', error)
+        unknown = (self.root / 'old-alias/index.html').read_text()
+        for selector in ('.home-uk', '.home-en', '.home-open', '.case-one', '.case-two', '.gallery-open', '.not-found-page', '.error-open'):
+            self.assertIn(selector, unknown)
+        for relative in fixtures:
+            html = (self.root / relative).read_text()
+            self.assertIn('@font-face', html)
+            self.assertIn('body{color:black}', html)
+            self.assertIn(':is(.future-state,a)', html)
+            self.assertNotIn('.unused', html)
+
+    def test_unknown_controller_disables_pruning_only_for_its_family_and_unknown_pages(self):
+        css = '.home-state{color:red}.case-state{color:blue}.unknown-state{color:green}'
+        (self.root / 'shared.css').write_text(css)
+        for relative, classes, script in (
+            ('index.html', 'home-state', '<script src="https://example.test/controller.js"></script>'),
+            ('portfolio/2026/first/index.html', 'project-page case-state', ''),
+            ('alias/index.html', 'alias', ''),
+        ):
+            page = self.root / relative
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text('<link rel="stylesheet" href="/shared.css">' + script
+                            + '<body class="' + classes + '">Content</body>')
+        self.assertEqual(inline_page_styles(self.root), 3)
+        self.assertIn(css, (self.root / 'index.html').read_text())
+        self.assertIn(css, (self.root / 'alias/index.html').read_text())
+        case = (self.root / 'portfolio/2026/first/index.html').read_text()
+        self.assertIn('.case-state', case)
+        self.assertNotIn('.home-state', case)
+        self.assertNotIn('.unknown-state', case)
 
 
 if __name__ == '__main__':

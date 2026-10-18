@@ -22,8 +22,14 @@ def optimize_assets(output):
              if p.is_file() and p.suffix in TEXT_SUFFIXES}
     referenced = {m['asset'] for text in texts.values()
                   for m in ASSET_URL.finditer(text)}
-    candidates = sorted(p for p in assets.rglob('*')
-                        if p.is_file() and p.suffix in MEDIA_SUFFIXES)
+    # New picture derivatives must not displace an already published card URL:
+    # cached HTML can still request that URL after this deployment.
+    def canonical_order(path):
+        relative = path.relative_to(output).as_posix()
+        new_family = relative.startswith(('assets/responsive/case-media/', 'assets/responsive/home-media/'))
+        return new_family, relative
+    candidates = sorted((p for p in assets.rglob('*')
+                         if p.is_file() and p.suffix in MEDIA_SUFFIXES), key=canonical_order)
     # Fail before removing anything if the artifact already has broken media URLs.
     for reference in referenced:
         target = output / reference

@@ -4,6 +4,7 @@ const { readFileSync, mkdirSync, writeFileSync } = require('node:fs');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const checkCatalogRendering = require('./check-catalog-rendering.cjs');
+const checkHomeRendering = require('./check-home-rendering.cjs');
 
 (async () => {
   const origin = 'http://127.0.0.1:4176';
@@ -18,6 +19,7 @@ const checkCatalogRendering = require('./check-catalog-rendering.cjs');
       }
     }
     browser = await chromium.launch({ headless: true });
+    const homeRendering = await checkHomeRendering(browser, origin);
     const catalogRendering = await checkCatalogRendering(browser, origin);
     const preloadChecks = [];
     for (const [route, width, deviceScaleFactor] of [
@@ -139,10 +141,18 @@ const checkCatalogRendering = require('./check-catalog-rendering.cjs');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, catalogRendering, preloadChecks, releaseSample, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, preloadChecks, releaseSample, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
+    await browser.close();
+    browser = null;
+    await new Promise((resolve, reject) => {
+      const density = spawn(process.execPath, ['scripts/check-case-density.cjs', origin,
+        '--output', 'output/browser/case-density.json'], { stdio: 'inherit' });
+      density.on('error', reject);
+      density.on('exit', code => code === 0 ? resolve() : reject(Error('Image density validation exited ' + code)));
+    });
   } catch (error) {
-    if (page) {
+    if (page && !page.isClosed()) {
       await page.screenshot({ path: 'output/browser/failure.jpg', type: 'jpeg' });
       const diagnostics = await page.evaluate(() => ({
         url: location.href, viewport: innerWidth, client: document.documentElement.clientWidth,

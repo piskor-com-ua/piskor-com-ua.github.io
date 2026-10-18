@@ -1,6 +1,7 @@
 """Prepare early rendering from shared sources in the generated artifact only."""
 from html import escape, unescape
 from pathlib import Path
+from urllib.parse import urlsplit, urljoin
 import hashlib
 import re
 
@@ -108,4 +109,74 @@ def inline_catalog_styles(output):
         if replaced:
             page.write_text(html)
             count += 1
+    return count
+
+
+def _page_style_family(output, page, html):
+    """Only known page families may use a narrower class inventory."""
+    relative = page.relative_to(output).as_posix()
+    if relative in {'index.html', 'en/index.html'}:
+        return 'home'
+    if relative == '404.html':
+        return 'not-found'
+    body = BODY.search(html)
+    classes = re.search(r'(?<![\w-])class\s*=\s*["\']([^"\']*)["\']', body[0], re.I) if body else None
+    names = set(unescape(classes[1]).split()) if classes else set()
+    if ('project-page' in names and 'catalog-page' not in names
+            and re.fullmatch(r'(?:en/)?portfolio/\d{4}/[^/]+/index\.html', relative)):
+        return 'case'
+    return 'all'
+
+
+def inline_page_styles(output):
+    """Remove stylesheet round trips while retaining every possible page state.
+
+    Pruning uses all HTML and local controllers within a known page family:
+    both home languages, every case together, or the 404 page. Unknown pages
+    retain the union of all non-catalog pages. Each replacement stays at its
+    original cascade position; unknown external styles are left untouched.
+    """
+    output = generated_root(output)
+    pages = sorted(path for path in output.rglob('*.html')
+                   if 'data-catalog-styles=' not in path.read_text())
+    families = {}
+    family_pages = {}
+    for page in pages:
+        family = _page_style_family(output, page, page.read_text())
+        families[page] = family
+        family_pages.setdefault(family, []).append(page)
+    family_classes = {family: catalog_classes(output, pages if family == 'all' else members)
+                      for family, members in family_pages.items()}
+    pattern = re.compile(r'<link\b(?=[^>]*\brel=["\']stylesheet["\'])[^>]*>', re.I)
+    count = 0
+    cache = {}
+    for page in pages:
+        family = families[page]
+        def replace(match):
+            nonlocal count
+            href = re.search(r'\bhref=["\']([^"\']+)["\']', match[0], re.I)
+            if not href:
+                return match[0]
+            parsed = urlsplit(unescape(href[1]))
+            if parsed.scheme or parsed.netloc or not parsed.path.startswith('/'):
+                return match[0]
+            target = (output / parsed.path.lstrip('/')).resolve()
+            if not target.is_relative_to(output.resolve()) or not target.is_file():
+                raise ValueError('Missing local stylesheet: ' + href[1])
+            key = (family, target)
+            if key not in cache:
+                css = prune_catalog_css(target.read_text(), family_classes[family])
+                def absolute_url(found):
+                    quote, resource = found[1], found[2]
+                    return 'url(' + quote + urljoin(parsed.path, resource) + quote + ')'
+                css = re.sub(r'''url\(\s*(["']?)([^"')\s]+)\1\s*\)''', absolute_url, css)
+                if '</style' in css.lower():
+                    raise ValueError('Stylesheet contains an HTML style terminator')
+                cache[key] = css
+            media = re.search(r'\bmedia=["\']([^"\']*)["\']', match[0], re.I)
+            css = cache[key]
+            digest = hashlib.sha256(css.encode()).hexdigest()[:12]
+            count += 1
+            return '<style data-page-styles="' + digest + '"' + (' media="' + escape(media[1], quote=True) + '"' if media else '') + '>' + css + '</style>'
+        page.write_text(pattern.sub(replace, page.read_text()))
     return count

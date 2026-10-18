@@ -77,6 +77,17 @@ class OptimizeAssetsTest(unittest.TestCase):
         self.write('index.html', '<img src="/assets/a.webp"><img src="/assets/b.png">')
         self.assertEqual(optimize_assets(self.output)['duplicates'], 0)
 
+    def test_new_derivatives_reuse_legacy_urls_for_cached_html(self):
+        legacy = 'assets/responsive/portfolio/case/cover-640.avif'
+        derivative = 'assets/responsive/case-media/portfolio/case/cover-640.avif'
+        self.write(legacy, b'same published image')
+        self.write(derivative, b'same published image')
+        html = self.write('index.html', '<source srcset="/' + legacy + ' 640w"><source srcset="/' + derivative + ' 640w">')
+        self.assertEqual(optimize_assets(self.output)['duplicates'], 1)
+        self.assertTrue((self.output / legacy).is_file())
+        self.assertFalse((self.output / derivative).exists())
+        self.assertEqual(html.read_text().count('/' + legacy), 2)
+
 
 if __name__ == '__main__':
     unittest.main()

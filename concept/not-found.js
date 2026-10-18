@@ -5,6 +5,8 @@
   const english = requested === 'en' || (requested !== 'uk' && /^\/en(?:\/|$)/.test(location.pathname));
   const lang = english ? 'en' : 'uk';
   document.documentElement.lang = lang;
+  const markdown = document.querySelector('link[rel="alternate"][type="text/markdown"]');
+  if (markdown) markdown.href = english ? '/agent-markdown/404-en.md' : '/agent-markdown/404.md';
 
   if (english) {
     document.querySelectorAll('[data-error-en]').forEach((element) => {

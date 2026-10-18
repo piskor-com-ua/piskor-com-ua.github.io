@@ -42,6 +42,55 @@ const copy = {
     ],detailNote:'We will discuss the scope and format of our work during your call.',approachLabel:'Care for the original vision',approachTitle:'Your vision.<br>Our attention.<br>At every step.',approachText:'We are there for the decisions that matter, from the first conversation to completion. Choose full guidance or our involvement at the stages you need.',steps:['We get to know you and your vision','We develop a coherent concept','We guide its realization'],contactLabel:'Start with a conversation',geography:'Lviv · Ukraine · Europe',contactTitle:'How do you imagine<br>your space?',contactText:'Tell us about your idea.<br>We will find the next step together.',copyright:'© 2026 PISKOR Architect',houseAlt:'Concept house in dark stone and glass among pine trees',interiorAlt:'Concept interior with natural stone, timber and forest views'
   }
 };
+const logo='<img src="/assets/piskor-logo.png" width="924" height="234" alt="PISKOR Architect">';
+const arrow='<span aria-hidden="true">↗</span>';
+// Shared markup is evaluated from this same trusted project source at build time.
+// Keep DOM effects below the browser boundary so the initial HTML needs no JavaScript.
+function renderHomeMarkup(locale, heroMediaHTML='', logoMediaHTML=logo) {
+  const t=copy[locale],languageIndex=locale==='uk'?0:1,firstBeat=chapters[0].beats[0];
+  // Reuse the prepared picture on language changes, before inserting the new DOM.
+  // Only its translated alternative text changes; responsive URLs stay identical.
+  const hero=heroMediaHTML ? heroMediaHTML.replace(/\balt="[^"]*"/, 'alt="'+t.houseAlt.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'"') : `<img src="/assets/house-concept.webp" width="1536" height="1024" alt="${t.houseAlt}" fetchpriority="high">`;
+  return `
+  <a class="skip" href="#main">${t.skip}</a>
+  <header class="header">
+    <a class="logo" href="#" aria-label="PISKOR Architect">${logoMediaHTML}</a>
+    <nav class="nav" aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a></nav>
+    <div class="header-right"><div class="language" aria-label="Language"><a data-lang="uk" href="/" lang="uk" hreflang="uk"${locale==='uk'?' aria-current="page"':''} aria-label="Українська">UA</a><span>/</span><a data-lang="en" href="/en/" lang="en" hreflang="en"${locale==='en'?' aria-current="page"':''} aria-label="English">EN</a></div><a class="header-call" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><a class="menu-button" href="#mobile-menu" aria-label="${t.menu}" aria-controls="mobile-menu"><i></i><i></i></a></div>
+  </header>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-picture">${hero}</div>
+      <div class="hero-copy"><div class="eyebrow">${t.place}</div><h1 id="hero-title">${t.hero}</h1><p>${t.heroText}</p><a class="text-link" href="tel:+380974781005">${t.cta}${arrow}</a></div>
+      <div class="hero-bottom"><a href="#design-process" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a></div>
+    </section>
+    <section class="story-intro"><div class="eyebrow">${t.introLabel}</div><h2>${storyUI[locale].title}<br><span>${storyUI[locale].subtitle}</span></h2><p>${storyUI[locale].intro}</p><a class="text-link" href="#design-process">${storyUI[locale].explore}<span aria-hidden="true">↓</span></a></section>
+    <section class="story" id="design-process" aria-label="${t.storyLabel}">
+      <div class="story-sticky">
+        <div class="story-top"><a href="#design-process" class="story-brand">${storyUI[locale].title} <span>${storyUI[locale].subtitle}</span></a><a href="tel:+380974781005" class="story-call">${t.cta} ↗</a></div>
+        <div class="stage-visual" aria-hidden="true"><img class="visual-image current" alt="" data-story-src="/assets/v2/model.webp" loading="lazy" fetchpriority="low"><noscript><img class="visual-image current" alt="" src="/assets/v2/model.webp" loading="lazy" fetchpriority="low"></noscript><img class="visual-image incoming" alt=""><div class="visual-light"></div><img class="privacy-image" data-story-src="/assets/v2/privacy.webp" alt="" loading="lazy" fetchpriority="low"></div>
+        <div class="technical-layer" aria-hidden="true"></div><div class="cinematic-shade"></div>
+        <div class="concept-label">${storyUI[locale].concept}</div>
+        <div class="beat-nav" role="group" aria-label="${storyUI[locale].points}"></div>
+        <div class="hotspots" role="group" aria-label="${storyUI[locale].points}"></div>
+        <div class="hotspot-note" hidden></div>
+        <div class="chapter-copy"><div class="eyebrow chapter-label">${chapters[0].name[languageIndex]} / ${firstBeat.label[languageIndex]}</div><h2>${firstBeat.title[languageIndex]}</h2><p>${firstBeat.text[languageIndex]}</p><div class="chapter-actions"><button class="stage-details">${storyUI[locale].detail} <span aria-hidden="true">+</span></button><a href="tel:+380974781005">${storyUI[locale].call} ↗</a></div></div>
+        <button class="mobile-automation-trigger" hidden>${locale==='uk'?'Керувати сценаріями':'Control scenarios'} <span aria-hidden="true">↗</span></button>
+        <div class="automation-panel" hidden></div>
+        <dialog class="mobile-control-sheet" aria-label="${locale==='uk'?'Керування простором':'Space controls'}"><button class="sheet-close" aria-label="${t.close}">×</button><div class="sheet-content"></div></dialog>
+        <div class="story-bottom"><div class="story-hint">${storyUI[locale].hint}</div><div class="story-controls"><button class="previous-beat" aria-label="${storyUI[locale].previous}">←</button><div class="chapter-dock" role="group" aria-label="${t.storyLabel}">${chapters.map((c,i)=>`<button data-chapter="${i}" aria-pressed="false">${c.name[locale==='uk'?0:1]}</button>`).join('')}</div><button class="next-beat" aria-label="${storyUI[locale].next}">→</button></div><div class="narrative-progress" aria-hidden="true"><i></i></div></div>
+      </div>
+    </section>
+    <section class="services" id="architecture-services"><div class="section-head"><div class="eyebrow">${t.serviceLabel}</div><h2>${t.servicesTitle}</h2></div>${t.services.map((s,i)=>`<div class="service-row"><div class="service-mark" aria-hidden="true">↗</div><button data-service="${i}" aria-haspopup="dialog" aria-label="${s.title}"><div><h3>${s.title}</h3><p>${s.sub}</p></div><span class="arrow-circle" aria-hidden="true">↗</span></button></div>`).join('')}</section>
+    <section class="approach" id="our-approach"><div class="approach-image"><img src="/assets/interior-concept.webp" alt="${t.interiorAlt}" width="1536" height="1024" loading="lazy"><div class="image-caption">${t.concept}</div></div><div class="approach-content"><div class="eyebrow">${t.approachLabel}</div><h2>${t.approachTitle}</h2><p>${t.approachText}</p><div class="approach-steps">${t.steps.map((s,i)=>`<div><span aria-hidden="true">—</span>${s}</div>`).join('')}</div></div></section>
+    <section class="contact" id="contact"><div class="contact-top"><div class="eyebrow">${t.contactLabel}</div><div class="eyebrow">${t.geography}</div></div><h2>${t.contactTitle}</h2><div class="contact-main"><a class="contact-phone" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><p>${t.contactText}</p></div><div class="contact-other"><a href="https://wa.me/380974781005" target="_blank" rel="noopener"><span class="messenger-icon messenger-icon--whatsapp" aria-hidden="true"></span><span>WhatsApp</span><span aria-hidden="true">↗</span></a><a href="viber://chat?number=%2B380974781005"><span class="messenger-icon messenger-icon--viber" aria-hidden="true"></span><span>Viber</span><span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="footer"><div class="footer-top"><a class="logo" href="#">${logoMediaHTML}</a><div class="footer-social"><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'} ↗</a><a href="https://www.instagram.com/piskor.com.ua/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.behance.net/piskor_com_ua" target="_blank" rel="noopener">Behance ↗</a><a href="https://www.facebook.com/piskor.com.ua/" target="_blank" rel="noopener">Facebook ↗</a></div></div><div class="footer-bottom"><span>${t.copyright}</span></div></footer>
+  <dialog class="detail" aria-labelledby="detail-title"><button class="detail-close" aria-label="${t.close}">×</button><div class="detail-inner"></div></dialog>`;
+}
+
+// Browser-only homepage enhancement.
 const homeSEO = JSON.parse(document.querySelector('#home-seo').textContent);
 let locale = document.documentElement.lang;
 if (new URLSearchParams(location.search).get('lang') === 'en' && locale !== 'en') location.replace('/en/' + location.hash);
@@ -53,10 +102,7 @@ const assets={climate:'/assets/automation/climate.webp',entry:'/assets/automatio
 const frames=chapters.flatMap((chapter,c)=>chapter.beats.map((beat,b)=>({...beat,chapter:c,beat:b})));
 let automation={preset:0,asset:"interior",light:75,temp:22,curtains:false,armed:false};
 const presets=[{asset:"interior",light:75,temp:22,curtains:false,armed:false},{asset:"night",light:40,temp:23,curtains:false,armed:false},{asset:"night",light:12,temp:22,curtains:true,armed:false},{asset:"night",light:0,temp:18,curtains:true,armed:true}];
-const logo='<img src="/assets/piskor-logo.png" width="924" height="234" alt="PISKOR Architect">';
-const arrow='<span aria-hidden="true">↗</span>';
-function render() {
-  const t=copy[locale];
+function render(initialFrame) {
   document.documentElement.lang=locale;
   const meta=homeSEO[locale];
   document.title=meta.title;
@@ -70,46 +116,18 @@ function render() {
   document.querySelector('meta[property="og:url"]').content=canonical;
   document.querySelector('meta[property="og:locale"]').content=meta.locale;
   document.body.classList.toggle('reduced',reduced.matches);
-  document.querySelector('#app').innerHTML=`
-  <a class="skip" href="#main">${t.skip}</a>
-  <header class="header">
-    <a class="logo" href="#" aria-label="PISKOR Architect">${logo}</a>
-    <nav class="nav" aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a></nav>
-    <div class="header-right"><div class="language" aria-label="Language"><button data-lang="uk" aria-pressed="${locale==='uk'}" aria-label="Українська">UA</button><span>/</span><button data-lang="en" aria-pressed="${locale==='en'}" aria-label="English">EN</button></div><a class="header-call" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><button class="menu-button" aria-label="${t.menu}" aria-expanded="false" aria-controls="mobile-menu"><i></i><i></i></button></div>
-  </header>
-    <nav class="mobile-menu" id="mobile-menu" inert aria-label="${t.menu}"><a href="#our-approach">${t.nav[0]}</a><a href="#design-process">${t.nav[1]}</a><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'}</a><a href="#contact">${t.nav[2]}</a><a href="tel:+380974781005">+380 97 478 10 05 ↗</a></nav>
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-picture"><img src="/assets/house-concept.webp" width="1536" height="1024" alt="${t.houseAlt}" fetchpriority="high"></div>
-      <div class="hero-copy"><div class="eyebrow">${t.place}</div><h1 id="hero-title">${t.hero}</h1><p>${t.heroText}</p><a class="text-link" href="tel:+380974781005">${t.cta}${arrow}</a></div>
-      <div class="hero-bottom"><a href="#design-process" class="scroll"><span aria-hidden="true">↓</span>${t.scroll}</a></div>
-    </section>
-    <section class="story-intro"><div class="eyebrow">${t.introLabel}</div><h2>${storyUI[locale].title}<br><span>${storyUI[locale].subtitle}</span></h2><p>${storyUI[locale].intro}</p><a class="text-link" href="#design-process">${storyUI[locale].explore}<span aria-hidden="true">↓</span></a></section>
-    <section class="story" id="design-process" aria-label="${t.storyLabel}">
-      <div class="story-sticky">
-        <div class="story-top"><a href="#design-process" class="story-brand">${storyUI[locale].title} <span>${storyUI[locale].subtitle}</span></a><a href="tel:+380974781005" class="story-call">${t.cta} ↗</a></div>
-        <div class="stage-visual" aria-hidden="true"><img class="visual-image current" alt="" src="/assets/v2/model.webp"><img class="visual-image incoming" alt=""><div class="visual-light"></div><img class="privacy-image" src="/assets/v2/privacy.webp" alt=""></div>
-        <div class="technical-layer" aria-hidden="true"></div><div class="cinematic-shade"></div>
-        <div class="concept-label">${storyUI[locale].concept}</div>
-        <div class="beat-nav" role="group" aria-label="${storyUI[locale].points}"></div>
-        <div class="hotspots" role="group" aria-label="${storyUI[locale].points}"></div>
-        <div class="hotspot-note" hidden></div>
-        <div class="chapter-copy"><div class="eyebrow chapter-label"></div><h2></h2><p></p><div class="chapter-actions"><button class="stage-details">${storyUI[locale].detail} <span aria-hidden="true">+</span></button><a href="tel:+380974781005">${storyUI[locale].call} ↗</a></div></div>
-        <button class="mobile-automation-trigger" hidden>${locale==='uk'?'Керувати сценаріями':'Control scenarios'} <span aria-hidden="true">↗</span></button>
-        <div class="automation-panel" hidden></div>
-        <dialog class="mobile-control-sheet" aria-label="${locale==='uk'?'Керування простором':'Space controls'}"><button class="sheet-close" aria-label="${t.close}">×</button><div class="sheet-content"></div></dialog>
-        <div class="story-bottom"><div class="story-hint">${storyUI[locale].hint}</div><div class="story-controls"><button class="previous-beat" aria-label="${storyUI[locale].previous}">←</button><div class="chapter-dock" role="group" aria-label="${t.storyLabel}">${chapters.map((c,i)=>`<button data-chapter="${i}" aria-pressed="false">${c.name[locale==='uk'?0:1]}</button>`).join('')}</div><button class="next-beat" aria-label="${storyUI[locale].next}">→</button></div><div class="narrative-progress" aria-hidden="true"><i></i></div></div>
-      </div>
-    </section>
-    <section class="services" id="architecture-services"><div class="section-head"><div class="eyebrow">${t.serviceLabel}</div><h2>${t.servicesTitle}</h2></div>${t.services.map((s,i)=>`<div class="service-row"><div class="service-mark" aria-hidden="true">↗</div><button data-service="${i}" aria-haspopup="dialog" aria-label="${s.title}"><div><h3>${s.title}</h3><p>${s.sub}</p></div><span class="arrow-circle" aria-hidden="true">↗</span></button></div>`).join('')}</section>
-    <section class="approach" id="our-approach"><div class="approach-image"><img src="/assets/interior-concept.webp" alt="${t.interiorAlt}" width="1536" height="1024" loading="lazy"><div class="image-caption">${t.concept}</div></div><div class="approach-content"><div class="eyebrow">${t.approachLabel}</div><h2>${t.approachTitle}</h2><p>${t.approachText}</p><div class="approach-steps">${t.steps.map((s,i)=>`<div><span aria-hidden="true">—</span>${s}</div>`).join('')}</div></div></section>
-    <section class="contact" id="contact"><div class="contact-top"><div class="eyebrow">${t.contactLabel}</div><div class="eyebrow">${t.geography}</div></div><h2>${t.contactTitle}</h2><div class="contact-main"><a class="contact-phone" href="tel:+380974781005">+380 97 478 10 05 ${arrow}</a><p>${t.contactText}</p></div><div class="contact-other"><a href="https://wa.me/380974781005" target="_blank" rel="noopener"><span class="messenger-icon messenger-icon--whatsapp" aria-hidden="true"></span><span>WhatsApp</span><span aria-hidden="true">↗</span></a><a href="viber://chat?number=%2B380974781005"><span class="messenger-icon messenger-icon--viber" aria-hidden="true"></span><span>Viber</span><span aria-hidden="true">↗</span></a></div></section>
-  </main>
-  <footer class="footer"><div class="footer-top"><a class="logo" href="#">${logo}</a><div class="footer-social"><a href="${locale==='uk'?'/portfolio/':'/en/portfolio/'}">${locale==='uk'?'Портфоліо':'Portfolio'} ↗</a><a href="https://www.instagram.com/piskor.com.ua/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.behance.net/piskor_com_ua" target="_blank" rel="noopener">Behance ↗</a><a href="https://www.facebook.com/piskor.com.ua/" target="_blank" rel="noopener">Facebook ↗</a></div></div><div class="footer-bottom"><span>${t.copyright}</span></div></footer>
-  <dialog class="detail" aria-labelledby="detail-title"><button class="detail-close" aria-label="${t.close}">×</button><div class="detail-inner"></div></dialog>`;
+  const app=document.querySelector('#app');
+  // Preserve parsed HTML, responsive media and its in-flight image on first load.
+  if(app.dataset.homeRender!==locale || !app.querySelector('#hero-title')) {
+    const heroMediaHTML=app.querySelector('.hero-picture')?.innerHTML||'';
+    const logoMediaHTML=app.querySelector('.header .logo')?.innerHTML||logo;
+    app.innerHTML=renderHomeMarkup(locale,heroMediaHTML,logoMediaHTML);
+    app.dataset.homeRender=locale;
+  }
+
 
   bindControls();
-  initStory();
+  initStory(initialFrame);
 }
 
 
@@ -126,16 +144,55 @@ function technicalArt(layer) {
 }
 
 const decodedImages=new Map();
+let storyMediaObserver=null,storyMediaReady=false,pendingStoryImage=null,storyMediaInitializing=false;
+function storyMediaNearViewport(){
+ const story=document.querySelector('.story');if(!story)return false;
+ const box=story.getBoundingClientRect();
+ return box.top<innerHeight+320&&box.bottom>-320;
+}
+function resetStoryMedia(){
+ imageTicket++;
+ storyMediaObserver?.disconnect();storyMediaObserver=null;
+ storyMediaReady=false;pendingStoryImage=null;
+ if(typeof IntersectionObserver==='function'){
+  storyMediaObserver=new IntersectionObserver(entries=>{
+   if(entries.some(entry=>entry.isIntersecting))activateStoryMedia();
+  },{rootMargin:'320px 0px'});
+  storyMediaObserver.observe(document.querySelector('.story'));
+ }
+}
+function prepareStoryNeighbors(){
+ if(!storyMediaReady||activeFrame<0)return;
+ for(const neighbor of [frames[activeFrame+1],frames[activeFrame-1]]){
+  if(neighbor)prepareImage(neighbor.chapter===4?['interior','climate','entry','house'][neighbor.beat]:neighbor.asset);
+ }
+}
+function activateStoryMedia(force=false){
+ if(storyMediaInitializing)return false;
+ if(storyMediaReady)return true;
+ if(!force&&!storyMediaNearViewport())return false;
+ storyMediaReady=true;storyMediaObserver?.disconnect();storyMediaObserver=null;
+ // The first displayed photo is the latest requested frame, never a stale
+ // initial model that an earlier observer or language render left pending.
+ const pending=pendingStoryImage;pendingStoryImage=null;
+ if(pending)showImage(pending.key,false);
+ if(activeChapter===4)updateSystems();
+ prepareStoryNeighbors();
+ return true;
+}
 let sceneLayoutTimer,lastStoryScrollY=scrollY,nativeTouchUntil=0,touchAnchor=null,storyExit=null,wheelAnchor=null,nativeWheelEntry=null;
 function prepareImage(key){
+ if(!storyMediaReady)return Promise.resolve();
  if(!decodedImages.has(key)){const image=new Image();image.src=assets[key];decodedImages.set(key,image.decode().catch(()=>{}));}
  return decodedImages.get(key);
 }
 function showImage(key, animate=true) {
+ if(!storyMediaReady){pendingStoryImage={key};activateStoryMedia();return;}
  const stage=document.querySelector('.stage-visual');
  if(stage.dataset.asset===key)return;
  stage.dataset.asset=key;
  const token=++imageTicket,current=stage.querySelector('.current'),incoming=stage.querySelector('.incoming');
+ current.loading='eager';
  // Finish the previous dissolve before a new explicit navigation request.
  if(stage.classList.contains('image-transition'))current.src=incoming.src;
  incoming.getAnimations().forEach(a=>a.cancel());incoming.style.opacity='0';stage.classList.remove('image-transition');
@@ -151,11 +208,15 @@ function showImage(key, animate=true) {
  if(!animate)apply();else prepareImage(key).then(apply);
 }
 
-function initStory(){
+function initStory(initialFrame){
+  resetStoryMedia();
+  storyMediaInitializing=true;
   activeFrame=-1;activeChapter=-1;
   document.body.classList.toggle('reduced',reduced.matches);
-  setFrame(0,false);
-  updateScroll();
+  setFrame(initialFrame??0,false);
+  if(initialFrame===undefined)updateScroll();
+  storyMediaInitializing=false;
+  activateStoryMedia();
 }
 
 function setFrame(index, animate=true){
@@ -189,7 +250,7 @@ function setFrame(index, animate=true){
   poseFrame(0);
   requestAnimationFrame(()=>positionHotspots(0));
   document.querySelector('.narrative-progress i').style.width=((index+1)/frames.length*100)+'%';
-  for(const neighbor of [frames[index+1],frames[index-1]])if(neighbor)prepareImage(neighbor.chapter===4?['interior','climate','entry','house'][neighbor.beat]:neighbor.asset);
+  prepareStoryNeighbors();
 }
 
 function poseFrame(){
@@ -209,6 +270,7 @@ function jumpFrame(index){
   nativeTouchUntil=0;
   index=clamp(index,0,frames.length-1);
   setFrame(index);
+  activateStoryMedia(true);
   if(!reduced.matches){
     const story=document.querySelector('.story');
     const travel=story.offsetHeight-document.querySelector('.story-sticky').offsetHeight;
@@ -218,6 +280,7 @@ function jumpFrame(index){
 }
 
 function updateScroll(){
+  activateStoryMedia();
   if(reduced.matches)return;
   if(storyExit)return;
   if(wheelAnchor!==null){
@@ -262,7 +325,7 @@ function updateAutomation(){
   stage.style.setProperty('--warmth',String((automation.temp-16)/12*.18));
   stage.classList.remove('curtains-closed');stage.classList.toggle('away',automation.armed);
   showImage(automationSceneAsset());
-  updateSystems();
+  if(storyMediaReady)updateSystems();
 }
 
 function toggleMenu(open){
@@ -282,16 +345,19 @@ function showDetail(chapter,opener){
 }
 
 function bindControls(){
-  document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{
+  toggleMenu(false);
+  document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',e=>{
+    if(e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)return;
+    e.preventDefault();
     if(locale===b.dataset.lang)return;
     const y=scrollY,frame=activeFrame,inStory=document.querySelector('.story').getBoundingClientRect().top<=0&&document.querySelector('.story').getBoundingClientRect().bottom>innerHeight;
     locale=b.dataset.lang;const url=new URL(location.href);url.pathname=homeSEO[locale].path;url.searchParams.delete('lang');history.replaceState(null,'',url);
-    document.body.classList.remove('locked');render();window.scrollTo({top:y,behavior:'instant'});if(inStory)jumpFrame(frame);
+    document.body.classList.remove('locked');render(inStory?frame:undefined);window.scrollTo({top:y,behavior:'instant'});if(inStory)jumpFrame(frame);
     document.querySelector(`[data-lang="${locale}"]`).focus({preventScroll:true});
   }));
-  document.querySelector('.menu-button').addEventListener('click',()=>toggleMenu(!document.querySelector('.mobile-menu').classList.contains('open')));
+  document.querySelector('.menu-button').addEventListener('click',e=>{e.preventDefault();toggleMenu(!document.querySelector('.mobile-menu').classList.contains('open'));});
   // Anchor navigation skips the intervening narrative; manual scrolling still plays it.
-  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  document.querySelectorAll('a[href^="#"]:not(.menu-button)').forEach(a=>a.addEventListener('click',e=>{
     e.preventDefault();finishStoryExit();wheelAnchor=null;nativeWheelEntry=null;touchAnchor=null;nativeTouchUntil=0;wheelLatched=false;toggleMenu(false);const hash=a.getAttribute('href');
     if(hash==='#design-process'){jumpFrame(0);if(reduced.matches)document.querySelector('#design-process').scrollIntoView({behavior:'instant'});}
     else{const target=hash==='#'?document.body:document.querySelector(hash);if(target)window.scrollTo({top:hash==='#'?0:scrollY+target.getBoundingClientRect().top,behavior:'instant'});}

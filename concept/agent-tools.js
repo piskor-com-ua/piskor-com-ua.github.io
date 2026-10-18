@@ -3,7 +3,6 @@
   const context = document.modelContext || navigator.modelContext;
   if (!context || typeof context.registerTool !== 'function') return;
 
-  const language = document.documentElement.lang === 'en' ? 'en' : 'uk';
   let catalog;
   function readCatalog() {
     if (!catalog) {
@@ -24,7 +23,7 @@
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Provide an object with the documented fields.');
     if (Object.keys(input).some(key => !allowed.includes(key))) throw new Error('Unknown input field.');
     if (input.language !== undefined && !['uk', 'en'].includes(input.language)) throw new Error('Language must be uk or en.');
-    return input.language || language;
+    return input.language || (document.documentElement.lang === 'en' ? 'en' : 'uk');
   }
   function text(value) {
     return value.toLocaleLowerCase().normalize('NFKC').replace(/[’‘]/g, "'");

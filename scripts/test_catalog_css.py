@@ -90,6 +90,26 @@ class CatalogCssTests(unittest.TestCase):
                 page.write_text('<script src="' + src + '"></script>')
                 self.assertIsNone(catalog_classes(root, [page]))
 
+    def test_runtime_prefix_states_survive_and_unknown_expressions_keep_full_css(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            script = root / 'automation.js'
+            page = root / 'index.html'
+            page.write_text('<div class="story-sticky visual-image"></div><script src="/automation.js"></script>')
+            script.write_text("stage.classList.toggle('device-'+key,on); panel.classList.toggle('system-' + kind,on);")
+            css = '.story-sticky.device-biodynamic .visual-image{filter:sepia(.22)}.system-air{opacity:1}.absent{color:red}'
+            pruned = prune_catalog_css(css, catalog_classes(root, [page]))
+            self.assertIn('.device-biodynamic', pruned)
+            self.assertIn('.system-air', pruned)
+            self.assertNotIn('.absent', pruned)
+            for expression in ['name', "'device'+suffix", 'getClass()', '`device-${key}`']:
+                script.write_text('stage.classList.toggle(' + expression + ',on);')
+                classes = catalog_classes(root, [page])
+                self.assertIsNone(classes)
+                self.assertEqual(css, prune_catalog_css(css, classes))
+            script.write_text("stage.classList.add('known', dynamicName);")
+            self.assertIsNone(catalog_classes(root, [page]))
+
     def test_malformed_css_is_retained_instead_of_partially_pruned(self):
         for css in ['.missing{color:red}}', '@media all{.missing{color:red}}}']:
             self.assertEqual(css, prune_catalog_css(css, set()))

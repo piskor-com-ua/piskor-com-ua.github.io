@@ -1,11 +1,13 @@
 import base64
 from datetime import datetime, timezone
 import json
+import hashlib
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from agent_discovery import generate_agent_discovery, validate_trial_token, SKILL_PATH
+from agent_discovery import (generate_agent_discovery, validate_trial_token, skill_metadata,
+                             SKILL_PATH, SKILLS_INDEX_PATH, SKILL_INDEX_SCHEMA, MANIFEST_PATHS)
 
 
 class AgentDiscoveryTest(unittest.TestCase):
@@ -38,6 +40,42 @@ class AgentDiscoveryTest(unittest.TestCase):
             (output / 'index.html').write_text('<meta http-equiv="origin-trial" content="' + self.token(expiry=1) + '">')
             with self.assertRaisesRegex(ValueError, 'expired'):
                 generate_agent_discovery(output)
+
+    def test_skill_index_hashes_published_bytes_and_retains_legacy_deterministically(self):
+        source = Path('agent-resources/piskor-portfolio/SKILL.md')
+        before = source.read_bytes()
+        with TemporaryDirectory() as directory:
+            output = Path(directory)
+            generate_agent_discovery(output)
+            index = json.loads((output / SKILLS_INDEX_PATH).read_text())
+            self.assertEqual(index['$schema'], SKILL_INDEX_SCHEMA)
+            self.assertEqual(len(index['skills']), 1)
+            entry = index['skills'][0]
+            self.assertEqual(entry['type'], 'skill-md')
+            self.assertEqual(entry['url'], '/' + SKILL_PATH)
+            published = (output / SKILL_PATH).read_bytes()
+            self.assertEqual(published, before)
+            self.assertEqual(entry['digest'], 'sha256:' + hashlib.sha256(published).hexdigest())
+            metadata = skill_metadata(published.decode())
+            self.assertEqual({key: entry[key] for key in metadata}, metadata)
+            snapshots = {path: (output / path).read_bytes() for path in (*MANIFEST_PATHS, SKILL_PATH)}
+            generate_agent_discovery(output)
+            self.assertEqual(snapshots, {path: (output / path).read_bytes() for path in snapshots})
+            self.assertFalse((output / '.well-known/skills/index.json').exists())
+            self.assertFalse((output / 'auth.md').exists())
+            self.assertEqual(source.read_bytes(), before)
+
+    def test_skill_metadata_rejects_unsupported_or_invalid_frontmatter(self):
+        content = Path('agent-resources/piskor-portfolio/SKILL.md').read_text()
+        for invalid in [content.replace('name: piskor-portfolio', 'name: other'),
+                        content.replace('name: piskor-portfolio', 'name: piskor--portfolio'),
+                        content.replace('name: piskor-portfolio', 'name: Piskor'),
+                        content.replace('name: piskor-portfolio', 'name: piskor-portfolio\nname: duplicate'),
+                        content.replace('description: Find', 'description: "Find'),
+                        content.replace('description: Find', 'description: |\n  Find'),
+                        'no frontmatter']:
+            with self.subTest(invalid=invalid[:80]), self.assertRaises(ValueError):
+                skill_metadata(invalid)
 
 
 if __name__ == '__main__':

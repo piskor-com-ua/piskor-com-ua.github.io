@@ -17,7 +17,7 @@ function setup({ legacy = false, supported = true, failing = false } = {}) {
     requests.push({ url, options });
     return { ok: !failing, json: async () => ({ version: 1, projects }) };
   } });
-  return { tools, requests };
+  return { tools, requests, document };
 }
 test('unsupported browsers make no requests and register nothing', () => {
   const { tools, requests } = setup({ supported: false });
@@ -53,6 +53,16 @@ test('invalid and unknown inputs fail before reading data', async () => {
   await assert.rejects(tools[1].execute({}));
   await assert.rejects(tools[2].execute({ language: 'en' }));
   assert.equal(requests.length, 0);
+});
+test('default tool language follows a homepage language switch without registration or refetch', async () => {
+  const { tools, requests, document } = setup();
+  assert.equal(JSON.parse(await tools[0].execute()).projects[0].name, 'Будинок');
+  document.documentElement.lang = 'en';
+  assert.equal(JSON.parse(await tools[0].execute()).projects[0].name, 'House');
+  assert.equal(JSON.parse(await tools[1].execute({ project_id: 'house' })).language, 'en');
+  assert.equal(JSON.parse(await tools[0].execute({ language: 'uk' })).projects[0].name, 'Будинок');
+  assert.equal(tools.length, 3);
+  assert.equal(requests.length, 1);
 });
 test('contacts only read links and failed requests can retry', async () => {
   const { tools, requests } = setup({ failing: true });

@@ -4,6 +4,7 @@ const path = require('node:path');
 const { parseArgs } = require('node:util');
 const { values, positionals } = parseArgs({ allowPositionals: true, options: {
   runs: { type: 'string', default: '3' }, modes: { type: 'string', default: 'mobile,desktop' },
+  'mobile-cpu-slowdown': { type: 'string' },
   output: { type: 'string', default: 'output/lighthouse' }
 } });
 const baseline = positionals[0] || 'http://127.0.0.1:4184/portfolio/';
@@ -11,6 +12,8 @@ const candidate = positionals[1] || 'http://127.0.0.1:4183/portfolio/';
 const folder = values.output;
 const runs = Number(values.runs);
 const modes = values.modes.split(',');
+const mobileCpu = values['mobile-cpu-slowdown'] === undefined ? null : Number(values['mobile-cpu-slowdown']);
+if (mobileCpu !== null && (!Number.isFinite(mobileCpu) || mobileCpu <= 0)) throw Error('Use a positive mobile CPU slowdown multiplier');
 if (!Number.isInteger(runs) || runs < 1 || runs > 10 || !modes.length || modes.some(mode => !['mobile', 'desktop'].includes(mode))) {
   throw Error('Use --runs 1..10 and --modes mobile,desktop');
 }
@@ -24,6 +27,7 @@ const rows = [];
         const args = [url, '--quiet', '--chrome-flags=--headless', '--output=json', '--output-path=' + filename,
           '--only-categories=performance,accessibility,best-practices,seo,agentic-browsing'];
         if (mode === 'desktop') args.push('--preset=desktop');
+        else if (mobileCpu !== null) args.push('--throttling.cpuSlowdownMultiplier=' + mobileCpu);
         await new Promise((resolve, reject) => {
           const child = spawn(path.resolve('node_modules/.bin/lighthouse'), args, { stdio: 'inherit' });
           child.on('error', reject);
@@ -38,6 +42,7 @@ const rows = [];
           fcp: audit('first-contentful-paint'), lcp: audit('largest-contentful-paint'),
           speedIndex: audit('speed-index'), cls: audit('cumulative-layout-shift'),
           tbt: audit('total-blocking-time'), bytes: audit('total-byte-weight') };
+        row.throttling = report.configSettings.throttling;
         rows.push(row);
         console.log(JSON.stringify(row));
         writeFileSync(folder + '/summary.json', JSON.stringify(rows, null, 2));

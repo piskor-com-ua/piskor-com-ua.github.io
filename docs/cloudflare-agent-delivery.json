@@ -1,0 +1,230 @@
+{
+  "status": "proposed_not_applied",
+  "purpose": "Reviewable manual Cloudflare Free plan, not a complete zone ruleset or deployment tool. Apply only after merge, successful Pages and live version gate; follow cloudflare-agent-delivery.md.",
+  "scope": "No Worker, Snippet, paid Markdown for Agents, API token, new secret, security change, analytics change or indexing approval.",
+  "exact_accept_policy": "One Accept field with complete value text/markdown only. Mixed ranges, any q parameter, wildcard and ordinary browser Accept do not negotiate.",
+  "query_policy": "Query is never rewritten. Directory negotiation requires an empty query. Explicit /404.html accepts only empty query, exact lang=uk, or exact lang=en (English). Every other query, including duplicate/encoded parameters, preserves ordinary HTML; no full URLSearchParams equivalence is claimed.",
+  "error_policy": "Unknown paths retain origin404 and HTML error MIME. Content-Type changes require status200; combined policy headers require200. Unknown404 retains HTML meta noindex. Explicit /404.html and /404.html?lang=en are existing documents, not replacements for unknown routes. No /en/404.html exists.",
+  "cache_policy": "Reserved Markdown-prefix bypass is intentionally installed first and last among any matching cache rules. Default rewritten URI separates variants, but this plan also bypasses Markdown edge caching. Preserve all HTML/versioned-static cache settings.",
+  "free_budget": {
+    "limit_per_phase": 10,
+    "new_rule_counts": {
+      "http_request_transform": 3,
+      "http_request_cache_settings": 1,
+      "http_response_headers_transform": 5
+    },
+    "check_existing_counts_before_apply": true
+  },
+  "manual_apply_order": [
+    "Export current rules/DNS and verify origin files, quotas and expressions.",
+    "Install reserved Markdown cache bypass.",
+    "Install five response-header rules in listed order; confirm existing Content-Signal policy does not conflict.",
+    "Enable three URL rewrites last; EN404 and generic404 have disjoint exact-query predicates because same-phase expressions see original fields.",
+    "Read back saved fields and complete acceptance matrix from the companion document."
+  ],
+  "rules": [
+    {
+      "phase": "http_request_cache_settings",
+      "rule": {
+        "ref": "piskor-agent-markdown-bypass",
+        "description": "PISKOR agent Markdown: bypass edge cache",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and starts_with(http.request.uri.path, \"/agent-markdown/\")",
+        "action": "set_cache_settings",
+        "action_parameters": {
+          "cache": false
+        }
+      }
+    },
+    {
+      "phase": "http_response_headers_transform",
+      "rule": {
+        "ref": "piskor-agent-discovery-policy",
+        "description": "piskor-agent-discovery-policy",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and http.response.code eq 200 and ((starts_with(lower(http.response.headers[\"content-type\"][0]), \"text/html\") or ((starts_with(http.request.uri.path, \"/agent-markdown/\") and ends_with(http.request.uri.path, \".md\")) or http.request.uri.path in {\"/agent-api/index.md\" \"/agent-skills/piskor-portfolio/SKILL.md\"})) or (http.request.uri.path in {\"/project-catalog.json\" \"/agent-api/openapi.json\" \"/agent-markdown/routes.json\" \"/.well-known/agent-skills/index.json\" \"/.well-known/poppy.json\"} or http.request.uri.path in {\"/.well-known/ard.json\" \"/.well-known/ai-catalog.json\"} or http.request.uri.path in {\"/.well-known/api-catalog\" \"/llms.txt\" \"/robots.txt\" \"/sitemap.xml\"}))",
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "link": {
+              "operation": "add",
+              "value": "</.well-known/ard.json>; rel=\"ard\"; type=\"application/ard+json\", </.well-known/agent-skills/index.json>; rel=\"agent-skills\"; type=\"application/json\", </.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+            },
+            "x-robots-tag": {
+              "operation": "add",
+              "value": "noindex, nofollow"
+            },
+            "content-signal": {
+              "operation": "set",
+              "value": "ai-input=yes, ai-train=no, search=yes"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_response_headers_transform",
+      "rule": {
+        "ref": "piskor-agent-vary",
+        "description": "piskor-agent-vary",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and (starts_with(lower(http.response.headers[\"content-type\"][0]), \"text/html\") or ((starts_with(http.request.uri.path, \"/agent-markdown/\") and ends_with(http.request.uri.path, \".md\")) or http.request.uri.path in {\"/agent-api/index.md\" \"/agent-skills/piskor-portfolio/SKILL.md\"})) and (not has_key(http.response.headers, \"vary\") or not any(http.response.headers[\"vary\"][*] contains \"*\"))",
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "vary": {
+              "operation": "add",
+              "value": "Accept"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_response_headers_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-type",
+        "description": "piskor-agent-markdown-type",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and http.response.code eq 200 and ((starts_with(http.request.uri.path, \"/agent-markdown/\") and ends_with(http.request.uri.path, \".md\")) or http.request.uri.path in {\"/agent-api/index.md\" \"/agent-skills/piskor-portfolio/SKILL.md\"})",
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "content-type": {
+              "operation": "set",
+              "value": "text/markdown; charset=utf-8"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_response_headers_transform",
+      "rule": {
+        "ref": "piskor-agent-ard-type",
+        "description": "piskor-agent-ard-type",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and http.response.code eq 200 and http.request.uri.path in {\"/.well-known/ard.json\" \"/.well-known/ai-catalog.json\"}",
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "content-type": {
+              "operation": "set",
+              "value": "application/ard+json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_response_headers_transform",
+      "rule": {
+        "ref": "piskor-agent-api-catalog-type",
+        "description": "piskor-agent-api-catalog-type",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and http.response.code eq 200 and http.request.uri.path eq \"/.well-known/api-catalog\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "headers": {
+            "content-type": {
+              "operation": "set",
+              "value": "application/linkset+json; profile=\"https://www.rfc-editor.org/info/rfc9727\""
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-directory",
+        "description": "PISKOR exact Markdown request: public directory pages",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and ends_with(http.request.uri.path, \"/\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and not starts_with(http.request.uri.path, \"/assets/\") and not starts_with(http.request.uri.path, \"/.well-known/\") and not starts_with(http.request.uri.path, \"/agent-api/\") and not starts_with(http.request.uri.path, \"/agent-skills/\") and http.request.uri.query eq \"\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "expression": "concat(\"/agent-markdown\", http.request.uri.path, \"index.md\")"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-en",
+        "description": "PISKOR exact Markdown request: explicit English 404 document",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query eq \"lang=en\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404-en.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-document",
+        "description": "PISKOR exact Markdown request: explicit 404 document URL",
+        "enabled": true,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query in {\"\" \"lang=uk\"}",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404.md"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "dns_proposal": {
+    "status": "not_applied",
+    "type": "HTTPS",
+    "name": "_index._agents.piskor.com.ua",
+    "priority": 1,
+    "target": "piskor.com.ua",
+    "parameters": {
+      "alpn": [
+        "h2",
+        "h3"
+      ],
+      "port": 443
+    },
+    "meaning": "Experimental organizational HTTPS discovery index pointing to homepage with real ARD/Agent Skills/API catalog links. Not an MCP/A2A server. Index payload schema is out of scope of the DNS-AID draft.",
+    "dnssec": "Inspect/report existing state; do not enable DNSSEC or change registrar DS. Unsigned presence is not authenticated discovery.",
+    "fallback": "Leave pending if exact record cannot be expressed/validated; do not invent TXT encoding or endpoint claims."
+  },
+  "rollback": [
+    "Disable only these three request URL rewrites first.",
+    "Disable/remove only this plan's cache bypass and five response-header rules using saved IDs; restore previous order if needed.",
+    "Remove only the newly added DNS record if deployed; preserve all previous DNS/cache/security/consent/noindex settings.",
+    "Verify ordinary HTML, UA/EN, missing-route404, resource versions and noindex."
+  ],
+  "references": [
+    "https://developers.cloudflare.com/rules/transform/",
+    "https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation",
+    "https://developers.cloudflare.com/cache/how-to/cache-rules/order/",
+    "https://developers.cloudflare.com/cache/advanced-configuration/serve-tailored-content/",
+    "https://developers.cloudflare.com/cache/concepts/cache-control/",
+    "https://developers.cloudflare.com/rules/transform/response-header-modification/",
+    "https://www.rfc-editor.org/rfc/rfc9727.html",
+    "https://datatracker.ietf.org/doc/html/draft-mozleywilliams-dnsop-dnsaid-02",
+    "https://developers.cloudflare.com/ruleset-engine/rules-language/fields/reference/http.request.uri.args/"
+  ],
+  "content_signals_policy": {
+    "ai-input": "yes",
+    "ai-train": "no",
+    "search": "yes",
+    "authorization": "Explicit user policy for this release; search=yes does not remove or supersede page noindex."
+  },
+  "origin_json_mime": "Keep origin application/json on real JSON resources; verify it after deployment. No redundant JSON Content-Type transform."
+}

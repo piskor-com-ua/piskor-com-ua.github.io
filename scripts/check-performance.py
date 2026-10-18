@@ -6,6 +6,17 @@ import json
 import re
 from PIL import Image
 from agent_catalog import Document
+from first_paint import HOME_INLINE_PAGES, HOME_INLINE_MARKER, validate_home_inline_scripts
+
+
+def card_label_text(node):
+    """Keep real text-node boundaries; Node.text() invents spaces between tags."""
+    if isinstance(node, str):
+        return node
+    if node.tag in {'script', 'style'} or 'hidden' in node.attrs or node.attrs.get('aria-hidden') == 'true':
+        return ''
+    return ''.join(card_label_text(child) for child in node.children)
+
 
 output = Path('_site')
 catalog = json.loads((output / 'project-catalog.json').read_text())
@@ -38,7 +49,16 @@ checked_catalog_orders = set()
 cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
-    agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
+    external_agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
+    inline_controllers = root.find(lambda n: n.tag == 'script' and HOME_INLINE_MARKER in n.attrs)
+    inline_agents = [node for node in inline_controllers if node.attrs[HOME_INLINE_MARKER] == 'agent-tools.js']
+    if page.relative_to(output).as_posix() in HOME_INLINE_PAGES:
+        validate_home_inline_scripts(output, page.read_text())
+        assert not external_agents and len(inline_agents) == 1, str(page) + ': home agent execution coverage'
+    else:
+        assert not inline_controllers, str(page) + ': unmeasured page must retain external controllers'
+        assert len(external_agents) <= 1, str(page) + ': duplicate external agent controller'
+    agents = external_agents + inline_agents
     for rel, href in [('ard', '/.well-known/ard.json'), ('ai-catalog', '/.well-known/ai-catalog.json')]:
         discovery = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == rel)
         assert len(discovery) == (1 if agents else 0), str(page) + ': discovery coverage'
@@ -79,7 +99,8 @@ for page in output.rglob('*.html'):
         links = root.find(lambda n: n.tag == 'a' and n.has_class('portfolio-card'))
         for card in links:
             heading = card.find(lambda n: n.tag == 'h3')
-            assert len(heading) == 1 and card.attrs.get('aria-label') == card.text(), str(page) + ': card accessible name must include its complete visible label'
+            label = ' '.join(card_label_text(card).split())
+            assert len(heading) == 1 and card.attrs.get('aria-label') == label, str(page) + ': card accessible name must match its real text-node boundaries'
         sheets = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'stylesheet')
         assert not sheets, str(page) + ': render-blocking catalog stylesheet'
         styles = root.find(lambda n: n.tag == 'style' and 'data-catalog-styles' in n.attrs)

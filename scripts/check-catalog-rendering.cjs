@@ -162,11 +162,29 @@ module.exports = async function checkCatalogRendering(browser, origin, output = 
         // DOM order/count alone does not force rendering of skipped descendants.
         for (let index = 0; index < count; index++) await reveal(articles.nth(index));
 
+        // Axe's visible-text extraction joins actual text nodes, unlike the
+        // static document helper. Run only after fresh AX/focus checks and the
+        // card walk: its layout queries must not hide a skipped-content bug.
+        await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
+        const labelAudit = await page.evaluate(async () => {
+          const result = await axe.run('.catalog-projects', {
+            runOnly: { type: 'rule', values: ['label-content-name-mismatch'] },
+          });
+          return {
+            violations: result.violations.flatMap(rule => rule.nodes.map(node => ({ target: node.target, summary: node.failureSummary }))),
+            incomplete: result.incomplete.flatMap(rule => rule.nodes.map(node => node.target)),
+            passed: result.passes.reduce((total, rule) => total + rule.nodes.length, 0),
+          };
+        });
+        assert.deepEqual(labelAudit.violations, [], label + ': visible labels differ from accessible names');
+        assert.deepEqual(labelAudit.incomplete, [], label + ': label audit incomplete');
+        assert.equal(labelAudit.passed, count, label + ': label audit must exercise every card');
+
         await page.emulateMedia({ media: 'print' });
         const printVisibility = await cards.evaluateAll(elements => elements.map(element => getComputedStyle(element).contentVisibility));
         assert.ok(printVisibility.every(value => value === 'visible'), label + ': print skips catalog content');
         assert.deepEqual(errors, [], label + ': browser errors');
-        results.push({ route, width, cards: count, accessibleCards, yearAnchors: anchors.length, firstVisitConsent: true, keyboardFocus: true, print: true });
+        results.push({ route, width, cards: count, accessibleCards, labelAudit, yearAnchors: anchors.length, firstVisitConsent: true, keyboardFocus: true, print: true });
       } catch (error) {
         await page.screenshot({ path: output + '/catalog-failure-' + label + '.jpg', type: 'jpeg' }).catch(() => {});
         throw new Error(label + ': ' + error.message, { cause: error });

@@ -180,3 +180,110 @@ def inline_page_styles(output):
             return '<style data-page-styles="' + digest + '"' + (' media="' + escape(media[1], quote=True) + '"' if media else '') + '>' + css + '</style>'
         page.write_text(pattern.sub(replace, page.read_text()))
     return count
+
+
+HOME_CRITICAL_SCRIPTS = ('agent-tools.js', 'home-bootstrap.js', 'url-compat.js')
+HOME_INLINE_PAGES = {'index.html': 'uk', 'en/index.html': 'en'}
+HOME_INLINE_MARKER = 'data-inline-home-critical'
+HOME_EXTERNAL_SCRIPT = re.compile(r'<script\b(?P<attrs>[^>]*)>\s*</script\s*>', re.I)
+
+
+def _home_critical_payload(output):
+    """Exact shared sources, without defer/currentScript timing assumptions."""
+    sources, payload = {}, []
+    for name in HOME_CRITICAL_SCRIPTS:
+        source = (output / name).read_bytes().decode('utf-8')
+        if re.search(r'</script\b', source, re.I):
+            raise ValueError('Home controller contains an HTML script terminator: ' + name)
+        if re.search(r'document\s*\.\s*currentScript|\bDOMContentLoaded\b', source):
+            raise ValueError('Home controller needs an explicit timing review: ' + name)
+        digest = hashlib.sha256(source.encode()).hexdigest()
+        sources[name] = (source, digest)
+        # Inline classic scripts ignore defer. DOM-ready callbacks preserve the
+        # original source order, an interactive complete DOM, and before-load
+        # registration of native tools and compatibility/hash listeners.
+        payload.append('<script ' + HOME_INLINE_MARKER + '="' + name
+                       + '" data-source-sha256="' + digest + '">\n'
+                       + "document.addEventListener('DOMContentLoaded', () => {\n"
+                       + source + '\n}, { once: true });\n</script>\n')
+    return sources, ''.join(payload)
+
+
+def validate_home_inline_scripts(output, html):
+    """Fail on stale source/hash, duplicate execution, order or timing changes."""
+    output = generated_root(output)
+    _, expected = _home_critical_payload(output)
+    names = re.findall(r'<script\b[^>]*\b' + HOME_INLINE_MARKER
+                       + r'=["\']([^"\']+)["\']', html, re.I)
+    if tuple(names) != HOME_CRITICAL_SCRIPTS:
+        raise ValueError('Home inline controller coverage/order differs from the shared contract')
+    bodies = list(re.finditer(r'</body\s*>', html, re.I))
+    if len(bodies) != 1 or not html[:bodies[0].start()].endswith(expected):
+        raise ValueError('Home inline source/hash/DOM-ready wrapper/body position differs')
+    from html.parser import HTMLParser
+
+    class ExternalScripts(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            if tag == 'script':
+                reference = urlsplit(dict(attrs).get('src', ''))
+                if reference.path in {'/' + name for name in HOME_CRITICAL_SCRIPTS}:
+                    raise ValueError('Home controller is both inline and external')
+
+    ExternalScripts().feed(html)
+
+
+def inline_home_critical_scripts(output):
+    """Inline only the two measured home routes, keeping all other pages intact."""
+    output = generated_root(output)
+    sources, payload = _home_critical_payload(output)
+    from html.parser import HTMLParser
+
+    class ScriptAttributes(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            self.attributes = attrs
+
+    plans = []
+    for relative, language in HOME_INLINE_PAGES.items():
+        page = output / relative
+        html = page.read_bytes().decode('utf-8')
+        if ('<html lang="' + language + '"' not in html
+                or 'data-home-render="' + language + '"' not in html):
+            raise ValueError('Expected the prerendered localized homepage: ' + relative)
+        if HOME_INLINE_MARKER in html:
+            raise ValueError('Home critical controllers are already inlined')
+        body = re.search(r'<body\b', html, re.I)
+        if not body:
+            raise ValueError('Missing home body: ' + relative)
+        ordered = []
+
+        def remove(match):
+            parser = ScriptAttributes()
+            parser.feed(match[0])
+            attrs = dict(parser.attributes)
+            reference = urlsplit(unescape(attrs.get('src', '')))
+            name = reference.path.lstrip('/')
+            if name not in HOME_CRITICAL_SCRIPTS:
+                return match[0]
+            if (reference.scheme or reference.netloc or reference.path != '/' + name
+                    or set(attrs) != {'src', 'defer'} or len(parser.attributes) != 2
+                    or match.start() >= body.start()):
+                raise ValueError('Unsupported home script attributes/location: ' + name)
+            if reference.query != 'v=' + sources[name][1][:12] or reference.fragment:
+                raise ValueError('Home controller URL does not match its source hash: ' + name)
+            ordered.append(name)
+            return ''
+
+        updated = HOME_EXTERNAL_SCRIPT.sub(remove, html)
+        if tuple(ordered) != HOME_CRITICAL_SCRIPTS:
+            raise ValueError('Expected each deferred home controller once in source order')
+        closing = list(re.finditer(r'</body\s*>', updated, re.I))
+        if len(closing) != 1:
+            raise ValueError('Expected one home body end: ' + relative)
+        index = closing[0].start()
+        updated = updated[:index] + payload + updated[index:]
+        validate_home_inline_scripts(output, updated)
+        plans.append((page, updated))
+    # Validate both routes before changing either one.
+    for page, updated in plans:
+        page.write_bytes(updated.encode('utf-8'))
+    return len(plans)

@@ -3,6 +3,8 @@ indexing_enabled: false
 url: https://piskor.com.ua
 baseurl: ""
 google_analytics_id: G-S3T2GHM4H3
+# Public first-party WebMCP token. Expires 2027-03-30 00:00 UTC.
+webmcp_origin_trial_token: "AkrAqRGWVwlSVs+dt8Jw70SSMrF62XYGieY93w8dcoCCrOchQoeeCdPT+b8cuL8m2Vzs84Tpihv3YttgmqYonQUAAABNeyJvcmlnaW4iOiJodHRwczovL3Bpc2tvci5jb20udWE6NDQzIiwiZmVhdHVyZSI6IldlYk1DUCIsImV4cGlyeSI6MTgwNjM2NDgwMH0="
 source: concept
 destination: _site
 encoding: utf-8

@@ -27,6 +27,12 @@ assert all('https://piskor.com.ua' + p['url'] in (output / 'llms.txt').read_text
 cards = 0
 for page in output.rglob('*.html'):
     root = Document(page.read_text()).root
+    agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
+    for rel, href in [('ard', '/.well-known/ard.json'), ('ai-catalog', '/.well-known/ai-catalog.json')]:
+        discovery = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == rel)
+        assert len(discovery) == (1 if agents else 0), str(page) + ': discovery coverage'
+        if discovery:
+            assert discovery[0].attrs.get('href') == href
     early = root.find(lambda n: n.tag == 'script' and 'data-consent-inline' in n.attrs)
     assert len(early) == 1, str(page) + ': missing early consent controller'
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')

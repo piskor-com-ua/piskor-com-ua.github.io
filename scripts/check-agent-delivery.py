@@ -129,10 +129,15 @@ def request(url, method, accepts, timeout):
         connection.close()
 
 
-def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20, fetch=request):
+def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20, fetch=request,
+           expected_markdown_version=None):
     observations = []
     issues = []
     try:
+        if expected_markdown_version is not None and (
+                not isinstance(expected_markdown_version, str) or
+                not re.fullmatch(r'[0-9a-f]{40}', expected_markdown_version)):
+            raise ValueError('Expected Markdown version must be a complete Git SHA')
         initial_url = origin + case['route']
         response = fetch(initial_url, case['method'], case['accepts'], timeout)
         observations.append(response)
@@ -180,6 +185,14 @@ def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20
             issues.append('content-type')
         if case.get('status', 200) == 200:
             issues += policy(response['headers'], origin)
+            if case['mime'] == 'text/markdown' and expected_markdown_version:
+                versions = [v for k, v in response['headers'] if k.lower() == 'x-piskor-markdown-version']
+                if versions != [expected_markdown_version]:
+                    issues.append('markdown-worker-version')
+                if 'no-store' not in {x.strip().lower() for x in h.get('cache-control', '').split(',')}:
+                    issues.append('markdown-worker-no-store')
+                if h.get('cf-cache-status', '').upper() == 'HIT':
+                    issues.append('markdown-worker-unexpected-hit')
         else:
             robots = MarkdownAlternates()
             robots.feed(expected.decode('utf-8'))
@@ -199,7 +212,7 @@ def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20
                 actual_alternates = html_alternates(response['body'])
                 if len(expected_alternates) != 1 or actual_alternates != expected_alternates:
                     issues.append('html-markdown-alternate')
-        if case.get('cache_probe') and case['mime'] == 'text/markdown':
+        if case.get('cache_probe') and case['mime'] == 'text/markdown' and not expected_markdown_version:
             if h.get('cf-cache-status', '').upper() not in ('BYPASS', 'DYNAMIC'):
                 issues.append('markdown-cloudflare-bypass-unverified')
         return dict(case=case, observations=observations, comparison=comparison,
@@ -268,9 +281,12 @@ def main():
     parser.add_argument('--out', required=True, type=Path, help='New evidence directory; never overwritten')
     parser.add_argument('--known-html-injection', type=Path)
     parser.add_argument('--allow-markdown-redirects', type=int, choices=[307])
+    parser.add_argument('--expected-markdown-version', help='Require this Worker revision and no-store on every Markdown response')
     parser.add_argument('--workers', type=int, choices=range(1, 5), default=4)
     parser.add_argument('--timeout', type=float, default=20)
     args = parser.parse_args()
+    if args.expected_markdown_version is not None and not re.fullmatch(r'[0-9a-f]{40}', args.expected_markdown_version):
+        parser.error('Expected Markdown version must be a complete Git SHA')
     origin = args.origin.rstrip('/')
     parsed = urlsplit(origin)
     if parsed.scheme not in ('http', 'https') or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username:
@@ -284,7 +300,8 @@ def main():
     def run(pair):
         index, case = pair
         row = verify(case, origin, (site / case['file']).read_bytes(), known,
-                     bool(args.allow_markdown_redirects), args.timeout)
+                     bool(args.allow_markdown_redirects), args.timeout,
+                     expected_markdown_version=args.expected_markdown_version)
         for hop, observation in enumerate(row['observations']):
             body = observation.pop('body')
             filename = f'{index:04d}-{hop}.body'
@@ -301,9 +318,12 @@ def main():
                   inventory_sha256=sha((site / 'agent-markdown/routes.json').read_bytes()),
                   script_sha256=sha(Path(__file__).read_bytes()),
                   known_injection_sha256=sha(known) if known else None,
+                  expected_markdown_version=args.expected_markdown_version,
                   route_states=len(json.loads((site / 'agent-markdown/routes.json').read_text())['pages']),
                   count=len(results), passed=sum(row['pass_'] for row in results),
-                  cache_evidence_scope='CF status only; Age hop attribution/control-plane rules require separate proof',
+                  cache_evidence_scope=('Worker revision, no-store and no observed CF HIT; separate control-plane proof required'
+                                        if args.expected_markdown_version else
+                                        'CF status only; Age hop attribution/control-plane rules require separate proof'),
                   results=results)
     (args.out / 'summary.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({key: report[key] for key in ('route_states', 'count', 'passed')}))

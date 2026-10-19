@@ -1,0 +1,92 @@
+{
+  "status": "proposed_not_applied",
+  "purpose": "Bounded postmerge diagnosis and conditional generic Markdown redirect fallback; never pretend scanner success or restore missing request intent.",
+  "diagnostic": {
+    "phase": "http_response_headers_transform",
+    "max_seconds": 180,
+    "place": "last; validate existing Transform budget first",
+    "rule": {
+      "ref": "piskor-markdown-diagnostic",
+      "description": "PISKOR bounded Markdown delivery diagnostic",
+      "enabled": true,
+      "expression": "http.host eq \"piskor.com.ua\" and http.request.method eq \"GET\" and http.request.uri.path in {\"\" \"/\"} and http.request.uri.query eq \"\" and raw.http.request.uri.path in {\"\" \"/\"} and raw.http.request.uri.query eq \"\" and http.response.code eq 200 and starts_with(lower(http.response.headers[\"content-type\"][0]), \"text/html\") and http.request.timestamp.sec ge START_SECOND and http.request.timestamp.sec lt END_SECOND",
+      "action": "rewrite",
+      "action_parameters": {
+        "headers": {
+          "content-type": {
+            "operation": "set",
+            "expression": "concat(\"text/html; charset=utf-8; piskor-diag=\\\"md1-START_SECOND\\\"; piskor-accept=\\\"\", encode_base64(substring(coalesce(join(http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-count=\", to_string(coalesce(len(http.request.headers[\"accept\"]), 0)), \"; piskor-length=\", to_string(coalesce(len(join(http.request.headers[\"accept\"], \"|\")), 0)))"
+          }
+        }
+      }
+    }
+  },
+  "activation_gate": "Only after merging this PR, successful main Pages, live artifact parity and CF validation. One ordinary HTML control and one Markdown-only scanner invocation within the literal window. Disable diagnostic and verify normal MIME before any fallback trial.",
+  "decision_gate": "Try root-only307 only when same-window scanner reports count1, length13, decoded exact text/markdown and HTML200. These are response-phase fields, not wire capture or proven root cause. Missing/other/multiple/truncated/no marker is inconclusive for a rewrite-only defect; do not reconstruct intent or match scanner UA/IP.",
+  "redirects": [
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-directory",
+        "description": "PISKOR Markdown temporary redirect: public directory pages",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and ends_with(http.request.uri.path, \"/\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and not starts_with(http.request.uri.path, \"/assets/\") and not starts_with(http.request.uri.path, \"/.well-known/\") and not starts_with(http.request.uri.path, \"/agent-api/\") and not starts_with(http.request.uri.path, \"/agent-skills/\") and http.request.uri.query eq \"\" and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "expression": "concat(\"https://piskor.com.ua/agent-markdown\", http.request.uri.path, \"index.md\")"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-404-en",
+        "description": "PISKOR Markdown temporary redirect: explicit English 404 document",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query eq \"lang=en\" and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "value": "https://piskor.com.ua/agent-markdown/404-en.md"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-404-document",
+        "description": "PISKOR Markdown temporary redirect: explicit 404 document URL",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query in {\"\" \"lang=uk\"} and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "value": "https://piskor.com.ua/agent-markdown/404.md"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    }
+  ],
+  "rollback": "Disable only new redirect rules if uninstrumented scanner or parity/negative/cache matrix fails. Disable/expire diagnostic even on errors. Keep original rewrites, MIME/policy/cache rules and other zone settings unchanged.",
+  "references": [
+    "https://developers.cloudflare.com/ruleset-engine/reference/phases-list/",
+    "https://developers.cloudflare.com/ruleset-engine/rules-language/functions/",
+    "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/",
+    "https://developers.cloudflare.com/rules/transform/"
+  ]
+}

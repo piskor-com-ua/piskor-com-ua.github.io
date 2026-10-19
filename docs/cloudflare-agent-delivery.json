@@ -1,19 +1,19 @@
 {
-  "status": "proposed_not_applied",
-  "purpose": "Reviewable manual Cloudflare Free plan, not a complete zone ruleset or deployment tool. Apply only after merge, successful Pages and live version gate; follow cloudflare-agent-delivery.md.",
+  "status": "baseline_applied_2026_10_18",
+  "purpose": "Manual record of the applied baseline, not a complete zone export or deployment tool. The separate markdown fallback is proposed and gated by merge, Pages and live verification.",
   "scope": "No Worker, Snippet, paid Markdown for Agents, API token, new secret, security change, analytics change or indexing approval.",
   "exact_accept_policy": "One Accept field with complete value text/markdown only. Mixed ranges, any q parameter, wildcard and ordinary browser Accept do not negotiate.",
   "query_policy": "Query is never rewritten. Directory negotiation requires an empty query. Explicit /404.html accepts only empty query, exact lang=uk, or exact lang=en (English). Every other query, including duplicate/encoded parameters, preserves ordinary HTML; no full URLSearchParams equivalence is claimed.",
   "error_policy": "Unknown paths retain origin404 and HTML error MIME. Content-Type changes require status200; combined policy headers require200. Unknown404 retains HTML meta noindex. Explicit /404.html and /404.html?lang=en are existing documents, not replacements for unknown routes. No /en/404.html exists.",
   "cache_policy": "Reserved Markdown-prefix bypass is intentionally installed first and last among any matching cache rules. Default rewritten URI separates variants, but this plan also bypasses Markdown edge caching. Preserve all HTML/versioned-static cache settings.",
   "free_budget": {
-    "limit_per_phase": 10,
-    "new_rule_counts": {
-      "http_request_transform": 3,
-      "http_request_cache_settings": 1,
-      "http_response_headers_transform": 5
-    },
-    "check_existing_counts_before_apply": true
+    "active_transform_limit": 10,
+    "baseline_active_transforms": 8,
+    "disabled_experiment_transforms": 1,
+    "new_diagnostic_transforms": 1,
+    "new_single_redirects": 3,
+    "single_redirect_limit": 10,
+    "check_actual_dashboard_counts_before_apply": true
   },
   "manual_apply_order": [
     "Export current rules/DNS and verify origin files, quotas and expressions.",
@@ -187,7 +187,7 @@
     }
   ],
   "dns_proposal": {
-    "status": "not_applied",
+    "status": "applied_2026_10_18",
     "type": "HTTPS",
     "name": "_index._agents.piskor.com.ua",
     "priority": 1,
@@ -200,7 +200,7 @@
       "port": 443
     },
     "meaning": "Experimental organizational HTTPS discovery index pointing to homepage with real ARD/Agent Skills/API catalog links. Not an MCP/A2A server. Index payload schema is out of scope of the DNS-AID draft.",
-    "dnssec": "Inspect/report existing state; do not enable DNSSEC or change registrar DS. Unsigned presence is not authenticated discovery.",
+    "dnssec": "Enabled with explicit owner approval; registrar DS saved and independently validated on 2026-10-18. Existing DNS/mail records preserved. Revalidate before any later change.",
     "fallback": "Leave pending if exact record cannot be expressed/validated; do not invent TXT encoding or endpoint claims."
   },
   "rollback": [
@@ -226,5 +226,20 @@
     "search": "yes",
     "authorization": "Explicit user policy for this release; search=yes does not remove or supersede page noindex."
   },
-  "origin_json_mime": "Keep origin application/json on real JSON resources; verify it after deployment. No redundant JSON Content-Type transform."
+  "origin_json_mime": "Keep origin application/json on real JSON resources; verify it after deployment. No redundant JSON Content-Type transform.",
+  "applied_baseline": {
+    "revision": "dfa2effbbbde98dca35b3e291820f4035837c0b9",
+    "checked_at": "2026-10-19",
+    "rule_ids": {
+      "piskor-agent-markdown-bypass": "43c0a00053924fde965e504847bcd87b",
+      "piskor-agent-discovery-policy": "556a717b9d2042f7ba61153a9ec1fc45",
+      "piskor-agent-vary": "b37279b7ae6c4aaba21067c65d92b81f",
+      "piskor-agent-markdown-type": "8bb48af932b440f7ad37cb8dbd6ca3bc",
+      "piskor-agent-ard-type": "241b3d0ec6784f35b7b7b58cbadd6275",
+      "piskor-agent-api-catalog-type": "d2589138300449e499dd4006e31277df",
+      "piskor-agent-markdown-directory": "84a23e72b0aa4985b64bc6e04b0a60db",
+      "piskor-agent-markdown-404-en": "8d3d100a8a0241e1824ee37ff947f146",
+      "piskor-agent-markdown-404-document": "9678f0c005084d65b6acd322dfe923d1"
+    }
+  }
 }

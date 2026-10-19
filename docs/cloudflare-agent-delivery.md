@@ -1,6 +1,6 @@
 # Доставка ресурсів для агентів через Cloudflare Free
 
-[JSON-план](cloudflare-agent-delivery.json) містить запропоновані правила для ручного перегляду. Це не експорт усієї зони й не інструмент розгортання. Стан плану — **не застосовано**. Зміни Cloudflare дозволені тільки після мерджу одного PR, успішного main CI/Pages deployment і перевірки опублікованої версії. Налаштування індексації, consent, аналітики та безпеки не входять до цього плану.
+[JSON](cloudflare-agent-delivery.json) фіксує базові правила, **застосовані 18.10.2026 після PR #54**; ID наведені в `applied_baseline`. Це не експорт усієї зони й не інструмент розгортання. Не створювати ці правила повторно. Новий [умовний fallback Markdown](cloudflare-markdown-fallback.md) ще не застосований: будь-які його зміни Cloudflare дозволені тільки після мерджу нового PR, успішного main CI/Pages deployment і перевірки опублікованої версії. Налаштування індексації, consent, аналітики та безпеки не входять до цього плану.
 
 ## Представлення Markdown
 
@@ -38,7 +38,7 @@ Response rules:
 
 Response Header Transform Rules не змінюють уже прийняте рішення про Cloudflare-кешування. Тому встановлення Content-Type чи Vary не замінює окремого cache rule. Add зберігає наявні однойменні заголовки. [Документація заголовків](https://developers.cloudflare.com/rules/transform/response-header-modification/), [RFC 9727](https://www.rfc-editor.org/rfc/rfc9727.html).
 
-## Порядок застосування й контроль
+## Порядок базового застосування й контроль
 
 До будь-якого збереження експортувати чинні правила, їхні ID/пріоритети та DNS. Перевірити на origin всі згенеровані Markdown, ARD/skill index, API catalog, OpenAPI та guide, включно з byte/hash-порівнянням потрібної версії. У Dashboard перевірити залишок Free quota в кожній фазі та прийнятність усіх виразів: план додає **три URL rewrites, одне Cache Rule і п’ять Response Header Rules** — вісім Transform Rules загалом. Документація Free вказує 10 активних Transform Rules; фактичні квоти та вже зайняті місця підтверджувати у поточній зоні, не припускати, що всі місця вільні. [Доступність Transform Rules](https://developers.cloudflare.com/rules/transform/).
 
@@ -53,12 +53,12 @@ Response Header Transform Rules не змінюють уже прийняте р
 - GET/HEAD API catalog, посилання на фактичний JSON endpoint і OpenAPI-схему; native WebMCP окремо перевірити реальними read-only викликами в сумісному браузері.
 - Ефективний bypass negotiated Markdown і збереження HTML-кешу. Лише після перевірки доставки повторити той самий readiness scan; бал сканера не є доказом повної застосовності, видимості в AI-пошуку чи виконання FCP/LCP/SI.
 
-## DNS-AID: обмежена пропозиція
+## DNS-AID: застосований запис
 
-JSON пропонує **HTTPS ServiceMode** запис `_index._agents.piskor.com.ua`, priority 1, TargetName `piskor.com.ua`, `alpn="h2,h3"`, port 443. Це експериментальна організаційна точка HTTPS-discovery: головна сторінка має реальні Link до ARD, Agent Skills та API catalog. Вона не заявляє існування MCP/A2A серверів або автентифікації. У DNS-AID draft §3.2 протокол і схема індексу залишені поза межами специфікації; конкретна машинна сумісність такої HTML-точки потребує окремої перевірки. [Чинний досліджений draft DNS-AID](https://datatracker.ietf.org/doc/html/draft-mozleywilliams-dnsop-dnsaid-02).
+JSON фіксує **HTTPS ServiceMode** запис `_index._agents.piskor.com.ua`, priority 1, TargetName `piskor.com.ua`, `alpn="h2,h3"`, port 443. Це експериментальна організаційна точка HTTPS-discovery: головна сторінка має реальні Link до ARD, Agent Skills та API catalog. Вона не заявляє існування MCP/A2A серверів або автентифікації. У DNS-AID draft §3.2 протокол і схема індексу залишені поза межами специфікації; конкретна машинна сумісність такої HTML-точки потребує окремої перевірки. [Чинний досліджений draft DNS-AID](https://datatracker.ietf.org/doc/html/draft-mozleywilliams-dnsop-dnsaid-02).
 
-Використовувати тільки фактично підтримувані HTTPS-параметри; якщо UI не приймає точний запис, залишити цей пункт незавершеним. Не підміняти його довільним TXT або фіктивним `_mcp`/`_a2a` endpoint. Перевірити наявний DNSSEC і звітувати його стан: unsigned DNS не називати автентифікованим discovery. Увімкнення DNSSEC, дії з registrar DS та зміни MX/SPF/DKIM/DMARC не включені. Новий запис створювати тільки після перевірки живих discovery-ресурсів і погодженого порядку релізу.
+Запис створений 18.10.2026. За окремим явним дозволом власника Cloudflare DNSSEC увімкнений, DS зареєстрований у реєстратора; ланцюжок перевірено незалежно, Google і Cloudflare resolver повернули AD=true. isitagentready після цього підтвердив DNS-AID. Це датовані докази, не гарантія всіх resolver чи майбутнього стану. Не змінювати DNSSEC/DS повторно для Markdown; MX/SPF/DKIM/DMARC збережені. Не підміняти запис довільним TXT або фіктивним MCP/A2A endpoint.
 
-## Відкат
+## Відкат базового плану (історична процедура)
 
-Спочатку вимкнути три нові URL rewrites та перевірити звичайний HTML. Потім прибрати лише додані цим планом cache bypass і п’ять response rules за збереженими ID; за потреби відновити попередній порядок з експорту. Якщо DNS-запис було створено — видалити тільки його. Зберегти всі попередні DNS/cache/security/consent/noindex налаштування. Перевірити HTML обома мовами, 404, опубліковані хеші ресурсів і noindex та зберегти докази відкату.
+Для нового Markdown fallback використовувати його окремий відкат; базові правила не вимикати. Якщо потрібен відкат саме всього базового плану: спочатку вимкнути три URL rewrites та перевірити звичайний HTML. Потім прибрати лише додані цим планом cache bypass і п’ять response rules за збереженими ID; за потреби відновити попередній порядок з експорту. Якщо DNS-запис було створено — видалити тільки його. Зберегти всі попередні DNS/cache/security/consent/noindex налаштування. Перевірити HTML обома мовами, 404, опубліковані хеші ресурсів і noindex та зберегти докази відкату.

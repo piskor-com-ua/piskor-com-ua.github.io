@@ -3,7 +3,7 @@ import json
 import re
 from pathlib import Path
 from html import escape
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 from agent_catalog import Document, Node
 
@@ -39,7 +39,12 @@ def render(node, base):
         if not href or href.lower().startswith(('javascript:', 'data:')):
             return body
         label = ' '.join(body.split()) or inline(attrs.get('aria-label', ''))
-        return '[' + label + '](' + urljoin(base, href).replace(' ', '%20').replace('(', '%28').replace(')', '%29') + ')'
+        # Empty fragments mean the same document; normalize explicitly because
+        # urllib's preservation of a trailing '#' differs between Python versions.
+        target = urljoin(base, href)
+        if not urlsplit(target).fragment:
+            target = target.removesuffix('#')
+        return '[' + label + '](' + target.replace(' ', '%20').replace('(', '%28').replace(')', '%29') + ')'
     if tag == 'img':
         alt = attrs.get('alt', '').strip()
         return '\n\n' + inline(alt) + '\n\n' if alt else ''

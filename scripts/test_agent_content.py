@@ -3,10 +3,20 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_content import generate_agent_content, markdown_path, page_route
+from agent_content import generate_agent_content, markdown_path, page_route, render
+from agent_catalog import Node
 
 
 class AgentContentTests(unittest.TestCase):
+    def test_empty_fragment_is_stable_without_losing_section_anchors(self):
+        base = 'https://piskor.com.ua/en/'
+        for href, expected in [('#', base), (base + '#', base),
+                               ('#our-approach', base + '#our-approach'),
+                               ('#our-approach#', base + '#our-approach#')]:
+            link = Node('a', [('href', href)])
+            link.children = ['Studio']
+            self.assertEqual(render(link, base), '[Studio](' + expected + ')')
+
     def test_public_routes_and_facts(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

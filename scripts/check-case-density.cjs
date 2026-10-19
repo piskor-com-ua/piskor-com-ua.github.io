@@ -84,6 +84,15 @@ print(json.dumps(result))
       const page = await context.newPage();
       for (const route of routes) {
         await page.goto(origin + route, { waitUntil: 'domcontentloaded' });
+        // Exercise the real near-viewport loader before measuring its pictures.
+        // A decoded inline placeholder is not evidence for the final srcset.
+        const pending = page.locator('picture[data-zabava-gallery]');
+        while (await pending.count()) {
+          const before = await pending.count();
+          await pending.first().locator('img').scrollIntoViewIfNeeded();
+          await page.waitForFunction(count =>
+            document.querySelectorAll('picture[data-zabava-gallery]').length < count, before);
+        }
         await page.evaluate(async () => {
           // Offscreen cards deliberately skip layout in normal browsing. This
           // geometry-only probe must inspect their real image boxes as well.

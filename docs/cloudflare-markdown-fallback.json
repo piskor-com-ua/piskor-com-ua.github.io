@@ -112,7 +112,7 @@
       }
     }
   },
-  "raw_rewrite_gate": "Optional first choice only if the same-window actual scanner proves a complete raw count1 length13 exact text/markdown, current fields differ, and ordinary exact/negative/duplicate controls confirm raw map semantics. Replace only the Accept predicate in existing three rewrite IDs using raw_exact_rewrites, not OR and not header mutation. Validate UI first; preserve actions/order/query/cache/policy, then require uninstrumented scanner PASS and full matrix. Otherwise restore baseline expressions and use only the independently bounded early root trial; never infer raw intent from declared scanner metadata.",
+  "raw_rewrite_gate": "Only if the same-window actual scanner proves complete raw count1 length13 exact text/markdown while current fields differ: first run the single bounded root trial with exact raw Accept substituted, never OR. H1 Accept/accept/ACCEPT and H2 exact controls MUST observe first-hop307 (200 only proves baseline); mixed/empty/missing/duplicate controls MUST NOT redirect. Require scanner PASS, then disable trial and replace only Accept predicates in the existing three rewrite IDs from raw_exact_rewrites. Validate UI; preserve actions/order/query/cache/policy. Retain only after a new uninstrumented scanner PASS and full matrix; otherwise restore baseline. Nil raw is inconclusive, never infer intent from scanner metadata.",
   "raw_exact_rewrites": [
     {
       "phase": "http_request_transform",

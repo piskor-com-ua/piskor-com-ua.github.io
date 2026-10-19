@@ -1,0 +1,172 @@
+{
+  "status": "proposed_not_applied",
+  "purpose": "Bounded postmerge diagnosis and conditional generic Markdown redirect fallback; never pretend scanner success or restore missing request intent.",
+  "diagnostic": {
+    "phase": "http_response_headers_transform",
+    "max_seconds": 180,
+    "place": "last; validate existing Transform budget first",
+    "rule": {
+      "ref": "piskor-markdown-diagnostic",
+      "description": "PISKOR bounded Markdown delivery diagnostic",
+      "enabled": true,
+      "expression": "http.host eq \"piskor.com.ua\" and http.request.method eq \"GET\" and http.request.uri.path in {\"\" \"/\"} and http.request.uri.query eq \"\" and raw.http.request.uri.path in {\"\" \"/\"} and raw.http.request.uri.query eq \"\" and http.response.code eq 200 and starts_with(lower(http.response.headers[\"content-type\"][0]), \"text/html\") and http.request.timestamp.sec ge START_SECOND and http.request.timestamp.sec lt END_SECOND",
+      "action": "rewrite",
+      "action_parameters": {
+        "headers": {
+          "content-type": {
+            "operation": "set",
+            "expression": "concat(\"text/html; charset=utf-8; piskor-diag=\\\"md1-START_SECOND\\\"; piskor-accept=\\\"\", encode_base64(substring(coalesce(join(http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-count=\", to_string(coalesce(len(http.request.headers[\"accept\"]), 0)), \"; piskor-length=\", to_string(coalesce(len(join(http.request.headers[\"accept\"], \"|\")), 0)), \"; piskor-raw-accept=\\\"\", encode_base64(substring(coalesce(join(raw.http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-raw-count=\", to_string(coalesce(len(raw.http.request.headers[\"accept\"]), 0)), \"; piskor-raw-length=\", to_string(coalesce(len(join(raw.http.request.headers[\"accept\"], \"|\")), 0)))"
+          }
+        }
+      }
+    }
+  },
+  "activation_gate": "Only after merging this PR, successful main Pages, live artifact parity and CF validation. One ordinary HTML control and one Markdown-only scanner invocation within the literal window. Disable diagnostic and verify normal MIME before any fallback trial.",
+  "decision_gate": "After disabling the diagnostic and verifying normal MIME, allow one independently bounded root-only early-phase exact-Accept307 trial, even if later-phase Accept differs or marker is absent. Fields may change between phases; the predicate itself requires one exact text/markdown and never reconstructs intent. Missing/no-match/failure remains inconclusive; retain/expand only after fresh uninstrumented scanner PASS plus controls and the full matrix.",
+  "redirects": [
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-directory",
+        "description": "PISKOR Markdown temporary redirect: public directory pages",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and ends_with(http.request.uri.path, \"/\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and not starts_with(http.request.uri.path, \"/assets/\") and not starts_with(http.request.uri.path, \"/.well-known/\") and not starts_with(http.request.uri.path, \"/agent-api/\") and not starts_with(http.request.uri.path, \"/agent-skills/\") and http.request.uri.query eq \"\" and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "expression": "concat(\"https://piskor.com.ua/agent-markdown\", http.request.uri.path, \"index.md\")"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-404-en",
+        "description": "PISKOR Markdown temporary redirect: explicit English 404 document",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query eq \"lang=en\" and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "value": "https://piskor.com.ua/agent-markdown/404-en.md"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    },
+    {
+      "phase": "http_request_dynamic_redirect",
+      "rule": {
+        "ref": "piskor-agent-markdown-redirect-404-document",
+        "description": "PISKOR Markdown temporary redirect: explicit 404 document URL",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query in {\"\" \"lang=uk\"} and not http.request.uri.path contains \"%\" and not http.request.uri.path contains \"\\\\\" and not http.request.uri.path contains \"//\" and not http.request.uri.path contains \"/./\" and not http.request.uri.path contains \"/../\"",
+        "action": "redirect",
+        "action_parameters": {
+          "from_value": {
+            "target_url": {
+              "value": "https://piskor.com.ua/agent-markdown/404.md"
+            },
+            "status_code": 307,
+            "preserve_query_string": true
+          }
+        }
+      }
+    }
+  ],
+  "rollback": "Disable only new redirect rules if uninstrumented scanner or parity/negative/cache matrix fails. Disable/expire diagnostic even on errors. Keep original rewrites, MIME/policy/cache rules and other zone settings unchanged.",
+  "references": [
+    "https://developers.cloudflare.com/ruleset-engine/reference/phases-list/",
+    "https://developers.cloudflare.com/ruleset-engine/rules-language/functions/",
+    "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/",
+    "https://developers.cloudflare.com/rules/transform/",
+    "https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation",
+    "https://developers.cloudflare.com/rules/transform/response-header-modification/reference/fields-functions/",
+    "https://developers.cloudflare.com/rules/transform/url-rewrite/reference/fields-functions/"
+  ],
+  "root_trial": {
+    "phase": "http_request_dynamic_redirect",
+    "max_seconds": 180,
+    "rule": {
+      "ref": "piskor-agent-markdown-redirect-directory",
+      "description": "PISKOR bounded exact Markdown root redirect trial",
+      "enabled": true,
+      "expression": "http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"} and http.request.uri.path eq \"/\" and http.request.uri.query eq \"\" and raw.http.request.uri.path eq \"/\" and raw.http.request.uri.query eq \"\" and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.timestamp.sec ge START_SECOND and http.request.timestamp.sec lt END_SECOND",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "value": "https://piskor.com.ua/agent-markdown/index.md"
+          },
+          "status_code": 307,
+          "preserve_query_string": true
+        }
+      }
+    }
+  },
+  "raw_rewrite_gate": "Only if the same-window actual scanner proves complete raw count1 length13 exact text/markdown while current fields differ: first run the single bounded root trial with exact raw Accept substituted, never OR. H1 Accept/accept/ACCEPT and H2 exact controls MUST observe first-hop307 (200 only proves baseline); mixed/empty/missing/duplicate controls MUST NOT redirect. Require scanner PASS, then disable trial and replace only Accept predicates in the existing three rewrite IDs from raw_exact_rewrites. Validate UI; preserve actions/order/query/cache/policy. Retain only after a new uninstrumented scanner PASS and full matrix; otherwise restore baseline. Nil raw is inconclusive, never infer intent from scanner metadata.",
+  "raw_exact_rewrites": [
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-directory",
+        "description": "PISKOR exact Markdown request: public directory pages",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and ends_with(http.request.uri.path, \"/\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and not starts_with(http.request.uri.path, \"/assets/\") and not starts_with(http.request.uri.path, \"/.well-known/\") and not starts_with(http.request.uri.path, \"/agent-api/\") and not starts_with(http.request.uri.path, \"/agent-skills/\") and http.request.uri.query eq \"\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "expression": "concat(\"/agent-markdown\", http.request.uri.path, \"index.md\")"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "84a23e72b0aa4985b64bc6e04b0a60db"
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-en",
+        "description": "PISKOR exact Markdown request: explicit English 404 document",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query eq \"lang=en\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404-en.md"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "8d3d100a8a0241e1824ee37ff947f146"
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-document",
+        "description": "PISKOR exact Markdown request: explicit 404 document URL",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query in {\"\" \"lang=uk\"}",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404.md"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "9678f0c005084d65b6acd322dfe923d1"
+    }
+  ]
+}

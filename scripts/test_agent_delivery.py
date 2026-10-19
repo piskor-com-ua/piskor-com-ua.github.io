@@ -226,6 +226,24 @@ class Delivery(unittest.TestCase):
             self.assertEqual({x['method'] for x in en}, {'GET', 'HEAD'})
             self.assertTrue(all(x['file'] == 'agent-markdown/5.md' for x in en))
             self.assertEqual([x['mime'] for x in sequence[:3]], ['text/markdown', 'text/html', 'text/markdown'])
+            worker_cases, _ = m.jobs(site.resolve(), worker_home_queries=True)
+            for route in ('/', '/en/'):
+                for query in ('utm_source=delivery-verifier', 'freshness=delivery-verifier&x=1&x=2'):
+                    observed = [x for x in worker_cases if x['route'] == route + '?' + query and x['accepts'] == ['text/markdown']]
+                    self.assertEqual({x['method'] for x in observed}, {'GET', 'HEAD'})
+                    self.assertTrue(all(x['mime'] == 'text/markdown' and x['markdown'] == rows[routes.index(route)]['markdown'] for x in observed))
+                for query in ('%6cang=en', 'utm_source=test&lang=en', 'lang=en&lang=uk'):
+                    observed = [x for x in worker_cases if x['route'] == route + '?' + query]
+                    self.assertEqual({x['method'] for x in observed}, {'GET', 'HEAD'})
+                    self.assertTrue(all(x['mime'] == 'text/html' for x in observed))
+                html_control = [x for x in worker_cases if x['route'] == route + '?utm_source=delivery-verifier' and x['accepts'] == ['text/html']]
+                self.assertEqual({x['method'] for x in html_control}, {'GET', 'HEAD'})
+                self.assertTrue(all(x['mime'] == 'text/html' for x in html_control))
+            legacy_query = [x for x in cases if x['route'] == '/?utm_source=delivery-verifier']
+            self.assertTrue(all(x['mime'] == 'text/html' for x in legacy_query))
+            for route in ('/portfolio/', '/en/portfolio/'):
+                catalog_query = [x for x in worker_cases if x['route'] == route + '?utm_source=delivery-verifier']
+                self.assertTrue(all(x['mime'] == 'text/html' for x in catalog_query))
 
 
 if __name__ == '__main__':

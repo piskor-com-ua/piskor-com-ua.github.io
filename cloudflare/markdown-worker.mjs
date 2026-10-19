@@ -24,7 +24,11 @@ export async function handle(request, env, context, data, dependencies = {}) {
   if (url.origin === 'https://piskor.com.ua' && readable) {
     // Headers combines duplicate fields. Only this exact resulting value is accepted.
     if (request.headers.get('Accept') === 'text/markdown') {
-      const page = data.pages[url.pathname + url.search];
+      let page = data.pages[url.pathname + url.search];
+      // Home's only query-dependent behavior is the decoded `lang` parameter.
+      // Other home queries leave public content unchanged; use its canonical MD.
+      if (!page && (url.pathname === '/' || url.pathname === '/en/') &&
+          !url.searchParams.has('lang')) page = data.pages[url.pathname];
       if (page) markdown = page.markdown;
     }
     // Direct alternatives retain their ordinary any-Accept behavior, no query aliases.

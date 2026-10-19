@@ -32,6 +32,24 @@ class BoundedDiagnosticTests(unittest.TestCase):
         self.assertIn('lt 1800000180', first['rule']['expression'])
         self.assertIn('lt 1800001001', second['rule']['expression'])
 
+    def test_root_trial_never_reconstructs_accept_or_expands_the_path(self):
+        trial = prepare_diagnostic(1800000000, 120, 'root_trial')
+        rule = trial['rule']
+        for guard in ['raw.http.request.uri.path eq "/"', 'raw.http.request.uri.query eq ""',
+                      'http.request.uri.path eq "/"', 'http.request.uri.query eq ""',
+                      'len(http.request.headers["accept"]) eq 1',
+                      'http.request.headers["accept"][0] eq "text/markdown"',
+                      'http.request.timestamp.sec ge 1800000000',
+                      'http.request.timestamp.sec lt 1800000120']:
+            self.assertIn(guard, rule['expression'])
+        self.assertNotIn('http.user_agent', rule['expression'])
+        parameters = rule['action_parameters']['from_value']
+        self.assertEqual(parameters['status_code'], 307)
+        self.assertEqual(parameters['target_url']['value'], 'https://piskor.com.ua/agent-markdown/index.md')
+        self.assertTrue(parameters['preserve_query_string'])
+        with self.assertRaises(ValueError):
+            prepare_diagnostic(1800000000, kind='full_rollout')
+
 
 if __name__ == '__main__':
     unittest.main()

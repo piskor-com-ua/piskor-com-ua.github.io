@@ -22,7 +22,7 @@
     }
   },
   "activation_gate": "Only after merging this PR, successful main Pages, live artifact parity and CF validation. One ordinary HTML control and one Markdown-only scanner invocation within the literal window. Disable diagnostic and verify normal MIME before any fallback trial.",
-  "decision_gate": "Try root-only307 only when same-window scanner reports count1, length13, decoded exact text/markdown and HTML200. These are response-phase fields, not wire capture or proven root cause. Missing/other/multiple/truncated/no marker is inconclusive for a rewrite-only defect; do not reconstruct intent or match scanner UA/IP.",
+  "decision_gate": "After disabling the diagnostic and verifying normal MIME, allow one independently bounded root-only early-phase exact-Accept307 trial, even if later-phase Accept differs or marker is absent. Fields may change between phases; the predicate itself requires one exact text/markdown and never reconstructs intent. Missing/no-match/failure remains inconclusive; retain/expand only after fresh uninstrumented scanner PASS plus controls and the full matrix.",
   "redirects": [
     {
       "phase": "http_request_dynamic_redirect",
@@ -87,6 +87,27 @@
     "https://developers.cloudflare.com/ruleset-engine/reference/phases-list/",
     "https://developers.cloudflare.com/ruleset-engine/rules-language/functions/",
     "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/",
-    "https://developers.cloudflare.com/rules/transform/"
-  ]
+    "https://developers.cloudflare.com/rules/transform/",
+    "https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation"
+  ],
+  "root_trial": {
+    "phase": "http_request_dynamic_redirect",
+    "max_seconds": 180,
+    "rule": {
+      "ref": "piskor-agent-markdown-redirect-directory",
+      "description": "PISKOR bounded exact Markdown root redirect trial",
+      "enabled": true,
+      "expression": "http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"} and http.request.uri.path eq \"/\" and http.request.uri.query eq \"\" and raw.http.request.uri.path eq \"/\" and raw.http.request.uri.query eq \"\" and len(http.request.headers[\"accept\"]) eq 1 and http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.timestamp.sec ge START_SECOND and http.request.timestamp.sec lt END_SECOND",
+      "action": "redirect",
+      "action_parameters": {
+        "from_value": {
+          "target_url": {
+            "value": "https://piskor.com.ua/agent-markdown/index.md"
+          },
+          "status_code": 307,
+          "preserve_query_string": true
+        }
+      }
+    }
+  }
 }

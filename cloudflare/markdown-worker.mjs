@@ -1,3 +1,4 @@
+import {handleMcp} from './mcp-server.mjs';
 // PUBLIC_PAGE_DATA is prepended by the artifact-only deterministic generator.
 const DISCOVERY = '</.well-known/ard.json>; rel="ard"; type="application/ard+json", </.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </llms.txt>; rel="describedby"; type="text/plain"';
 
@@ -16,6 +17,8 @@ export function diagnosticParameters(request, env, revision, nowSeconds) {
 
 export async function handle(request, env, context, data, dependencies = {}) {
   context?.passThroughOnException?.();
+  const mcp = await handleMcp(request, data, env);
+  if (mcp) return mcp;
   const originFetch = dependencies.fetch ?? fetch;
   const nowSeconds = dependencies.nowSeconds ?? Date.now() / 1000;
   const url = new URL(request.url);

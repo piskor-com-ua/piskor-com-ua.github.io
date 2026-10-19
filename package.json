@@ -4,9 +4,11 @@
   "scripts": {
     "test:agent": "node --test scripts/test-agent-tools.js",
     "test:discovery": "node scripts/check-agent-discovery.mjs",
-    "test:browser": "node scripts/run-browser-checks.cjs"
+    "test:browser": "node scripts/run-browser-checks.cjs",
+    "test:mcp": "node --test scripts/test-mcp-server.mjs scripts/test-mcp-client.mjs"
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
     "lighthouse": "13.5.0",

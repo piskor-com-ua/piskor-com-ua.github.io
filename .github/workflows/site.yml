@@ -53,6 +53,8 @@ jobs:
           restore-keys: avif-v1-${{ runner.os }}-
       - name: Build and check public artifact
         run: python3 scripts/build-site.py
+      - name: Validate public API/discovery artifact and Origin Trial renewal
+        run: python3 scripts/check_agent_api.py --site _site --revision "$GITHUB_SHA" --out output/agent-api-gate
       - name: Build and validate the matching Markdown Worker
         run: |
           python3 scripts/build_markdown_worker.py --site _site --out output/markdown-worker --revision "$GITHUB_SHA"
@@ -61,6 +63,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           npx playwright install --with-deps chromium
+      - name: Validate HTTP MCP transport and real SDK client
+        run: npm run test:mcp
       - name: Check every project on desktop and mobile
         run: npm run test:browser
       - name: Validate ARD and WebMCP schemas
@@ -71,6 +75,13 @@ jobs:
         with:
           name: markdown-worker
           path: output/markdown-worker
+          retention-days: 7
+      - name: Save agent API verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: agent-api-verification
+          path: output/agent-api-gate
           retention-days: 7
       - name: Save browser verification
         if: always()

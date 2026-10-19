@@ -2,6 +2,12 @@
 
 Це план власної реалізації, обраної замовником 19.10.2026 після невдалих bounded-тестів із PR #55. Він доповнює [базову конфігурацію](cloudflare-agent-delivery.md) й замінює припущення, що для подальшого дослідження достатньо лише Transform Rules. Стан застосування фіксується окремими післярелізними доказами; наявність цього документа не означає активного Worker або успішного isitagentready.
 
+## Публічний HTTP MCP у тому самому Worker
+
+На доручення замовника від 19.10.2026 цей самий bundle також містить [публічний read-only HTTP MCP](public-http-mcp.md). Точний `/mcp` і три runtime discovery resources обробляються перед Markdown negotiation; решта правил Markdown/HTML/assets залишаються такими самими. MCP-дані, Server Card і runtime API catalog вбудовуються з matching Pages artifact. Discovery активується атомарно з сервером, а не як окрема статична реклама у Pages.
+
+Єдиний новий binding — вбудований `MCP_RATE_LIMITER` із `cloudflare/wrangler.jsonc`, без KV/R2, секретів чи платного upgrade. Він потрібен тільки для tools/call; outage повертає503, перевищення429. Після merge/Pages у versions upload передавати перевірений CI entrypoint і конфігурацію з binding; не запускати triggers deploy, не змінювати routes/TTL/logs/preview. Перед activation перевірити bundle+configuration hashes, після — binding/версію та реальні виклики. Саме `--keep-vars` не замінює конфігурацію binding.
+
 ## Зміст і контракт
 
 `scripts/build_markdown_worker.py` збирає окремий `output/markdown-worker/worker.mjs` з фінального Pages-артефакту. Він вбудовує вже згенеровані публічні Markdown та routing table; не читає приватні джерела, не конвертує HTML під час запиту, не потребує KV/R2, API-токена чи платного Markdown for Agents. Pages-артефакт і дизайн не змінюються.

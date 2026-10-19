@@ -15,7 +15,7 @@
         "headers": {
           "content-type": {
             "operation": "set",
-            "expression": "concat(\"text/html; charset=utf-8; piskor-diag=\\\"md1-START_SECOND\\\"; piskor-accept=\\\"\", encode_base64(substring(coalesce(join(http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-count=\", to_string(coalesce(len(http.request.headers[\"accept\"]), 0)), \"; piskor-length=\", to_string(coalesce(len(join(http.request.headers[\"accept\"], \"|\")), 0)))"
+            "expression": "concat(\"text/html; charset=utf-8; piskor-diag=\\\"md1-START_SECOND\\\"; piskor-accept=\\\"\", encode_base64(substring(coalesce(join(http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-count=\", to_string(coalesce(len(http.request.headers[\"accept\"]), 0)), \"; piskor-length=\", to_string(coalesce(len(join(http.request.headers[\"accept\"], \"|\")), 0)), \"; piskor-raw-accept=\\\"\", encode_base64(substring(coalesce(join(raw.http.request.headers[\"accept\"], \"|\"), \"\"), 0, 128), \"u\"), \"\\\"; piskor-raw-count=\", to_string(coalesce(len(raw.http.request.headers[\"accept\"]), 0)), \"; piskor-raw-length=\", to_string(coalesce(len(join(raw.http.request.headers[\"accept\"], \"|\")), 0)))"
           }
         }
       }
@@ -88,7 +88,9 @@
     "https://developers.cloudflare.com/ruleset-engine/rules-language/functions/",
     "https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/",
     "https://developers.cloudflare.com/rules/transform/",
-    "https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation"
+    "https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation",
+    "https://developers.cloudflare.com/rules/transform/response-header-modification/reference/fields-functions/",
+    "https://developers.cloudflare.com/rules/transform/url-rewrite/reference/fields-functions/"
   ],
   "root_trial": {
     "phase": "http_request_dynamic_redirect",
@@ -109,5 +111,62 @@
         }
       }
     }
-  }
+  },
+  "raw_rewrite_gate": "Optional first choice only if the same-window actual scanner proves a complete raw count1 length13 exact text/markdown, current fields differ, and ordinary exact/negative/duplicate controls confirm raw map semantics. Replace only the Accept predicate in existing three rewrite IDs using raw_exact_rewrites, not OR and not header mutation. Validate UI first; preserve actions/order/query/cache/policy, then require uninstrumented scanner PASS and full matrix. Otherwise restore baseline expressions and use only the independently bounded early root trial; never infer raw intent from declared scanner metadata.",
+  "raw_exact_rewrites": [
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-directory",
+        "description": "PISKOR exact Markdown request: public directory pages",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and ends_with(http.request.uri.path, \"/\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and not starts_with(http.request.uri.path, \"/assets/\") and not starts_with(http.request.uri.path, \"/.well-known/\") and not starts_with(http.request.uri.path, \"/agent-api/\") and not starts_with(http.request.uri.path, \"/agent-skills/\") and http.request.uri.query eq \"\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "expression": "concat(\"/agent-markdown\", http.request.uri.path, \"index.md\")"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "84a23e72b0aa4985b64bc6e04b0a60db"
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-en",
+        "description": "PISKOR exact Markdown request: explicit English 404 document",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query eq \"lang=en\"",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404-en.md"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "8d3d100a8a0241e1824ee37ff947f146"
+    },
+    {
+      "phase": "http_request_transform",
+      "rule": {
+        "ref": "piskor-agent-markdown-404-document",
+        "description": "PISKOR exact Markdown request: explicit 404 document URL",
+        "enabled": false,
+        "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"}) and len(raw.http.request.headers[\"accept\"]) eq 1 and raw.http.request.headers[\"accept\"][0] eq \"text/markdown\" and http.request.uri.path eq \"/404.html\" and http.request.uri.query in {\"\" \"lang=uk\"}",
+        "action": "rewrite",
+        "action_parameters": {
+          "uri": {
+            "path": {
+              "value": "/agent-markdown/404.md"
+            }
+          }
+        }
+      },
+      "existing_rule_id": "9678f0c005084d65b6acd322dfe923d1"
+    }
+  ]
 }

@@ -19,6 +19,8 @@ class BoundedDiagnosticTests(unittest.TestCase):
         self.assertIn('md1-1800000000', mime)
         self.assertNotIn('START_SECOND', mime)
         self.assertTrue(mime.startswith('concat("text/html; charset=utf-8;'))
+        self.assertIn('piskor-raw-accept', mime)
+        self.assertIn('join(raw.http.request.headers["accept"], "|")', mime)
 
     def test_refuses_unbounded_or_invalid_window(self):
         for start, duration in [(0, 180), (-1, 180), (True, 180), (1800000000, 0),

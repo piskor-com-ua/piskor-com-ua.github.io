@@ -37,6 +37,36 @@ class Delivery(unittest.TestCase):
         self.assertTrue(row['pass_'])
         self.assertEqual(len(self.calls), 1)
 
+    def test_worker_acceptance_requires_exact_version_and_no_store(self):
+        revision = 'a' * 40
+        for extra, expected_issues in [
+            ([], {'markdown-worker-version', 'markdown-worker-no-store'}),
+            ([('X-Piskor-Markdown-Version', 'b' * 40), ('Cache-Control', 'no-store')], {'markdown-worker-version'}),
+            ([('X-Piskor-Markdown-Version', revision)] * 2 + [('Cache-Control', 'no-store')], {'markdown-worker-version'}),
+            ([('X-Piskor-Markdown-Version', revision), ('Cache-Control', 'max-age=600')], {'markdown-worker-no-store'}),
+            ([('X-Piskor-Markdown-Version', revision), ('Cache-Control', 'no-store'), ('CF-Cache-Status', 'HIT')], {'markdown-worker-unexpected-hit'}),
+        ]:
+            with self.subTest(extra=extra):
+                self.calls = []
+                result = self.run_responses([(200, headers() + extra, b'# English\n')], expected_markdown_version=revision)
+                self.assertEqual(set(result['issues']), expected_issues)
+                self.assertFalse(result['pass_'])
+
+    def test_generated_worker_response_need_not_have_origin_cache_status(self):
+        self.case['cache_probe'] = True
+        revision = 'a' * 40
+        result = self.run_responses([(200, headers() + [('X-Piskor-Markdown-Version', revision),
+                                   ('Cache-Control', 'no-store')], b'# English\n')], expected_markdown_version=revision)
+        self.assertTrue(result['pass_'], result['issues'])
+
+    def test_empty_or_invalid_worker_version_cannot_disable_ownership_checks(self):
+        for revision in ('', 'a' * 39, 'A' * 40, 123):
+            with self.subTest(revision=revision):
+                result = self.run_responses([], expected_markdown_version=revision)
+                self.assertFalse(result['pass_'])
+                self.assertEqual(self.calls, [])
+                self.assertIn('Expected Markdown version must be a complete Git SHA', result['issues'])
+
     def test_single_exact_307_preserves_head(self):
         self.case['method'] = 'HEAD'
         row = self.run_responses([(307, [('Location', self.case['markdown'])], b''),

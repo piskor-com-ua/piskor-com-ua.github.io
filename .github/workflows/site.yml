@@ -53,6 +53,10 @@ jobs:
           restore-keys: avif-v1-${{ runner.os }}-
       - name: Build and check public artifact
         run: python3 scripts/build-site.py
+      - name: Build and validate the matching Markdown Worker
+        run: |
+          python3 scripts/build_markdown_worker.py --site _site --out output/markdown-worker --revision "$GITHUB_SHA"
+          node --test scripts/test-markdown-worker.mjs
       - name: Install browser validation tools
         run: |
           npm ci --ignore-scripts
@@ -61,6 +65,13 @@ jobs:
         run: npm run test:browser
       - name: Validate ARD and WebMCP schemas
         run: npm run test:discovery
+      - name: Save Markdown Worker deployment bundle
+        if: github.event_name != 'schedule'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: markdown-worker
+          path: output/markdown-worker
+          retention-days: 7
       - name: Save browser verification
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

@@ -7,8 +7,8 @@ import {pathToFileURL} from 'node:url';
 import {handle, diagnosticParameters} from '../cloudflare/markdown-worker.mjs';
 
 const origin = 'https://piskor.com.ua';
-const data = {revision: '1'.repeat(40), pages: {'/': {markdown: '/agent-markdown/index.md'}, '/404.html?lang=en': {markdown: '/agent-markdown/404-en.md'}, '/404.html?lang=uk': {markdown: '/agent-markdown/404.md'}}, documents: {}};
-for (const [url, body, language] of [['/agent-markdown/index.md', '# Простір\n', 'uk'], ['/agent-markdown/404.md', '# UK\n', 'uk'], ['/agent-markdown/404-en.md', '# English\n', 'en']]) {
+const data = {revision: '1'.repeat(40), pages: {'/': {markdown: '/agent-markdown/index.md'}, '/en/': {markdown: '/agent-markdown/en/index.md'}, '/404.html?lang=en': {markdown: '/agent-markdown/404-en.md'}, '/404.html?lang=uk': {markdown: '/agent-markdown/404.md'}}, documents: {}};
+for (const [url, body, language] of [['/agent-markdown/index.md', '# Простір\n', 'uk'], ['/agent-markdown/en/index.md', '# Space\n', 'en'], ['/agent-markdown/404.md', '# UK\n', 'uk'], ['/agent-markdown/404-en.md', '# English\n', 'en']]) {
   data.documents[url] = {body, bytes: Buffer.byteLength(body), language};
 }
 
@@ -61,9 +61,35 @@ test('negative Accept, duplicate combined values, query and unknown routes prese
   }
   const duplicate = new Headers(); duplicate.append('Accept', 'text/markdown'); duplicate.append('Accept', 'text/markdown');
   const result = await passthrough('/', {headers: duplicate}); assert.equal(result.actual, result.response);
-  for (const route of ['/?utm_source=test', '/?lang=en', '/404.html?lang=en&lang=uk', '/404.html?%6cang=en', '/404.html?lang=%65n', '/unknown/', '/agent-markdown/missing.md', '/agent-markdown/index.md?x=1', '/%65n/']) {
+  for (const route of ['/?lang=en', '/404.html?lang=en&lang=uk', '/404.html?%6cang=en', '/404.html?lang=%65n', '/unknown/', '/agent-markdown/missing.md', '/agent-markdown/index.md?x=1', '/%65n/']) {
     const result = await passthrough(route, {headers: {Accept: 'text/markdown'}}, {}, new Response('actual404', {status: 404}));
     assert.equal(result.actual, result.response); assert.equal(result.actual.status, 404);
+  }
+});
+
+test('home query negotiation uses canonical content except decoded lang in any position', async () => {
+  for (const root of ['/', '/en/']) for (const method of ['GET', 'HEAD']) {
+    const expected = root === '/' ? '# Простір\n' : '# Space\n';
+    for (const query of ['?utm_source=test', '?cache=123&other=yes', '?arbitrary=a%20b', '?q=lang%3Den']) {
+      const response = await handle(new Request(origin + root + query, {method, headers: {Accept: 'text/markdown', 'Accept-Language': 'en-US'}}), {}, {}, data, {fetch: () => {throw Error('Unexpected origin request');}});
+      assert.equal(response.headers.get('Content-Type'), 'text/markdown; charset=utf-8');
+      assert.equal(response.headers.get('Content-Length'), String(Buffer.byteLength(expected)));
+      assert.equal(response.headers.get('Content-Language'), root === '/' ? 'uk' : 'en');
+      assert.equal(response.headers.get('X-Piskor-Markdown-Version'), data.revision);
+      assert.equal(await response.text(), method === 'HEAD' ? '' : expected);
+    }
+    for (const query of ['?lang=en', '?lang=uk', '?lang=', '?%6cang=en', '?l%61ng=uk', '?lang=en&lang=uk', '?other=1&lang=uk&lang=en']) {
+      const result = await passthrough(root + query, {method, headers: {Accept: 'text/markdown'}});
+      assert.equal(result.actual, result.response);
+    }
+    for (const accept of [undefined, 'text/html', '*/*', 'text/markdown;q=0', 'text/markdown;q=1', 'text/html,text/markdown', 'text/markdown, text/markdown']) {
+      const result = await passthrough(root + '?utm_source=test', {method, headers: accept === undefined ? {} : {Accept: accept}});
+      assert.equal(result.actual, result.response);
+    }
+  }
+  for (const route of ['/portfolio/?cache=1', '/en/portfolio/?cache=1', '/agent-markdown/en/index.md?cache=1', '/unknown/?cache=1']) {
+    const result = await passthrough(route, {headers: {Accept: 'text/markdown'}});
+    assert.equal(result.actual, result.response);
   }
 });
 
@@ -112,6 +138,13 @@ test('actual generated artifact: every114 route/mode and direct MD matches exact
     assert.equal(response.headers.get('Content-Length'), String(expected.length));
     assert.equal(response.headers.get('Content-Language'), row.language);
     assert.equal(response.headers.get('X-Piskor-Markdown-Version'), manifest.revision);
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === 'HEAD' ? Buffer.alloc(0) : expected);
+  }
+  for (const root of ['/', '/en/']) for (const method of ['GET', 'HEAD']) {
+    const request = new Request(origin + root + '?arbitrary=opaque&another=1', {method, headers: {Accept: 'text/markdown'}});
+    const response = await module.default.fetch(request, {}, {});
+    const row = rows.find(row => row.url === root);
+    const expected = fs.readFileSync(path.join(site, row.markdown));
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === 'HEAD' ? Buffer.alloc(0) : expected);
   }
   const uk = await module.default.fetch(new Request(origin + '/404.html?lang=uk', {headers: {Accept: 'text/markdown'}}), {}, {});

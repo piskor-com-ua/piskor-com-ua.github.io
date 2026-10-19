@@ -221,7 +221,7 @@ def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20
         return dict(case=case, observations=observations, issues=issues + [str(error)], pass_=False)
 
 
-def jobs(site):
+def jobs(site, worker_home_queries=False):
     pages = json.loads((site / 'agent-markdown/routes.json').read_text())['pages']
     mapping = {row['url']: row['markdown'] for row in pages}
     if len(mapping) != len(pages):
@@ -247,7 +247,19 @@ def jobs(site):
                        ['text/markdown', 'text/markdown']):
             add(route, path, 'text/html', values, 'negative-accept')
         for query in ('utm_source=delivery-verifier', 'lang=en', 'lang=uk', 'lang=en&lang=uk', 'lang=uk&lang=en'):
-            add(route + '?' + query, path, 'text/html', ['text/markdown'], 'negative-query')
+            if worker_home_queries and route in ('/', '/en/') and query == 'utm_source=delivery-verifier':
+                add(route + '?' + query, mapping[route].lstrip('/'), 'text/markdown', ['text/markdown'],
+                    'negotiated', markdown=mapping[route])
+            else:
+                add(route + '?' + query, path, 'text/html', ['text/markdown'], 'negative-query')
+        if worker_home_queries and route in ('/', '/en/'):
+            for query in ('freshness=delivery-verifier&x=1&x=2', '%6cang=en', 'utm_source=test&lang=en'):
+                if query == 'freshness=delivery-verifier&x=1&x=2':
+                    add(route + '?' + query, mapping[route].lstrip('/'), 'text/markdown', ['text/markdown'],
+                        'negotiated', markdown=mapping[route])
+                else:
+                    add(route + '?' + query, path, 'text/html', ['text/markdown'], 'negative-query')
+            add(route + '?utm_source=delivery-verifier', path, 'text/html', ['text/html'], 'html')
     if '/404.html' in mapping:
         add('/404.html?lang=uk', '404.html', 'text/html', ['text/html'], 'html')
         add('/404.html?lang=uk', mapping['/404.html'].lstrip('/'), 'text/markdown',
@@ -292,7 +304,7 @@ def main():
     if parsed.scheme not in ('http', 'https') or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username:
         parser.error('Origin must be a plain HTTP(S) origin')
     site = args.site.resolve()
-    cases, sequences = jobs(site)
+    cases, sequences = jobs(site, worker_home_queries=args.expected_markdown_version is not None)
     known = args.known_html_injection.read_bytes() if args.known_html_injection else None
     if known == b'':
         parser.error('Known injection must be nonempty exact bytes')

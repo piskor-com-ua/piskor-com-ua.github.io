@@ -14,6 +14,89 @@ FONT_NAMES = ('roboto-light', 'roboto-regular')
 CONSENT_SCRIPT = re.compile(r'<script\b(?=[^>]*\bsrc=["\']/analytics-consent\.js["\'])[^>]*>\s*</script>', re.I)
 CATALOG_SHEET = re.compile(r'<link\b[^>]*\bhref=["\']/catalog-bundle\.css(?:\?[^"\']*)?["\'][^>]*>', re.I)
 BODY = re.compile(r'<body\b[^>]*>', re.I)
+# Explicitly reviewed routes only. Keep the original family union for every
+# other page, including the other language of this case.
+PAGE_STYLE_SCOPES = frozenset({'en/portfolio/2022/zabava-restaurant-sambir/index.html'})
+SCOPED_STYLE_CONTROLLERS = frozenset({
+    'analytics-consent.js', 'agent-tools.js', 'portfolio.js', 'url-compat.js',
+})
+# Changing a reviewed controller requires rechecking its dynamic class states.
+# Unknown revisions safely retain complete CSS, including computed assignments.
+SCOPED_CONTROLLER_SHA256 = {
+    'analytics-consent.js': 'b74abfc1372fd34499519c92486c471d98fee3627792e882a2f23a0d9b878feb',
+    'agent-tools.js': 'df7313413ea89c038d733102cb2b0d09e2547c51294d1a98d18170ec3de11d72',
+    'portfolio.js': '82ceee047af3508289a0dba2b353d13691210f7e538b66bc75f022e1ce699290',
+    'url-compat.js': '9c74c56d65c26cc6499daa6d12a1714a1307cce2b94743a7469a91171623efa0',
+}
+
+
+def _reviewed_style_controller(output, name):
+    path = output / name
+    if not path.is_file():
+        return False
+    return hashlib.sha256(path.read_bytes()).hexdigest() == SCOPED_CONTROLLER_SHA256.get(name)
+
+
+def _scoped_style_classes(output, page):
+    """Only reviewed shared controllers may narrow this route's CSS inventory.
+
+    Check inline sources against the same generated controllers; an unfamiliar
+    script, marker or stale payload keeps full CSS. JSON script data is inert.
+    """
+    from html.parser import HTMLParser
+
+    class Scripts(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.scripts = []
+            self.current = None
+
+        def handle_starttag(self, tag, attrs):
+            if tag == 'script':
+                self.current = (dict(attrs), [])
+
+        def handle_data(self, data):
+            if self.current is not None:
+                self.current[1].append(data)
+
+        def handle_endtag(self, tag):
+            if tag == 'script' and self.current is not None:
+                self.scripts.append(self.current)
+                self.current = None
+
+    parser = Scripts()
+    parser.feed(page.read_text())
+    if parser.current is not None:
+        return None
+    for attrs, parts in parser.scripts:
+        body = ''.join(parts)
+        if 'src' in attrs:
+            url = urlsplit(attrs['src'])
+            if (url.scheme or url.netloc or url.path not in
+                    {'/' + name for name in SCOPED_STYLE_CONTROLLERS}):
+                return None
+            if not _reviewed_style_controller(output, url.path.lstrip('/')):
+                return None
+            continue
+        if attrs.get('type', '').lower() in {'application/json', 'application/ld+json'}:
+            continue
+        if 'data-consent-inline' in attrs:
+            name = 'analytics-consent.js'
+            expected = (output / name).read_text() if (output / name).is_file() else None
+        else:
+            name = attrs.get('data-inline-page-critical')
+            if name not in {'agent-tools.js', 'portfolio.js'} or not (output / name).is_file():
+                return None
+            source = (output / name).read_text()
+            if attrs.get('data-source-sha256') != hashlib.sha256(source.encode()).hexdigest():
+                return None
+            expected = ("document.addEventListener('DOMContentLoaded', () => {\n"
+                        + source + '\n}, { once: true });')
+        if not _reviewed_style_controller(output, name):
+            return None
+        if expected is None or body.strip() != expected.strip():
+            return None
+    return catalog_classes(output, [page])
 
 
 def generated_root(output):
@@ -135,6 +218,8 @@ def inline_page_styles(output):
     both home languages, every case together, or the 404 page. Unknown pages
     retain the union of all non-catalog pages. Each replacement stays at its
     original cascade position; unknown external styles are left untouched.
+    Explicit case opt-ins additionally use their own HTML and loaded/inline
+    controller inventory. Unknown controllers retain the complete stylesheet.
     """
     output = generated_root(output)
     pages = sorted(path for path in output.rglob('*.html')
@@ -147,11 +232,16 @@ def inline_page_styles(output):
         family_pages.setdefault(family, []).append(page)
     family_classes = {family: catalog_classes(output, pages if family == 'all' else members)
                       for family, members in family_pages.items()}
+    scoped_classes = {page: _scoped_style_classes(output, page) for page in pages
+                      if families[page] == 'case'
+                      and page.relative_to(output).as_posix() in PAGE_STYLE_SCOPES}
     pattern = re.compile(r'<link\b(?=[^>]*\brel=["\']stylesheet["\'])[^>]*>', re.I)
     count = 0
     cache = {}
     for page in pages:
         family = families[page]
+        scope = page if page in scoped_classes else family
+        classes = scoped_classes[page] if page in scoped_classes else family_classes[family]
         def replace(match):
             nonlocal count
             href = re.search(r'\bhref=["\']([^"\']+)["\']', match[0], re.I)
@@ -171,9 +261,10 @@ def inline_page_styles(output):
                 if family != 'home' or deferred[1] != 'automation' or parsed.path != '/automation.css':
                     raise ValueError('Unsupported deferred homepage stylesheet: ' + href[1])
                 return match[0]
-            key = (family, target)
+            key = (scope, target)
             if key not in cache:
-                css = prune_catalog_css(target.read_text(), family_classes[family])
+                css = prune_catalog_css(target.read_text(), classes,
+                                        prune_functional_ancestors=page in scoped_classes)
                 def absolute_url(found):
                     quote, resource = found[1], found[2]
                     return 'url(' + quote + urljoin(parsed.path, resource) + quote + ')'
@@ -421,7 +512,14 @@ def validate_page_inline_scripts(output, page, html):
     if tuple(actual) != names or HOME_INLINE_MARKER in html:
         raise ValueError('Page inline controller coverage/order differs')
     closing = list(re.finditer(r'</body\s*>', html, re.I))
-    if len(closing) != 1 or not html[:closing[0].start()].endswith(payload):
+    expected = payload
+    if len(closing) == 1 and not html[:closing[0].start()].endswith(expected):
+        from case_minification import MINIFIED_CASES, minify_fragment
+        if Path(page).relative_to(output).as_posix() in MINIFIED_CASES:
+            # The source hashes and once/DOM-ready wrapper remain part of the
+            # exact canonical transform; never accept a caller-supplied digest.
+            expected = minify_fragment(payload)
+    if len(closing) != 1 or not html[:closing[0].start()].endswith(expected):
         raise ValueError('Page inline source/hash/DOM-ready wrapper/body position differs')
     for attrs, ancestry, inert in _page_script_tags(html):
         if PAGE_INLINE_MARKER in dict(attrs) and (ancestry != ('html', 'body') or inert):

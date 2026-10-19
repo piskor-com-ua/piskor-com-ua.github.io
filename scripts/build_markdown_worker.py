@@ -3,6 +3,8 @@
 No source HTML modifications, network, credentials, logs, tokens or deployment.
 """
 import argparse
+import base64
+import brotli
 import gzip
 import hashlib
 import json
@@ -18,6 +20,10 @@ MCP_HANDLER = ROOT / 'cloudflare/mcp-server.mjs'
 MCP_DISCOVERY = ROOT / 'scripts/mcp_discovery.py'
 MCP_IMPORT = b"import {handleMcp} from './mcp-server.mjs';\n"
 MAX_BUNDLE_BYTES = 2 * 1024 * 1024  # Conservative local budget, not Cloudflare's64MiB limit.
+HTML_ROUTE = '/en/portfolio/2022/zabava-restaurant-sambir/'
+# Local guard for the measured Zabava payload/model; not a production timing
+# guarantee. Raising it requires renewed performance verification.
+MAX_HTML_BROTLI_BYTES = 43_200
 
 
 def sha(body):
@@ -26,6 +32,56 @@ def sha(body):
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+
+
+def html_representation(site, pages, revision):
+    """Freeze final canonical bytes with a 43,200-byte Brotli local guard.
+
+    The guard bounds this page's measured delivery model, not production timing.
+    """
+    from html.parser import HTMLParser
+
+    if HTML_ROUTE not in pages:
+        return {}
+    relative = HTML_ROUTE.lstrip('/') + 'index.html'
+    path = (site / relative).resolve()
+    if not path.is_relative_to(site) or not path.is_file():
+        raise ValueError('Missing/escaping precompressed HTML artifact')
+    body = path.read_bytes()
+
+    class Metadata(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.languages, self.canonicals, self.robots = [], [], []
+            self.redirect = False
+
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            if tag == 'html':
+                self.languages.append(attrs.get('lang'))
+            if tag == 'link' and attrs.get('rel') == 'canonical':
+                self.canonicals.append(attrs.get('href'))
+            if tag == 'meta' and attrs.get('name', '').lower() == 'robots':
+                self.robots.append({part.strip().lower() for part in attrs.get('content', '').split(',')})
+            if tag == 'meta' and attrs.get('http-equiv', '').lower() == 'refresh':
+                self.redirect = True
+
+    metadata = Metadata()
+    metadata.feed(body.decode('utf-8'))
+    if (metadata.languages != ['en'] or metadata.canonicals != ['https://piskor.com.ua' + HTML_ROUTE]
+            or metadata.robots != [{'noindex', 'nofollow'}] or metadata.redirect):
+        raise ValueError('Precompressed HTML must be the noindex canonical English page')
+    encoded = brotli.compress(body, quality=11, mode=brotli.MODE_TEXT)
+    if len(encoded) > MAX_HTML_BROTLI_BYTES:
+        raise ValueError('Precompressed Zabava HTML exceeds the 43,200-byte local Brotli budget; '
+                         'renew performance verification before changing this guard')
+    if brotli.decompress(encoded) != body:
+        raise ValueError('Precompressed HTML bytes must round-trip exactly')
+    return {HTML_ROUTE: {'bodyBase64': base64.b64encode(encoded).decode('ascii'),
+                        'encoding': 'br', 'quality': 11, 'language': 'en',
+                        'bytes': len(body), 'sha256': sha(body),
+                        'encodedBytes': len(encoded), 'encodedSha256': sha(encoded),
+                        'sourcePath': relative, 'revision': revision}}
 
 
 def build(site, out, revision):
@@ -56,6 +112,8 @@ def build(site, out, revision):
             raise ValueError('Unsupported authored route: ' + route)
         if route in pages or language not in ('uk', 'en'):
             raise ValueError('Duplicate route or unsupported language')
+        if route == HTML_ROUTE and language != 'en':
+            raise ValueError('Precompressed route must use the English inventory entry')
         html = parsed.path.lstrip('/') + ('index.html' if parsed.path.endswith('/') else '')
         expected_md = '/agent-markdown/' + str(Path(html).with_suffix('.md'))
         if route == '/404.html?lang=en':
@@ -80,7 +138,8 @@ def build(site, out, revision):
     if '/404.html' in pages:
         pages['/404.html?lang=uk'] = pages['/404.html'].copy()
     mcp = generate_mcp_data(site, revision)
-    data = {'revision': revision, 'pages': pages, 'documents': documents, 'mcp': mcp}
+    html = html_representation(site, pages, revision)
+    data = {'revision': revision, 'pages': pages, 'documents': documents, 'mcp': mcp, 'html': html}
     handler, mcp_handler = HANDLER.read_bytes(), MCP_HANDLER.read_bytes()
     # Exact, checked composition keeps the deployed module self-contained without a
     # bundler or runtime dependency. Fail closed if either module gains an import.
@@ -103,6 +162,8 @@ def build(site, out, revision):
                        ('project-catalog.json', 'index.html', '.well-known/api-catalog')}
     if (site / 'en/index.html').is_file():
         artifact_hashes['en/index.html'] = sha((site / 'en/index.html').read_bytes())
+    for representation in html.values():
+        artifact_hashes[representation['sourcePath']] = representation['sha256']
     manifest = {'version': 1, 'revision': revision, 'routes_sha256': sha(route_file.read_bytes()),
                 'source_sha256': source_hashes, 'artifact_source_sha256': artifact_hashes,
                 'mcp_data_sha256': sha(canonical(mcp)),
@@ -117,6 +178,8 @@ def build(site, out, revision):
                 'bundle_bytes': len(bundle), 'bundle_gzip9_bytes': len(gzip.compress(bundle, mtime=0)),
                 'source_page_states': len(inventory['pages']), 'routing_keys_with_uk404_alias': len(pages),
                 'markdown_files': files, 'markdown_total_bytes': sum(x['bytes'] for x in files.values()),
+                'html_representations': {route: {key: value for key, value in item.items() if key != 'bodyBase64'}
+                                         for route, item in html.items()},
                 'local_budget_bytes': MAX_BUNDLE_BYTES, 'token_headers': 'omitted-no-model-independent-token-count',
                 'deployment': 'Not deployed; Pages artifact unchanged; no logging configuration is enabled by this module'}
     out.mkdir(parents=True)

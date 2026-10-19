@@ -1,10 +1,13 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import hashlib
 import unittest
+from unittest.mock import patch
 
 from fontTools.ttLib import TTFont
 from fontTools.pens.recordingPen import DecomposingRecordingPen
-from first_paint import inline_consent, subset_fonts, inline_catalog_styles, inline_page_styles
+from first_paint import (inline_consent, subset_fonts, inline_catalog_styles,
+                         inline_page_styles, inline_page_critical_scripts)
 
 
 class FirstPaintTests(unittest.TestCase):
@@ -162,6 +165,109 @@ class FirstPaintTests(unittest.TestCase):
         self.assertIn('.case-state', case)
         self.assertNotIn('.home-state', case)
         self.assertNotIn('.unknown-state', case)
+
+    def scoped_case(self, script=''):
+        page = self.root / 'en/portfolio/2022/zabava-restaurant-sambir/index.html'
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_text('<html lang="en"><head><link rel="stylesheet" href="/shared.css">'
+                        + script + '</head><body class="project-page zabava-restaurant-sambir-page">'
+                        '<dialog class="project-lightbox"><div class="lightbox-caption"></div>'
+                        '<div class="lightbox-controls"></div></dialog></body></html>')
+        return page
+
+    def test_explicit_case_scope_leaves_every_other_output_byte_identical(self):
+        css = ('.zabava-restaurant-sambir-page{color:red}.other-case{color:blue}'
+               '.home-only{color:green}.ua-only{color:purple}.alias-only{color:gray}'
+               '.other-case :is(a,button){color:blue}.ua-only:not(.unavailable){color:purple}')
+        (self.root / 'shared.css').write_text(css)
+        target = self.scoped_case()
+        fixtures = {
+            'index.html': 'home-only', 'en/index.html': 'home-only',
+            'portfolio/2022/zabava-restaurant-sambir/index.html': 'project-page ua-only',
+            'en/portfolio/2021/other/index.html': 'project-page other-case',
+            '404.html': 'not-found-page', 'alias/index.html': 'alias-only',
+        }
+        for relative, classes in fixtures.items():
+            page = self.root / relative
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text('<link rel="stylesheet" href="/shared.css"><body class="'
+                            + classes + '">Unchanged content</body>')
+        originals = {p: p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with patch('first_paint.PAGE_STYLE_SCOPES', frozenset()):
+            inline_page_styles(self.root)
+        baseline = {p: p.read_bytes() for p in originals}
+        for page, data in originals.items():
+            page.write_bytes(data)
+        inline_page_styles(self.root)
+        changed = [p.relative_to(self.root).as_posix() for p in originals
+                   if p.read_bytes() != baseline[p]]
+        self.assertEqual(changed, [target.relative_to(self.root).as_posix()])
+        self.assertIn('.zabava-restaurant-sambir-page{color:red}', target.read_text())
+        self.assertNotIn('.other-case', target.read_text())
+        self.assertNotIn('.ua-only', target.read_text())
+
+    def test_case_scope_preserves_shared_controllers_consent_and_native_dialog_states(self):
+        for name in ('analytics-consent.js', 'portfolio.js', 'agent-tools.js', 'url-compat.js'):
+            (self.root / name).write_bytes((Path('concept') / name).read_bytes())
+        selectors = ('.analytics-consent', '.analytics-consent__copy', '.analytics-preferences',
+                     '.project-lightbox[open]', '.project-lightbox::backdrop',
+                     '.lightbox-caption', '.lightbox-controls button:focus-visible')
+        css = ''.join(selector + '{color:red}' for selector in selectors)
+        css += '@media(max-width:700px){.lightbox-controls{gap:12px}}'
+        css += '.other-case{color:blue}:is(.future,a){color:inherit}'
+        (self.root / 'shared.css').write_text(css)
+        scripts = '<script src="/analytics-consent.js" data-measurement-id="G-ABC" defer></script>'
+        for name in ('agent-tools.js', 'portfolio.js', 'url-compat.js'):
+            digest = hashlib.sha256((self.root / name).read_bytes()).hexdigest()[:12]
+            scripts += '<script src="/' + name + '?v=' + digest + '" defer></script>'
+        page = self.scoped_case(scripts)
+        # Exercise the real build order, including source-hashed inline payloads.
+        inline_consent(self.root)
+        inline_page_critical_scripts(self.root)
+        inline_page_styles(self.root)
+        result = page.read_text()
+        for selector in selectors:
+            self.assertIn(selector + '{color:red}', result)
+        self.assertIn('@media(max-width:700px){.lightbox-controls{gap:12px}}', result)
+        self.assertIn(':is(.future,a){color:inherit}', result)
+        self.assertNotIn('.other-case', result)
+
+    def test_case_scope_unknown_controller_keeps_complete_stylesheet(self):
+        css = '.zabava-restaurant-sambir-page{color:red}.future-state{color:blue}'
+        (self.root / 'shared.css').write_text(css)
+        for script in ('<script src="https://example.test/unknown.js"></script>',
+                       '<script src="/missing.js"></script>',
+                       '<script src="/new-controller.js"></script>',
+                       '<script>element.className = computedName;</script>',
+                       '<script>element.classList.add(computedName);</script>',
+                       '<script>element.classList.toggle("\\u0066uture-state");</script>'):
+            with self.subTest(script=script):
+                (self.root / 'new-controller.js').write_text('element.className = computedName;')
+                page = self.scoped_case(script)
+                inline_page_styles(self.root)
+                self.assertIn(css, page.read_text())
+
+    def test_changed_reviewed_controller_keeps_full_css_for_uninferable_future_classes(self):
+        css = '.zabava-restaurant-sambir-page{color:red}.future-state{color:blue}'
+        (self.root / 'shared.css').write_text(css)
+        (self.root / 'portfolio.js').write_text('element.className = computedName;')
+        page = self.scoped_case('<script src="/portfolio.js"></script>')
+        inline_page_styles(self.root)
+        self.assertIn(css, page.read_text())
+
+    def test_case_scope_stale_inline_controller_keeps_complete_stylesheet(self):
+        css = '.zabava-restaurant-sambir-page{color:red}.future-state{color:blue}'
+        (self.root / 'shared.css').write_text(css)
+        for name in ('agent-tools.js', 'portfolio.js'):
+            (self.root / name).write_bytes((Path('concept') / name).read_bytes())
+        scripts = ''.join('<script src="/' + name + '?v='
+                          + hashlib.sha256((self.root / name).read_bytes()).hexdigest()[:12]
+                          + '" defer></script>' for name in ('agent-tools.js', 'portfolio.js'))
+        page = self.scoped_case(scripts)
+        inline_page_critical_scripts(self.root)
+        page.write_text(page.read_text().replace("dialog.showModal();", "dialog.showModal(); unknown();"))
+        inline_page_styles(self.root)
+        self.assertIn(css, page.read_text())
 
     def test_deferred_home_styles_keep_versioned_template_and_native_fallback_links(self):
         (self.root / 'base.css').write_text('body{color:black}')

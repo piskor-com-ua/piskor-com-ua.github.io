@@ -34,6 +34,8 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Install pinned build and validation tools
+        run: npm ci --ignore-scripts
       - name: Validate JavaScript
         run: |
           for file in concept/*.js; do node --check "$file"; done
@@ -61,7 +63,6 @@ jobs:
           node --test scripts/test-markdown-worker.mjs
       - name: Install browser validation tools
         run: |
-          npm ci --ignore-scripts
           npx playwright install --with-deps chromium
       - name: Validate HTTP MCP transport and real SDK client
         run: npm run test:mcp

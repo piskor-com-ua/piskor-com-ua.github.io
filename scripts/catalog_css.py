@@ -101,12 +101,30 @@ def _selectors(tokens):
     return selectors
 
 
-def _possible(tokens, classes):
-    # :not(.missing), :is(.missing, a), :has() and nesting need logical analysis.
-    # Preserve every functional selector, including unfamiliar future functions.
-    if any(token.type in {'function', 'error'} or
-           (token.type == 'literal' and token.value == '&') for token in tokens):
+def _possible(tokens, classes, prune_functional_ancestors=False):
+    # Default output preserves every functional selector. The reviewed opt-in
+    # may only rule out mandatory classes outside known logical functions.
+    def uncertain(items):
+        for token in items:
+            if (token.type == 'error' or
+                    token.type == 'literal' and token.value == '&'):
+                return True
+            if token.type == 'function':
+                if (not prune_functional_ancestors or
+                        token.lower_name not in {'is', 'where', 'not', 'has'} or
+                        uncertain(token.arguments)):
+                    return True
+            elif hasattr(token, 'content') and uncertain(token.content):
+                return True
+        return False
+
+    if (uncertain(tokens) if prune_functional_ancestors else
+            any(token.type in {'function', 'error'} or
+                (token.type == 'literal' and token.value == '&') for token in tokens)):
         return True
+    # Classes directly in the selector remain mandatory even beside a logical
+    # function. Never inspect its arguments: :not(.absent), for example, does
+    # not require .absent to exist. Unknown functions and parse errors stay.
     required = {tokens[index + 1].value for index, token in enumerate(tokens[:-1])
                 if token.type == 'literal' and token.value == '.'
                 and tokens[index + 1].type == 'ident'}
@@ -115,11 +133,13 @@ def _possible(tokens, classes):
                for name in required)
 
 
-def prune_catalog_css(css, classes):
+def prune_catalog_css(css, classes, *, prune_functional_ancestors=False):
     """Preserve source order/declarations; only remove impossible selector arms.
 
     This does not test current visibility or browser state. A class retained in
     any catalog or script keeps all of its hover/focus/pseudo-element rules.
+    Optional functional-ancestor pruning tests only outer mandatory classes;
+    function arguments never supply required classes.
     """
     if classes is None:
         return css
@@ -133,7 +153,8 @@ def prune_catalog_css(css, classes):
                     result.append(tinycss2.serialize([rule]))
                     continue
                 selectors = _selectors(rule.prelude)
-                kept = [tokens for tokens in selectors if _possible(tokens, classes)]
+                kept = [tokens for tokens in selectors
+                        if _possible(tokens, classes, prune_functional_ancestors)]
                 if len(kept) == len(selectors):
                     result.append(tinycss2.serialize([rule]))
                 elif kept:

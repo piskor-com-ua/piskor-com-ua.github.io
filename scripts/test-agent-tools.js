@@ -13,11 +13,13 @@ function setup({ legacy = false, supported = true, failing = false } = {}) {
   const document = { documentElement: { lang: 'uk' }, querySelectorAll: () => [{ textContent: 'WhatsApp↗', getAttribute: () => 'https://wa.me/380974781005' }] };
   const navigator = {};
   if (supported) (legacy ? navigator : document).modelContext = context;
-  vm.runInNewContext(source, { document, navigator, fetch: async (url, options) => {
+  const sandbox = { document, navigator, fetch: async (url, options) => {
     requests.push({ url, options });
     return { ok: !failing, json: async () => ({ version: 1, projects }) };
-  } });
-  return { tools, requests, document };
+  } };
+  const rerun = () => vm.runInNewContext(source, sandbox);
+  rerun();
+  return { tools, requests, document, navigator, context, rerun };
 }
 test('unsupported browsers make no requests and register nothing', () => {
   const { tools, requests } = setup({ supported: false });
@@ -71,4 +73,39 @@ test('contacts only read links and failed requests can retry', async () => {
   await assert.rejects(tools[0].execute(), /temporarily unavailable/);
   await assert.rejects(tools[0].execute(), /temporarily unavailable/);
   assert.equal(requests.length, 2);
+});
+
+test('repeated script evaluation registers once per API context and retains lazy shared data', async () => {
+  for (const legacy of [false, true]) {
+    const { tools, requests, document, rerun } = setup({ legacy });
+    rerun(); rerun();
+    assert.equal(tools.length, 3);
+    assert.equal(requests.length, 0);
+    await tools[0].execute();
+    document.documentElement.lang = 'en';
+    rerun();
+    assert.equal(JSON.parse(await tools[0].execute()).projects[0].name, 'House');
+    assert.equal(JSON.parse(await tools[1].execute({ project_id: 'house' })).language, 'en');
+    assert.equal(tools.length, 3);
+    assert.equal(requests.length, 1);
+  }
+});
+test('API appearing after initial unavailable evaluation can still register', () => {
+  const { tools, document, context, rerun } = setup({ supported: false });
+  document.modelContext = context;
+  rerun(); rerun();
+  assert.equal(tools.length, 3);
+});
+test('registration failure never breaks ordinary page execution', () => {
+  const document = { modelContext: { registerTool() { throw Error('Experimental API unavailable'); } } };
+  assert.doesNotThrow(() => vm.runInNewContext(source, { document, navigator: {} }));
+});
+
+test('query maxLength counts Unicode code points consistently with JSON Schema', async () => {
+  const { tools } = setup();
+  for (const query of ['😀'.repeat(101), '😀'.repeat(200), 'a'.repeat(200)]) {
+    assert.equal(JSON.parse(await tools[0].execute({ query })).total, 0);
+  }
+  await assert.rejects(tools[0].execute({ query: '😀'.repeat(201) }), /at most 200/);
+  await assert.rejects(tools[0].execute({ query: { toString: () => 'x' } }));
 });

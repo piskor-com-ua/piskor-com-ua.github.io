@@ -1,7 +1,8 @@
 (() => {
   // document.modelContext is the current API; navigator covers earlier trials.
   const context = document.modelContext || navigator.modelContext;
-  if (!context || typeof context.registerTool !== 'function') return;
+  if (!context || typeof context.registerTool !== 'function' || document.__piskorModelContext === context) return;
+  document.__piskorModelContext = context;
 
   let catalog;
   function readCatalog() {
@@ -45,7 +46,7 @@
       },
       execute: async (input = {}) => {
         const lang = validate(input, ['query', 'year', 'language', 'limit']);
-        if (input.query !== undefined && (typeof input.query !== 'string' || input.query.length > 200)) throw new Error('Query must be a string of at most 200 characters.');
+        if (input.query !== undefined && (typeof input.query !== 'string' || Array.from(input.query).length > 200)) throw new Error('Query must be a string of at most 200 characters.');
         if (input.year !== undefined && (!Number.isInteger(input.year) || input.year < 1900 || input.year > 2100)) throw new Error('Provide a project year between 1900 and 2100.');
         const limit = input.limit === undefined ? 10 : input.limit;
         if (!Number.isInteger(limit) || limit < 1 || limit > 20) throw new Error('Limit must be an integer between 1 and 20.');

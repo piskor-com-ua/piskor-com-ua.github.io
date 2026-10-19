@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "serverInfo": {
+    "name": "ua.com.piskor/portfolio",
+    "title": "PISKOR public portfolio",
+    "version": "1.0.0"
+  },
+  "protocolVersions": [
+    "2026-07-28",
+    "2025-11-25"
+  ],
+  "endpoint": "https://piskor.com.ua/mcp",
+  "serverCard": "https://piskor.com.ua/.well-known/mcp/server-card.json",
+  "tools": [
+    {
+      "name": "search_projects",
+      "description": "Find published PISKOR architecture and interior projects by text and project year. Returns case links and the exact published labels and summaries.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Words from a project name, summary, location or case section."
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2100
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "uk",
+              "en"
+            ],
+            "description": "Content language; defaults to Ukrainian (uk)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 10
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_project_details",
+      "description": "Read a PISKOR case’s published facts and section links. Labels and text describe the source-confirmed scope; project proposals and installed systems retain their published wording.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "uk",
+              "en"
+            ],
+            "description": "Content language; defaults to Ukrainian (uk)."
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_contact_options",
+      "description": "Read the studio’s published public phone, WhatsApp and Viber links.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

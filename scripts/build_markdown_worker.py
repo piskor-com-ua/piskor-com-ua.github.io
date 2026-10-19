@@ -10,7 +10,13 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 
-HANDLER = Path(__file__).resolve().parents[1] / 'cloudflare/markdown-worker.mjs'
+from mcp_discovery import generate_mcp_data, CONTRACT_PATH
+
+ROOT = Path(__file__).resolve().parents[1]
+HANDLER = ROOT / 'cloudflare/markdown-worker.mjs'
+MCP_HANDLER = ROOT / 'cloudflare/mcp-server.mjs'
+MCP_DISCOVERY = ROOT / 'scripts/mcp_discovery.py'
+MCP_IMPORT = b"import {handleMcp} from './mcp-server.mjs';\n"
 MAX_BUNDLE_BYTES = 2 * 1024 * 1024  # Conservative local budget, not Cloudflare's64MiB limit.
 
 
@@ -73,13 +79,41 @@ def build(site, out, revision):
         raise ValueError('Inventory must cover every generated HTML document exactly')
     if '/404.html' in pages:
         pages['/404.html?lang=uk'] = pages['/404.html'].copy()
-    data = {'revision': revision, 'pages': pages, 'documents': documents}
-    handler = HANDLER.read_bytes()
-    bundle = b'const PUBLIC_PAGE_DATA=' + canonical(data) + b';\n' + handler
+    mcp = generate_mcp_data(site, revision)
+    data = {'revision': revision, 'pages': pages, 'documents': documents, 'mcp': mcp}
+    handler, mcp_handler = HANDLER.read_bytes(), MCP_HANDLER.read_bytes()
+    # Exact, checked composition keeps the deployed module self-contained without a
+    # bundler or runtime dependency. Fail closed if either module gains an import.
+    if handler.count(MCP_IMPORT) != 1:
+        raise ValueError('Expected exactly one MCP handler import')
+    composed_handler = handler.replace(MCP_IMPORT, b'', 1)
+    for source in (composed_handler, mcp_handler):
+        if re.search(rb'^\s*import\b|\bimport\s*\(', source, re.MULTILINE):
+            raise ValueError('Worker modules must not introduce runtime imports')
+    bundle = b'const PUBLIC_PAGE_DATA=' + canonical(data) + b';\n' + mcp_handler + b'\n' + composed_handler
     if len(bundle) > MAX_BUNDLE_BYTES:
         raise ValueError('Worker exceeds conservative2MiB local budget; review required')
+    source_paths = {'markdown_handler': HANDLER, 'mcp_handler': MCP_HANDLER,
+                    'mcp_discovery': MCP_DISCOVERY, 'mcp_contract': CONTRACT_PATH,
+                    'worker_builder': Path(__file__).resolve(),
+                    'mcp_design_contract': ROOT / 'docs/public-http-mcp.md',
+                    'wrangler_config': ROOT / 'cloudflare/wrangler.jsonc'}
+    source_hashes = {name: sha(path.read_bytes()) for name, path in source_paths.items()}
+    artifact_hashes = {name: sha((site / name).read_bytes()) for name in
+                       ('project-catalog.json', 'index.html', '.well-known/api-catalog')}
+    if (site / 'en/index.html').is_file():
+        artifact_hashes['en/index.html'] = sha((site / 'en/index.html').read_bytes())
     manifest = {'version': 1, 'revision': revision, 'routes_sha256': sha(route_file.read_bytes()),
-                'handler_sha256': sha(handler), 'bundle_sha256': sha(bundle),
+                'source_sha256': source_hashes, 'artifact_source_sha256': artifact_hashes,
+                'mcp_data_sha256': sha(canonical(mcp)),
+                'mcp_server_version': mcp['contract']['serverInfo']['version'] + '+' + revision,
+                'mcp_protocol_versions': mcp['contract']['protocolVersions'],
+                'mcp_project_records': len(mcp['projects']),
+                'mcp_publications': {path: {'sha256': sha(item['body'].encode('utf-8')),
+                                          'bytes': len(item['body'].encode('utf-8')),
+                                          'content_type': item['contentType']}
+                                     for path, item in mcp['publications'].items()},
+                'handler_sha256': sha(handler), 'mcp_handler_sha256': sha(mcp_handler), 'bundle_sha256': sha(bundle),
                 'bundle_bytes': len(bundle), 'bundle_gzip9_bytes': len(gzip.compress(bundle, mtime=0)),
                 'source_page_states': len(inventory['pages']), 'routing_keys_with_uk404_alias': len(pages),
                 'markdown_files': files, 'markdown_total_bytes': sum(x['bytes'] for x in files.values()),

@@ -5,5 +5,17 @@
   "workers_dev": false,
   "preview_urls": false,
   "routes": [],
-  "observability": { "enabled": false }
+  "observability": {
+    "enabled": false
+  },
+  "ratelimits": [
+    {
+      "name": "MCP_RATE_LIMITER",
+      "namespace_id": "1782407601",
+      "simple": {
+        "limit": 120,
+        "period": 60
+      }
+    }
+  ]
 }

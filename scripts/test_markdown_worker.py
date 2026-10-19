@@ -15,7 +15,12 @@ class MarkdownWorkerBuild(unittest.TestCase):
         self.site = self.root / 'site'
         self.site.mkdir()
         (self.site / '.nojekyll').touch()
-        (self.site / 'index.html').write_text('<html>Original unchanged</html>')
+        (self.site / 'index.html').write_text('<html><section id="contact"><a href="tel:+380123456789">Phone</a></section></html>')
+        (self.site / 'project-catalog.json').write_text(json.dumps({'version': 1, 'projects': []}))
+        (self.site / '.well-known').mkdir()
+        (self.site / '.well-known/api-catalog').write_text(json.dumps({'linkset': [
+            {'anchor': 'https://piskor.com.ua/.well-known/api-catalog',
+             'item': [{'href': 'https://piskor.com.ua/project-catalog.json', 'type': 'application/json'}]}]}))
         (self.site / 'agent-markdown').mkdir()
         (self.site / 'agent-markdown/index.md').write_bytes('# Простір\n'.encode())
         self.rows = [{'url': '/', 'markdown': '/agent-markdown/index.md', 'language': 'uk'}]
@@ -35,6 +40,14 @@ class MarkdownWorkerBuild(unittest.TestCase):
         for name in ('worker.mjs', 'manifest.json'):
             self.assertEqual((self.root / 'a' / name).read_bytes(), (self.root / 'b' / name).read_bytes())
         self.assertEqual(before, {str(p): p.read_bytes() for p in self.site.rglob('*') if p.is_file()})
+        self.assertEqual(a['mcp_protocol_versions'], ['2026-07-28', '2025-11-25'])
+        self.assertEqual(a['mcp_server_version'], '1.0.0+' + REVISION)
+        self.assertEqual(set(a['mcp_publications']), {'/.well-known/mcp/server-card.json',
+                                                    '/.well-known/api-catalog', '/agent-api/mcp.md'})
+        self.assertIn('mcp_discovery', a['source_sha256'])
+        self.assertIn('wrangler_config', a['source_sha256'])
+        self.assertIn('project-catalog.json', a['artifact_source_sha256'])
+        self.assertNotIn(b"from './mcp-server.mjs'", (self.root / 'a/worker.mjs').read_bytes())
         self.assertEqual(a['markdown_files']['/agent-markdown/index.md']['bytes'], len('# Простір\n'.encode()))
 
     def test_outside_artifact_and_no_overwrite(self):
@@ -80,6 +93,22 @@ class MarkdownWorkerBuild(unittest.TestCase):
         result = worker.build(self.site, self.root / 'out', REVISION)
         self.assertEqual(result['source_page_states'], 3)
         self.assertEqual(result['routing_keys_with_uk404_alias'], 4)
+
+    def test_module_composition_rejects_changed_or_extra_imports(self):
+        changed = self.root / 'changed-handler.mjs'
+        changed.write_bytes(worker.HANDLER.read_bytes().replace(worker.MCP_IMPORT, b''))
+        with patch.object(worker, 'HANDLER', changed):
+            with self.assertRaisesRegex(ValueError, 'exactly one MCP'):
+                worker.build(self.site, self.root / 'out', REVISION)
+        changed.write_bytes(worker.HANDLER.read_bytes() + b"\nimport 'unreviewed-module';\n")
+        with patch.object(worker, 'HANDLER', changed):
+            with self.assertRaisesRegex(ValueError, 'runtime imports'):
+                worker.build(self.site, self.root / 'out', REVISION)
+        changed.write_bytes(worker.MCP_HANDLER.read_bytes() + b"\nimport('runtime-module');\n")
+        with patch.object(worker, 'MCP_HANDLER', changed):
+            with self.assertRaisesRegex(ValueError, 'runtime imports'):
+                worker.build(self.site, self.root / 'out', REVISION)
+        self.assertFalse((self.root / 'out').exists())
 
     def test_budget_fails_before_output(self):
         with patch.object(worker, 'MAX_BUNDLE_BYTES', 1):

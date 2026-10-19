@@ -50,7 +50,8 @@ class Document(HTMLParser):
         self.stack[-1].children.append(data)
 
 
-def generate_agent_catalog(output):
+def read_agent_projects(output):
+    """Read current public cards and case facts without modifying the artifact."""
     output = Path(output)
     projects = []
     for language, route in [('uk', 'portfolio'), ('en', 'en/portfolio')]:
@@ -84,6 +85,12 @@ def generate_agent_catalog(output):
                 'summary': summaries[0].text(), 'label': labels[0].text(),
                 'facts': fact_pairs, 'sections': sections,
             })
+    return projects
+
+
+def generate_agent_catalog(output):
+    output = Path(output)
+    projects = read_agent_projects(output)
     (output / 'project-catalog.json').write_text(json.dumps(
         {'version': 1, 'projects': projects}, ensure_ascii=False, separators=(',', ':')) + '\n')
     lines = ['# PISKOR Architect', '',

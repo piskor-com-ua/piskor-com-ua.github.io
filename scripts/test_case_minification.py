@@ -6,7 +6,8 @@ import re
 import unittest
 
 from case_minification import minify_fragment, minify_reviewed_cases
-from first_paint import inline_consent, inline_page_critical_scripts, validate_page_inline_scripts
+from first_paint import (inline_consent, inline_page_critical_scripts, validate_page_inline_scripts,
+                         _critical_payload, PAGE_CRITICAL_PROFILES, PAGE_INLINE_MARKER)
 
 
 class CaseMinificationTests(unittest.TestCase):
@@ -72,6 +73,29 @@ class CaseMinificationTests(unittest.TestCase):
             minify_fragment('<script type="application/ld+json">{"broken":}</script>')
         with self.assertRaises(ValueError):
             minify_reviewed_cases('concept')
+
+    def test_lazy_tools_compilation_keeps_exact_route_source_and_idempotency_contract(self):
+        from zabava_first_paint import _lazy_tools, transform_critical_payload
+        _, original = _critical_payload(self.root, PAGE_CRITICAL_PROFILES['case'], PAGE_INLINE_MARKER)
+        transformed = transform_critical_payload(self.root, original)
+        data = _lazy_tools(self.root)
+        module = self.root / data['filename']
+        module.parent.mkdir(parents=True, exist_ok=True)
+        module.write_text(data['implementation'])
+        self.page.write_text(self.page.read_text().replace(original, transformed))
+        self.assertEqual(minify_reviewed_cases(self.root), 1)
+        html = self.page.read_text()
+        validate_page_inline_scripts(self.root, self.page, html)
+        self.assertEqual(minify_reviewed_cases(self.root), 0)
+        self.assertEqual(self.page.read_text(), html)
+        other = self.root / 'portfolio/2022/zabava-restaurant-sambir/index.html'
+        with self.assertRaisesRegex(ValueError, 'restricted'):
+            validate_page_inline_scripts(self.root, other, html)
+        with self.assertRaises(ValueError):
+            validate_page_inline_scripts(self.root, self.page, html.replace('search_projects', 'changed_projects', 1))
+        module.write_text('export function execute() {}')
+        with self.assertRaisesRegex(ValueError, 'Stale generated'):
+            validate_page_inline_scripts(self.root, self.page, html)
 
 
 if __name__ == '__main__':

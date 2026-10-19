@@ -508,6 +508,11 @@ def validate_page_inline_scripts(output, page, html):
         raise ValueError('Unknown page family cannot inline controllers: ' + str(page))
     names = PAGE_CRITICAL_PROFILES[profile]
     _, payload = _critical_payload(output, names, PAGE_INLINE_MARKER)
+    if 'data-zabava-agent-tools' in html:
+        from zabava_first_paint import ROUTE, transform_critical_payload
+        if Path(page).relative_to(output).as_posix() != ROUTE or profile != 'case':
+            raise ValueError('Zabava tools delivery is restricted to its reviewed route')
+        payload = transform_critical_payload(output, payload)
     actual = re.findall(r'<script\b[^>]*\b' + PAGE_INLINE_MARKER + r'=["\']([^"\']+)["\']', html, re.I)
     if tuple(actual) != names or HOME_INLINE_MARKER in html:
         raise ValueError('Page inline controller coverage/order differs')

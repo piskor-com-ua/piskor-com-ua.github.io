@@ -1,13 +1,15 @@
 """Reviewed, generated-artifact delivery profile for the English Zabava case.
 
 Only this route embeds its original logo, an endpoint-exact Roboto variable
-subset, and a real 704px AVIF candidate. q35 is an explicit image-compression
-tradeoff; it is not a claim of lossless or unchanged image quality. All existing
+subset, and a real 704px AVIF candidate. q28 is an approved mobile image-compression
+tradeoff that reduces fine texture; it is not lossless or unchanged image quality. All existing
 font/image resources and all other pages remain untouched.
 """
 import ast
 import base64
 import hashlib
+import json
+import subprocess
 from html.parser import HTMLParser
 from io import BytesIO
 from pathlib import Path
@@ -20,11 +22,12 @@ from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 from PIL import Image, ImageOps
 
-from first_paint import generated_root
+from first_paint import generated_root, _critical_payload, SCOPED_CONTROLLER_SHA256
 
 ROUTE = 'en/portfolio/2022/zabava-restaurant-sambir/index.html'
 COVER = 'assets/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-01-2200.webp'
 LOGO = 'assets/responsive/piskor-logo.webp'
+COVER_QUALITY = 28
 FONT_PATHS = {300: 'assets/fonts/roboto-light-subset.woff2',
               400: 'assets/fonts/roboto-regular-subset.woff2'}
 
@@ -175,6 +178,43 @@ def _insert_candidate(tag, attribute, candidate):
     return tag[:match.start(1)] + value + tag[match.end(1):]
 
 
+
+def _lazy_tools(output):
+    """Derive immediate registration and lazy executors from one reviewed source."""
+    source = (output / 'agent-tools.js').read_text()
+    digest = hashlib.sha256(source.encode()).hexdigest()
+    if digest != SCOPED_CONTROLLER_SHA256['agent-tools.js']:
+        raise ValueError('Unreviewed shared agent tools source')
+    helper = Path(__file__).with_name('zabava-agent-tools.cjs')
+    result = subprocess.run(['node', str(helper)], input=source, text=True,
+                            capture_output=True, check=True)
+    data = json.loads(result.stdout)
+    module = output / data['filename']
+    if module.exists() and module.read_text() != data['implementation']:
+        raise ValueError('Stale generated Zabava agent tools module')
+    data['source_sha256'] = digest
+    return data
+
+
+def transform_critical_payload(output, payload):
+    """Exact route payload transform; keeps the canonical once/DOM-ready wrapper.
+
+    The caller limits this to ROUTE and explicitly validates the marker. Existing
+    shared schemas, source hashes, source order and every other script survive.
+    No asset is emitted by this pure transformation (also used by validators).
+    """
+    output = generated_root(output)
+    data = _lazy_tools(output)
+    sources, canonical = _critical_payload(output, ('agent-tools.js',), 'data-inline-page-critical')
+    if payload.count(canonical) != 1 or 'data-zabava-agent-tools' in payload:
+        raise ValueError('Expected one canonical untransformed agent tools payload')
+    source = sources['agent-tools.js'][0]
+    transformed = canonical.replace(' data-source-sha256=', ' data-zabava-agent-tools data-source-sha256=', 1)
+    if transformed.count(source) != 1:
+        raise ValueError('Ambiguous shared agent tools source')
+    transformed = transformed.replace(source, data['script'], 1)
+    return payload.replace(canonical, transformed, 1)
+
 def optimize_zabava_en(output):
     output = generated_root(output)
     page = output / ROUTE
@@ -220,7 +260,7 @@ def optimize_zabava_en(output):
             raise ValueError('Unexpected original Zabava cover dimensions')
         image = image.resize((704, 528), Image.Resampling.LANCZOS)
         encoded = BytesIO()
-        image.save(encoded, 'AVIF', quality=35, speed=0, max_threads=1)
+        image.save(encoded, 'AVIF', quality=COVER_QUALITY, speed=0, max_threads=1)
     cover = encoded.getvalue()
     candidate = _data_uri('image/avif', cover) + ' 704w'
     cover_match = re.search(r'(<figure\b[^>]*class="project-cover"[^>]*>\s*<picture>\s*)(<source\b[^>]*>)', html)
@@ -245,6 +285,14 @@ def optimize_zabava_en(output):
     html = re.sub(r'<source\b[^>]*>', inline_logo, html)
     if count != 2:
         raise ValueError('Expected header and footer logo sources')
+    tools = None
+    if 'data-inline-page-critical="agent-tools.js"' in html:
+        html = transform_critical_payload(output, html)
+        tools = _lazy_tools(output)
+    if tools:
+        module = output / tools['filename']
+        module.parent.mkdir(parents=True, exist_ok=True)
+        module.write_text(tools['implementation'])
     page.write_text(html)
     digest = lambda data: hashlib.sha256(data).hexdigest()
     return {'page': ROUTE, 'html_bytes': len(html.encode()),
@@ -252,5 +300,9 @@ def optimize_zabava_en(output):
             'critical_codepoints': sorted(critical), 'fallback_codepoints': sorted(remaining),
             'font_masters': {str(weight): digest((output / path).read_bytes()) for weight, path in FONT_PATHS.items()},
             'cover_bytes': len(cover), 'cover_sha256': digest(cover),
-            'cover_source_sha256': digest(original_cover), 'cover_recipe': '704x528:AVIF:q35:speed0:threads1:LANCZOS',
-            'logo_bytes': len(logo), 'logo_sha256': digest(logo)}
+            'cover_source_sha256': digest(original_cover), 'cover_recipe': f'704x528:AVIF:q{COVER_QUALITY}:speed0:threads1:LANCZOS',
+            'logo_bytes': len(logo), 'logo_sha256': digest(logo),
+            'agent_tools': None if tools is None else {
+                'module': tools['filename'], 'module_bytes': len(tools['implementation'].encode()),
+                'module_sha256': tools['implementation_sha256'],
+                'inline_bytes': len(tools['script'].encode()), 'source_sha256': tools['source_sha256']}}

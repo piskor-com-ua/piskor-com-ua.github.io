@@ -31,6 +31,9 @@ def minify_reviewed_cases(output):
         html = page.read_text()
         validate_page_inline_scripts(output, page, html)
         _, payload = _critical_payload(output, PAGE_CRITICAL_PROFILES['case'], PAGE_INLINE_MARKER)
+        if 'data-zabava-agent-tools' in html:
+            from zabava_first_paint import transform_critical_payload
+            payload = transform_critical_payload(output, payload)
         if minify_fragment(payload) in html:
             continue
         compact = minify_fragment(html)

@@ -4,16 +4,18 @@ from io import BytesIO
 from pathlib import Path
 import re
 import shutil
+import json
+import subprocess
 from tempfile import TemporaryDirectory
 import unittest
 
 from fontTools.ttLib import TTFont
 from PIL import Image
 
-from first_paint import subset_fonts
+from first_paint import subset_fonts, _critical_payload
 from zabava_first_paint import (ROUTE, COVER, LOGO, FONT_PATHS,
                                _critical_characters, _unicode_range,
-                               optimize_zabava_en)
+                               optimize_zabava_en, transform_critical_payload, _lazy_tools)
 
 CONSENT = Path('concept/analytics-consent.js').read_text()
 FACES = ''.join('@font-face{font-family:Roboto;src:url("/' + path + '") format("woff2");font-weight:' + str(weight) + ';font-display:swap}' for weight, path in FONT_PATHS.items())
@@ -117,6 +119,7 @@ class ZabavaFirstPaintTests(unittest.TestCase):
         self.assertEqual(len(candidates), 2)
         self.assertEqual(candidates[0], candidates[1])
         self.assertEqual(Image.open(BytesIO(base64.b64decode(candidates[0]))).size, (704, 528))
+        self.assertEqual(report['cover_recipe'], '704x528:AVIF:q28:speed0:threads1:LANCZOS')
         for width in (640, 768, 960, 1440, 2200):
             self.assertEqual(result.count(f'/cover-{width}.avif {width}w'), 2)
         self.assertEqual(result.count('media="(max-width: 700px)"'), 2)
@@ -140,6 +143,79 @@ class ZabavaFirstPaintTests(unittest.TestCase):
         self.assertIn(ord(':'), codes)
         self.assertNotIn(ord('Ω'), codes)
         self.assertEqual(_unicode_range({32, 33, 34, 40, 42, 43}), 'U+20-22,U+28,U+2a-2b')
+
+    def test_lazy_tools_preserve_registration_execution_retry_and_catalog_cache(self):
+        (self.root / 'agent-tools.js').write_text(Path('concept/agent-tools.js').read_text())
+        (self.root / 'portfolio.js').write_text(Path('concept/portfolio.js').read_text())
+        _, original = _critical_payload(self.root, ('agent-tools.js', 'portfolio.js'), 'data-inline-page-critical')
+        transformed = transform_critical_payload(self.root, original)
+        data = _lazy_tools(self.root)
+        self.assertEqual(transformed.count('data-zabava-agent-tools'), 1)
+        self.assertIn("document.addEventListener('DOMContentLoaded', () => {", transformed)
+        self.assertEqual(transformed.count('}, { once: true });'), 2)
+        _, untouched = _critical_payload(self.root, ('portfolio.js',), 'data-inline-page-critical')
+        self.assertTrue(transformed.endswith(untouched))
+        bodies = re.findall(r'<script[^>]*>(.*?)</script>', transformed, re.S)
+        probe = Path(__file__).with_name('zabava-agent-tools.cjs')
+        check = r"""
+const assert = require('node:assert/strict'), vm = require('node:vm');
+const data = JSON.parse(process.argv[1]), body = process.argv[2];
+(async () => {
+  const registered = [], requested = [], callbacks = [];
+  let catalogFetches = 0;
+  const document = { modelContext: { registerTool: tool => registered.push(tool) },
+    documentElement: { lang: 'en' }, addEventListener: (event, callback, options) => {
+      assert.equal(event, 'DOMContentLoaded'); assert.equal(options.once, true); callbacks.push(callback);
+    }, querySelectorAll: () => [{ textContent: 'Phone ↗', getAttribute: () => 'tel:+380974781005' }] };
+  const context = vm.createContext({ document, navigator: {}, fetch: async () => {
+    catalogFetches++; return { ok: true, json: async () => ({ version: 1, projects: [
+      { id: 'zabava-restaurant-sambir', language: 'en', year: 2022, name: 'Zabava', summary: 'Restaurant', label: '241 m²', url: '/en/portfolio/2022/zabava-restaurant-sambir/', facts: [], sections: [] }
+    ] }) };
+  } });
+  const script = new vm.Script(body, { importModuleDynamically: async url => {
+    requested.push(url);
+    if (requested.length === 1) throw new Error('Temporary module fetch failure');
+    const module = new vm.SourceTextModule(data.implementation, { context });
+    await module.link(() => { throw new Error('Unexpected module dependency'); });
+    await module.evaluate(); return module;
+  } });
+  script.runInContext(context);
+  assert.equal(registered.length, 0); assert.equal(callbacks.length, 1);
+  callbacks[0]();
+  assert.equal(registered.length, 3); assert.equal(requested.length, 0);
+  const metadata = registered.map(({ execute, ...tool }) => tool);
+  assert.deepEqual(JSON.parse(JSON.stringify(metadata)), data.metadata);
+  const contacts = registered.find(tool => tool.name === 'get_contact_options');
+  await assert.rejects(contacts.execute({}), /Temporary module fetch failure/);
+  assert.equal(JSON.parse(await contacts.execute({})).contacts.length, 1);
+  assert.equal(requested.length, 2); assert.equal(requested[1], requested[0] + '?retry=1');
+  assert.equal(catalogFetches, 0);
+  const search = registered.find(tool => tool.name === 'search_projects');
+  const details = registered.find(tool => tool.name === 'get_project_details');
+  assert.equal(JSON.parse(await search.execute({ query: 'Zabava', language: 'en' })).total, 1);
+  assert.equal(JSON.parse(await details.execute({ project_id: 'zabava-restaurant-sambir', language: 'en' })).id, 'zabava-restaurant-sambir');
+  assert.equal(requested.length, 2); assert.equal(catalogFetches, 1);
+  await assert.rejects(search.execute({ unknown: true }), /Unknown input field/);
+})().catch(error => { console.error(error); process.exitCode = 1; });
+"""
+        subprocess.run(['node', '--experimental-vm-modules', '-e', check,
+                        json.dumps(data), bodies[0]], check=True, capture_output=True, text=True)
+
+    def test_lazy_tools_reject_stale_module_and_changed_shared_schema(self):
+        source = Path('concept/agent-tools.js').read_text()
+        (self.root / 'agent-tools.js').write_text(source)
+        _, payload = _critical_payload(self.root, ('agent-tools.js',), 'data-inline-page-critical')
+        data = _lazy_tools(self.root)
+        module = self.root / data['filename']
+        module.parent.mkdir(parents=True, exist_ok=True)
+        module.write_text('stale module bytes')
+        with self.assertRaisesRegex(ValueError, 'Stale generated'):
+            transform_critical_payload(self.root, payload)
+        module.unlink()
+        (self.root / 'agent-tools.js').write_text(source.replace('minimum: 1900', 'minimum: 1800'))
+        with self.assertRaisesRegex(ValueError, 'Unreviewed'):
+            transform_critical_payload(self.root, payload)
+
 
     def test_unknown_consent_fails_before_any_output_write(self):
         (self.root / 'analytics-consent.js').write_text('const copy = chooseCopy();')

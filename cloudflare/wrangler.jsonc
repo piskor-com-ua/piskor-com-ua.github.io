@@ -5,6 +5,9 @@
   "workers_dev": false,
   "preview_urls": false,
   "routes": [],
+  "vars": {
+    "HTML_PRECOMPRESSED_DISABLED": "true"
+  },
   "observability": {
     "enabled": false
   },

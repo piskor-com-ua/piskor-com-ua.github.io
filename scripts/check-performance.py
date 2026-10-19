@@ -8,6 +8,7 @@ from PIL import Image
 from agent_catalog import Document
 from first_paint import (HOME_INLINE_PAGES, HOME_INLINE_MARKER, PAGE_INLINE_MARKER,
                          page_critical_profile, validate_home_inline_scripts, validate_page_inline_scripts)
+from zabava_gallery_delivery import validate_zabava_gallery
 
 
 def card_label_text(node):
@@ -49,6 +50,7 @@ checked_catalog_orders = set()
 
 cards = 0
 for page in output.rglob('*.html'):
+    validate_zabava_gallery(output, page, page.read_text())
     root = Document(page.read_text()).root
     external_agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
     inline_controllers = root.find(lambda n: n.tag == 'script' and (HOME_INLINE_MARKER in n.attrs or PAGE_INLINE_MARKER in n.attrs))

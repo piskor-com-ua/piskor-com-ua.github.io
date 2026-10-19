@@ -1,6 +1,7 @@
-// Geometry/selection verification only. Images use empty SVG stubs with the
-// real file-header dimensions; media/font downloads are blocked. This preserves
-// decoded intrinsic sizing without pixel decoding or missing-image alt text.
+// Geometry/selection verification only. Network images use empty SVG stubs
+// with real file-header dimensions; inline data images decode their real pixels
+// natively because data URLs are not network-interceptable. Media/fonts are
+// blocked. This preserves intrinsic sizing without missing-image alt text.
 // This helper does not produce performance, visual-quality or HTTP evidence.
 const { chromium } = require('playwright');
 const { execFileSync } = require('node:child_process');
@@ -31,7 +32,8 @@ if (!routes.length || routes.some(route => !/^\/(?:en\/)?portfolio\/(?:\d{4}\/(?
 
 // Read image headers only, without decoding pixels or requesting remote assets.
 const dimensions = JSON.parse(execFileSync(values.python, ['-c', String.raw`
-import json, sys
+import base64, io, json, re, sys
+from html.parser import HTMLParser
 from pathlib import Path
 from PIL import Image
 root = Path(sys.argv[1])
@@ -40,6 +42,24 @@ for extension in ('*.avif', '*.webp'):
     for image in root.rglob(extension):
         with Image.open(image) as opened:
             result['/' + image.relative_to(root).as_posix()] = list(opened.size)
+class InlineImages(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        for name, value in attrs:
+            if name not in {'src', 'srcset', 'imagesrcset', 'href'} or not value:
+                continue
+            for found in re.finditer(r'data:image/(avif|webp);base64,[A-Za-z0-9+/]+={0,2}', value):
+                raw = found.group(0)
+                if raw in result:
+                    continue
+                if len(raw) > 1024 * 1024:
+                    raise ValueError('Inline image exceeds geometry inventory bound')
+                body = base64.b64decode(raw.split(',', 1)[1], validate=True)
+                with Image.open(io.BytesIO(body)) as opened:
+                    if opened.format.lower() != found.group(1):
+                        raise ValueError('Inline image format does not match MIME type')
+                    result[raw] = list(opened.size)
+for page in root.rglob('*.html'):
+    InlineImages().feed(page.read_text(encoding='utf-8'))
 print(json.dumps(result))
 `, site], { maxBuffer: 16 * 1024 * 1024 }).toString());
 
@@ -90,6 +110,26 @@ print(json.dumps(result))
             parts.push(value.slice(start).trim());
             return parts;
           }
+          function parseGeneratedSrcset(value) {
+            if (!value || value.length > 1024 * 1024) throw Error('Invalid generated srcset length');
+            // Generated width candidates only. The single comma inside a base64
+            // image URL belongs to that URL; separators follow the descriptor.
+            const candidate = /\s*((?:data:image\/(?:avif|webp);base64,[A-Za-z0-9+/]+={0,2})|(?:(?!data:)[^\s,]+))\s+([1-9]\d*)w\s*(,|$)/gy;
+            const entries = [], widths = new Set();
+            let position = 0;
+            while (position < value.length) {
+              candidate.lastIndex = position;
+              const match = candidate.exec(value);
+              if (!match || entries.length >= 64) throw Error('Invalid generated width srcset');
+              const width = Number(match[2]);
+              if (!Number.isSafeInteger(width) || widths.has(width)) throw Error('Invalid or duplicate srcset width');
+              widths.add(width);
+              entries.push({ url: match[1], width });
+              position = candidate.lastIndex;
+              if (match[3] === ',' && !value.slice(position).trim()) throw Error('Trailing srcset separator');
+            }
+            return entries;
+          }
           function declaredWidth(sizes) {
             for (let part of splitList(sizes || '100vw')) {
               if (part.startsWith('(')) {
@@ -110,7 +150,7 @@ print(json.dumps(result))
             }
             throw Error('No sizes branch applies');
           }
-          const filePath = url => decodeURI(new URL(url, location.href).pathname);
+          const filePath = url => url.startsWith('data:') ? url : decodeURI(new URL(url, location.href).pathname);
           const output = [];
           for (const image of document.querySelectorAll('.project-cover img,.gallery-grid img,.portfolio-card-cover')) {
             const errors = [];
@@ -118,11 +158,9 @@ print(json.dumps(result))
               const source = [...(image.closest('picture')?.querySelectorAll('source') || [])].find(source =>
                 (!source.media || matchMedia(source.media).matches) && ['image/avif', 'image/webp'].includes(source.type));
               const srcset = source?.srcset || image.srcset;
-              const candidates = srcset ? srcset.split(',').map(entry => {
-                const [url, descriptor] = entry.trim().split(/\s+/);
-                if (!/^\d+w$/.test(descriptor)) throw Error('Expected width descriptor');
+              const candidates = srcset ? parseGeneratedSrcset(srcset).map(({ url, width }) => {
                 const size = dimensions[filePath(url)];
-                if (!size || size[0] !== Number(descriptor.slice(0, -1))) throw Error('Descriptor does not match file: ' + url);
+                if (!size || size[0] !== width) throw Error('Descriptor does not match image header');
                 return { url, width: size[0], height: size[1] };
               }) : [{ url: image.src, width: dimensions[filePath(image.src)]?.[0], height: dimensions[filePath(image.src)]?.[1] }];
               if (candidates.some(candidate => !candidate.width || !candidate.height)) throw Error('Missing image dimensions');
@@ -140,6 +178,7 @@ print(json.dumps(result))
               if (!fullNative && declared + 1 < referenceWidth) errors.push('sizes understates cropped source width');
               const requiredPixels = Math.min(native.width, referenceWidth * dpr);
               const selected = image.currentSrc ? dimensions[filePath(image.currentSrc)] : null;
+              if (!selected) errors.push('Selected candidate dimensions unavailable');
               if (selected && selected[0] + 2 < requiredPixels) errors.push('Selected candidate undersamples cropped source');
               const predicted = [...candidates].sort((a, b) => a.width - b.width).find(candidate => candidate.width >= declared * dpr) || native;
               if (predicted.width + 2 < requiredPixels) errors.push('Declared candidates would undersample cropped source');
@@ -165,7 +204,7 @@ print(json.dumps(result))
   }
   mkdirSync(path.dirname(values.output), { recursive: true });
   const failures = rows.flatMap(row => row.images.filter(image => image.errors.length).map(image => ({ route: row.route, width: row.width, dpr: row.dpr, ...image })));
-  const summary = { kind: 'geometry-only-header-sized-image-stubs-media-fonts-blocked', pages: routes.length,
+  const summary = { kind: 'geometry-only-network-image-stubs-native-inline-images-media-fonts-blocked', pages: routes.length,
     cases: routes.filter(route => caseRoutes.includes(route)).length,
     catalogs: routes.filter(route => catalogRoutes.includes(route)).length, viewports: widths,
     checkedImages: rows.reduce((total, row) => total + row.images.length, 0), failures: failures.length };

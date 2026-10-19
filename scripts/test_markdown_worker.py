@@ -1,4 +1,8 @@
 import json
+import base64
+import brotli
+import hashlib
+import random
 from pathlib import Path
 import tempfile
 import unittest
@@ -31,6 +35,76 @@ class MarkdownWorkerBuild(unittest.TestCase):
 
     def inventory(self):
         (self.site / 'agent-markdown/routes.json').write_text(json.dumps({'version': 1, 'pages': self.rows}))
+
+    def html_fixture(self):
+        relative = worker.HTML_ROUTE.lstrip('/') + 'index.html'
+        page = self.site / relative
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_bytes(('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+                          '<meta name="robots" content="noindex,nofollow">'
+                          '<link rel="canonical" href="https://piskor.com.ua' + worker.HTML_ROUTE
+                          + '"></head><body>Space · Простір 🥁</body></html>\n').encode())
+        markdown = '/agent-markdown/' + relative.replace('.html', '.md')
+        document = self.site / markdown.lstrip('/')
+        document.parent.mkdir(parents=True, exist_ok=True)
+        document.write_text('# Space\n')
+        self.rows.append({'url': worker.HTML_ROUTE, 'markdown': markdown, 'language': 'en'})
+        self.inventory()
+        return page
+
+    def test_precompressed_html_is_exact_deterministic_final_artifact_with_provenance(self):
+        page = self.html_fixture()
+        expected = page.read_bytes()
+        a = worker.build(self.site, self.root / 'a', REVISION)
+        b = worker.build(self.site, self.root / 'b', REVISION)
+        self.assertEqual(a, b)
+        payload = (self.root / 'a/worker.mjs').read_text().split('const PUBLIC_PAGE_DATA=', 1)[1].split(';\n', 1)[0]
+        data = json.loads(payload)
+        item = data['html'][worker.HTML_ROUTE]
+        encoded = base64.b64decode(item['bodyBase64'], validate=True)
+        self.assertEqual(brotli.decompress(encoded), expected)
+        self.assertEqual(item['sha256'], hashlib.sha256(expected).hexdigest())
+        self.assertEqual(item['encodedSha256'], hashlib.sha256(encoded).hexdigest())
+        self.assertEqual(item['bytes'], len(expected))
+        self.assertEqual(item['encodedBytes'], len(encoded))
+        self.assertEqual(item['revision'], REVISION)
+        self.assertEqual(item['quality'], 11)
+        self.assertEqual(a['artifact_source_sha256'][item['sourcePath']], item['sha256'])
+        self.assertEqual(a['html_representations'][worker.HTML_ROUTE],
+                         {key: value for key, value in item.items() if key != 'bodyBase64'})
+        self.assertEqual(page.read_bytes(), expected)
+        page.write_bytes(expected.replace(b'Space', b'Updated space'))
+        changed = worker.build(self.site, self.root / 'c', '2' * 40)
+        self.assertNotEqual(a['html_representations'], changed['html_representations'])
+        self.assertEqual(changed['html_representations'][worker.HTML_ROUTE]['revision'], '2' * 40)
+
+    def test_precompressed_route_rejects_missing_and_wrong_canonical_language_or_robots(self):
+        page = self.html_fixture()
+        original = page.read_bytes()
+        for before, after in ((b'lang="en"', b'lang="uk"'),
+                              (b'noindex,nofollow', b'index,follow'),
+                              (b'href="https://piskor.com.ua/en/', b'href="https://wrong.test/en/'),
+                              (b'<meta charset=', b'<meta http-equiv="refresh" content="0;url=/"><meta charset=')):
+            with self.subTest(after=after):
+                page.write_bytes(original.replace(before, after))
+                with self.assertRaisesRegex(ValueError, 'canonical English'):
+                    worker.build(self.site, self.root / 'bad', REVISION)
+        page.unlink()
+        with self.assertRaisesRegex(ValueError, 'Missing/escaping'):
+            worker.build(self.site, self.root / 'missing', REVISION)
+
+    def test_incompressible_html_exceeding_brotli_guard_requires_performance_revalidation(self):
+        page = self.html_fixture()
+        # Deterministic high-entropy, valid UTF8 HTML content, rather than a
+        # repeated filler string that Brotli could shrink below the real guard.
+        noise = base64.b64encode(random.Random(731).randbytes(90_000))
+        original = page.read_bytes()
+        page.write_bytes(original.replace(b'</body>', noise + b'</body>'))
+        self.assertGreater(len(brotli.compress(page.read_bytes(), quality=11, mode=brotli.MODE_TEXT)),
+                           worker.MAX_HTML_BROTLI_BYTES)
+        with self.assertRaisesRegex(ValueError, 'renew performance verification'):
+            worker.build(self.site, self.root / 'over-budget', REVISION)
+        self.assertFalse((self.root / 'over-budget').exists())
 
     def test_deterministic_and_artifact_unchanged(self):
         before = {str(p): p.read_bytes() for p in self.site.rglob('*') if p.is_file()}

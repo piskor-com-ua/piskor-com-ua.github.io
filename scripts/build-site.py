@@ -12,6 +12,8 @@ from first_paint import inline_consent, subset_fonts, inline_catalog_styles, inl
 from agent_content import generate_agent_content, MARKDOWN_ROOT, POPPY_PATH
 from agent_api import generate_agent_api, API_PATHS, API_CATALOG_PATH, API_DOC_PATH
 from compatibility_pages import prepare_compatibility_pages
+from zabava_first_paint import optimize_zabava_en
+from case_minification import minify_reviewed_cases
 
 source = Path('concept')
 out = Path('_site')
@@ -36,6 +38,8 @@ print(f'Versioned {fingerprint_resources(out)} media/font resources')
 print(f'Inline critical scripts: {inline_critical_scripts(out)}')
 print(f'Inline catalog styles: {inline_catalog_styles(out)} pages')
 print(f'Inline page styles: {inline_page_styles(out)} stylesheets')
+print(f'Zabava EN critical assets: {optimize_zabava_en(out)}')
+print(f'Compiled reviewed cases: {minify_reviewed_cases(out)}')
 print(f'Canonical compatibility copies: {prepare_compatibility_pages(out)} pages')
 agent_pages = generate_agent_content(out)
 print(f'Agent content: {len(agent_pages)} HTML-derived Markdown pages and website-only Poppy discovery')

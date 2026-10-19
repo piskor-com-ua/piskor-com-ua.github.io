@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {brotliCompressSync, brotliDecompressSync, constants} from 'node:zlib';
 import {pathToFileURL} from 'node:url';
 import {handle, diagnosticParameters} from '../cloudflare/markdown-worker.mjs';
 
@@ -11,6 +12,121 @@ const data = {revision: '1'.repeat(40), pages: {'/': {markdown: '/agent-markdown
 for (const [url, body, language] of [['/agent-markdown/index.md', '# Простір\n', 'uk'], ['/agent-markdown/en/index.md', '# Space\n', 'en'], ['/agent-markdown/404.md', '# UK\n', 'uk'], ['/agent-markdown/404-en.md', '# English\n', 'en']]) {
   data.documents[url] = {body, bytes: Buffer.byteLength(body), language};
 }
+const htmlRoute = '/en/portfolio/2022/zabava-restaurant-sambir/';
+const sourceHtml = Buffer.from('<!doctype html><html lang="en"><meta charset="utf-8"><body>Простір · Space 🥁</body></html>\n');
+const compressedHtml = brotliCompressSync(sourceHtml, {params: {[constants.BROTLI_PARAM_QUALITY]: 11}});
+const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+const htmlItem = {bodyBase64: compressedHtml.toString('base64'), encoding: 'br', language: 'en',
+  revision: data.revision, sha256: digest(sourceHtml), encodedSha256: digest(compressedHtml),
+  bytes: sourceHtml.length, encodedBytes: compressedHtml.length};
+const htmlData = {...data, pages: {...data.pages, [htmlRoute]: {markdown: '/agent-markdown/en/index.md'}}, html: {[htmlRoute]: htmlItem}};
+
+test('explicit Brotli HTML is exact source bytes; HEAD and conditional responses preserve representation headers', async () => {
+  let etag;
+  for (const method of ['GET', 'HEAD']) {
+    const response = await handle(new Request(origin + htmlRoute, {method, headers: {'Accept-Encoding': 'BR;Q=0.500', Accept: 'text/html'}}), {}, {}, htmlData,
+      {fetch() {throw Error('Unexpected origin request');}});
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('Content-Type'), 'text/html; charset=utf-8');
+    assert.equal(response.headers.get('Content-Language'), 'en');
+    assert.equal(response.headers.get('Content-Encoding'), 'br');
+    assert.equal(response.headers.get('Vary'), 'Accept, Accept-Encoding');
+    assert.equal(response.headers.get('Access-Control-Allow-Origin'), '*');
+    assert.equal(response.headers.get('Cache-Control'), 'public, max-age=600, no-transform');
+    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, nofollow');
+    assert.equal(response.headers.get('Content-Signal'), 'ai-input=yes, ai-train=no, search=yes');
+    assert.equal((response.headers.get('Link').match(/rel=/g) || []).length, 4);
+    assert.equal(response.headers.get('X-Piskor-HTML-Version'), data.revision);
+    assert.equal(response.headers.get('X-Piskor-HTML-SHA256'), digest(sourceHtml));
+    assert.equal(response.headers.has('Content-Length'), false);
+    etag = response.headers.get('ETag');
+    assert.equal(etag, `"sha256-${digest(compressedHtml)}-br"`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (method === 'GET') assert.deepEqual(brotliDecompressSync(bytes), sourceHtml);
+    else assert.equal(bytes.length, 0);
+  }
+  for (const method of ['GET', 'HEAD']) for (const condition of [etag, `W/${etag}`, `"other", W/${etag}`, '*']) {
+    const response = await handle(new Request(origin + htmlRoute, {method, headers: {'Accept-Encoding': 'br', 'If-None-Match': condition}}), {}, {}, htmlData);
+    assert.equal(response.status, 304);
+    assert.equal(response.headers.get('ETag'), etag);
+    assert.equal(response.headers.get('Vary'), 'Accept, Accept-Encoding');
+    assert.equal(await response.text(), '');
+  }
+  for (const encoding of ['br', 'gzip, br;q=1', '*;q=0, br;q=0.1']) {
+    const response = await handle(new Request(origin + htmlRoute, {headers: {'Accept-Encoding': encoding, 'If-None-Match': '"different"'}}), {}, {}, htmlData);
+    assert.equal(response.status, 200);
+  }
+});
+
+test('manual encoded response constructor is explicit; native Node does not emulate Cloudflare transport', async () => {
+  const OriginalResponse = globalThis.Response;
+  let options;
+  globalThis.Response = class extends OriginalResponse {constructor(body, init) {super(body, init); options = init;}};
+  try {
+    await handle(new Request(origin + htmlRoute, {headers: {'Accept-Encoding': 'br'}}), {}, {}, htmlData);
+    assert.equal(options.encodeBody, 'manual');
+  } finally {globalThis.Response = OriginalResponse;}
+});
+
+test('Cloudflare original client encoding controls delivery despite its normalized header', async () => {
+  for (const cf of [{clientAcceptEncoding: 'gzip'}, {clientAcceptEncoding: 'br;q=0, gzip'},
+    {clientAcceptEncoding: ''}, {clientAcceptEncoding: null}, {}, null]) {
+    const request = new Request(origin + htmlRoute, {headers: {'Accept-Encoding': 'br, gzip'}});
+    Object.defineProperty(request, 'cf', {value: cf});
+    const expected = new Response('original origin');
+    assert.equal(await handle(request, {}, {}, htmlData, {fetch: seen => {assert.equal(seen, request); return expected;}}), expected);
+  }
+  for (const original of ['br', 'gzip, BR;q=0.500']) {
+    const request = new Request(origin + htmlRoute, {headers: {'Accept-Encoding': 'br, gzip'}});
+    Object.defineProperty(request, 'cf', {value: {clientAcceptEncoding: original}});
+    const response = await handle(request, {}, {}, htmlData, {fetch() {throw Error('Unexpected origin request');}});
+    assert.deepEqual(brotliDecompressSync(Buffer.from(await response.arrayBuffer())), sourceHtml);
+  }
+});
+
+test('HTML kill switch preserves origin identity including HEAD and conditional requests, without disabling Markdown', async () => {
+  const env = {HTML_PRECOMPRESSED_DISABLED: 'true'};
+  for (const method of ['GET', 'HEAD']) {
+    const request = new Request(origin + htmlRoute, {method, headers: {'Accept-Encoding': 'br', 'If-None-Match': '*'}});
+    const expected = new Response(method === 'HEAD' ? null : 'current origin');
+    assert.equal(await handle(request, env, {}, htmlData, {fetch: seen => {assert.equal(seen, request); return expected;}}), expected);
+  }
+  const markdown = await handle(new Request(origin + htmlRoute, {headers: {Accept: 'text/markdown', 'Accept-Encoding': 'br'}}), env, {}, htmlData);
+  assert.equal(await markdown.text(), '# Space\n');
+  const response = await handle(new Request(origin + htmlRoute, {headers: {'Accept-Encoding': 'br'}}), {HTML_PRECOMPRESSED_DISABLED: 'false'}, {}, htmlData);
+  assert.equal(response.headers.get('Content-Encoding'), 'br');
+});
+
+test('unsupported encodings, queries, methods, foreign hosts and stale/missing representations pass through identically', async () => {
+  const cases = [undefined, '', '*', '*;q=1', '*;q=0', 'gzip', 'br;q=0', 'br;q=0.000', 'br;q=.5',
+    'br;q=1.1', 'br;q=0.1234', 'br;q=wat', 'br;q=1;unknown=yes', 'br, br;q=0', 'bravo'];
+  for (const encoding of cases) {
+    const request = new Request(origin + htmlRoute, {headers: encoding === undefined ? {} : {'Accept-Encoding': encoding}});
+    const expected = new Response('origin unchanged');
+    assert.equal(await handle(request, {}, {}, htmlData, {fetch: seen => {assert.equal(seen, request); return expected;}}), expected);
+  }
+  for (const [route, method] of [[htmlRoute + '?x=1', 'GET'], [htmlRoute + 'index.html', 'GET'],
+    [htmlRoute, 'POST'], [htmlRoute, 'OPTIONS'], ['https://other.test' + htmlRoute, 'GET'], ['/404.html', 'GET']]) {
+    const request = new Request(route.startsWith('https:') ? route : origin + route, {method, headers: {'Accept-Encoding': 'br'}});
+    const expected = new Response('origin unchanged');
+    assert.equal(await handle(request, {}, {}, htmlData, {fetch: seen => {assert.equal(seen, request); return expected;}}), expected);
+  }
+  for (const html of [{}, {[htmlRoute]: {...htmlItem, revision: '2'.repeat(40)}},
+    {[htmlRoute]: {...htmlItem, sha256: 'bad'}}, {[htmlRoute]: {...htmlItem, bodyBase64: '!!!'}},
+    {[htmlRoute]: {...htmlItem, encodedBytes: compressedHtml.length + 1}}]) {
+    const expected = new Response('original');
+    assert.equal(await handle(new Request(origin + htmlRoute, {headers: {'Accept-Encoding': 'br'}}), {}, {}, {...htmlData, html}, {fetch: () => expected}), expected);
+  }
+});
+
+test('exact Markdown negotiation preempts selective HTML while HTML remains the default', async () => {
+  for (const method of ['GET', 'HEAD']) {
+    const response = await handle(new Request(origin + htmlRoute, {method, headers: {Accept: 'text/markdown', 'Accept-Encoding': 'br'}}), {}, {}, htmlData);
+    assert.equal(response.headers.get('Content-Type'), 'text/markdown; charset=utf-8');
+    assert.equal(response.headers.has('Content-Encoding'), false);
+    assert.equal(await response.text(), method === 'HEAD' ? '' : '# Space\n');
+  }
+});
 
 async function passthrough(route, options = {}, env = {}, response = new Response('<html>same</html>', {headers: {'Content-Type': 'text/html; charset=utf-8'}}), nowSeconds = 1800000001) {
   const request = new Request(origin + route, options);
@@ -149,4 +265,20 @@ test('actual generated artifact: every114 route/mode and direct MD matches exact
   }
   const uk = await module.default.fetch(new Request(origin + '/404.html?lang=uk', {headers: {Accept: 'text/markdown'}}), {}, {});
   assert.deepEqual(Buffer.from(await uk.arrayBuffer()), fs.readFileSync(path.join(site, 'agent-markdown/404.md')));
+  const expectedHtml = fs.readFileSync(path.join(site, htmlRoute, 'index.html'));
+  const metadata = manifest.html_representations[htmlRoute];
+  assert.equal(metadata.sha256, digest(expectedHtml));
+  assert.equal(metadata.bytes, expectedHtml.length);
+  assert.equal(metadata.revision, manifest.revision);
+  for (const method of ['GET', 'HEAD']) {
+    const response = await module.default.fetch(new Request(origin + htmlRoute, {method, headers: {'Accept-Encoding': 'br'}}), {}, {});
+    assert.equal(response.headers.get('X-Piskor-HTML-Version'), manifest.revision);
+    assert.equal(response.headers.get('X-Piskor-HTML-SHA256'), metadata.sha256);
+    const encoded = Buffer.from(await response.arrayBuffer());
+    if (method === 'GET') {
+      assert.deepEqual(brotliDecompressSync(encoded), expectedHtml);
+      assert.equal(digest(encoded), metadata.encodedSha256);
+      assert.equal(encoded.length, metadata.encodedBytes);
+    } else assert.equal(encoded.length, 0);
+  }
 });

@@ -10,7 +10,7 @@
 
 ## Зміст і контракт
 
-`scripts/build_markdown_worker.py` збирає окремий `output/markdown-worker/worker.mjs` з фінального Pages-артефакту. Він вбудовує вже згенеровані публічні Markdown та routing table; не читає приватні джерела, не конвертує HTML під час запиту, не потребує KV/R2, API-токена чи платного Markdown for Agents. Pages-артефакт і дизайн не змінюються.
+`scripts/build_markdown_worker.py` збирає окремий `output/markdown-worker/worker.mjs` з фінального Pages-артефакту. Він вбудовує вже згенеровані публічні Markdown та routing table; не читає приватні джерела, не конвертує HTML під час запиту, не потребує KV/R2, API-токена чи платного Markdown for Agents. Генератор Worker не переписує переданий Pages-артефакт; окремий профіль HTML-доставки описано нижче.
 
 Відомий маршрут, GET/HEAD і точне значення Accept `text/markdown` отримують HTTP 200 зі справжніми байтами відповідного Markdown. Прямі відомі Markdown URL також працюють. HEAD має порожнє тіло. Markdown містить `Content-Type: text/markdown; charset=utf-8`, `Vary: Accept`, `Cache-Control: no-store`, чинні чотири discovery Link, `X-Robots-Tag: noindex, nofollow`, `Content-Signal: ai-input=yes, ai-train=no, search=yes` і версію bundle в `X-Piskor-Markdown-Version`.
 
@@ -24,9 +24,20 @@
 
 `x-markdown-tokens` не вигадується: число токенів залежить від tokenizer і не є критерієм MIME. Cloudflare також [прибрав цей заголовок зі свого конвертера 09.10.2026](https://developers.cloudflare.com/changelog/post/2026-10-09-markdown-for-agents-in-process-conversion/).
 
+## Окреме стиснене HTML-представлення Zabava EN
+
+Лише точний `/en/portfolio/2022/zabava-restaurant-sambir/` без query може отримувати попередньо стиснені Brotli-байти **того самого фінального HTML Pages**. Це не інший дизайн або відповідь для сканера: вибір залежить від звичайних GET/HEAD та справжньої підтримки `br`. В Cloudflare використовувати початковий `request.cf.clientAcceptEncoding`: платформа нормалізує звичайний заголовок. Відсутнє значення, відмова `q=0`, непідтримане кодування, інший URL/query/метод зберігають origin passthrough. Точний Markdown negotiation та MCP мають пріоритет.
+
+Generator стискає фінальні байти з quality11 й записує HTML/source та compressed SHA-256, довжини, source path і revision до manifest. Worker передає готові байти через `encodeBody: 'manual'`, `Content-Encoding: br`, `Cache-Control: public, max-age=600, no-transform` та `Vary: Accept, Accept-Encoding`. Він зберігає discovery, noindex, content signals і CORS; representation-specific ETag підтримує GET/HEAD/304. `HTML_PRECOMPRESSED_DISABLED=true` вимикає лише цю гілку; Markdown/MCP і origin HTML залишаються доступними. Не змінювати довгий HTML TTL чи глобальне стиснення заради одного URL.
+
+Парність перевіряється при складанні та активації, **не порівнянням з origin під час кожного запиту**. Тому під час кожного наступного релізу обов’язково оновлювати Worker із matching artifact того самого main run та звіряти `X-Piskor-HTML-Version`, `X-Piskor-HTML-SHA256`, декодовані HTML-байти й ETag після публікації. Якщо таку парність неможливо забезпечити, до публікації нових Pages вимкнути селективну HTML-гілку через kill switch; не залишати старий bundle джерелом нового HTML. Успіх Pages окремо не завершує реліз.
+
+Після активації перевірити реальну передачу `br` без повторного стиснення/ін’єкції, gzip-only/identity/`br;q=0`, HEAD/304, канонічну сторінку з query, UA-сторінку, 404, Markdown та всі три MCP tools. Unit-тест Node не емулює Cloudflare encoding/transforms. При розбіжності байтів або версії застосувати kill switch і origin fallback, зафіксувати відхилення та не оголошувати вимірювання прийнятими.
+
 ## Відтворення й перевірки до публікації
 
 ```sh
+npm ci --ignore-scripts
 python3 scripts/build-site.py
 python3 scripts/build_markdown_worker.py --site _site --out output/markdown-worker --revision "$(git rev-parse HEAD)"
 node --test scripts/test-markdown-worker.mjs

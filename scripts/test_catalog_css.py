@@ -36,6 +36,38 @@ class CatalogCssTests(unittest.TestCase):
                '[class~="other"]{color:purple}')
         self.assertEqual(css.replace('.\\63 ard', '.card'), prune_catalog_css(css, {'card'}))
 
+    def test_opt_in_prunes_only_mandatory_outer_classes_beside_logical_functions(self):
+        css = ('.other-house :is(.gallery, figure) .images{height:100px}'
+               '.case :is(.missing,figure){color:red}'
+               '.case:not(.absent){color:blue}.case:has(.absent){color:green}'
+               '.case :where(.missing,a){display:block}'
+               '.case:has(:is(.absent,a)){gap:4px}'
+               '.other-house:not(.case),.case:not(.absent){padding:8px}'
+               '@media print{.other-house:has(img){display:none}.case:not(.absent){color:black}}')
+        classes = {'case', 'images', 'gallery'}
+        self.assertEqual(prune_catalog_css(css, classes), css)
+        result = prune_catalog_css(css, classes, prune_functional_ancestors=True)
+        self.assertNotIn('.other-house', result)
+        for rule in ('.case :is(.missing,figure){color:red}',
+                     '.case:not(.absent){color:blue}', '.case:has(.absent){color:green}',
+                     '.case :where(.missing,a){display:block}',
+                     '.case:has(:is(.absent,a)){gap:4px}',
+                     '.case:not(.absent){padding:8px}',
+                     '@media print{.case:not(.absent){color:black}}'):
+            self.assertIn(rule, result)
+
+    def test_opt_in_keeps_unknown_functions_errors_nesting_and_dynamic_prefixes(self):
+        css = ('.absent:future(.case){color:red}'
+               '.absent:is(:future(.case)){color:blue}'
+               '.absent:is(.case]){color:green}'
+               '.absent:is(& .case){color:pink}'
+               '.absent{& .child{color:black}}'
+               '.state-open:not(.absent){display:block}'
+               '.case:not(.absent)::before{content:"yes"}')
+        self.assertEqual(prune_catalog_css(css, {'case', 'state-'},
+                                          prune_functional_ancestors=True), css)
+        self.assertEqual(prune_catalog_css(css, None, prune_functional_ancestors=True), css)
+
     def test_union_covers_other_languages_inline_consent_and_versioned_scripts(self):
         with TemporaryDirectory() as folder:
             root = Path(folder)

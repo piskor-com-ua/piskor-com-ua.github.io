@@ -46,7 +46,7 @@ jobs:
       - name: Install image build dependency
         run: python3 -m pip install -r requirements-build.txt
       - name: Validate agent tools
-        run: node --test scripts/test-agent-tools.js scripts/test-prerender-home.cjs scripts/test-zabava-gallery-delivery.mjs
+        run: node --test scripts/test-agent-tools.js scripts/test-prerender-home.cjs scripts/test-zabava-gallery-delivery.mjs scripts/test-deferred-mobile-media.mjs
       - name: Restore content-addressed image encodings
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:

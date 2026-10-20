@@ -1,0 +1,89 @@
+{
+  "baseline_revision": "dc11e6a0839c6519f658bb0bebb3f6c8a08f9222",
+  "audit_date": "2026-10-20",
+  "form_factor": "mobile",
+  "device": "Moto G Power",
+  "throttling": "Slow 4G",
+  "routes": [
+    {
+      "route": "/en/portfolio/2020/family-house-solonka/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020-family-house-solonka/ch3ze9ueks?form_factor=mobile",
+      "fcp_ms": 923,
+      "lcp_ms": 1276,
+      "speed_index_ms": 3838,
+      "review": "LCP cover is eager, high priority, and discoverable in the initial document."
+    },
+    {
+      "route": "/en/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en/oentthow7o?form_factor=mobile",
+      "fcp_ms": 1005,
+      "lcp_ms": 1201,
+      "speed_index_ms": 3704,
+      "review": "Forced-reflow source maps to synchronous story geometry reads in home-bootstrap.js; no scored savings estimate."
+    },
+    {
+      "route": "/en/portfolio/2020/meduza-lounge-lviv/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020-meduza-lounge-lviv/advhg1tiln?form_factor=mobile",
+      "fcp_ms": 927,
+      "lcp_ms": 1277,
+      "speed_index_ms": 3627,
+      "review": "LCP cover is eager, high priority, and discoverable; defer only offscreen gallery resources."
+    },
+    {
+      "route": "/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua/8z2xf74o9y?form_factor=mobile",
+      "fcp_ms": 966,
+      "lcp_ms": 1202,
+      "speed_index_ms": 3539,
+      "review": "Forced-reflow source maps to synchronous story geometry reads in home-bootstrap.js; no scored savings estimate."
+    },
+    {
+      "route": "/en/portfolio/2020/bartativ-house-reconstruction/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020-bartativ-house-reconstruction/gkn4k6xypx?form_factor=mobile",
+      "fcp_ms": 926,
+      "lcp_ms": 1352,
+      "speed_index_ms": 2381,
+      "review": "LCP cover is eager, high priority, and discoverable; defer only offscreen gallery resources."
+    },
+    {
+      "route": "/portfolio/2020/sholts-restaurant-drohobych/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2020-sholts-restaurant-drohobych/xxxbq07o9o?form_factor=mobile",
+      "fcp_ms": 971,
+      "lcp_ms": 1576,
+      "speed_index_ms": 2269,
+      "review": "LCP cover is eager, high priority, and discoverable; defer only offscreen gallery resources."
+    },
+    {
+      "route": "/en/portfolio/2021/davydiv-house/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2021-davydiv-house/fypm2w31xc?form_factor=mobile",
+      "fcp_ms": 924,
+      "lcp_ms": 1202,
+      "speed_index_ms": 2262,
+      "review": "Already in the deferred-media cohort; preserve the eager cover and verify the same behavior."
+    },
+    {
+      "route": "/portfolio/2026/briukhovychi-house/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2026-briukhovychi-house/uh37zyciru?form_factor=mobile",
+      "fcp_ms": 955,
+      "lcp_ms": 1426,
+      "speed_index_ms": 2256,
+      "review": "LCP cover is eager, high priority, and discoverable; defer only offscreen gallery resources."
+    },
+    {
+      "route": "/portfolio/2023/avalon-holiday-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2023-avalon-holiday-apartment/14gnk2oxac?form_factor=mobile",
+      "fcp_ms": 953,
+      "lcp_ms": 1201,
+      "speed_index_ms": 2253,
+      "review": "Already in the deferred-media cohort; preserve the eager cover and verify the same behavior."
+    },
+    {
+      "route": "/portfolio/2025/zamartynivska-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2025-zamartynivska-apartment/9zwm768wjq?form_factor=mobile",
+      "fcp_ms": 964,
+      "lcp_ms": 1201,
+      "speed_index_ms": 2252,
+      "review": "Already in the deferred-media cohort; preserve the eager cover and verify the same behavior."
+    }
+  ]
+}

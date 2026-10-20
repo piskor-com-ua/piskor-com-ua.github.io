@@ -164,8 +164,11 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
     const deferredMediaChecks = [];
     const followupRoutes = JSON.parse(readFileSync('scripts/mobile-si-followup-routes.json'))
       .routes.map(entry => entry.route);
+    const top10Routes = JSON.parse(readFileSync('scripts/mobile-si-top10-routes.json'))
+      .routes.map(entry => entry.route).filter(route => route !== '/' && route !== '/en/');
     for (const route of [...new Set([
-      '/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/', ...followupRoutes
+      '/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/',
+      ...followupRoutes, ...top10Routes
     ])]) {
       const probeContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
       try {

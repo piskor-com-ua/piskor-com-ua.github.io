@@ -5,11 +5,6 @@
   const sources=[...template.content.querySelectorAll('script[src]')],styles=[...template.content.querySelectorAll('link[rel=stylesheet]')];
   let pending=null,loaded=0,loadedStyles=0,ready=false,bypass=false,observer;
   const story=document.querySelector('.story');
-  function nearStory(){
-    if(!story)return false;
-    const box=story.getBoundingClientRect();
-    return box.top<innerHeight+600&&box.bottom>-600&&(scrollY>0||box.top<innerHeight);
-  }
   function feedback(){
     if(document.getElementById('home-interaction-status'))return;
     const note=document.createElement('p');note.id='home-interaction-status';note.setAttribute('role','status');
@@ -42,11 +37,11 @@
       if(!document.querySelector('.menu-button').hasAttribute('aria-expanded'))throw new Error('Homepage enhancement unavailable');
       ready=true;document.body.dataset.homeEnhanced='true';
       document.getElementById('home-interaction-status')?.remove();
-      observer?.disconnect();removeEventListener('scroll',approach);removeEventListener('resize',approach);removeEventListener('hashchange',hashEntry);document.removeEventListener('click',click,true);
+      observer?.disconnect();removeEventListener('hashchange',hashEntry);document.removeEventListener('click',click,true);
     })().catch(error=>{pending=null;throw error;});
     return pending;
   }
-  function approach(){if(nearStory())enhance().catch(feedback);}
+  function approach(){enhance().catch(feedback);}
   function hashEntry(){if(['#design-process','#story'].includes(location.hash))enhance().catch(feedback);}
   function currentTarget(target){
     if(target.isConnected)return target;
@@ -65,13 +60,13 @@
     });
   }
   document.addEventListener('click',click,true);
-  addEventListener('scroll',approach,{passive:true});
-  addEventListener('resize',approach);
   addEventListener('hashchange',hashEntry);
   if(story&&typeof IntersectionObserver==='function'){
-    observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting))approach();},{rootMargin:'600px 0px'});
+    observer=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting&&(scrollY>0||entry.boundingClientRect.top<innerHeight))){approach();}
+    },{rootMargin:'600px 0px'});
     observer.observe(story);
   }
   if(!story)enhance().catch(feedback);
-  else{hashEntry();approach();}
+  else{hashEntry();}
 })();

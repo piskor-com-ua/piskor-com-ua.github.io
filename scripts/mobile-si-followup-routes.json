@@ -1,0 +1,54 @@
+{
+  "baseline_revision": "23fcc890439d1acd07a112b06199a5904bc6f6c5",
+  "audit_date": "2026-10-20",
+  "form_factor": "mobile",
+  "device": "Moto G Power",
+  "throttling": "Slow 4G",
+  "routes": [
+    {
+      "route": "/en/portfolio/2020/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020/ve1ur445cb?form_factor=mobile",
+      "fcp_ms": 919,
+      "lcp_ms": 1426,
+      "speed_index_ms": 3644,
+      "lcp_element": "first portfolio card cover",
+      "review": "No scored image-delivery opportunity remained; preserve the eager first card and improve below-fold paint only."
+    },
+    {
+      "route": "/en/portfolio/2020/family-house-solonka/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020-family-house-solonka/onatf5nfty?form_factor=mobile",
+      "fcp_ms": 924,
+      "lcp_ms": 1426,
+      "speed_index_ms": 2558,
+      "lcp_element": "case cover",
+      "review": "The cover resource loads early; the report points to element-render delay and non-scored layout diagnostics."
+    },
+    {
+      "route": "/portfolio/2021/berloha-lounge-bar-lviv/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2021-berloha-lounge-bar-lviv/broxrz6mri?form_factor=mobile",
+      "fcp_ms": 996,
+      "lcp_ms": 1426,
+      "speed_index_ms": 2479,
+      "lcp_element": "case cover",
+      "review": "Forced-reflow and DOM diagnostics have no scored savings; preserve the cover and defer only offscreen media."
+    },
+    {
+      "route": "/en/portfolio/2024/markosoli-store/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2024-markosoli-store/5j9agll5mr?form_factor=mobile",
+      "fcp_ms": 927,
+      "lcp_ms": 1351,
+      "speed_index_ms": 2246,
+      "lcp_element": "case cover",
+      "review": "DOM size is modest; the report points to element-render delay, with no justified content or layout reduction."
+    },
+    {
+      "route": "/en/portfolio/2025/vesteros-house/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2025-vesteros-house/jf8jcq4853?form_factor=mobile",
+      "fcp_ms": 974,
+      "lcp_ms": 1276,
+      "speed_index_ms": 2124,
+      "lcp_element": "case cover",
+      "review": "The LCP image is already delivered promptly; preserve the hero and reduce offscreen work without changing case content."
+    }
+  ]
+}

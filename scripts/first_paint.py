@@ -15,8 +15,14 @@ CONSENT_SCRIPT = re.compile(r'<script\b(?=[^>]*\bsrc=["\']/analytics-consent\.js
 CATALOG_SHEET = re.compile(r'<link\b[^>]*\bhref=["\']/catalog-bundle\.css(?:\?[^"\']*)?["\'][^>]*>', re.I)
 BODY = re.compile(r'<body\b[^>]*>', re.I)
 # Explicitly reviewed routes only. Keep the original family union for every
-# other page, including the other language of this case.
-PAGE_STYLE_SCOPES = frozenset({'en/portfolio/2022/zabava-restaurant-sambir/index.html'})
+# other page, including the other language of these cases.
+PAGE_STYLE_SCOPES = frozenset({
+    'en/portfolio/2020/family-house-solonka/index.html',
+    'portfolio/2021/berloha-lounge-bar-lviv/index.html',
+    'en/portfolio/2022/zabava-restaurant-sambir/index.html',
+    'en/portfolio/2024/markosoli-store/index.html',
+    'en/portfolio/2025/vesteros-house/index.html',
+})
 SCOPED_STYLE_CONTROLLERS = frozenset({
     'analytics-consent.js', 'agent-tools.js', 'portfolio.js', 'url-compat.js',
 })

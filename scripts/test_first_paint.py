@@ -7,7 +7,8 @@ from unittest.mock import patch
 from fontTools.ttLib import TTFont
 from fontTools.pens.recordingPen import DecomposingRecordingPen
 from first_paint import (inline_consent, subset_fonts, inline_catalog_styles,
-                         inline_page_styles, inline_page_critical_scripts)
+                         inline_page_styles, inline_page_critical_scripts,
+                         PAGE_STYLE_SCOPES)
 
 
 class FirstPaintTests(unittest.TestCase):
@@ -166,8 +167,8 @@ class FirstPaintTests(unittest.TestCase):
         self.assertNotIn('.home-state', case)
         self.assertNotIn('.unknown-state', case)
 
-    def scoped_case(self, script=''):
-        page = self.root / 'en/portfolio/2022/zabava-restaurant-sambir/index.html'
+    def scoped_case(self, script='', route='en/portfolio/2022/zabava-restaurant-sambir/index.html'):
+        page = self.root / route
         page.parent.mkdir(parents=True, exist_ok=True)
         page.write_text('<html lang="en"><head><link rel="stylesheet" href="/shared.css">'
                         + script + '</head><body class="project-page zabava-restaurant-sambir-page">'
@@ -181,6 +182,8 @@ class FirstPaintTests(unittest.TestCase):
                '.other-case :is(a,button){color:blue}.ua-only:not(.unavailable){color:purple}')
         (self.root / 'shared.css').write_text(css)
         target = self.scoped_case()
+        for route in sorted(PAGE_STYLE_SCOPES - {target.relative_to(self.root).as_posix()}):
+            self.scoped_case(route=route)
         fixtures = {
             'index.html': 'home-only', 'en/index.html': 'home-only',
             'portfolio/2022/zabava-restaurant-sambir/index.html': 'project-page ua-only',
@@ -199,9 +202,9 @@ class FirstPaintTests(unittest.TestCase):
         for page, data in originals.items():
             page.write_bytes(data)
         inline_page_styles(self.root)
-        changed = [p.relative_to(self.root).as_posix() for p in originals
-                   if p.read_bytes() != baseline[p]]
-        self.assertEqual(changed, [target.relative_to(self.root).as_posix()])
+        changed = sorted(p.relative_to(self.root).as_posix() for p in originals
+                         if p.read_bytes() != baseline[p])
+        self.assertEqual(changed, sorted(PAGE_STYLE_SCOPES))
         self.assertIn('.zabava-restaurant-sambir-page{color:red}', target.read_text())
         self.assertNotIn('.other-case', target.read_text())
         self.assertNotIn('.ua-only', target.read_text())

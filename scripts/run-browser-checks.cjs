@@ -162,7 +162,11 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       assert.equal(await page.locator('html').getAttribute('lang'), language === 'en' ? 'uk' : 'en');
     }
     const deferredMediaChecks = [];
-    for (const route of ['/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/']) {
+    const followupRoutes = JSON.parse(readFileSync('scripts/mobile-si-followup-routes.json'))
+      .routes.map(entry => entry.route);
+    for (const route of [...new Set([
+      '/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/', ...followupRoutes
+    ])]) {
       const probeContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
       try {
         const probe = await probeContext.newPage();
@@ -171,6 +175,12 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
           if (request.resourceType() === 'image') imageRequests.push(new URL(request.url()).pathname);
         });
         await probe.goto(origin + route);
+        const cover = probe.locator('.project-cover img,.portfolio-card-cover').first();
+        assert.ok(await cover.count() > 0, route + ': expected an eager first-screen image');
+        assert.equal(await cover.getAttribute('data-piskor-src'), null,
+          route + ': first-screen cover must remain eager');
+        await cover.evaluate(image => image.decode());
+        assert.ok(await cover.evaluate(image => image.naturalWidth > 0), route + ': cover failed to decode');
         const pending = probe.locator('picture[data-piskor-deferred-media]').last();
         assert.equal(await pending.count() > 0, true, route + ': expected deferred media');
         const imageIndex = await pending.locator('img').evaluate(image =>
@@ -193,7 +203,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
           return image && !image.hasAttribute('data-piskor-src') && image.complete && image.naturalWidth > 0;
         }, imageIndex);
         deferredMediaChecks.push({ route, deferredBeforeScroll: true, decodedAfterScroll: true });
-        if (route.includes('sholts-restaurant')) {
+        if (route.includes('sholts-restaurant') || /\/portfolio\/\d{4}\/[^/]+\/$/.test(route)) {
           await probe.locator('button[data-gallery]').last().click();
           assert.equal(await probe.locator('dialog[open]').count(), 1, 'Deferred story gallery still opens');
           await probe.keyboard.press('Escape');

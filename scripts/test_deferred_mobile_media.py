@@ -6,7 +6,8 @@ from agent_catalog import Document
 from agent_content import render
 from deferred_mobile_media import (
     FALLBACK_MARKER, PICTURE_MARKER, SCRIPT_MARKER, STYLE_MARKER,
-    CONTROLLER, redirect_aliases, transform_page, validate_deferred_mobile_media,
+    CONTROLLER, followup_target_routes, redirect_aliases, target_routes,
+    transform_page, validate_deferred_mobile_media,
 )
 
 SOURCE = ('<picture><source type="image/avif" media="(max-width: 700px)" '
@@ -30,6 +31,18 @@ HTML = ('<!doctype html><html lang="en"><head><title>Portfolio</title></head><bo
 
 
 class DeferredMobileMediaTests(unittest.TestCase):
+    def test_fresh_psi_followup_is_separate_and_only_adds_speed_index_failures(self):
+        followup = followup_target_routes()
+        self.assertEqual(followup, frozenset({
+            '/en/portfolio/2020/',
+            '/en/portfolio/2020/family-house-solonka/',
+            '/portfolio/2021/berloha-lounge-bar-lviv/',
+            '/en/portfolio/2024/markosoli-store/',
+            '/en/portfolio/2025/vesteros-house/',
+        }))
+        self.assertEqual(len(target_routes()), 44)
+        self.assertTrue(followup.issubset(target_routes()))
+
     def test_only_lazy_catalog_cards_and_case_gallery_pictures_are_deferred(self):
         amended, count = transform_page(HTML, CONTROLLER.read_text())
         self.assertEqual(count, 2)

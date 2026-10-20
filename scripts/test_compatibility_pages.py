@@ -9,6 +9,7 @@ import unittest
 from agent_content import generate_agent_content, markdown_path
 from compatibility_pages import (COMPATIBILITY_ROUTES, ORIGIN, prepare_compatibility_pages,
                                  validate_compatibility_pages)
+from deferred_mobile_media import CONTROLLER, transform_page
 from first_paint import inline_page_critical_scripts
 
 
@@ -42,8 +43,10 @@ class CompatibilityPagesTests(unittest.TestCase):
                        '<main id="main"><h1>Canonical loft ' + language + '</h1>'
                        '<section id="accent-lighting-sequence"><p>Published 2021 content.</p>'
                        '<button data-gallery data-full="/assets/full.webp?v=original">Gallery</button>'
+                       '<div class="gallery-grid"><figure><button data-gallery>'
                        '<picture><source srcset="/assets/cover.avif?v=prepared 768w">'
-                       '<img src="/assets/cover.webp?v=prepared" alt="Same room"></picture></section>'
+                       '<img src="/assets/cover.webp?v=prepared" alt="Same room" width="1440" height="1080" '
+                       'loading="lazy"></picture></button></figure></div></section>'
                        '<section id="contact"><a href="tel:+380974781005">Public phone</a></section>'
                        '<a lang="' + ('uk' if language == 'en' else 'en') + '" href="' + counterpart + '">Language</a>'
                        '</main></body></html>').encode()
@@ -119,6 +122,15 @@ class CompatibilityPagesTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'own single Markdown alternative'):
                 validate_compatibility_pages(self.root, markdown_alternatives=True)
             self.path(alias).write_bytes(original)
+
+    def test_alias_delivery_deferral_keeps_exact_canonical_content(self):
+        prepare_compatibility_pages(self.root)
+        alias = next(iter(COMPATIBILITY_ROUTES))
+        original = self.path(alias).read_text()
+        amended, count = transform_page(original, CONTROLLER.read_text(), alias)
+        self.assertEqual(count, 1)
+        self.path(alias).write_text(amended)
+        self.assertEqual(validate_compatibility_pages(self.root), 2)
 
     def test_invalid_target_or_changed_alias_aborts_before_replacing_either_page(self):
         aliases = {alias: self.path(alias).read_bytes() for alias in COMPATIBILITY_ROUTES}

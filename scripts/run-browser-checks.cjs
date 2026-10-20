@@ -46,6 +46,51 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       preloadChecks.push({ route, width, deviceScaleFactor, ...result });
       await probeContext.close();
     }
+    const mobileLcpChecks = [];
+    const lcpRoutes = JSON.parse(readFileSync('scripts/mobile-si-target-routes.json'))
+      .lcp_media_routes;
+    for (const route of lcpRoutes) {
+      const probeContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+      try {
+        const probe = await probeContext.newPage();
+        const requests = [];
+        probe.on('request', request => requests.push(request.url()));
+        await probe.goto(origin + route);
+        const image = probe.locator('.project-cover img,.portfolio-card-cover').first();
+        await image.evaluate(image => image.decode());
+        const result = await image.evaluate(image => ({
+          source: image.currentSrc,
+          candidates: image.closest('picture')?.querySelector('source[type="image/avif"]')?.srcset
+            .split(',').map(candidate => new URL(candidate.trim().split(/\s+/)[0], location.href).href) || [],
+          matchingPreload: [...document.querySelectorAll('link[rel="preload"][imagesrcset]')]
+            .some(link => link.getAttribute('imagesrcset') ===
+              image.closest('picture')?.querySelector('source[type="image/avif"]')?.getAttribute('srcset')),
+          initiators: performance.getEntriesByName(image.currentSrc).map(entry => entry.initiatorType)
+        }));
+        const selectedPath = new URL(result.source).pathname;
+        assert.ok(selectedPath.endsWith('.avif') && result.candidates.includes(result.source),
+          route + ': selected AVIF must belong to the responsive candidate set');
+        assert.equal(requests.filter(url => url === result.source).length, 1, route + ': LCP image should be fetched once');
+        assert.ok(result.matchingPreload, route + ': mobile picture and responsive preload must match');
+        assert.deepEqual(result.initiators, ['link'], route + ': mobile LCP candidate should come from its preload');
+        mobileLcpChecks.push({ route, width: 390, deviceScaleFactor: 2, ...result });
+      } finally {
+        await probeContext.close();
+      }
+    }
+    const densityProbeContext = await browser.newContext({ viewport: { width: 435, height: 844 }, deviceScaleFactor: 2 });
+    try {
+      const probe = await densityProbeContext.newPage();
+      const route = '/en/portfolio/2020/shenc-park-yavoriv/';
+      await probe.goto(origin + route);
+      const image = probe.locator('.project-cover img').first();
+      await image.evaluate(image => image.decode());
+      const selected = await image.evaluate(image => image.currentSrc);
+      assert.ok(new URL(selected).pathname.endsWith('-832.avif'), route + ': 832 px candidate should be selected at its DPR boundary');
+      mobileLcpChecks.push({ route, width: 435, deviceScaleFactor: 2, source: selected, profileCandidateSelected: true });
+    } finally {
+      await densityProbeContext.close();
+    }
     const context = await browser.newContext();
     const errors = [];
     page = await context.newPage();
@@ -115,6 +160,67 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       await page.screenshot({ path: 'output/browser/contact-' + language + '.jpg', type: 'jpeg' });
       await page.locator('.language a').filter({ hasText: language === 'en' ? 'UA' : 'EN' }).click();
       assert.equal(await page.locator('html').getAttribute('lang'), language === 'en' ? 'uk' : 'en');
+    }
+    const deferredMediaChecks = [];
+    for (const route of ['/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/']) {
+      const probeContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+      try {
+        const probe = await probeContext.newPage();
+        const imageRequests = [];
+        probe.on('request', request => {
+          if (request.resourceType() === 'image') imageRequests.push(new URL(request.url()).pathname);
+        });
+        await probe.goto(origin + route);
+        const pending = probe.locator('picture[data-piskor-deferred-media]').last();
+        assert.equal(await pending.count() > 0, true, route + ': expected deferred media');
+        const imageIndex = await pending.locator('img').evaluate(image =>
+          Array.prototype.indexOf.call(document.images, image));
+        const initial = await pending.evaluate(picture => {
+          const image = picture.querySelector('img');
+          return { top: picture.getBoundingClientRect().top, source: image.getAttribute('data-piskor-src'),
+            srcsets: [...picture.querySelectorAll('[data-piskor-srcset]')]
+              .map(node => node.getAttribute('data-piskor-srcset')) };
+        });
+        assert.ok(initial.top > 844 + 500, route + ': last image should stay outside the activation margin');
+        const deferredPaths = [initial.source, ...initial.srcsets.flatMap(value =>
+          value.split(',').map(item => item.trim().split(/\s+/)[0]))]
+          .filter(Boolean).map(value => new URL(value, origin).pathname);
+        assert.ok(!imageRequests.some(request => deferredPaths.includes(request)),
+          route + ': far-offscreen media was requested before scrolling');
+        await pending.scrollIntoViewIfNeeded();
+        await probe.waitForFunction(index => {
+          const image = document.images[index];
+          return image && !image.hasAttribute('data-piskor-src') && image.complete && image.naturalWidth > 0;
+        }, imageIndex);
+        deferredMediaChecks.push({ route, deferredBeforeScroll: true, decodedAfterScroll: true });
+        if (route.includes('sholts-restaurant')) {
+          await probe.locator('button[data-gallery]').last().click();
+          assert.equal(await probe.locator('dialog[open]').count(), 1, 'Deferred story gallery still opens');
+          await probe.keyboard.press('Escape');
+          assert.equal(await probe.locator('dialog[open]').count(), 0, 'Deferred story gallery still closes');
+        }
+      } finally {
+        await probeContext.close();
+      }
+    }
+    const noScriptContext = await browser.newContext({
+      viewport: { width: 390, height: 844 }, javaScriptEnabled: false
+    });
+    try {
+      const noScript = await noScriptContext.newPage();
+      await noScript.goto(origin + '/en/portfolio/2020/sholts-restaurant-drohobych/');
+      assert.ok(await noScript.locator('picture[data-piskor-deferred-media]').first().isHidden(),
+        'The JavaScript placeholder must be hidden in no-JavaScript mode');
+      const fallback = noScript.locator('noscript[data-piskor-deferred-media-fallback] picture').first();
+      assert.ok(await fallback.isVisible(), 'Responsive native fallback must be visible without JavaScript');
+      const fallbackImage = fallback.locator('img');
+      await fallback.scrollIntoViewIfNeeded();
+      await fallbackImage.evaluate(image => image.decode());
+      assert.ok(await fallbackImage.evaluate(image => image.naturalWidth > 0));
+      deferredMediaChecks.push({ route: '/en/portfolio/2020/sholts-restaurant-drohobych/',
+        noJavaScriptResponsiveFallback: true });
+    } finally {
+      await noScriptContext.close();
     }
     const notFoundConsent = [];
     for (const [route, language, status] of [
@@ -206,7 +312,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
     await consentContext.close();
     assert.deepEqual(errors, []);
     mkdirSync('output/browser', { recursive: true });
-    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, compatibilityPages, nativeFonts, preloadChecks, releaseSample, notFoundConsent, errors }, null, 2));
+    writeFileSync('output/browser/matrix.json', JSON.stringify({ matrix, homeRendering, catalogRendering, compatibilityPages, nativeFonts, preloadChecks, mobileLcpChecks, releaseSample, deferredMediaChecks, notFoundConsent, errors }, null, 2));
     console.log('Browser validation: ' + matrix.length + ' project/viewport checks; bilingual gallery, focus, language, consent and contacts passed.');
     await browser.close();
     browser = null;

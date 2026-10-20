@@ -14,6 +14,9 @@ from agent_api import generate_agent_api, API_PATHS, API_CATALOG_PATH, API_DOC_P
 from compatibility_pages import prepare_compatibility_pages
 from zabava_first_paint import optimize_zabava_en
 from zabava_gallery_delivery import defer_zabava_gallery
+from deferred_mobile_media import defer_mobile_media
+from mobile_lcp_cover_delivery import (prepare_mobile_catalog_delivery_profiles,
+                                       prepare_mobile_lcp_covers)
 from case_minification import minify_reviewed_cases
 
 source = Path('concept')
@@ -43,6 +46,14 @@ print(f'Zabava EN near-viewport gallery: {defer_zabava_gallery(out)}')
 print(f'Zabava EN critical assets: {optimize_zabava_en(out)}')
 print(f'Compiled reviewed cases: {minify_reviewed_cases(out)}')
 print(f'Canonical compatibility copies: {prepare_compatibility_pages(out)} pages')
+print(f'Mobile LCP cover profiles: {prepare_mobile_lcp_covers(out)}')
+print(f'Mobile critical catalog image profiles: {prepare_mobile_catalog_delivery_profiles(out)}')
+delivery_optimization = optimize_assets(out)
+print(f'Optimized route-scoped LCP media: {delivery_optimization["unused"]} unused files, '
+      f'{delivery_optimization["duplicates"]} exact duplicates removed; '
+      f'{delivery_optimization["saved_bytes"]:,} bytes saved')
+print(f'Re-versioned {fingerprint_resources(out)} media/font resources')
+print(f'Mobile SI cohort offscreen media: {defer_mobile_media(out)}')
 agent_pages = generate_agent_content(out)
 print(f'Agent content: {len(agent_pages)} HTML-derived Markdown pages and website-only Poppy discovery')
 for path in out.rglob('*'):

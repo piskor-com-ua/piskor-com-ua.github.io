@@ -9,6 +9,8 @@ from agent_catalog import Document
 from first_paint import (HOME_INLINE_PAGES, HOME_INLINE_MARKER, PAGE_INLINE_MARKER,
                          page_critical_profile, validate_home_inline_scripts, validate_page_inline_scripts)
 from zabava_gallery_delivery import validate_zabava_gallery
+from deferred_mobile_media import validate_deferred_mobile_media
+from mobile_lcp_cover_delivery import validate_mobile_lcp_cover
 
 
 def card_label_text(node):
@@ -50,8 +52,14 @@ checked_catalog_orders = set()
 
 cards = 0
 for page in output.rglob('*.html'):
-    validate_zabava_gallery(output, page, page.read_text())
-    root = Document(page.read_text()).root
+    html = page.read_text()
+    validate_zabava_gallery(output, page, html)
+    validate_deferred_mobile_media(output, page, html)
+    validate_mobile_lcp_cover(output, page, html)
+    semantic_html = re.sub(
+        r'<noscript data-piskor-deferred-media-fallback>.*?</noscript>',
+        '', html, flags=re.S)
+    root = Document(semantic_html).root
     external_agents = root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/agent-tools.js')
     inline_controllers = root.find(lambda n: n.tag == 'script' and (HOME_INLINE_MARKER in n.attrs or PAGE_INLINE_MARKER in n.attrs))
     inline_agents = [node for node in inline_controllers if node.attrs.get(HOME_INLINE_MARKER, node.attrs.get(PAGE_INLINE_MARKER)) == 'agent-tools.js']
@@ -77,22 +85,26 @@ for page in output.rglob('*.html'):
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
     font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
     assert all(not n.attrs.get('media') for n in font_preloads), str(page) + ': original Roboto must remain available in both viewport modes'
-    images = root.find(lambda n: n.tag == 'img' and n.attrs.get('src', '').startswith('/assets/'))
+    images = root.find(lambda n: n.tag == 'img' and
+                       (n.attrs.get('src', '').startswith('/assets/') or
+                        n.attrs.get('data-piskor-src', '').startswith('/assets/')))
     for image in images:
         attrs = image.attrs
-        path = output / urlsplit(attrs['src']).path.lstrip('/')
+        source = attrs.get('data-piskor-src', attrs.get('src', ''))
+        path = output / urlsplit(source).path.lstrip('/')
         with Image.open(path) as opened:
             assert (int(attrs['width']), int(attrs['height'])) == opened.size, str(page) + ': intrinsic dimensions'
-        if 'srcset' in attrs:
+        srcset = attrs.get('data-piskor-srcset', attrs.get('srcset'))
+        if srcset:
             descriptors = set()
-            for entry in attrs['srcset'].split(','):
+            for entry in srcset.split(','):
                 reference, descriptor = entry.strip().split()
                 assert descriptor not in descriptors, str(page) + ': repeated srcset width'
                 descriptors.add(descriptor)
                 with Image.open(output / urlsplit(reference).path.lstrip('/')) as opened:
                     assert descriptor == str(opened.width) + 'w', str(page) + ': false srcset descriptor'
         if image.has_class('portfolio-card-cover'):
-            assert attrs.get('srcset') and attrs.get('sizes')
+            assert attrs.get('data-piskor-srcset', attrs.get('srcset')) and attrs.get('sizes')
             cards += 1
         if attrs.get('fetchpriority') == 'high':
             assert attrs.get('loading') != 'lazy', str(page) + ': lazy LCP image'
@@ -135,9 +147,12 @@ for page in output.rglob('*.html'):
             assert len(sources) == 1 and sources[0].attrs.get('type') == 'image/avif'
             assert sources[0].attrs.get('media') == '(max-width: 700px)'
             assert sources[0].attrs.get('sizes') == fallback.attrs['sizes']
-            alternatives = sources[0].attrs['srcset'].split(',')
+            alternatives = sources[0].attrs.get(
+                'data-piskor-srcset', sources[0].attrs.get('srcset', '')).split(',')
             webp_candidates = []
-            for webp in fallback.attrs['srcset'].split(','):
+            webp_srcset = fallback.attrs.get(
+                'data-piskor-srcset', fallback.attrs.get('srcset', ''))
+            for webp in webp_srcset.split(','):
                 with Image.open(output / urlsplit(webp.strip().split()[0]).path.lstrip('/')) as original:
                     webp_candidates.append(original.size)
             native_width, native_height = max(webp_candidates)
@@ -153,7 +168,7 @@ for page in output.rglob('*.html'):
                     assert abs(opened.height - round(native_height * opened.width / native_width)) <= 1, str(page) + ': overview must retain its full source frame'
                 assert parse_qs(urlsplit(reference).query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]]
     for node in root.find(lambda n: n.tag in {'img', 'script', 'link', 'button', 'video', 'source'}):
-        for key in ['src', 'href', 'data-full', 'poster']:
+        for key in ['src', 'href', 'data-full', 'poster', 'data-piskor-src']:
             value = node.attrs.get(key, '')
             url = urlsplit(value)
             if not value.startswith('/') or url.scheme or url.netloc:
@@ -161,6 +176,16 @@ for page in output.rglob('*.html'):
             target = output / url.path.lstrip('/')
             if target.is_file() and target.suffix in {'.webp', '.avif', '.png', '.svg', '.ico', '.woff2', '.mp4', '.css', '.js'}:
                 assert parse_qs(url.query).get('v') == [hashlib.sha256(target.read_bytes()).hexdigest()[:12]], value
+        for key in ['srcset', 'data-piskor-srcset']:
+            for candidate in node.attrs.get(key, '').split(','):
+                reference = candidate.strip().split()[0] if candidate.strip() else ''
+                url = urlsplit(reference)
+                if not reference.startswith('/') or url.scheme or url.netloc:
+                    continue
+                target = output / url.path.lstrip('/')
+                if target.is_file() and target.suffix in {'.webp', '.avif', '.png'}:
+                    assert parse_qs(url.query).get('v') == [
+                        hashlib.sha256(target.read_bytes()).hexdigest()[:12]], reference
 
 assert checked_catalog_orders == set(expected_catalog_orders), 'Missing UA/EN full or year catalog order verification'
 

@@ -5,7 +5,9 @@ import hashlib
 
 from agent_catalog import Document
 from agent_content import markdown_path
+from deferred_mobile_media import restore_deferred_mobile_media
 from first_paint import PAGE_INLINE_MARKER, validate_page_inline_scripts
+from mobile_lcp_cover_delivery import restore_mobile_lcp_cover
 
 
 ORIGIN = 'https://piskor.com.ua'
@@ -84,10 +86,13 @@ def prepare_compatibility_pages(output):
 
 
 def validate_compatibility_pages(output, markdown_alternatives=False):
-    """Allow only each document's own generated Markdown link to differ."""
+    """Allow only reviewed delivery transforms and each route's Markdown link."""
     output = _root(output)
     for alias, target in COMPATIBILITY_ROUTES.items():
         actual, expected = _page(output, alias).read_bytes(), _target(output, target)
+        actual_text = actual.decode('utf-8')
+        actual_text = restore_mobile_lcp_cover(restore_deferred_mobile_media(actual_text))
+        actual = actual_text.encode('utf-8')
         if markdown_alternatives:
             normalized = []
             for route, content in ((alias, actual), (target, expected)):

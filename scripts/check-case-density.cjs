@@ -99,7 +99,10 @@ print(json.dumps(result))
           for (const card of document.querySelectorAll('.portfolio-card')) card.style.contentVisibility = 'visible';
           const images = [...document.querySelectorAll('.project-cover img,.gallery-grid img,.portfolio-card-cover')];
           for (const image of images) image.loading = 'eager';
-          await Promise.all(images.map(image => image.decode()));
+          // Deferred images intentionally expose only a local SVG placeholder;
+          // density is checked from their preserved data-srcset below.
+          await Promise.all(images.filter(image => !image.hasAttribute('data-piskor-src'))
+            .map(image => image.decode()));
           await document.fonts.ready;
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         });
@@ -164,9 +167,11 @@ print(json.dumps(result))
           for (const image of document.querySelectorAll('.project-cover img,.gallery-grid img,.portfolio-card-cover')) {
             const errors = [];
             try {
+              const deferred = image.hasAttribute('data-piskor-src');
               const source = [...(image.closest('picture')?.querySelectorAll('source') || [])].find(source =>
                 (!source.media || matchMedia(source.media).matches) && ['image/avif', 'image/webp'].includes(source.type));
-              const srcset = source?.srcset || image.srcset;
+              const srcset = source?.getAttribute('srcset') || source?.getAttribute('data-piskor-srcset') ||
+                image.getAttribute('data-piskor-srcset') || image.srcset;
               const candidates = srcset ? parseGeneratedSrcset(srcset).map(({ url, width }) => {
                 const size = dimensions[filePath(url)];
                 if (!size || size[0] !== width) throw Error('Descriptor does not match image header');
@@ -186,12 +191,13 @@ print(json.dumps(result))
               const fullNative = candidates.length === 1 && !!source;
               if (!fullNative && declared + 1 < referenceWidth) errors.push('sizes understates cropped source width');
               const requiredPixels = Math.min(native.width, referenceWidth * dpr);
-              const selected = image.currentSrc ? dimensions[filePath(image.currentSrc)] : null;
-              if (!selected) errors.push('Selected candidate dimensions unavailable');
+              const selected = !deferred && image.currentSrc ? dimensions[filePath(image.currentSrc)] : null;
+              if (!deferred && !selected) errors.push('Selected candidate dimensions unavailable');
               if (selected && selected[0] + 2 < requiredPixels) errors.push('Selected candidate undersamples cropped source');
               const predicted = [...candidates].sort((a, b) => a.width - b.width).find(candidate => candidate.width >= declared * dpr) || native;
               if (predicted.width + 2 < requiredPixels) errors.push('Declared candidates would undersample cropped source');
-              output.push({ source: image.getAttribute('src'), section: image.closest('[id]')?.id || null,
+              output.push({ source: image.getAttribute('data-piskor-src') || image.getAttribute('src'), deferred,
+                section: image.closest('[id]')?.id || null,
                 objectFit: style.objectFit, aspectRatio: style.aspectRatio, boxWidth, boxHeight,
                 sourceNative: [native.width, native.height], referenceWidth, declaredWidth: declared,
                 requiredPixels, predictedWidth: predicted.width, currentSrc: image.currentSrc || null,

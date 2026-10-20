@@ -6,7 +6,7 @@ from agent_catalog import Document
 from agent_content import render
 from deferred_mobile_media import (
     FALLBACK_MARKER, PICTURE_MARKER, SCRIPT_MARKER, STYLE_MARKER,
-    CONTROLLER, followup_target_routes, redirect_aliases, target_routes,
+    CONTROLLER, followup_target_routes, top10_target_routes, redirect_aliases, target_routes,
     transform_page, validate_deferred_mobile_media,
 )
 
@@ -40,8 +40,25 @@ class DeferredMobileMediaTests(unittest.TestCase):
             '/en/portfolio/2024/markosoli-store/',
             '/en/portfolio/2025/vesteros-house/',
         }))
-        self.assertEqual(len(target_routes()), 44)
+        self.assertEqual(len(target_routes()), 48)
         self.assertTrue(followup.issubset(target_routes()))
+
+    def test_current_top_ten_psi_cohort_is_ranked_and_included(self):
+        top10 = top10_target_routes()
+        self.assertEqual(len(top10), 10)
+        self.assertEqual(top10, frozenset({
+            '/', '/en/',
+            '/en/portfolio/2020/family-house-solonka/',
+            '/en/portfolio/2020/meduza-lounge-lviv/',
+            '/en/portfolio/2020/bartativ-house-reconstruction/',
+            '/portfolio/2020/sholts-restaurant-drohobych/',
+            '/en/portfolio/2021/davydiv-house/',
+            '/portfolio/2026/briukhovychi-house/',
+            '/portfolio/2023/avalon-holiday-apartment/',
+            '/portfolio/2025/zamartynivska-apartment/',
+        }))
+        self.assertTrue((top10 - {'/', '/en/'}).issubset(target_routes()))
+        self.assertFalse({'/', '/en/'} & target_routes(), 'Homepages use their own PSI fix')
 
     def test_only_lazy_catalog_cards_and_case_gallery_pictures_are_deferred(self):
         amended, count = transform_page(HTML, CONTROLLER.read_text())

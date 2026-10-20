@@ -181,23 +181,27 @@ test('homepage declares ordered inert controllers and a separate early compatibi
 
 test('deferred stylesheet failure keeps native navigation and retry loads CSS before controllers once', async () => {
   const appended = [], handlers = {}, nodes = new Map();
-  let enhanced = false, nativeClicks = 0;
+  const globalEvents = [];
+  let enhanced = false, nativeClicks = 0, geometryReads = 0;
   const button = { isConnected: true, click() { nativeClicks++; }, matches: () => true, hasAttribute: () => enhanced };
   const sources = ['story', 'automation', 'app'].map(name => ({ src: '/' + name + '.js?v=source' }));
   const document = {
     documentElement: { lang: 'uk' }, body: { dataset: {}, append(node) { nodes.set(node.id, node); } },
     getElementById(id) { return id === 'home-controllers' ? { content: { querySelectorAll(selector) { return selector === 'script[src]' ? sources : [{ href: '/automation.css?v=source' }]; } } } : nodes.get(id); },
-    querySelector(selector) { return selector === '.story' ? { getBoundingClientRect: () => ({ top: 2000, bottom: 12000 }) } : button; },
+    querySelector(selector) { return selector === '.story' ? { getBoundingClientRect() { geometryReads++; return { top: 2000, bottom: 12000 }; } } : button; },
     createElement(tagName) { return { tagName, style: {}, setAttribute() {}, remove() { nodes.delete(this.id); } }; },
     head: { append(node) { appended.push(node); } },
     addEventListener(name, fn) { handlers[name] = fn; }, removeEventListener() {},
   };
   const context = vm.createContext({ document, innerHeight: 900, scrollY: 0, location: { hash: '' },
-    addEventListener() {}, removeEventListener() {}, IntersectionObserver: class { observe() {} disconnect() {} } });
+    addEventListener(name) { globalEvents.push(name); }, removeEventListener() {}, IntersectionObserver: class { observe() {} disconnect() {} } });
   vm.runInContext(fs.readFileSync(path.join(source, 'home-bootstrap.js'), 'utf8'), context);
   const tick = () => new Promise(resolve => setImmediate(resolve));
   const click = () => handlers.click({ target: { closest: () => button }, preventDefault() {}, stopImmediatePropagation() {} });
   assert.equal(appended.length, 0, 'Initial HTML must not fetch controls CSS or JS');
+  assert.equal(geometryReads, 0, 'Initial paint must not synchronously measure story geometry');
+  assert.equal(globalEvents.includes('scroll'), false, 'Story proximity is observed without scroll polling');
+  assert.equal(globalEvents.includes('resize'), false, 'Story proximity is observed without resize polling');
   click(); assert.equal(appended.length, 1); assert.equal(appended[0].tagName, 'link');
   appended[0].onerror(); await tick();
   assert.equal(nativeClicks, 1, 'Failed CSS must preserve the native anchor action');

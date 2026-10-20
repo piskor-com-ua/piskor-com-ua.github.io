@@ -15,6 +15,7 @@ from first_paint import generated_root
 
 TARGETS_FILE = Path(__file__).with_name('mobile-si-target-routes.json')
 FOLLOWUP_TARGETS_FILE = Path(__file__).with_name('mobile-si-followup-routes.json')
+TOP10_TARGETS_FILE = Path(__file__).with_name('mobile-si-top10-routes.json')
 CONTROLLER = Path(__file__).with_name('deferred-mobile-media-controller.js')
 SCRIPT_MARKER = 'data-piskor-deferred-media-controller'
 PICTURE_MARKER = 'data-piskor-deferred-media'
@@ -77,9 +78,37 @@ def followup_target_routes():
     return frozenset(routes)
 
 
+def top10_target_routes():
+    """Validate the current ten slowest production routes and their PSI evidence."""
+    manifest = json.loads(TOP10_TARGETS_FILE.read_text())
+    entries = manifest.get('routes')
+    routes = [entry.get('route') for entry in entries or []]
+    if (manifest.get('baseline_revision') != 'dc11e6a0839c6519f658bb0bebb3f6c8a08f9222' or
+            manifest.get('audit_date') != '2026-10-20' or
+            manifest.get('form_factor') != 'mobile' or
+            manifest.get('device') != 'Moto G Power' or
+            manifest.get('throttling') != 'Slow 4G' or
+            len(routes) != 10 or len(set(routes)) != 10 or
+            not all(route == '/' or route == '/en/' or
+                    re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[a-z0-9-]+/', route)
+                    for route in routes) or
+            any(not entry.get('psi_report', '').startswith('https://pagespeed.web.dev/analysis/') or
+                any(type(entry.get(name)) is not int or entry[name] < 0
+                    for name in ('fcp_ms', 'lcp_ms', 'speed_index_ms')) or
+                entry['speed_index_ms'] <= 1500 or not entry.get('review')
+                for entry in entries) or
+            [entry['speed_index_ms'] for entry in entries] !=
+            sorted((entry['speed_index_ms'] for entry in entries), reverse=True)):
+        raise ValueError('Unexpected mobile Speed Index top-ten manifest')
+    return frozenset(routes)
+
+
 def target_routes():
-    """Return the historical cohort plus separately evidenced follow-up failures."""
-    return _base_target_routes() | followup_target_routes()
+    """Return the evidenced historical, follow-up, and current top-ten cohorts."""
+    # The two home pages are in the performance cohort but have no eligible
+    # gallery/catalog pictures; their PSI finding is fixed in home-bootstrap.js.
+    media_top10 = top10_target_routes() - {'/', '/en/'}
+    return _base_target_routes() | followup_target_routes() | media_top10
 
 
 def lcp_target_routes():

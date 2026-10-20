@@ -17,6 +17,7 @@ from zabava_gallery_delivery import defer_zabava_gallery
 from deferred_mobile_media import defer_mobile_media
 from mobile_lcp_cover_delivery import (prepare_mobile_catalog_delivery_profiles,
                                        prepare_mobile_lcp_covers)
+from mobile_image_delivery import prepare_mobile_image_delivery
 from case_minification import minify_reviewed_cases
 
 source = Path('concept')
@@ -30,6 +31,7 @@ subprocess.run(['node', 'scripts/prerender-home.cjs', str(out)], check=True)
 print(f'Early consent: {inline_consent(out)} pages')
 print(f'Font subsets: {subset_fonts(out)}')
 print(f'Prepared images: {prepare_public_assets(out)}')
+print(f'Mobile PSI image-delivery candidates: {prepare_mobile_image_delivery(out)}')
 bundle_catalog_styles(out)
 generate_agent_catalog(out)
 generate_agent_discovery(out)

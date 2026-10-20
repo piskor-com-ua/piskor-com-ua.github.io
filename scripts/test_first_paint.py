@@ -18,16 +18,24 @@ class FirstPaintTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / '.nojekyll').touch()
 
-    def test_consent_runs_with_body_and_configuration_before_visible_content(self):
+    def test_consent_runs_after_page_content_and_before_deferred_scripts_finish(self):
         (self.root / 'analytics-consent.js').write_text('document.body.dataset.test = document.currentScript.dataset.measurementId;')
         page = self.root / 'index.html'
         page.write_text('<html><head><script src="/analytics-consent.js" data-measurement-id="G-ABC" defer></script></head><body class="test"><header>Studio</header></body></html>')
         self.assertEqual(inline_consent(self.root), 1)
         result = page.read_text()
         self.assertNotIn('src="/analytics-consent.js"', result)
-        self.assertIn('<body class="test"><script data-consent-inline data-measurement-id="G-ABC">', result)
-        self.assertLess(result.index('document.body'), result.index('<header>'))
+        self.assertIn('<header>Studio</header><script data-consent-inline data-measurement-id="G-ABC">', result)
+        self.assertLess(result.index('<header>'), result.index('document.body'))
+        self.assertLess(result.index('document.body'), result.index('</body>'))
         self.assertEqual(inline_consent(self.root), 0)
+
+    def test_consent_inlining_fails_closed_when_page_has_no_body_end(self):
+        (self.root / 'analytics-consent.js').write_text('document.body.dataset.test = true;')
+        page = self.root / 'index.html'
+        page.write_text('<html><head><script src="/analytics-consent.js" data-measurement-id="G-ABC"></script></head><body>Content')
+        with self.assertRaisesRegex(ValueError, 'Missing consent configuration or body'):
+            inline_consent(self.root)
 
     def test_inline_css_preserves_versioned_root_relative_resources(self):
         (self.root / 'catalog-bundle.css').write_text('@font-face{src:url("assets/fonts/light.woff2?v=abc")}a{mask:url(/assets/icon.svg?v=def)}')

@@ -14,6 +14,7 @@ FONT_NAMES = ('roboto-light', 'roboto-regular')
 CONSENT_SCRIPT = re.compile(r'<script\b(?=[^>]*\bsrc=["\']/analytics-consent\.js["\'])[^>]*>\s*</script>', re.I)
 CATALOG_SHEET = re.compile(r'<link\b[^>]*\bhref=["\']/catalog-bundle\.css(?:\?[^"\']*)?["\'][^>]*>', re.I)
 BODY = re.compile(r'<body\b[^>]*>', re.I)
+BODY_END = re.compile(r'</body\s*>', re.I)
 # Explicitly reviewed routes only. Keep the original family union for every
 # other page, including the other language of these cases.
 PAGE_STYLE_SCOPES = frozenset({
@@ -113,7 +114,7 @@ def generated_root(output):
 
 
 def inline_consent(output):
-    """Run the existing consent controller at body start, before the first paint."""
+    """Run consent setup after page content has been parsed, before deferred scripts."""
     output = generated_root(output)
     controller = (output / 'analytics-consent.js').read_text()
     if '</script' in controller.lower():
@@ -125,11 +126,11 @@ def inline_consent(output):
         if not match:
             continue
         measurement = re.search(r'data-measurement-id=["\']([^"\']*)["\']', match[0])
-        if not measurement or not BODY.search(html):
+        if not measurement or not BODY.search(html) or not BODY_END.search(html):
             raise ValueError(f'Missing consent configuration or body: {page}')
         script = '<script data-consent-inline data-measurement-id="' + escape(measurement[1], quote=True) + '">' + controller + '</script>'
         html = html[:match.start()] + html[match.end():]
-        html = BODY.sub(lambda body: body[0] + script, html, count=1)
+        html = BODY_END.sub(lambda body: script + body[0], html, count=1)
         page.write_text(html)
         count += 1
     return count

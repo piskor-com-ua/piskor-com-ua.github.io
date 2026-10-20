@@ -24,6 +24,11 @@ def card_label_text(node):
 
 output = Path('_site')
 catalog = json.loads((output / 'project-catalog.json').read_text())
+top10_font_preload_routes = {
+    route['route'].lstrip('/') + 'index.html' if route['route'].endswith('/')
+    else route['route'].lstrip('/')
+    for route in json.loads(Path('scripts/mobile-si-top10-routes.json').read_text())['routes']
+}
 assert catalog['version'] == 1 and catalog['projects']
 pairs = {}
 assert len({(p['id'], p['language']) for p in catalog['projects']}) == len(catalog['projects'])
@@ -85,6 +90,12 @@ for page in output.rglob('*.html'):
     assert not root.find(lambda n: n.tag == 'script' and urlsplit(n.attrs.get('src', '')).path == '/analytics-consent.js')
     font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
     assert all(not n.attrs.get('media') for n in font_preloads), str(page) + ': original Roboto must remain available in both viewport modes'
+    relative_page = page.relative_to(output).as_posix()
+    if relative_page in top10_font_preload_routes:
+        regular_font = [node for node in font_preloads
+                        if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-regular-subset.woff2']
+        assert len(regular_font) == 1 and 'crossorigin' in regular_font[0].attrs, (
+            str(page) + ': PSI critical request chain font must be preloaded once with CORS')
     images = root.find(lambda n: n.tag == 'img' and
                        (n.attrs.get('src', '').startswith('/assets/') or
                         n.attrs.get('data-piskor-src', '').startswith('/assets/')))

@@ -38,10 +38,10 @@ function fixture(mode = 'observer') {
     notify(value) {notify([{target: image, isIntersecting: value}]);}, ready() {ready();}};
 }
 
-test('offscreen image URLs remain inert until the 500px near-viewport boundary', () => {
+test('offscreen image URLs remain inert until the 250px near-viewport boundary', () => {
   const page = fixture();
   assert.equal(page.writes.length, 0);
-  assert.equal(page.config.rootMargin, '500px 0px');
+  assert.equal(page.config.rootMargin, '250px 0px');
   assert.equal(page.config.threshold, 0);
   page.notify(false);
   assert.equal(page.writes.length, 0);

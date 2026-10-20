@@ -28,7 +28,7 @@
         for (const entry of entries) {
           if (entry.isIntersecting) activate(entry.target.closest('picture'));
         }
-      }, {rootMargin: '500px 0px', threshold: 0});
+      }, {rootMargin: '250px 0px', threshold: 0});
       for (const picture of pictures) observer.observe(picture.querySelector('img'));
     } catch {
       observer?.disconnect();

@@ -73,5 +73,11 @@
     "/portfolio/2020/zhyvyi-khlib-bakery-lviv/",
     "/portfolio/2026/bedroom-lighting-automation/"
   ],
-  "lcp_media_count": 10
+  "lcp_media_count": 10,
+  "critical_image_delivery_count": 3,
+  "critical_image_delivery_routes": [
+    "/en/portfolio/2022/",
+    "/en/portfolio/2021/",
+    "/portfolio/2022/"
+  ]
 }

@@ -31,6 +31,7 @@ def target_routes():
     routes = manifest.get('routes')
     lcp_routes = manifest.get('lcp_gte_1500_routes')
     lcp_media_routes = manifest.get('lcp_media_routes')
+    critical_image_routes = manifest.get('critical_image_delivery_routes')
     redirect_aliases = manifest.get('redirect_aliases')
     if (manifest.get('count') != 39 or len(routes or []) != 39 or
             len(set(routes)) != 39 or
@@ -38,6 +39,9 @@ def target_routes():
             len(set(lcp_routes)) != 10 or not set(lcp_routes).issubset(routes) or
             manifest.get('lcp_media_count') != 10 or len(lcp_media_routes or []) != 10 or
             len(set(lcp_media_routes)) != 10 or not set(lcp_media_routes).issubset(lcp_routes) or
+            manifest.get('critical_image_delivery_count') != 3 or
+            len(critical_image_routes or []) != 3 or len(set(critical_image_routes)) != 3 or
+            not set(critical_image_routes).issubset(routes) or
             set(lcp_media_routes) | set(redirect_aliases or {}) != set(lcp_routes) or
             not set(redirect_aliases or {}).issubset(routes) or
             manifest.get('baseline_revision') != '5e3652ef22931b994269493376f1d13fbebeeab7' or
@@ -52,6 +56,11 @@ def lcp_target_routes():
     target_routes()
     manifest = json.loads(TARGETS_FILE.read_text())
     return frozenset(manifest['lcp_media_routes'])
+
+
+def critical_image_delivery_routes():
+    target_routes()
+    return frozenset(json.loads(TARGETS_FILE.read_text())['critical_image_delivery_routes'])
 
 
 def redirect_aliases():
@@ -242,7 +251,7 @@ def defer_mobile_media(output):
         page.write_text(amended)
     return {'pages': len(routes), 'pictures': sum(count for _, _, count in updates),
             'compatibility_alias_routes': len(redirect_aliases()),
-            'already_prepared': len(routes) - len(updates), 'root_margin': '500px 0px'}
+            'already_prepared': len(routes) - len(updates), 'root_margin': '250px 0px'}
 
 
 def _normalized_picture_tokens(picture, deferred):

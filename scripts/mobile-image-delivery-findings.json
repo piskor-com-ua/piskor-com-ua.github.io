@@ -1,0 +1,632 @@
+{
+  "source": "Google PageSpeed Insights mobile reports",
+  "baseline_date": "2026-10-19",
+  "baseline_revision": "5e3652ef22931b994269493376f1d13fbebeeab7",
+  "lighthouse_version": "13.5.0",
+  "emulation": {
+    "viewport_width_css_px": 412,
+    "device_scale_factor": 1.75
+  },
+  "route_count": 22,
+  "finding_count": 40,
+  "routes": {
+    "/en/portfolio/2020/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/sholts-restaurant-drohobych/vaults-01-960.avif",
+        "estimated_savings_bytes": 32392,
+        "source_dimensions_reason": "This image file is larger than it needs to be (887x624) for its displayed dimensions (690x449). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          690,
+          449
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Restaurant dining room beneath a brick vault with a burgundy sofa and illuminat…",
+        "current_resource_path": "/assets/responsive/portfolio/sholts-restaurant-drohobych/vaults-01-960.avif",
+        "baseline_report_id": "15mcmfspth"
+      }
+    ],
+    "/en/portfolio/2020/family-house-solonka/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/family-house-solonka/solonka-entry-02-960.avif",
+        "estimated_savings_bytes": 16381,
+        "source_dimensions_reason": "This image file is larger than it needs to be (869x651) for its displayed dimensions (705x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          705,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Tall entry cabinets with timber texture, mirrors and pendants",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/family-house-solonka/solonka-entry-02-960.avif",
+        "baseline_report_id": "ud9iv2oau5"
+      }
+    ],
+    "/en/portfolio/2020/green-accent-loft-apartment/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/green-accent-loft-apartment/layout-01-960.avif",
+        "estimated_savings_bytes": 24902,
+        "source_dimensions_reason": "This image file is larger than it needs to be (861x645) for its displayed dimensions (711x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          711,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Open room with sofa, table and kitchen beside the windows",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/green-accent-loft-apartment/layout-01-960.avif",
+        "baseline_report_id": "zwtdhseu71"
+      }
+    ],
+    "/en/portfolio/2020/meduza-lounge-lviv/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/portals-02-960.avif",
+        "estimated_savings_bytes": 22885,
+        "source_dimensions_reason": "This image file is larger than it needs to be (828x622) for its displayed dimensions (737x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          737,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "View through the metal portals and guest seating towards the bar",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/portals-02-960.avif",
+        "baseline_report_id": "cp2ghfjj6f"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/seating-01-960.avif",
+        "estimated_savings_bytes": 30778,
+        "source_dimensions_reason": "This image file is larger than it needs to be (910x682) for its displayed dimensions (672x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          672,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Sofa area with a glass partition, low table and plants",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/seating-01-960.avif",
+        "audit_evidence": "local-lighthouse-followup-04"
+      }
+    ],
+    "/en/portfolio/2021/berloha-lounge-bar-lviv/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/bar-counter-stone-backdrop-640.avif",
+        "estimated_savings_bytes": 26277,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x283). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          283
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Timber bar counter with high stools and shelving against a textured stone wall",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/bar-counter-stone-backdrop-640.avif",
+        "baseline_report_id": "u1hlv5upbv"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-sofa-projector-640.avif",
+        "estimated_savings_bytes": 19775,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x359) for its displayed dimensions (364x207). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          207
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Sofa, armchair and round table in Berloha’s lounge area",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-sofa-projector-640.avif",
+        "baseline_report_id": "u1hlv5upbv"
+      },
+      {
+        "resource_path": "/assets/responsive/portfolio/berloha-lounge-bar-lviv/lounge-bar-overview-640.avif",
+        "estimated_savings_bytes": 15842,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x360) for its displayed dimensions (364x207). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          207
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Overview of Berloha bar with an open connection between the lounge and counter",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-bar-overview-640.avif",
+        "baseline_report_id": "u1hlv5upbv"
+      }
+    ],
+    "/en/portfolio/2024/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/rosa-store/rosa-store-01-640.avif",
+        "estimated_savings_bytes": 19573,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x450) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Reception and display in the ROSA store",
+        "current_resource_path": "/assets/responsive/portfolio/rosa-store/rosa-store-01-640.avif",
+        "baseline_report_id": "v7fuaf8z6m"
+      }
+    ],
+    "/en/portfolio/2024/markosoli-store/": [
+      {
+        "resource_path": "/assets/responsive/case-cover/portfolio/markosoli-store/markosoli-store-02-768.avif",
+        "estimated_savings_bytes": 14975,
+        "source_dimensions_reason": "This image file is larger than it needs to be (706x576) for its displayed dimensions (396x297). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          396,
+          297
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "main#main > figure.project-cover > picture > img",
+        "node_label": "Display cases and reception in the MarkoSoli store",
+        "current_resource_path": "/assets/responsive/case-cover/portfolio/markosoli-store/markosoli-store-02-768.avif",
+        "baseline_report_id": "gilg36vph4"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-01-640.avif",
+        "estimated_savings_bytes": 18009,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "MarkoSoli store display with timber frame and blue branded wall",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-01-640.avif",
+        "baseline_report_id": "gilg36vph4"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-02-640.avif",
+        "estimated_savings_bytes": 15626,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Central display in the MarkoSoli store with glass cases",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-02-640.avif",
+        "baseline_report_id": "gilg36vph4"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-03-640.avif",
+        "estimated_savings_bytes": 18512,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "MarkoSoli display cases with local lighting and timber modules",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/markosoli-store/markosoli-store-03-640.avif",
+        "baseline_report_id": "gilg36vph4"
+      }
+    ],
+    "/en/portfolio/2025/neoclassic-apartment/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/neoclassic-apartment/neoclassic-apartment-04-640.avif",
+        "estimated_savings_bytes": 12397,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Shower area and bathroom vanity",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/neoclassic-apartment/neoclassic-apartment-04-640.avif",
+        "baseline_report_id": "6ysmmczh8g"
+      }
+    ],
+    "/en/portfolio/2025/vesteros-house/": [
+      {
+        "resource_path": "/assets/responsive/case-cover/portfolio/vesteros-house/vesteros-house-03-768.avif",
+        "estimated_savings_bytes": 16441,
+        "source_dimensions_reason": "This image file is larger than it needs to be (706x576) for its displayed dimensions (396x297). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          396,
+          297
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "main#main > figure.project-cover > picture > img",
+        "node_label": "Kitchen and living room in the private house in Hrushiv",
+        "current_resource_path": "/assets/responsive/case-cover/portfolio/vesteros-house/vesteros-house-03-768.avif",
+        "baseline_report_id": "ww65janqsc"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/vesteros-house/vesteros-house-02-640.avif",
+        "estimated_savings_bytes": 14887,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Sauna with timber cladding and heater",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/vesteros-house/vesteros-house-02-640.avif",
+        "baseline_report_id": "ww65janqsc"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/vesteros-house/vesteros-house-03-640.avif",
+        "estimated_savings_bytes": 17024,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Kitchen and living room with timber fronts, island and large windows",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/vesteros-house/vesteros-house-03-640.avif",
+        "baseline_report_id": "ww65janqsc"
+      }
+    ],
+    "/en/portfolio/2026/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/briukhovychi-house/living-960.avif",
+        "estimated_savings_bytes": 28422,
+        "source_dimensions_reason": "This image file is larger than it needs to be (832x585) for its displayed dimensions (421x256). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          421,
+          256
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Living room of a house in Briukhovychi with stone textures and terracotta armch…",
+        "current_resource_path": "/assets/responsive/portfolio/briukhovychi-house/living-960.avif",
+        "baseline_report_id": "ryvh96h44x"
+      }
+    ],
+    "/portfolio/2020/bortnianskoho-apartment/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/bortnianskoho-apartment/entry-01-960.avif",
+        "estimated_savings_bytes": 14449,
+        "source_dimensions_reason": "This image file is larger than it needs to be (878x658) for its displayed dimensions (697x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          697,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Шафи передпокою з деревними фасадами, лавкою та підсвіченою нішею",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/bortnianskoho-apartment/entry-01-960.avif",
+        "baseline_report_id": "inpodnqynx"
+      }
+    ],
+    "/portfolio/2020/green-accent-loft-apartment/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/green-accent-loft-apartment/layout-01-960.avif",
+        "estimated_savings_bytes": 24902,
+        "source_dimensions_reason": "This image file is larger than it needs to be (861x645) for its displayed dimensions (711x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          711,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Відкрита кімната з диваном, столом і кухнею біля вікон",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/green-accent-loft-apartment/layout-01-960.avif",
+        "baseline_report_id": "pfvdszb9j8"
+      }
+    ],
+    "/portfolio/2020/meduza-lounge-lviv/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/portals-02-960.avif",
+        "estimated_savings_bytes": 22885,
+        "source_dimensions_reason": "This image file is larger than it needs to be (828x622) for its displayed dimensions (737x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          737,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Вид через металеві портали й гостьову посадку на бар",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/meduza-lounge-lviv/portals-02-960.avif",
+        "baseline_report_id": "2zbz8edixt"
+      }
+    ],
+    "/portfolio/2020/sholts-restaurant-drohobych/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/sholts-restaurant-drohobych/vaults-01-960.avif",
+        "estimated_savings_bytes": 25469,
+        "source_dimensions_reason": "This image file is larger than it needs to be (832x624) for its displayed dimensions (735x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          735,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Цегляне склепіння над бордовим диваном і круглими столами",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/sholts-restaurant-drohobych/vaults-01-960.avif",
+        "baseline_report_id": "ia5rebm4dg"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/sholts-restaurant-drohobych/vaults-02-960.avif",
+        "estimated_savings_bytes": 22278,
+        "source_dimensions_reason": "This image file is larger than it needs to be (836x626) for its displayed dimensions (733x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          733,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Загальний ракурс ресторанної зали з диванами, кріслами й бордовими шторами",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/sholts-restaurant-drohobych/vaults-02-960.avif",
+        "baseline_report_id": "ia5rebm4dg"
+      }
+    ],
+    "/portfolio/2021/": [
+      {
+        "resource_path": "/assets/responsive/case-cover/catalog/portfolio/vasha-terasa-showroom/vasha-terasa-hall-01-960.avif",
+        "estimated_savings_bytes": 22822,
+        "source_dimensions_reason": "This image file is larger than it needs to be (766x540) for its displayed dimensions (456x256). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          456,
+          256
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Шоурум «Ваша тераса» з експозицією матеріалів, столами для консультацій і зелен…",
+        "current_resource_path": "/assets/responsive/case-cover/catalog/portfolio/vasha-terasa-showroom/vasha-terasa-hall-01-960.avif",
+        "baseline_report_id": "rumjl8upv9"
+      },
+      {
+        "resource_path": "/assets/responsive/portfolio/pine-house-soluky/arrival-facade-960.avif",
+        "estimated_savings_bytes": 61159,
+        "source_dimensions_reason": "This image file is larger than it needs to be (910x640) for its displayed dimensions (384x256). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          384,
+          256
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Будинок серед сосен у Солуках із широкими звисами даху та кам’яними опорами",
+        "current_resource_path": "/assets/responsive/portfolio/pine-house-soluky/arrival-facade-960.avif",
+        "baseline_report_id": "rumjl8upv9"
+      },
+      {
+        "resource_path": "/assets/responsive/portfolio/turquoise-home-briukhovychi/living-01-960.avif",
+        "estimated_savings_bytes": 30456,
+        "source_dimensions_reason": "This image file is larger than it needs to be (777x546) for its displayed dimensions (451x256). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          451,
+          256
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Вітальня будинку у Брюховичах із м’якою зоною та бірюзовими панелями",
+        "current_resource_path": "/assets/responsive/portfolio/turquoise-home-briukhovychi/living-01-960.avif",
+        "baseline_report_id": "rumjl8upv9"
+      }
+    ],
+    "/portfolio/2021/berloha-lounge-bar-lviv/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/bar-counter-stone-backdrop-640.avif",
+        "estimated_savings_bytes": 26277,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x283). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          283
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Дерев’яна барна стійка з високими стільцями та полицями на тлі кам’яної стіни",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/bar-counter-stone-backdrop-640.avif",
+        "baseline_report_id": "ivrrfvojgv"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-sofa-projector-640.avif",
+        "estimated_savings_bytes": 19775,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x359) for its displayed dimensions (364x207). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          207
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Диван, крісло та круглий столик у лаунж-зоні бару Берлога",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-sofa-projector-640.avif",
+        "baseline_report_id": "ivrrfvojgv"
+      },
+      {
+        "resource_path": "/assets/responsive/portfolio/berloha-lounge-bar-lviv/lounge-bar-overview-640.avif",
+        "estimated_savings_bytes": 15842,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x360) for its displayed dimensions (364x207). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          207
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Загальний вигляд бару Берлога з відкритим переходом між лаунж-зоною та стійкою",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/berloha-lounge-bar-lviv/lounge-bar-overview-640.avif",
+        "baseline_report_id": "ivrrfvojgv"
+      }
+    ],
+    "/portfolio/2021/light-classic-apartment-briukhovychi/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/light-classic-apartment-briukhovychi/hall-01-960.avif",
+        "estimated_savings_bytes": 24975,
+        "source_dimensions_reason": "This image file is larger than it needs to be (920x1229) for its displayed dimensions (663x849). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          663,
+          849
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Світлий коридор із рамковими стінами та консоллю",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/light-classic-apartment-briukhovychi/hall-01-960.avif",
+        "baseline_report_id": "bo4ff2kbac"
+      }
+    ],
+    "/portfolio/2021/pine-house-soluky/": [
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/pine-house-soluky/arrival-facade-960.avif",
+        "estimated_savings_bytes": 29719,
+        "source_dimensions_reason": "This image file is larger than it needs to be (852x640) for its displayed dimensions (717x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          717,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Фронтальний ракурс будинку серед сосен із низькими схилами даху та білими стіна…",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/pine-house-soluky/arrival-facade-960.avif",
+        "baseline_report_id": "csywkoy99e"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/pine-house-soluky/entrance-canopy-960.avif",
+        "estimated_savings_bytes": 21007,
+        "source_dimensions_reason": "This image file is larger than it needs to be (852x640) for its displayed dimensions (717x478). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          717,
+          478
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Заглиблений вхід до будинку в Солуках під деревною підшивкою даху поруч із крит…",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/pine-house-soluky/entrance-canopy-960.avif",
+        "baseline_report_id": "csywkoy99e"
+      }
+    ],
+    "/portfolio/2022/zabava-restaurant-sambir/": [
+      {
+        "resource_path": "/assets/responsive/case-cover/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-01-768.avif",
+        "estimated_savings_bytes": 25816,
+        "source_dimensions_reason": "This image file is larger than it needs to be (706x576) for its displayed dimensions (396x297). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          396,
+          297
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "main#main > figure.project-cover > picture > img",
+        "node_label": "Зала ресторану «Забава» з групами столів і теплою декоративною палітрою",
+        "current_resource_path": "/assets/responsive/case-cover/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-01-768.avif",
+        "baseline_report_id": "ukdvtfmm6j"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-dining-hall-03-640.avif",
+        "estimated_savings_bytes": 25842,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x481) for its displayed dimensions (364x293). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          293
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "div.gallery-grid > figure > picture > img",
+        "node_label": "Друга зала ресторану із зеленими м’якими кріслами та підвісними рослинами",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-dining-hall-03-640.avif",
+        "baseline_report_id": "ukdvtfmm6j"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-dining-hall-04-640.avif",
+        "estimated_savings_bytes": 25188,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x481) for its displayed dimensions (364x383). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          383
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "div.gallery-grid > figure > picture > img",
+        "node_label": "Стіл біля декоративної стіни з геометричним орнаментом і підвісними рослинами",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-dining-hall-04-640.avif",
+        "baseline_report_id": "ukdvtfmm6j"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-01-640.avif",
+        "estimated_savings_bytes": 26035,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Обідня зона ресторану зі столами та м’яким локальним світлом",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-01-640.avif",
+        "baseline_report_id": "ukdvtfmm6j"
+      },
+      {
+        "resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-02-640.avif",
+        "estimated_savings_bytes": 31322,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x480) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "figure > button > picture > img",
+        "node_label": "Інтер’єр ресторанної зали з теплими матеріалами",
+        "current_resource_path": "/assets/responsive/case-media/portfolio/zabava-restaurant-sambir/zabava-restaurant-sambir-02-640.avif",
+        "baseline_report_id": "ukdvtfmm6j"
+      }
+    ],
+    "/portfolio/2023/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/troyanda-zhytomyr/troyanda-zhytomyr-01-640.avif",
+        "estimated_savings_bytes": 23933,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x450) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Зона флористів і рецепція маркету «Троянда» у Житомирі",
+        "current_resource_path": "/assets/responsive/portfolio/troyanda-zhytomyr/troyanda-zhytomyr-01-640.avif",
+        "baseline_report_id": "p1qgtbnnxg"
+      }
+    ],
+    "/portfolio/2025/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/vesteros-house/vesteros-house-03-640.avif",
+        "estimated_savings_bytes": 15936,
+        "source_dimensions_reason": "This image file is larger than it needs to be (640x450) for its displayed dimensions (364x273). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          364,
+          273
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Кухня-вітальня приватного будинку у Грушеві",
+        "current_resource_path": "/assets/responsive/portfolio/vesteros-house/vesteros-house-03-640.avif",
+        "baseline_report_id": "4kii3sdq0y"
+      }
+    ],
+    "/portfolio/2026/": [
+      {
+        "resource_path": "/assets/responsive/portfolio/briukhovychi-house/living-960.avif",
+        "estimated_savings_bytes": 28422,
+        "source_dimensions_reason": "This image file is larger than it needs to be (832x585) for its displayed dimensions (421x256). Use responsive images to reduce the image download size.",
+        "reported_display_dimensions_px": [
+          421,
+          256
+        ],
+        "element_width_css_px": 364,
+        "node_selector": "a.portfolio-card > div.portfolio-card-image > picture > img.portfolio-card-cover",
+        "node_label": "Вітальня будинку у Брюховичах з кам’яними фактурами та теракотовими кріслами",
+        "current_resource_path": "/assets/responsive/portfolio/briukhovychi-house/living-960.avif",
+        "baseline_report_id": "mipqfksrf6"
+      }
+    ]
+  },
+  "unique_resource_count": 34,
+  "baseline_finding_count": 39,
+  "supplemental_audit": {
+    "source": "Lighthouse 13.5.0 local follow-up on current main after applying baseline profiles",
+    "revision": "cac6aa18652151aad8067b81cb3219a948c6c676",
+    "form_factor": "mobile",
+    "viewport": {
+      "width_css_px": 412,
+      "height_css_px": 823,
+      "device_scale_factor": 1.75
+    },
+    "routes_checked": 22,
+    "additional_findings": 1
+  }
+}

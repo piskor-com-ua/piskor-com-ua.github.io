@@ -1,6 +1,8 @@
 (() => {
   function start() {
     const pictures = [...document.querySelectorAll('picture[data-piskor-deferred-media]')];
+    const controller = document.querySelector('script[data-piskor-deferred-media-controller]');
+    const rootMargin = controller?.getAttribute('data-piskor-deferred-media-root-margin') || '250px 0px';
     let observer;
     function activate(picture) {
       if (!picture.hasAttribute('data-piskor-deferred-media')) return;
@@ -28,7 +30,7 @@
         for (const entry of entries) {
           if (entry.isIntersecting) activate(entry.target.closest('picture'));
         }
-      }, {rootMargin: '250px 0px', threshold: 0});
+      }, {rootMargin, threshold: 0});
       for (const picture of pictures) observer.observe(picture.querySelector('img'));
     } catch {
       observer?.disconnect();

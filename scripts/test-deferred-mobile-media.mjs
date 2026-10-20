@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source = readFileSync(new URL('./deferred-mobile-media-controller.js', import.meta.url), 'utf8');
 
-function fixture(mode = 'observer') {
+function fixture(mode = 'observer', rootMargin = '250px 0px') {
   const writes = [], observed = [], removed = [], handlers = {};
   class Node {
     constructor(name, attributes) {this.name = name; this.attributes = new Map(Object.entries(attributes));}
@@ -31,7 +31,11 @@ function fixture(mode = 'observer') {
     unobserve(node) {removed.push(node);}
     disconnect() {}
   };
-  const document = {readyState: 'complete', querySelectorAll() {return [picture];},
+  const controller = {getAttribute(name) {
+    return name === 'data-piskor-deferred-media-root-margin' ? rootMargin : null;
+  }};
+  const document = {readyState: 'complete', querySelector() {return controller;},
+    querySelectorAll() {return [picture];},
     addEventListener(event, callback, options) {assert.equal(event, 'DOMContentLoaded'); assert.equal(options.once, true); ready = callback;}};
   vm.runInNewContext(source, {window, document, IntersectionObserver: window.IntersectionObserver});
   return {writes, image, picture, handlers, observed, removed, get config() {return config;},
@@ -52,6 +56,16 @@ test('offscreen image URLs remain inert until the 250px near-viewport boundary',
   assert.equal(page.removed[0], page.image);
   page.notify(true);
   assert.equal(page.writes.length, 3);
+});
+
+test('the explicitly measured high-SI cohort waits until images enter the viewport', () => {
+  const page = fixture('observer', '0px 0px');
+  assert.equal(page.config.rootMargin, '0px 0px');
+  assert.equal(page.config.threshold, 0);
+  page.notify(false);
+  assert.equal(page.writes.length, 0);
+  page.notify(true);
+  assert.equal(page.image.getAttribute('src'), '/original.webp');
 });
 
 test('focus and capture-phase click restore sources before gallery or navigation handlers', () => {

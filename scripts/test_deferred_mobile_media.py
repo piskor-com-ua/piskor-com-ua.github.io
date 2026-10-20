@@ -6,7 +6,8 @@ from agent_catalog import Document
 from agent_content import render
 from deferred_mobile_media import (
     FALLBACK_MARKER, PICTURE_MARKER, SCRIPT_MARKER, STYLE_MARKER,
-    CONTROLLER, followup_target_routes, top10_target_routes, redirect_aliases, target_routes,
+    CONTROLLER, followup_target_routes, high_si_target_routes, top10_target_routes,
+    redirect_aliases, target_root_margin, target_routes,
     transform_page, validate_deferred_mobile_media,
 )
 
@@ -40,8 +41,15 @@ class DeferredMobileMediaTests(unittest.TestCase):
             '/en/portfolio/2024/markosoli-store/',
             '/en/portfolio/2025/vesteros-house/',
         }))
-        self.assertEqual(len(target_routes()), 48)
+        self.assertEqual(len(target_routes()), 54)
         self.assertTrue(followup.issubset(target_routes()))
+
+    def test_high_speed_index_routes_are_exactly_scoped_and_use_zero_margin(self):
+        routes = high_si_target_routes()
+        self.assertEqual(len(routes), 10)
+        self.assertEqual(target_root_margin('/portfolio/2024/rosa-store/'), '0px 0px')
+        self.assertEqual(target_root_margin('/portfolio/2024/fitme-fitness-club/'), '250px 0px')
+        self.assertTrue(routes.issubset(target_routes()))
 
     def test_current_top_ten_psi_cohort_is_ranked_and_included(self):
         top10 = top10_target_routes()
@@ -72,7 +80,7 @@ class DeferredMobileMediaTests(unittest.TestCase):
                       '<img src="/assets/cover.webp"', amended)
         self.assertEqual(amended.count('data-piskor-src='), 2)
         self.assertEqual(amended.count('data-piskor-srcset='), 3)
-        self.assertEqual(amended.count(SCRIPT_MARKER), 1)
+        self.assertEqual(amended.count('<script ' + SCRIPT_MARKER), 1)
         self.assertLess(amended.index(SCRIPT_MARKER), amended.index('data-inline-page-critical="agent-tools.js"'))
         self.assertTrue(amended.endswith('</body></html>'))
 
@@ -81,6 +89,18 @@ class DeferredMobileMediaTests(unittest.TestCase):
         before = render(Document(HTML).root, 'https://piskor.com.ua/')
         after = render(Document(amended).root, 'https://piskor.com.ua/')
         self.assertEqual(after, before)
+
+    def test_high_si_route_profile_is_carried_by_verified_controller_markup(self):
+        route = '/portfolio/2024/rosa-store/'
+        amended, _ = transform_page(HTML, CONTROLLER.read_text(), route)
+        self.assertIn('data-piskor-deferred-media-root-margin="0px 0px"', amended)
+        with TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            (output / '.nojekyll').touch()
+            page = output / route.lstrip('/') / 'index.html'
+            page.parent.mkdir(parents=True)
+            page.write_text(amended)
+            validate_deferred_mobile_media(output, page, amended)
 
     def test_target_route_contract_rejects_loss_of_responsive_fallback_or_controller(self):
         amended, _ = transform_page(HTML, CONTROLLER.read_text())
@@ -96,7 +116,7 @@ class DeferredMobileMediaTests(unittest.TestCase):
                     '<noscript ' + FALLBACK_MARKER, '<noscript'))
             with self.assertRaises(ValueError):
                 validate_deferred_mobile_media(output, page, amended.replace(
-                    SCRIPT_MARKER, 'data-stale-controller'))
+                    '<script ' + SCRIPT_MARKER, '<script data-stale-controller'))
 
     def test_unknown_or_nonlazy_gallery_markup_fails_before_a_partial_transform(self):
         with self.assertRaises(ValueError):

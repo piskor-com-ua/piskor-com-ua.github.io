@@ -16,6 +16,7 @@ from first_paint import generated_root
 TARGETS_FILE = Path(__file__).with_name('mobile-si-target-routes.json')
 FOLLOWUP_TARGETS_FILE = Path(__file__).with_name('mobile-si-followup-routes.json')
 TOP10_TARGETS_FILE = Path(__file__).with_name('mobile-si-top10-routes.json')
+HIGH_SI_TARGETS_FILE = Path(__file__).with_name('mobile-si-high-routes.json')
 CONTROLLER = Path(__file__).with_name('deferred-mobile-media-controller.js')
 SCRIPT_MARKER = 'data-piskor-deferred-media-controller'
 PICTURE_MARKER = 'data-piskor-deferred-media'
@@ -103,12 +104,43 @@ def top10_target_routes():
     return frozenset(routes)
 
 
+def high_si_target_routes():
+    """Validate the latest PSI routes at or above the 2.5s SI threshold."""
+    manifest = json.loads(HIGH_SI_TARGETS_FILE.read_text())
+    entries = manifest.get('routes')
+    routes = [entry.get('route') for entry in entries or []]
+    if (manifest.get('baseline_revision') != 'def2cab67a1855041c2586ec04c4c0b872f61a72' or
+            manifest.get('audit_date') != '2026-10-20' or
+            manifest.get('form_factor') != 'mobile' or
+            manifest.get('device') != 'Moto G Power' or
+            manifest.get('throttling') != 'Slow 4G' or
+            manifest.get('route_count') != 10 or len(routes) != 10 or
+            len(set(routes)) != 10 or
+            manifest.get('strategy') != 'defer non-initial media until entering the viewport' or
+            any(not re.fullmatch(r'/(?:en/)?portfolio(?:/\d{4})?/', route)
+                and not re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[a-z0-9-]+/', route)
+                for route in routes) or
+            any(not entry.get('psi_report', '').startswith('https://pagespeed.web.dev/analysis/') or
+                any(not re.fullmatch(r'\d+\.\d', entry.get(name, ''))
+                    for name in ('fcp_s', 'lcp_s', 'speed_index_s')) or
+                float(entry['speed_index_s']) < 2.5 or not entry.get('findings')
+                for entry in entries)):
+        raise ValueError('Unexpected high-Speed-Index route manifest')
+    return frozenset(routes)
+
+
+def target_root_margin(route):
+    """Use the measured high-SI cohort's tighter trigger; preserve the default elsewhere."""
+    return '0px 0px' if route in high_si_target_routes() else '250px 0px'
+
+
 def target_routes():
     """Return the evidenced historical, follow-up, and current top-ten cohorts."""
     # The two home pages are in the performance cohort but have no eligible
     # gallery/catalog pictures; their PSI finding is fixed in home-bootstrap.js.
     media_top10 = top10_target_routes() - {'/', '/en/'}
-    return _base_target_routes() | followup_target_routes() | media_top10
+    return (_base_target_routes() | followup_target_routes() | media_top10 |
+            high_si_target_routes())
 
 
 def lcp_target_routes():
@@ -222,9 +254,10 @@ def _prepare_picture(original, kind):
     return active + '<noscript ' + FALLBACK_MARKER + '>' + original + '</noscript>'
 
 
-def _controller_tag(controller):
+def _controller_tag(controller, root_margin='250px 0px'):
     return ('<script ' + SCRIPT_MARKER + ' data-source-sha256="'
-            + hashlib.sha256(controller.encode()).hexdigest() + '">'
+            + hashlib.sha256(controller.encode()).hexdigest() + '"'
+            + ' data-piskor-deferred-media-root-margin="' + escape(root_margin, quote=True) + '">'
             + controller + '</script>')
 
 
@@ -240,7 +273,10 @@ def restore_deferred_mobile_media(html):
         raise ValueError('Cannot normalize deferred pictures for compatibility validation')
     html = pattern.sub(lambda match: match[2], html)
     html = re.sub(r'<noscript\b[^>]*\b' + STYLE_MARKER + r'[^>]*>.*?</noscript>', '', html, flags=re.S)
-    script = _controller_tag(CONTROLLER.read_text())
+    tag = re.search(r'<script\b[^>]*\b' + SCRIPT_MARKER + r'[^>]*>', html)
+    attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', tag[0])) if tag else {}
+    script = _controller_tag(CONTROLLER.read_text(),
+                             attrs.get('data-piskor-deferred-media-root-margin', '250px 0px'))
     if html.count(script) != 1:
         raise ValueError('Cannot normalize changed deferred-media controller')
     return html.replace(script, '', 1)
@@ -282,7 +318,7 @@ def transform_page(html, controller, route=None):
     if html.count('</head>') != 1 or html.count('</body>') != 1:
         raise ValueError('Expected one document head/body')
     html = html.replace('</head>', FALLBACK_STYLE + '</head>', 1)
-    script = _controller_tag(controller)
+    script = _controller_tag(controller, target_root_margin(route) if route else '250px 0px')
     critical = re.search(r'<script\b[^>]*\bdata-inline-page-critical=["\']agent-tools\.js["\']', html)
     index = critical.start() if critical else html.index('</body>')
     return html[:index] + script + html[index:], len(selected)
@@ -310,7 +346,8 @@ def defer_mobile_media(output):
         page.write_text(amended)
     return {'pages': len(routes), 'pictures': sum(count for _, _, count in updates),
             'compatibility_alias_routes': len(redirect_aliases()),
-            'already_prepared': len(routes) - len(updates), 'root_margin': '250px 0px'}
+            'already_prepared': len(routes) - len(updates),
+            'root_margin': 'route-scoped: 0px for SI >= 2.5s, otherwise 250px'}
 
 
 def _normalized_picture_tokens(picture, deferred):
@@ -348,7 +385,7 @@ def validate_deferred_mobile_media(output, page, html):
 
     from agent_catalog import Document
     from case_minification import minify_fragment
-    script = _controller_tag(CONTROLLER.read_text())
+    script = _controller_tag(CONTROLLER.read_text(), target_root_margin(route))
     if script not in html and minify_fragment(script) not in html:
         raise ValueError('Deferred-media controller source/hash differs from reviewed source')
     root = Document(html).root

@@ -166,9 +166,12 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       .routes.map(entry => entry.route);
     const top10Routes = JSON.parse(readFileSync('scripts/mobile-si-top10-routes.json'))
       .routes.map(entry => entry.route).filter(route => route !== '/' && route !== '/en/');
+    const highSiManifest = JSON.parse(readFileSync('scripts/mobile-si-high-routes.json'));
+    const highSiRoutes = highSiManifest.routes.map(entry => entry.route);
+    const highSiSet = new Set(highSiRoutes);
     for (const route of [...new Set([
       '/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/',
-      ...followupRoutes, ...top10Routes
+      ...followupRoutes, ...top10Routes, ...highSiRoutes
     ])]) {
       const probeContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
       try {
@@ -186,6 +189,9 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
         assert.ok(await cover.evaluate(image => image.naturalWidth > 0), route + ': cover failed to decode');
         const pending = probe.locator('picture[data-piskor-deferred-media]').last();
         assert.equal(await pending.count() > 0, true, route + ': expected deferred media');
+        assert.equal(await probe.locator('script[data-piskor-deferred-media-controller]')
+          .getAttribute('data-piskor-deferred-media-root-margin'),
+        highSiSet.has(route) ? '0px 0px' : '250px 0px', route + ': route-scoped activation boundary');
         const imageIndex = await pending.locator('img').evaluate(image =>
           Array.prototype.indexOf.call(document.images, image));
         const initial = await pending.evaluate(picture => {

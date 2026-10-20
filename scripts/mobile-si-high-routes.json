@@ -1,0 +1,91 @@
+{
+  "baseline_revision": "def2cab67a1855041c2586ec04c4c0b872f61a72",
+  "audit_date": "2026-10-20",
+  "form_factor": "mobile",
+  "device": "Moto G Power",
+  "throttling": "Slow 4G",
+  "route_count": 10,
+  "strategy": "defer non-initial media until entering the viewport",
+  "routes": [
+    {
+      "route": "/en/portfolio/2020/bortnianskoho-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2020-bortnianskoho-apartment/sdzv95t0tk?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.8",
+      "findings": ["LCP breakdown"]
+    },
+    {
+      "route": "/en/portfolio/2025/franka-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2025-franka-apartment/4hcf8lf2rv?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.1",
+      "speed_index_s": "3.8",
+      "findings": ["LCP breakdown"]
+    },
+    {
+      "route": "/en/portfolio/2023/zamartynivska-40-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2023-zamartynivska-40-apartment/976q6mb16i?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.2",
+      "speed_index_s": "3.7",
+      "findings": ["Forced reflow", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2023/troyanda-zhytomyr/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2023-troyanda-zhytomyr/fdegli6kbj?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.7",
+      "findings": ["Optimize DOM size", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2021/aurum-blue-apartment-lviv/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2021-aurum-blue-apartment-lviv/ac3l4w3oml?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.6",
+      "findings": ["Optimize DOM size", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2023/zamartynivska-40-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2023-zamartynivska-40-apartment/l59r5w6aam?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.6",
+      "findings": ["Forced reflow", "Optimize DOM size", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2024/domazhyr-house/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2024-domazhyr-house/sd7in16yu0?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.6",
+      "findings": ["Optimize DOM size", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2024/rosa-store/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2024-rosa-store/ijq57boz1b?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.4",
+      "speed_index_s": "3.6",
+      "findings": ["Improve image delivery: estimated 40 KiB", "LCP breakdown"]
+    },
+    {
+      "route": "/portfolio/2024/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2024/5rg34ez2tx?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.2",
+      "speed_index_s": "3.5",
+      "findings": ["LCP breakdown"]
+    },
+    {
+      "route": "/en/portfolio/2024/rosa-store/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en-portfolio-2024-rosa-store/pmwguwjpgo?form_factor=mobile",
+      "fcp_s": "0.9",
+      "lcp_s": "1.6",
+      "speed_index_s": "2.5",
+      "findings": ["Forced reflow", "Improve image delivery: estimated 40 KiB", "LCP breakdown"]
+    }
+  ]
+}

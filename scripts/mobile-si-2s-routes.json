@@ -1,0 +1,46 @@
+{
+  "audit_date": "2026-10-21",
+  "form_factor": "mobile",
+  "device": "Moto G Power",
+  "throttling": "Slow 4G",
+  "threshold_si_ms": 2000,
+  "route_count": 4,
+  "routes": [
+    {
+      "route": "/en/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-en/r7lk3cwxxa?form_factor=mobile",
+      "fcp_ms": 979,
+      "lcp_ms": 1351,
+      "speed_index_ms": 2133,
+      "findings": ["Forced reflow: 79 ms, unattributed", "Optimize DOM size: 205 elements", "LCP breakdown: element render delay 1210 ms", "Avoid long main-thread tasks: 51 ms, unattributable"],
+      "agentic": "5/5"
+    },
+    {
+      "route": "/portfolio/2023/zamartynivska-40-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2023-zamartynivska-40-apartment/2lbz33szab?form_factor=mobile",
+      "fcp_ms": 974,
+      "lcp_ms": 1351,
+      "speed_index_ms": 2323,
+      "findings": ["Forced reflow: 68 ms, unattributed", "Optimize DOM size: 276 elements, depth 9, max children 11", "LCP breakdown: resource delay 230 ms, load 40 ms, render delay 1090 ms"],
+      "agentic": "5/5"
+    },
+    {
+      "route": "/portfolio/2023/avalon-holiday-apartment/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2023-avalon-holiday-apartment/wdxp5fiiwp?form_factor=mobile",
+      "fcp_ms": 956,
+      "lcp_ms": 1353,
+      "speed_index_ms": 2300,
+      "findings": ["Forced reflow: 54 ms, unattributed", "Optimize DOM size: 389 elements, depth 9, max children 11", "LCP breakdown: resource delay 200 ms, load 80 ms, render delay 1070 ms"],
+      "agentic": "5/5"
+    },
+    {
+      "route": "/portfolio/2024/domazhyr-house/",
+      "psi_report": "https://pagespeed.web.dev/analysis/https-piskor-com-ua-portfolio-2024-domazhyr-house/lwmvq13d9r?form_factor=mobile",
+      "fcp_ms": 914,
+      "lcp_ms": 1351,
+      "speed_index_ms": 2459,
+      "findings": ["LCP breakdown: resource delay 350 ms, load 70 ms, render delay 1060 ms"],
+      "agentic": "5/5"
+    }
+  ]
+}

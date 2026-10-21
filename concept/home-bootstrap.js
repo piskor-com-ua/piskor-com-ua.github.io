@@ -62,9 +62,12 @@
   document.addEventListener('click',click,true);
   addEventListener('hashchange',hashEntry);
   if(story&&typeof IntersectionObserver==='function'){
+    // Delay the interactive story bundle slightly further on the English home,
+    // where PSI still reports a long main-thread task on the initial view.
+    const rootMargin=document.documentElement.lang==='en'?'520px 0px':'600px 0px';
     observer=new IntersectionObserver(entries=>{
       if(entries.some(entry=>entry.isIntersecting&&(scrollY>0||entry.boundingClientRect.top<innerHeight))){approach();}
-    },{rootMargin:'600px 0px'});
+    },{rootMargin});
     observer.observe(story);
   }
   if(!story)enhance().catch(feedback);

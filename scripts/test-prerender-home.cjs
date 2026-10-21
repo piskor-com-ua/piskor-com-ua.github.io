@@ -179,6 +179,34 @@ test('homepage declares ordered inert controllers and a separate early compatibi
   assert.match(html, /body:not\(\[data-home-enhanced\]\) \.mobile-menu:target/);
 });
 
+test('English homepage delays interactive story code without delaying the Ukrainian page', () => {
+  const bootstrap = fs.readFileSync(path.join(source, 'home-bootstrap.js'), 'utf8');
+  function rootMarginFor(lang) {
+    const observers = [];
+    const story = {};
+    const context = vm.createContext({
+      document: {
+        documentElement: { lang },
+        getElementById: () => ({ content: { querySelectorAll: () => [] } }),
+        querySelector: selector => selector === '.story' ? story : { hasAttribute: () => true },
+        addEventListener() {},
+        body: { dataset: {} },
+      },
+      location: { hash: '' },
+      addEventListener() {},
+      IntersectionObserver: class {
+        constructor(_callback, options) { observers.push(options); }
+        observe() {}
+        disconnect() {}
+      },
+    });
+    vm.runInContext(bootstrap, context);
+    return observers[0]?.rootMargin;
+  }
+  assert.equal(rootMarginFor('en'), '520px 0px');
+  assert.equal(rootMarginFor('uk'), '600px 0px');
+});
+
 test('deferred stylesheet failure keeps native navigation and retry loads CSS before controllers once', async () => {
   const appended = [], handlers = {}, nodes = new Map();
   const globalEvents = [];

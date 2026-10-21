@@ -17,6 +17,7 @@ TARGETS_FILE = Path(__file__).with_name('mobile-si-target-routes.json')
 FOLLOWUP_TARGETS_FILE = Path(__file__).with_name('mobile-si-followup-routes.json')
 TOP10_TARGETS_FILE = Path(__file__).with_name('mobile-si-top10-routes.json')
 HIGH_SI_TARGETS_FILE = Path(__file__).with_name('mobile-si-high-routes.json')
+CURRENT_SI_TARGETS_FILE = Path(__file__).with_name('mobile-si-2s-routes.json')
 CONTROLLER = Path(__file__).with_name('deferred-mobile-media-controller.js')
 SCRIPT_MARKER = 'data-piskor-deferred-media-controller'
 PICTURE_MARKER = 'data-piskor-deferred-media'
@@ -129,9 +130,33 @@ def high_si_target_routes():
     return frozenset(routes)
 
 
+def current_si_target_routes():
+    """Return routes currently measured at or above the 2-second mobile SI threshold."""
+    manifest = json.loads(CURRENT_SI_TARGETS_FILE.read_text())
+    entries = manifest.get('routes')
+    routes = [entry.get('route') for entry in entries or []]
+    if (manifest.get('audit_date') != '2026-10-21' or
+            manifest.get('form_factor') != 'mobile' or
+            manifest.get('device') != 'Moto G Power' or
+            manifest.get('throttling') != 'Slow 4G' or
+            manifest.get('threshold_si_ms') != 2000 or
+            manifest.get('route_count') != 4 or len(routes) != 4 or
+            len(set(routes)) != 4 or
+            any(route not in {'/en/', '/portfolio/2023/zamartynivska-40-apartment/',
+                              '/portfolio/2023/avalon-holiday-apartment/',
+                              '/portfolio/2024/domazhyr-house/'} for route in routes) or
+            any(not entry.get('psi_report', '').startswith('https://pagespeed.web.dev/analysis/') or
+                any(type(entry.get(name)) is not int or entry[name] < 0
+                    for name in ('fcp_ms', 'lcp_ms', 'speed_index_ms')) or
+                entry['speed_index_ms'] < 2000 or entry.get('agentic') != '5/5'
+                for entry in entries)):
+        raise ValueError('Unexpected current mobile SI >= 2s manifest')
+    return frozenset(routes)
+
+
 def target_root_margin(route):
-    """Use the measured high-SI cohort's tighter trigger; preserve the default elsewhere."""
-    return '0px 0px' if route in high_si_target_routes() else '250px 0px'
+    """Tighten media activation for routes currently or historically above the SI threshold."""
+    return '0px 0px' if route in (high_si_target_routes() | current_si_target_routes()) else '250px 0px'
 
 
 def target_routes():
@@ -139,8 +164,9 @@ def target_routes():
     # The two home pages are in the performance cohort but have no eligible
     # gallery/catalog pictures; their PSI finding is fixed in home-bootstrap.js.
     media_top10 = top10_target_routes() - {'/', '/en/'}
+    current_media = current_si_target_routes() - {'/', '/en/'}
     return (_base_target_routes() | followup_target_routes() | media_top10 |
-            high_si_target_routes())
+            high_si_target_routes() | current_media)
 
 
 def lcp_target_routes():

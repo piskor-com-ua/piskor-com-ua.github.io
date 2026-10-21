@@ -6,7 +6,7 @@ from agent_catalog import Document
 from agent_content import render
 from deferred_mobile_media import (
     FALLBACK_MARKER, PICTURE_MARKER, SCRIPT_MARKER, STYLE_MARKER,
-    CONTROLLER, followup_target_routes, high_si_target_routes, top10_target_routes,
+    CONTROLLER, current_si_target_routes, followup_target_routes, high_si_target_routes, top10_target_routes,
     redirect_aliases, target_root_margin, target_routes,
     transform_page, validate_deferred_mobile_media,
 )
@@ -101,6 +101,19 @@ class DeferredMobileMediaTests(unittest.TestCase):
             page.parent.mkdir(parents=True)
             page.write_text(amended)
             validate_deferred_mobile_media(output, page, amended)
+
+    def test_current_two_second_psi_routes_are_recorded_and_defer_non_initial_media(self):
+        current = current_si_target_routes()
+        self.assertEqual(current, frozenset({
+            '/en/',
+            '/portfolio/2023/zamartynivska-40-apartment/',
+            '/portfolio/2023/avalon-holiday-apartment/',
+            '/portfolio/2024/domazhyr-house/',
+        }))
+        self.assertEqual(target_root_margin('/portfolio/2023/zamartynivska-40-apartment/'), '0px 0px')
+        self.assertEqual(target_root_margin('/portfolio/2023/avalon-holiday-apartment/'), '0px 0px')
+        self.assertEqual(target_root_margin('/portfolio/2024/domazhyr-house/'), '0px 0px')
+        self.assertTrue((current - {'/en/'}).issubset(target_routes()))
 
     def test_target_route_contract_rejects_loss_of_responsive_fallback_or_controller(self):
         amended, _ = transform_page(HTML, CONTROLLER.read_text())

@@ -168,7 +168,11 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       .routes.map(entry => entry.route).filter(route => route !== '/' && route !== '/en/');
     const highSiManifest = JSON.parse(readFileSync('scripts/mobile-si-high-routes.json'));
     const highSiRoutes = highSiManifest.routes.map(entry => entry.route);
-    const highSiSet = new Set(highSiRoutes);
+    const currentSiManifest = JSON.parse(readFileSync('scripts/mobile-si-2s-routes.json'));
+    const highSiSet = new Set([
+      ...highSiRoutes,
+      ...currentSiManifest.routes.map(entry => entry.route),
+    ]);
     for (const route of [...new Set([
       '/en/portfolio/', '/en/portfolio/2020/sholts-restaurant-drohobych/',
       ...followupRoutes, ...top10Routes, ...highSiRoutes

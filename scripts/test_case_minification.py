@@ -20,6 +20,7 @@ class CaseMinificationTests(unittest.TestCase):
             and re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[^/]+/', route)
         }
         expected.add('en/portfolio/2022/zabava-restaurant-sambir/index.html')
+        expected.add('portfolio/2024/domazhyr-house/index.html')
         self.assertEqual(MINIFIED_CASES, expected)
         self.assertNotIn('en/portfolio/index.html', MINIFIED_CASES)
         self.assertNotIn('en/portfolio/2026/bedroom-lighting-automation/index.html', MINIFIED_CASES)

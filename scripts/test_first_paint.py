@@ -217,6 +217,9 @@ class FirstPaintTests(unittest.TestCase):
         self.assertNotIn('.other-case', target.read_text())
         self.assertNotIn('.ua-only', target.read_text())
 
+    def test_current_slow_production_case_uses_route_scoped_css(self):
+        self.assertIn('portfolio/2024/domazhyr-house/index.html', PAGE_STYLE_SCOPES)
+
     def test_case_scope_preserves_shared_controllers_consent_and_native_dialog_states(self):
         for name in ('analytics-consent.js', 'portfolio.js', 'agent-tools.js', 'url-compat.js'):
             (self.root / name).write_bytes((Path('concept') / name).read_bytes())

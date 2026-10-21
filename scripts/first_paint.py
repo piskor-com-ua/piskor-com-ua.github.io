@@ -34,6 +34,9 @@ PAGE_STYLE_SCOPES = frozenset({
     'en/portfolio/2022/zabava-restaurant-sambir/index.html',
     'en/portfolio/2024/markosoli-store/index.html',
     'en/portfolio/2025/vesteros-house/index.html',
+    # Current production PSI still measures this approved case outside the
+    # historical 39-route cohort. Keep its CSS inventory route-scoped too.
+    'portfolio/2024/domazhyr-house/index.html',
 }) | TARGET_CASE_SCOPES
 SCOPED_STYLE_CONTROLLERS = frozenset({
     'analytics-consent.js', 'agent-tools.js', 'portfolio.js', 'url-compat.js',

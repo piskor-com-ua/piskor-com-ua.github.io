@@ -12,7 +12,11 @@ MINIFIED_CASES = frozenset(
     for route in TARGET_COHORT['routes']
     if route not in TARGET_COHORT.get('redirect_aliases', {})
     and re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[^/]+/', route)
-) | frozenset({'en/portfolio/2022/zabava-restaurant-sambir/index.html'})
+) | frozenset({
+    'en/portfolio/2022/zabava-restaurant-sambir/index.html',
+    # Current mobile PSI cohort: this case is outside the historical 39 routes.
+    'portfolio/2024/domazhyr-house/index.html',
+})
 
 
 @lru_cache(maxsize=8)

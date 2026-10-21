@@ -1,6 +1,7 @@
 """Prepare early rendering from shared sources in the generated artifact only."""
 from html import escape, unescape
 from pathlib import Path
+import json
 from urllib.parse import urlsplit, urljoin
 import hashlib
 import re
@@ -15,15 +16,25 @@ CONSENT_SCRIPT = re.compile(r'<script\b(?=[^>]*\bsrc=["\']/analytics-consent\.js
 CATALOG_SHEET = re.compile(r'<link\b[^>]*\bhref=["\']/catalog-bundle\.css(?:\?[^"\']*)?["\'][^>]*>', re.I)
 BODY = re.compile(r'<body\b[^>]*>', re.I)
 BODY_END = re.compile(r'</body\s*>', re.I)
-# Explicitly reviewed routes only. Keep the original family union for every
-# other page, including the other language of these cases.
+# The performance-maintenance contract approves the 39-route mobile target
+# cohort as a bounded optimization scope. Catalogs and legacy redirect aliases
+# are deliberately excluded; all other pages retain the family CSS union.
+TARGET_COHORT = json.loads((Path(__file__).with_name('mobile-si-target-routes.json')).read_text())
+TARGET_CASE_SCOPES = frozenset(
+    str(Path(route.lstrip('/')) / 'index.html')
+    for route in TARGET_COHORT['routes']
+    if route not in TARGET_COHORT.get('redirect_aliases', {})
+    and len(route.strip('/').split('/')) == 3 + (route.startswith('/en/'))
+)
+# Preserve the earlier reviewed follow-up routes and extend the same fail-closed
+# controller checks to canonical case pages in the approved target cohort.
 PAGE_STYLE_SCOPES = frozenset({
     'en/portfolio/2020/family-house-solonka/index.html',
     'portfolio/2021/berloha-lounge-bar-lviv/index.html',
     'en/portfolio/2022/zabava-restaurant-sambir/index.html',
     'en/portfolio/2024/markosoli-store/index.html',
     'en/portfolio/2025/vesteros-house/index.html',
-})
+}) | TARGET_CASE_SCOPES
 SCOPED_STYLE_CONTROLLERS = frozenset({
     'analytics-consent.js', 'agent-tools.js', 'portfolio.js', 'url-compat.js',
 })

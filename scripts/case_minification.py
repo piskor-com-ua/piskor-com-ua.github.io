@@ -2,10 +2,17 @@
 from functools import lru_cache
 from pathlib import Path
 import json
+import re
 import subprocess
 
 
-MINIFIED_CASES = frozenset({'en/portfolio/2022/zabava-restaurant-sambir/index.html'})
+TARGET_COHORT = json.loads((Path(__file__).with_name('mobile-si-target-routes.json')).read_text())
+MINIFIED_CASES = frozenset(
+    str(Path(route.lstrip('/')) / 'index.html')
+    for route in TARGET_COHORT['routes']
+    if route not in TARGET_COHORT.get('redirect_aliases', {})
+    and re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[^/]+/', route)
+) | frozenset({'en/portfolio/2022/zabava-restaurant-sambir/index.html'})
 
 
 @lru_cache(maxsize=8)

@@ -5,12 +5,25 @@ import json
 import re
 import unittest
 
-from case_minification import minify_fragment, minify_reviewed_cases
+from case_minification import MINIFIED_CASES, minify_fragment, minify_reviewed_cases
 from first_paint import (inline_consent, inline_page_critical_scripts, validate_page_inline_scripts,
                          _critical_payload, PAGE_CRITICAL_PROFILES, PAGE_INLINE_MARKER)
 
 
 class CaseMinificationTests(unittest.TestCase):
+    def test_minification_scope_is_limited_to_canonical_case_routes_in_approved_cohort(self):
+        manifest = json.loads(Path('scripts/mobile-si-target-routes.json').read_text())
+        expected = {
+            route.lstrip('/') + 'index.html'
+            for route in manifest['routes']
+            if route not in manifest.get('redirect_aliases', {})
+            and re.fullmatch(r'/(?:en/)?portfolio/\d{4}/[^/]+/', route)
+        }
+        expected.add('en/portfolio/2022/zabava-restaurant-sambir/index.html')
+        self.assertEqual(MINIFIED_CASES, expected)
+        self.assertNotIn('en/portfolio/index.html', MINIFIED_CASES)
+        self.assertNotIn('en/portfolio/2026/bedroom-lighting-automation/index.html', MINIFIED_CASES)
+
     def setUp(self):
         self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

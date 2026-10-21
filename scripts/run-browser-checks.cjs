@@ -169,7 +169,8 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
     const highSiManifest = JSON.parse(readFileSync('scripts/mobile-si-high-routes.json'));
     const highSiRoutes = highSiManifest.routes.map(entry => entry.route);
     const currentSiManifest = JSON.parse(readFileSync('scripts/mobile-si-2s-routes.json'));
-    const highSiSet = new Set([
+    const zeroMarginSet = new Set([
+      ...JSON.parse(readFileSync('scripts/mobile-si-target-routes.json')).routes,
       ...highSiRoutes,
       ...currentSiManifest.routes.map(entry => entry.route),
     ]);
@@ -195,7 +196,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
         assert.equal(await pending.count() > 0, true, route + ': expected deferred media');
         assert.equal(await probe.locator('script[data-piskor-deferred-media-controller]')
           .getAttribute('data-piskor-deferred-media-root-margin'),
-        highSiSet.has(route) ? '0px 0px' : '250px 0px', route + ': route-scoped activation boundary');
+        zeroMarginSet.has(route) ? '0px 0px' : '250px 0px', route + ': route-scoped activation boundary');
         const imageIndex = await pending.locator('img').evaluate(image =>
           Array.prototype.indexOf.call(document.images, image));
         const initial = await pending.evaluate(picture => {

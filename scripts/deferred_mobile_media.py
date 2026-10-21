@@ -155,8 +155,9 @@ def current_si_target_routes():
 
 
 def target_root_margin(route):
-    """Tighten media activation for routes currently or historically above the SI threshold."""
-    return '0px 0px' if route in (high_si_target_routes() | current_si_target_routes()) else '250px 0px'
+    """Wait until deferred media enters view throughout the approved 39-route cohort."""
+    return '0px 0px' if route in (_base_target_routes() | high_si_target_routes() |
+                                  current_si_target_routes()) else '250px 0px'
 
 
 def target_routes():
@@ -373,7 +374,7 @@ def defer_mobile_media(output):
     return {'pages': len(routes), 'pictures': sum(count for _, _, count in updates),
             'compatibility_alias_routes': len(redirect_aliases()),
             'already_prepared': len(routes) - len(updates),
-            'root_margin': 'route-scoped: 0px for SI >= 2.5s, otherwise 250px'}
+            'root_margin': '0px for the approved 39-route cohort; 250px elsewhere'}
 
 
 def _normalized_picture_tokens(picture, deferred):

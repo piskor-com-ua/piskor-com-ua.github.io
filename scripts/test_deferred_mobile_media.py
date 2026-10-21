@@ -51,6 +51,14 @@ class DeferredMobileMediaTests(unittest.TestCase):
         self.assertEqual(target_root_margin('/portfolio/2024/fitme-fitness-club/'), '250px 0px')
         self.assertTrue(routes.issubset(target_routes()))
 
+    def test_approved_39_route_cohort_waits_until_deferred_media_enters_view(self):
+        from deferred_mobile_media import _base_target_routes
+        routes = _base_target_routes()
+        self.assertEqual(len(routes), 39)
+        self.assertTrue(all(target_root_margin(route) == '0px 0px' for route in routes))
+        self.assertEqual(target_root_margin('/portfolio/2024/rosa-store/'), '0px 0px')
+        self.assertEqual(target_root_margin('/portfolio/2024/fitme-fitness-club/'), '250px 0px')
+
     def test_current_top_ten_psi_cohort_is_ranked_and_included(self):
         top10 = top10_target_routes()
         self.assertEqual(len(top10), 10)
@@ -116,11 +124,12 @@ class DeferredMobileMediaTests(unittest.TestCase):
         self.assertTrue((current - {'/en/'}).issubset(target_routes()))
 
     def test_target_route_contract_rejects_loss_of_responsive_fallback_or_controller(self):
-        amended, _ = transform_page(HTML, CONTROLLER.read_text())
+        route = '/en/portfolio/2026/briukhovychi-house/'
+        amended, _ = transform_page(HTML, CONTROLLER.read_text(), route)
         with TemporaryDirectory() as temporary:
             output = Path(temporary)
             (output / '.nojekyll').touch()
-            page = output / 'en' / 'portfolio' / '2026' / 'briukhovychi-house' / 'index.html'
+            page = output / route.lstrip('/') / 'index.html'
             page.parent.mkdir(parents=True)
             page.write_text(amended)
             validate_deferred_mobile_media(output, page, amended)

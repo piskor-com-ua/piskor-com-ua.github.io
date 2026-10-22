@@ -220,6 +220,22 @@ class FirstPaintTests(unittest.TestCase):
     def test_current_slow_production_case_uses_route_scoped_css(self):
         self.assertIn('portfolio/2024/domazhyr-house/index.html', PAGE_STYLE_SCOPES)
 
+    def test_bilingual_engineering_service_pages_use_route_scoped_css(self):
+        css = 'body{color:black}.engineering-page{color:green}.other-route{color:red}'
+        (self.root / 'shared.css').write_text(css)
+        routes = ('engineering-automation/index.html', 'en/engineering-automation/index.html')
+        for route in routes:
+            page = self.root / route
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text('<link rel="stylesheet" href="/shared.css">'
+                            '<body class="engineering-page">Service</body>')
+        self.assertEqual(inline_page_styles(self.root), 2)
+        for route in routes:
+            html = (self.root / route).read_text()
+            self.assertIn('body{color:black}', html)
+            self.assertIn('.engineering-page{color:green}', html)
+            self.assertNotIn('.other-route', html)
+
     def test_case_scope_preserves_shared_controllers_consent_and_native_dialog_states(self):
         for name in ('analytics-consent.js', 'portfolio.js', 'agent-tools.js', 'url-compat.js'):
             (self.root / name).write_bytes((Path('concept') / name).read_bytes())

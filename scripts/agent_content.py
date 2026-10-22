@@ -88,7 +88,7 @@ def generate_agent_content(output):
             'url': ORIGIN + route,
             'canonical': canonical[0].attrs['href'] if canonical else ORIGIN + route,
             'language': html[0].attrs.get('lang', 'uk') if html else 'uk',
-            'robots': robots[0].attrs.get('content', 'noindex,nofollow') if robots else 'noindex,nofollow',
+            'robots': robots[0].attrs.get('content', 'index,follow,max-image-preview:large') if robots else 'index,follow,max-image-preview:large',
         }
         # JSON strings are valid YAML scalars. No author text becomes frontmatter syntax.
         frontmatter = '---\n' + ''.join(key + ': ' + json.dumps(value, ensure_ascii=False) + '\n' for key, value in metadata.items()) + '---\n\n'

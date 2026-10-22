@@ -32,13 +32,13 @@ Jekyll 4.4.1 is built through GitHub Actions and hosted by GitHub Pages. Do not 
 
 Dependabot checks gems daily. Review updates in PRs; CI uses `Gemfile.lock`, including checksums and macOS/Linux platforms. Run `bundle update`, `bundle outdated --strict`, then the build and browser checks. New major versions outside Jekyll compatibility constraints are not forced.
 
-The preview remains `noindex,nofollow`. Migration does not authorize enabling indexing, changing domains, merging or deploying.
+The production site is configured for search indexing. Local previews are also indexable, so do not publish preview URLs or expose them as canonical pages.
 
 See [migration evidence](docs/jekyll-migration.md).
 
 ## Search metadata and URLs
 
-Public routes include `/`, `/en/`, the portfolio catalog, individual project pages and year archives such as `/portfolio/2023/`, with matching English routes under `/en/`. Year archives are direct clean URLs and are intentionally not placed in the main navigation. Old project `.html` URLs are intentionally removed. Jekyll generates localized metadata, canonical/hreflang links, JSON-LD, robots.txt and sitemap.xml. See [SEO configuration and indexing safeguards](docs/seo-urls.md). Indexing remains disabled; the normal build enforces noindex on every page.
+Public routes include `/`, `/en/`, the portfolio catalog, individual project pages and year archives such as `/portfolio/2023/`, with matching English routes under `/en/`. Year archives are direct clean URLs and are intentionally not placed in the main navigation. Old project `.html` URLs are intentionally removed. Jekyll generates localized metadata, canonical/hreflang links, JSON-LD, robots.txt and a bilingual canonical sitemap. See [SEO configuration and indexing](docs/seo-urls.md).
 
 ## Adding a portfolio project
 
@@ -46,7 +46,7 @@ Follow the mandatory [portfolio project rules](docs/portfolio-project-rules.md) 
 
 Add Ukrainian and English HTML documents to `concept/_projects/` using the existing apartment documents as templates. Keep a shared `project_id` and source-confirmed numeric `project_year` in both translations; use a PDF creation year as a proxy only when the user explicitly approves it. Include that year in every project permalink, for example `/portfolio/2025/project-slug/`, and set reciprocal `uk_url`/`en_url` values accordingly. Set the language, explicit clean permalink, SEO title/description, card_title, card_summary, cover and cover_alt. Images must use published assets. Set `published: false` on unfinished documents.
 
-Both catalogs and their structured ItemList populate automatically from the localized collection. Projects sort by year descending; documents with a missing project_year appear last as a technical fallback, not as permission to publish an incomplete case. The sitemap includes collection documents automatically when indexing is eventually approved. The curated homepage feature card remains separate from the complete catalog.
+Both catalogs and their structured ItemList populate automatically from the localized collection. Projects sort by year descending; documents with a missing project_year appear last as a technical fallback, not as permission to publish an incomplete case. The sitemap includes canonical collection documents automatically. The curated homepage feature card remains separate from the complete catalog.
 
 ## Performance and agent maintenance
 

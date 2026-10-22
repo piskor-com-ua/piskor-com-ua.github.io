@@ -39,19 +39,19 @@ Homepage metadata lives in `concept/_data/home_seo.yml`. Project metadata is in 
 
 Build validation now checks nested routes and root-relative resources. `scripts/check-seo.py` runs with every build and verifies all eighteen metadata/language pairs, canonical URLs, clean links and absence of the old project files. Browser checks verify all project links in both catalogs, year archives, titles, images, language switch plus reload, semantic/legacy fragments, portfolio navigation, lightbox and old-route 404s. All 26 gesture tests pass with updated section selectors.
 
-Noindex remains by prior agreement. Titles and slugs do not guarantee rankings. Main homepage content is still rendered by the existing JavaScript runtime; pre-rendering that content is a separate enhancement, not part of this URL/title edit. No content or visual redesign is intended.
+Canonical pages in the production site are configured for indexing. Titles and slugs do not guarantee rankings. Main homepage content is still rendered by the existing JavaScript runtime; pre-rendering that content is a separate enhancement, not part of this URL/title edit. No content or visual redesign is intended.
 
 ## Generated search resources
 
 `concept/sitemap.xml` and `concept/robots.txt` are native Jekyll templates. No new gems are needed. The shared SEO include also generates JSON-LD Organization and WebSite entities, plus CreativeWork and BreadcrumbList for project pages, using only existing public business facts.
 
-`indexing_enabled: false` in `_config.yml` is the current policy. All HTML emits exactly one `noindex,nofollow` tag. Robots allows fetching pages so crawlers can read noindex; it is not an access-control or model-training policy. Search services that ignore directives cannot be technically excluded by metadata alone.
+`indexing_enabled: true` in `_config.yml` is the current policy. Public HTML emits exactly one `index,follow,max-image-preview:large` tag. `robots.txt` allows crawling and advertises the sitemap; it is not an access-control or model-training policy. Search services that ignore directives cannot be controlled by metadata alone.
 
-While indexing is disabled, sitemap.xml is an empty URL set and robots.txt does not advertise it. On an approved switch to `indexing_enabled: true`, Jekyll automatically includes canonical pages with uk_url/en_url front matter and their language alternates. Set `sitemap: false` to exclude a page. No invented change frequencies, priorities or build-time lastmod timestamps are emitted; optional `last_modified_at` must describe a real content update.
+Jekyll includes canonical pages with uk_url/en_url front matter and their language alternates. Set `sitemap: false` to exclude a page. No invented change frequencies, priorities or build-time lastmod timestamps are emitted; optional `last_modified_at` must describe a real content update. The sitemap contains canonical human-facing pages rather than duplicate technical representations.
 
-The production build check deliberately fails if any HTML loses noindex. Enabling indexing later therefore requires both an explicit configuration change and review of the indexing guard, not just an environment-variable accident. A temporary, non-published build tested the enabled mode: four canonical URLs with reciprocal alternates and a Sitemap declaration. The regular local artifact remains noindex.
+The production build verifies index directives, crawl access, canonical URLs, sitemap membership and reciprocal language alternates for every generated page. After deployment, submit `https://piskor.com.ua/sitemap.xml` in the verified Google Search Console property and confirm that Search Console can fetch and parse it. Sitemap submission helps Google discover canonical URLs but does not guarantee that they will be indexed or ranked.
 
-There is no universally required AI-only SEO file. llms.txt is not added as a substitute for normal crawlable HTML, canonical URLs and structured metadata; Google documents that it does not use it for generative search. Training-crawler permissions are a separate decision and are not changed here. Nothing has been submitted to Search Console, indexing APIs or AI services.
+There is no universally required AI-only SEO file. llms.txt is not a substitute for crawlable HTML, canonical URLs and structured metadata. Training-crawler permissions remain separate from search indexing; Content Signals stay `ai-input=yes, ai-train=no, search=yes`.
 
 Additional sources:
 

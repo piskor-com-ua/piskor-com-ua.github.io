@@ -1,6 +1,6 @@
 title: PISKOR Architect
-indexing_enabled: false
-# Owner's explicit Content Signals policy, 2026-10-18. Separate from noindex.
+indexing_enabled: true
+# Owner's explicit Content Signals policy, 2026-10-18. Separate from page indexing.
 ai_content_signals: "ai-input=yes, ai-train=no, search=yes"
 url: https://piskor.com.ua
 baseurl: ""

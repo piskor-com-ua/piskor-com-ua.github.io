@@ -44,7 +44,7 @@ module.exports = async function checkHomeRendering(browser, origin, output = 'ou
             assert.ok(await page.evaluate(() => window.__parsedHomeHeading === document.querySelector('#hero-title')), label + ': first enhancement replaced SSR content');
           }
           assert.equal(await page.locator('html').getAttribute('lang'), locale);
-          assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /noindex/);
+          assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /^index,follow,max-image-preview:large$/);
           assert.equal(await page.locator('[data-lang="' + locale + '"]').getAttribute('aria-current'), 'page');
           assert.equal(await page.locator('[data-lang="' + opposite + '"]').getAttribute('href'), oppositePath);
           const languageLayout = await page.evaluate(async () => {

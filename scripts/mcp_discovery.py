@@ -163,7 +163,7 @@ WhatsApp and Viber URLs. Reading a link never calls, opens a messenger or sends 
 ## Delivery and acceptance limits
 
 MCP and runtime discovery responses use `Cache-Control: no-store` and retain
-`noindex,nofollow` and the owner's Content Signals policy. Server Card metadata is
+robots directives and the owner's Content Signals policy. Server Card metadata is
 advisory: verify its claims against the live endpoint. Browser-native WebMCP tools
 remain a separate compatible-browser integration; the HTTP endpoint works without
 browser WebMCP support. The static GET catalog remains available with its existing

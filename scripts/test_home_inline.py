@@ -27,7 +27,7 @@ class HomeCriticalInlineTests(unittest.TestCase):
                               + hashlib.sha256(self.controllers[name]).hexdigest()[:12]
                               + '" defer></script>' for name in HOME_CRITICAL_SCRIPTS)
             (self.root / relative).write_text('<html lang="' + language + '"><head>'
-                '<meta name="robots" content="noindex,nofollow">' + scripts
+                '<meta name="robots" content="index,follow,max-image-preview:large">' + scripts
                 + '<template id="home-controllers"><script src="/story.js?v=abc"></script>'
                 '<script src="/automation.js?v=def"></script><script src="/app.js?v=ghi"></script></template>'
                 '</head><body><div id="app" data-home-render="' + language + '">'
@@ -42,7 +42,7 @@ class HomeCriticalInlineTests(unittest.TestCase):
         for relative in ['index.html', 'en/index.html']:
             html = (self.root / relative).read_text()
             validate_home_inline_scripts(self.root, html)
-            self.assertIn('noindex,nofollow', html)
+            self.assertIn('index,follow,max-image-preview:large', html)
             self.assertIn('<noscript>Visible native content</noscript>', html)
             self.assertIn('<script src="/story.js?v=abc">', html)
             self.assertLess(html.index('id="contact"'), html.index('data-inline-home-critical='))

@@ -1,10 +1,10 @@
 {
-  "status": "baseline_applied_2026_10_18",
-  "purpose": "Manual record of the applied baseline, not a complete zone export or deployment tool. The separate markdown fallback is proposed and gated by merge, Pages and live verification.",
-  "scope": "Historical Transform Rules baseline: no Worker, Snippet, paid service, API token, new secret, security, analytics or indexing change. The own Worker selected on 2026-10-19 has a separate reviewed rollout/freshness contract in docs/cloudflare-markdown-worker.md; this record remains its fallback.",
+  "status": "baseline_applied_indexing_update_pending_merge",
+  "purpose": "Manual record of the applied baseline, not a complete zone export or deployment tool. The indexing-header update in this change is applied only after merge, Pages and live verification.",
+  "scope": "Historical Transform Rules baseline. After this PR merges and Pages is verified, remove the globally added X-Robots-Tag while preserving discovery links, Content-Signal, cache, security and analytics settings. The own Worker is updated from the matching artifact under docs/cloudflare-markdown-worker.md.",
   "exact_accept_policy": "One Accept field with complete value text/markdown only. Mixed ranges, any q parameter, wildcard and ordinary browser Accept do not negotiate.",
   "query_policy": "Query is never rewritten. Directory negotiation requires an empty query. Explicit /404.html accepts only empty query, exact lang=uk, or exact lang=en (English). Every other query, including duplicate/encoded parameters, preserves ordinary HTML; no full URLSearchParams equivalence is claimed.",
-  "error_policy": "Unknown paths retain origin404 and HTML error MIME. Content-Type changes require status200; combined policy headers require200. Unknown404 retains HTML meta noindex. Explicit /404.html and /404.html?lang=en are existing documents, not replacements for unknown routes. No /en/404.html exists.",
+  "error_policy": "Unknown paths retain origin404 and HTML error MIME. Content-Type changes require status200; combined policy headers require200. Explicit /404.html and /404.html?lang=en are existing documents, not replacements for unknown routes. No /en/404.html exists.",
   "cache_policy": "Reserved Markdown-prefix bypass is intentionally installed first and last among any matching cache rules. Default rewritten URI separates variants, but this plan also bypasses Markdown edge caching. Preserve all HTML/versioned-static cache settings.",
   "free_budget": {
     "active_transform_limit": 10,
@@ -49,10 +49,6 @@
             "link": {
               "operation": "add",
               "value": "</.well-known/ard.json>; rel=\"ard\"; type=\"application/ard+json\", </.well-known/agent-skills/index.json>; rel=\"agent-skills\"; type=\"application/json\", </.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"describedby\"; type=\"text/plain\""
-            },
-            "x-robots-tag": {
-              "operation": "add",
-              "value": "noindex, nofollow"
             },
             "content-signal": {
               "operation": "set",
@@ -206,8 +202,8 @@
   "rollback": [
     "Disable only these three request URL rewrites first.",
     "Disable/remove only this plan's cache bypass and five response-header rules using saved IDs; restore previous order if needed.",
-    "Remove only the newly added DNS record if deployed; preserve all previous DNS/cache/security/consent/noindex settings.",
-    "Verify ordinary HTML, UA/EN, missing-route404, resource versions and noindex."
+    "Remove only the newly added DNS record if deployed; preserve all previous DNS/cache/security/consent/indexing settings.",
+    "Verify ordinary HTML, UA/EN, missing-route404, resource versions and indexability."
   ],
   "references": [
     "https://developers.cloudflare.com/rules/transform/",
@@ -224,7 +220,7 @@
     "ai-input": "yes",
     "ai-train": "no",
     "search": "yes",
-    "authorization": "Explicit user policy for this release; search=yes does not remove or supersede page noindex."
+    "authorization": "Explicit user Content Signals policy; search=yes is separate from the HTML robots directive."
   },
   "origin_json_mime": "Keep origin application/json on real JSON resources; verify it after deployment. No redundant JSON Content-Type transform.",
   "applied_baseline": {

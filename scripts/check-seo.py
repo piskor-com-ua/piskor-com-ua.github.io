@@ -46,7 +46,7 @@ for route, lang in routes.items():
     assert next(a['lang'] for t, a in page.tags if t == 'html') == lang
     meta = {a.get('name', a.get('property')): a.get('content') for t, a in page.tags if t == 'meta'}
     assert meta['description'] and meta['og:title'] == title and meta['twitter:title'] == title
-    assert 'noindex' in meta['robots'], 'Indexing requires separate approval'
+    assert meta['robots'] == 'index,follow,max-image-preview:large', f'Public route must be indexable: {route}'
     links = [a for t, a in page.tags if t == 'link']
     canonical = [a['href'] for a in links if a.get('rel') == 'canonical']
     refresh = [a['content'] for t, a in page.tags if t == 'meta' and a.get('http-equiv') == 'refresh']
@@ -71,7 +71,7 @@ for path in Path('_site').rglob('*.html'):
     text = path.read_text()
     parsed = Page(text)
     robots = [a['content'] for t, a in parsed.tags if t == 'meta' and a.get('name') == 'robots']
-    assert len(robots) == 1 and 'noindex' in robots[0], f'Indexing guard: {path}'
+    assert len(robots) == 1 and robots[0] == 'index,follow,max-image-preview:large', f'Indexability guard: {path}'
     graphs = [json.loads(value) for value in re.findall(r'<script type="application/ld\+json">(.*?)</script>', text, re.S)]
     assert len(graphs) == 1 and graphs[0]['@context'] == 'https://schema.org', path
     types = {node['@type'] for node in graphs[0]['@graph']}
@@ -87,9 +87,12 @@ robots_text = Path('_site/robots.txt').read_text()
 robots = RobotFileParser()
 robots.parse(robots_text.splitlines())
 for agent in ['Googlebot', 'bingbot', 'OAI-SearchBot', 'Claude-SearchBot']:
-    assert all(robots.can_fetch(agent, route) for route in routes), 'Crawler cannot see noindex'
-assert not robots.site_maps(), 'Do not advertise an indexing sitemap while indexing is disabled'
+    assert all(robots.can_fetch(agent, route) for route in routes), f'{agent} cannot crawl a public route'
+assert robots.site_maps() == ['https://piskor.com.ua/sitemap.xml'], 'Advertise the public sitemap'
 tree = ET.parse('_site/sitemap.xml')
 assert tree.getroot().tag == '{http://www.sitemaps.org/schemas/sitemap/0.9}urlset'
-assert not list(tree.getroot()), 'No noindex pages in the indexing sitemap'
+locations = [item.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text for item in tree.getroot()]
+assert locations and len(locations) == len(set(locations)), 'Sitemap must contain unique canonical pages'
+assert all(url.startswith('https://piskor.com.ua/') for url in locations)
+assert not any(url.endswith('/404.html') for url in locations)
 print(f'SEO metadata, language pairs and clean routes verified for all {len(routes)} pages')

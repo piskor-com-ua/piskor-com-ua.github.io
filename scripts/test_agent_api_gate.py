@@ -84,7 +84,7 @@ class AgentApiGateTests(unittest.TestCase):
                 body = (publication[path]['body'].encode() if path in publication else (site / path.lstrip('/')).read_bytes()) if method == 'GET' else b''
                 if path == '/project-catalog.json' and method == 'GET':
                     body = b'{"stale":true}'
-                return {'status': 200, 'headers': [('Content-Type', accepts[0]), ('X-Robots-Tag', 'noindex, nofollow'), ('Content-Signal', 'ai-input=yes, ai-train=no, search=yes'), ('X-Piskor-MCP-Version', revision), ('Cache-Control', 'no-store')], 'body': body}
+                return {'status': 200, 'headers': [('Content-Type', accepts[0]), ('Content-Signal', 'ai-input=yes, ai-train=no, search=yes'), ('X-Piskor-MCP-Version', revision), ('Cache-Control', 'no-store')], 'body': body}
             out = Path(directory) / 'live'
             result = verify_live(site, revision, out, publication, fetch=fetch)
             self.assertEqual(result['passed'], result['total'] - 1)

@@ -41,7 +41,7 @@ class MarkdownWorkerBuild(unittest.TestCase):
         page = self.site / relative
         page.parent.mkdir(parents=True, exist_ok=True)
         page.write_bytes(('<!doctype html><html lang="en"><head><meta charset="utf-8">'
-                          '<meta name="robots" content="noindex,nofollow">'
+                          '<meta name="robots" content="index,follow,max-image-preview:large">'
                           '<link rel="canonical" href="https://piskor.com.ua' + worker.HTML_ROUTE
                           + '"></head><body>Space · Простір 🥁</body></html>\n').encode())
         markdown = '/agent-markdown/' + relative.replace('.html', '.md')
@@ -82,7 +82,7 @@ class MarkdownWorkerBuild(unittest.TestCase):
         page = self.html_fixture()
         original = page.read_bytes()
         for before, after in ((b'lang="en"', b'lang="uk"'),
-                              (b'noindex,nofollow', b'index,follow'),
+                              (b'index,follow,max-image-preview:large', b'noindex,nofollow'),
                               (b'href="https://piskor.com.ua/en/', b'href="https://wrong.test/en/'),
                               (b'<meta charset=', b'<meta http-equiv="refresh" content="0;url=/"><meta charset=')):
             with self.subTest(after=after):

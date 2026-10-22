@@ -37,7 +37,7 @@ function precompressedHtml(request, data, env) {
     'Content-Encoding': 'br', 'Cache-Control': 'public, max-age=600, no-transform',
     'Vary': 'Accept, Accept-Encoding', 'ETag': etag,
     'Access-Control-Allow-Origin': '*',
-    'X-Robots-Tag': 'noindex, nofollow', 'Content-Signal': 'ai-input=yes, ai-train=no, search=yes',
+    'Content-Signal': 'ai-input=yes, ai-train=no, search=yes',
     'Link': DISCOVERY, 'X-Piskor-HTML-Version': data.revision, 'X-Piskor-HTML-SHA256': item.sha256,
   });
   const condition = request.headers.get('If-None-Match');
@@ -103,7 +103,6 @@ export async function handle(request, env, context, data, dependencies = {}) {
       'Content-Length': String(document.bytes),
       'Cache-Control': 'no-store',
       'Vary': 'Accept',
-      'X-Robots-Tag': 'noindex, nofollow',
       'Content-Signal': 'ai-input=yes, ai-train=no, search=yes',
       'Link': DISCOVERY,
       'X-Piskor-Markdown-Version': data.revision,

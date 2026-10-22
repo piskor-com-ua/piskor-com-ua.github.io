@@ -33,7 +33,7 @@ async function invoke(method, params = {}, options = {}) {
 }
 function securityHeaders(response, card = false) {
   assert.equal(response.headers.get('Cache-Control'), 'no-store');
-  assert.match(response.headers.get('X-Robots-Tag'), /noindex/);
+  assert.equal(response.headers.get('X-Robots-Tag'), null);
   assert.equal(response.headers.get('Content-Signal'), 'ai-input=yes, ai-train=no, search=yes');
   assert.equal(response.headers.get('X-Piskor-MCP-Version'), revision);
   assert.equal(response.headers.get('Mcp-Session-Id'), null);

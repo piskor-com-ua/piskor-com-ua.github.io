@@ -110,7 +110,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
         await page.locator('h1').waitFor();
         await page.evaluate(() => document.fonts.ready);
         assert.equal(await page.locator('html').getAttribute('lang'), route.startsWith('/en/') ? 'en' : 'uk');
-        assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /noindex/);
+        assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /^index,follow,max-image-preview:large$/);
         assert.ok(await page.locator('link[rel="canonical"]').getAttribute('href'));
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), route + ': overflow');
         const image = page.locator('.hero-picture img,.portfolio-card-cover,.project-cover img').first();

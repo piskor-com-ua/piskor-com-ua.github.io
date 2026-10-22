@@ -10,7 +10,7 @@
 <meta property="og:title" content="{{ meta.title | escape }}">
 <meta property="og:description" content="{{ meta.description | escape }}">
 <meta property="og:url" content="{{ canonical_path | absolute_url }}">
-<meta property="og:type" content="{% if page.home or page.catalog or page.not_found %}website{% else %}article{% endif %}">
+<meta property="og:type" content="{% if page.home or page.catalog or page.not_found or page.service %}website{% else %}article{% endif %}">
 <meta property="og:locale" content="{{ site.data.home_seo[page.lang].locale }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ meta.title | escape }}">

@@ -99,6 +99,8 @@ def generate_agent_catalog(output):
              '## Navigation', '',
              '- [Портфоліо](https://piskor.com.ua/portfolio/)',
              '- [Portfolio](https://piskor.com.ua/en/portfolio/)',
+             '- [Інженерна автоматизація](https://piskor.com.ua/engineering-automation/)',
+             '- [Building automation](https://piskor.com.ua/en/engineering-automation/)',
              '- [Контакти / Contact](https://piskor.com.ua/#contact)', '',
              '## Agent skills', '',
              '- [Agent Skills discovery index](https://piskor.com.ua/.well-known/agent-skills/index.json)',

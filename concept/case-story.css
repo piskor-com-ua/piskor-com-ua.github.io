@@ -55,3 +55,6 @@
 .green-accent-loft-apartment-page #bathroom-dark-stone-timber .case-images img{aspect-ratio:3/4;object-fit:cover}
 .pdf-project-page.bedroom-lighting-automation-page :is(#open-staircase-between-levels,#bedroom-dressing-desk-mirrors,#green-bedroom-gaming-inspired-interior,#green-bedroom-workspace-display-storage,#violet-bedroom-study-hanging-chair,#shower-room-dark-stone-glass,#bathroom-vanity-mirror-lighting) .case-images img{aspect-ratio:3/4;object-fit:cover}
 .bedroom-lighting-automation-page .project-cover img{aspect-ratio:3/2;height:auto;object-position:center}
+
+.footer-project-links{display:flex;align-items:center;gap:26px}
+@media(max-width:700px){.footer-project-links{align-items:flex-start;flex-direction:column;gap:10px}}

@@ -1,11 +1,15 @@
 ---
 name: piskor-portfolio
-description: Find and compare published PISKOR architecture and interior cases in Ukrainian or English, inspect their documented scope, and retrieve public studio contact links.
+description: Find PISKOR's engineering automation service and compare published architecture and interior cases in Ukrainian or English, keeping design proposals separate from installed systems.
 ---
 
-# Browse PISKOR projects
+# Explore PISKOR services and projects
 
-Use this guide for a user's request about PISKOR's public portfolio. It describes read-only browsing; it does not authorize messages, bookings, analytics consent, or access to private project files.
+Use this guide for a user's request about PISKOR's public engineering automation service or portfolio. It describes read-only browsing; it does not authorize messages, bookings, analytics consent, or access to private project files.
+
+## Understand the automation service
+
+Read the [Ukrainian engineering automation page](https://piskor.com.ua/engineering-automation/) or its [English version](https://piskor.com.ua/en/engineering-automation/) for the current service scope and process. The page lists areas that may be considered for a project, subject to its brief and compatible equipment. Do not say that a particular system is installed unless a linked case explicitly documents it. The Briukhovychi case describes one completed integrated automation project; it does not establish identical equipment or scope in other properties.
 
 ## Find a case
 

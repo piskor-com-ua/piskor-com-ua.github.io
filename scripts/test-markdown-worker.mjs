@@ -33,7 +33,7 @@ test('explicit Brotli HTML is exact source bytes; HEAD and conditional responses
     assert.equal(response.headers.get('Vary'), 'Accept, Accept-Encoding');
     assert.equal(response.headers.get('Access-Control-Allow-Origin'), '*');
     assert.equal(response.headers.get('Cache-Control'), 'public, max-age=600, no-transform');
-    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, nofollow');
+    assert.equal(response.headers.get('X-Robots-Tag'), null);
     assert.equal(response.headers.get('Content-Signal'), 'ai-input=yes, ai-train=no, search=yes');
     assert.equal((response.headers.get('Link').match(/rel=/g) || []).length, 4);
     assert.equal(response.headers.get('X-Piskor-HTML-Version'), data.revision);
@@ -145,7 +145,7 @@ test('strict negotiation and direct alternatives preserve exact UTF8/HEAD contra
     assert.equal(response.headers.get('Content-Length'), String(Buffer.byteLength('# Простір\n')));
     assert.equal(response.headers.get('Cache-Control'), 'no-store');
     assert.equal(response.headers.get('Vary'), 'Accept');
-    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, nofollow');
+    assert.equal(response.headers.get('X-Robots-Tag'), null);
     assert.equal(response.headers.get('Content-Signal'), 'ai-input=yes, ai-train=no, search=yes');
     assert.equal((response.headers.get('Link').match(/rel=/g) || []).length, 4);
     assert.equal(response.headers.get('X-Piskor-Markdown-Version'), data.revision);

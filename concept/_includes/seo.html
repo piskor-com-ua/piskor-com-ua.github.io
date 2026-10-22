@@ -1,5 +1,5 @@
 {% assign meta = page %}{% if page.home %}{% assign meta = site.data.home_seo[page.lang] %}{% endif %}
-<meta name="robots" content="{% if site.indexing_enabled == true and page.not_found != true %}index,follow,max-image-preview:large{% else %}noindex,nofollow{% endif %}">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <title>{{ meta.title | escape }}</title>
 <meta name="description" content="{{ meta.description | escape }}">
 {% assign canonical_path = page.redirect_to | default: page.url %}

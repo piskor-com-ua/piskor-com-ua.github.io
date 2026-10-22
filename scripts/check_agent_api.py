@@ -143,8 +143,8 @@ def verify_live(site, revision, out, publications, fetch=None, origin=ORIGIN):
                     row['issues'].append('content-type')
                 if body != (expected[path] if method == 'GET' else b''):
                     row['issues'].append('artifact-byte-parity-or-head-body')
-                if not {'noindex', 'nofollow'} <= {x.strip() for x in headers.get('x-robots-tag', '').split(',')}:
-                    row['issues'].append('robots-policy')
+                if headers.get('x-robots-tag'):
+                    row['issues'].append('unexpected-robots-policy')
                 signals = {part.strip().lower() for part in headers.get('content-signal', '').split(',')}
                 if not {'ai-input=yes', 'ai-train=no', 'search=yes'} <= signals:
                     row['issues'].append('content-signals-policy')

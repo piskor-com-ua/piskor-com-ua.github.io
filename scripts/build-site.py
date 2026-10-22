@@ -72,7 +72,7 @@ for path in out.rglob('*'):
         if resource.is_dir():
             resource = resource / 'index.html'
         assert resource.is_file(), f'Missing resource in {path}: {reference}'
-assert 'noindex' in (out / 'index.html').read_text(), 'Preview must remain noindex'
+assert 'name="robots" content="index,follow,max-image-preview:large"' in (out / 'index.html').read_text(), 'Public site must allow indexing'
 expected_markdown = {SKILL_PATH, API_DOC_PATH, *(item['markdown'].lstrip('/') for item in agent_pages)}
 assert {p.relative_to(out).as_posix() for p in out.rglob('*.md')} == expected_markdown
 hidden_files = {p.relative_to(out).as_posix() for p in out.rglob('*')

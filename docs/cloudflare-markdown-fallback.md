@@ -2,7 +2,7 @@
 
 Стан: **підготовлено, не застосовано**. Базові rewrites і заголовки вже працюють зі звичайним HTTP-клієнтом. На 19.10.2026 isitagentready отримує HTML також в ізольованому Markdown-тесті. Його звіт показує намір `Accept: text/markdown`, але не доводить значення заголовка в Cloudflare. Причина ще не підтверджена. Схожий [зовнішній issue](https://github.com/cloudflare/agents/issues/1449) є гіпотезою, не доказом для цього домену.
 
-[JSON](cloudflare-markdown-fallback.json) містить одну тимчасову діагностику та три **вимкнені** Single Redirect rules. Це ручний, умовний план, не автоматичний deploy. Зберегти дизайн, HTML/CSS/JS/медіа, noindex, consent, політику `ai-input=yes, ai-train=no, search=yes`, чинні DNS і native WebMCP. Worker, нові секрети й платні послуги не потрібні для цього дослідження.
+[JSON](cloudflare-markdown-fallback.json) містить одну тимчасову діагностику та три **вимкнені** Single Redirect rules. Це ручний, умовний план, не автоматичний deploy. Зберегти дизайн, HTML/CSS/JS/медіа, відкриту індексацію, consent, політику `ai-input=yes, ai-train=no, search=yes`, чинні DNS і native WebMCP. Worker, нові секрети й платні послуги не потрібні для цього дослідження.
 
 ## Порядок після мерджу
 

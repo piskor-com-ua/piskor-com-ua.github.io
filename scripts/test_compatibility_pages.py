@@ -29,7 +29,7 @@ class CompatibilityPagesTests(unittest.TestCase):
             uk, en = (counterpart, target) if language == 'en' else (target, counterpart)
             content = ('<!doctype html><html lang="' + language + '"><head>'
                        '<title>Canonical loft ' + language + '</title>'
-                       '<meta name="robots" content="noindex,nofollow">'
+                       '<meta name="robots" content="index,follow,max-image-preview:large">'
                        '<link rel="canonical" href="' + ORIGIN + target + '">'
                        '<link rel="alternate" hreflang="uk" href="' + ORIGIN + uk + '">'
                        '<link rel="alternate" hreflang="en" href="' + ORIGIN + en + '">'

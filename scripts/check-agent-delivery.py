@@ -70,8 +70,8 @@ def policy(pairs, origin, vary=True):
     if any(signals.get(key) != {value} for key, value in
            [('ai-input', 'yes'), ('ai-train', 'no'), ('search', 'yes')]):
         issues.append('content-signal')
-    if not {'noindex', 'nofollow'} <= {x.strip().lower() for x in h.get('x-robots-tag', '').split(',')}:
-        issues.append('x-robots-tag')
+    if h.get('x-robots-tag'):
+        issues.append('unexpected-x-robots-tag')
     actual = {(urljoin(origin, target), rel, mime)
               for target, rel, mime in links(h.get('link', ''))}
     expected = {(origin + path, rel, mime) for path, rel, mime in DISCOVERY}
@@ -86,12 +86,12 @@ class MarkdownAlternates(HTMLParser):
     def __init__(self):
         super().__init__()
         self.targets = []
-        self.noindex = False
+        self.robots = None
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == 'meta' and attrs.get('name', '').lower() == 'robots':
-            self.noindex |= 'noindex' in {x.strip() for x in attrs.get('content', '').lower().split(',')}
+            self.robots = {x.strip() for x in attrs.get('content', '').lower().split(',')}
         if tag == 'link' and 'alternate' in attrs.get('rel', '').split() and attrs.get('type') == 'text/markdown':
             self.targets.append(attrs.get('href'))
 
@@ -196,8 +196,8 @@ def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20
         else:
             robots = MarkdownAlternates()
             robots.feed(expected.decode('utf-8'))
-            if not robots.noindex:
-                issues.append('404-artifact-meta-noindex')
+            if robots.robots != {'index', 'follow', 'max-image-preview:large'}:
+                issues.append('404-artifact-indexing-policy')
         if case['method'] == 'HEAD' and any(item['body'] for item in observations):
             issues.append('head-body-not-empty')
         comparison = None

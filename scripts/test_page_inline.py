@@ -43,7 +43,7 @@ class PageCriticalInlineTests(unittest.TestCase):
     def write_page(self, relative, classes, names, content='Visible case/gallery/contact content', language='uk'):
         page = self.root / relative
         page.parent.mkdir(parents=True, exist_ok=True)
-        page.write_text('<html lang="' + language + '"><head><meta name="robots" content="noindex,nofollow">'
+        page.write_text('<html lang="' + language + '"><head><meta name="robots" content="index,follow,max-image-preview:large">'
                         + ''.join(self.script(name) for name in names) + '</head><body class="' + classes + '">'
                         + content + '<noscript>Native navigation</noscript></body></html>')
 
@@ -79,7 +79,7 @@ class PageCriticalInlineTests(unittest.TestCase):
                 self.assertNotIn('src="/' + name, html)
             self.assertIn('Visible case/gallery/contact content', html)
             self.assertIn('<noscript>Native navigation</noscript>', html)
-            self.assertIn('noindex,nofollow', html)
+            self.assertIn('index,follow,max-image-preview:large', html)
         legacy = (self.root / 'en/portfolio/2025/legacy/index.html').read_text()
         self.assertIn(self.script('url-compat.js'), legacy)
         error = (self.root / '404.html').read_text()

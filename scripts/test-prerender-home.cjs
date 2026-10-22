@@ -67,14 +67,14 @@ test('build inserts both home pages and preserves metadata and consent hooks', (
     for (const filename of ['app.js', 'story.js']) fs.copyFileSync(path.join(source, filename), path.join(directory, filename));
     fs.mkdirSync(path.join(directory, 'en'));
     for (const [relative, locale] of [['index.html', 'uk'], ['en/index.html', 'en']]) {
-      fs.writeFileSync(path.join(directory, relative), '<html lang="' + locale + '"><head><meta name="robots" content="noindex,nofollow"></head><body><div id="app" data-home-render=""></div><script src="/analytics-consent.js"></script></body></html>');
+      fs.writeFileSync(path.join(directory, relative), '<html lang="' + locale + '"><head><meta name="robots" content="index,follow,max-image-preview:large"></head><body><div id="app" data-home-render=""></div><script src="/analytics-consent.js"></script></body></html>');
     }
     assert.equal(prerenderHomepages(directory), 2);
     for (const [relative, locale] of [['index.html', 'uk'], ['en/index.html', 'en']]) {
       const html = fs.readFileSync(path.join(directory, relative), 'utf8');
       assert.ok(html.includes('data-home-render="' + locale + '"'));
       assert.match(html, /<h1 id="hero-title">/);
-      assert.match(html, /content="noindex,nofollow"/);
+      assert.match(html, /content="index,follow,max-image-preview:large"/);
       assert.match(html, /src="\/analytics-consent.js"/);
       assert.equal((html.match(/<main /g) || []).length, 1);
     }

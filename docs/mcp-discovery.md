@@ -34,7 +34,7 @@ the current extension recommends `<streamable-http-url>/server-card` and permits
 other locations. The RFC 9727 overlay provides an explicit link to this card.
 
 Only the matching Worker bundle serves these resources, using GET/HEAD and the
-exact MIME types, `no-store`, `noindex,nofollow`, the owner's Content Signals and
+exact MIME types, `no-store`, robots directives, the owner's Content Signals and
 `X-Piskor-MCP-Version`. A present card alone proves neither a working server nor
 Agentic Browsing scores. Runtime/client tests, scanner results and performance
 measurements remain separate release acceptance evidence. No local schema result

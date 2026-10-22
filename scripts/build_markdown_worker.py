@@ -69,8 +69,8 @@ def html_representation(site, pages, revision):
     metadata = Metadata()
     metadata.feed(body.decode('utf-8'))
     if (metadata.languages != ['en'] or metadata.canonicals != ['https://piskor.com.ua' + HTML_ROUTE]
-            or metadata.robots != [{'noindex', 'nofollow'}] or metadata.redirect):
-        raise ValueError('Precompressed HTML must be the noindex canonical English page')
+            or metadata.robots != [{'index', 'follow', 'max-image-preview:large'}] or metadata.redirect):
+        raise ValueError('Precompressed HTML must be the indexable canonical English page')
     encoded = brotli.compress(body, quality=11, mode=brotli.MODE_TEXT)
     if len(encoded) > MAX_HTML_BROTLI_BYTES:
         raise ValueError('Precompressed Zabava HTML exceeds the 43,200-byte local Brotli budget; '

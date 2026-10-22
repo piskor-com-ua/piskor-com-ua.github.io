@@ -12,7 +12,7 @@ const mcpId = value => typeof value === 'string' || Number.isSafeInteger(value);
 
 function mcpHeaders(data, type = 'application/json; charset=utf-8') {
   return new Headers({'Content-Type': type, 'Cache-Control': 'no-store',
-    'X-Robots-Tag': 'noindex, nofollow', 'Content-Signal': 'ai-input=yes, ai-train=no, search=yes',
+    'Content-Signal': 'ai-input=yes, ai-train=no, search=yes',
     'X-Piskor-MCP-Version': data.revision});
 }
 function mcpResponse(data, status, body, extra = {}) {

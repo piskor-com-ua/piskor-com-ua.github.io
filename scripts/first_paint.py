@@ -37,6 +37,8 @@ PAGE_STYLE_SCOPES = frozenset({
     # Current production PSI still measures this approved case outside the
     # historical 39-route cohort. Keep its CSS inventory route-scoped too.
     'portfolio/2024/domazhyr-house/index.html',
+    'engineering-automation/index.html',
+    'en/engineering-automation/index.html',
 }) | TARGET_CASE_SCOPES
 SCOPED_STYLE_CONTROLLERS = frozenset({
     'analytics-consent.js', 'agent-tools.js', 'portfolio.js', 'url-compat.js',
@@ -223,6 +225,8 @@ def _page_style_family(output, page, html):
         return 'home'
     if relative == '404.html':
         return 'not-found'
+    if relative in {'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+        return 'engineering'
     body = BODY.search(html)
     classes = re.search(r'(?<![\w-])class\s*=\s*["\']([^"\']*)["\']', body[0], re.I) if body else None
     names = set(unescape(classes[1]).split()) if classes else set()
@@ -254,7 +258,7 @@ def inline_page_styles(output):
     family_classes = {family: catalog_classes(output, pages if family == 'all' else members)
                       for family, members in family_pages.items()}
     scoped_classes = {page: _scoped_style_classes(output, page) for page in pages
-                      if families[page] == 'case'
+                      if families[page] in {'case', 'engineering'}
                       and page.relative_to(output).as_posix() in PAGE_STYLE_SCOPES}
     pattern = re.compile(r'<link\b(?=[^>]*\brel=["\']stylesheet["\'])[^>]*>', re.I)
     count = 0

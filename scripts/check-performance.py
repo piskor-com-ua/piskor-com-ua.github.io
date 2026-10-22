@@ -96,6 +96,14 @@ for page in output.rglob('*.html'):
                         if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-regular-subset.woff2']
         assert len(regular_font) == 1 and 'crossorigin' in regular_font[0].attrs, (
             str(page) + ': PSI critical request chain font must be preloaded once with CORS')
+    if relative_page in {'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+        critical_light = [node for node in font_preloads
+                          if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-light-subset.woff2']
+        regular_font = [node for node in font_preloads
+                        if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-regular-subset.woff2']
+        assert len(critical_light) == 1 and critical_light[0].attrs.get('fetchpriority') == 'high', (
+            str(page) + ': LCP heading font must receive the only high-priority font preload')
+        assert not regular_font, str(page) + ': non-critical regular font must not compete with the LCP heading'
     images = root.find(lambda n: n.tag == 'img' and
                        (n.attrs.get('src', '').startswith('/assets/') or
                         n.attrs.get('data-piskor-src', '').startswith('/assets/')))

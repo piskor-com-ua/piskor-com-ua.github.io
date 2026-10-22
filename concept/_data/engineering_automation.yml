@@ -1,0 +1,82 @@
+uk:
+  eyebrow: Інженерна автоматизація
+  title: Простір, що працює<br><span>у вашому ритмі.</span>
+  intro: Проєктуємо керування освітленням, кліматом, безпекою та іншими інженерними системами як частину цілісного простору. Сценарії починаються зі звичок людей, а технічну платформу добираємо під об’єкт і погоджений склад робіт.
+  approach_title: Не набір гаджетів.<br>Узгоджена система.
+  approach: Спершу визначаємо, що має відбуватися у просторі та як людина керуватиме ним вручну. Потім узгоджуємо функції з електрикою, опаленням, вентиляцією, обладнанням і бюджетом. Автоматизація має спрощувати користування, а не створювати залежність від одного сценарію чи застосунку.
+  areas_title: Що може охоплювати проєкт
+  areas_intro: Нижче — напрями для опрацювання, а не перелік обладнання, встановленого в кожному об’єкті. Фактичний склад залежить від завдання, сумісності систем і погодженого обсягу.
+  areas:
+    - title: Освітлення
+      text: Групи світла, димування, сценарії для роботи й відпочинку, керування за присутністю або рівнем денного світла — коли це відповідає плануванню та обладнанню.
+    - title: Клімат і вентиляція
+      text: Зональне керування опаленням, теплою підлогою, кондиціонуванням, вентиляцією та зволоженням із ручним керуванням і зрозумілими режимами.
+    - title: Безпека та вода
+      text: Інтеграція сигналізації, датчиків диму, газу чи протікання, контролю доступу та перекриття води — за наявності відповідного проєкту й сумісного обладнання.
+    - title: Штори й доступ
+      text: Керування шторами, ролетами, воротами або замками, з ручним резервним способом і перевіркою безпечних станів.
+    - title: Енергія та побутові сценарії
+      text: Режими «вдома» й «усе вимкнути», облік або керування навантаженнями та взаємодія з побутовим обладнанням — лише якщо це підтримують вибрані пристрої.
+  process_title: Від щоденної звички<br>до робочого сценарію
+  process:
+    - title: Вивчаємо простір і запит
+      text: Фіксуємо функції приміщень, звичні дії, вимоги до приватності, ручного керування та автономної роботи.
+    - title: Узгоджуємо систему
+      text: Перевіряємо сумісність із плануванням та інженерією, визначаємо межі автоматизації, інтерфейси й необхідні креслення або специфікації.
+    - title: Координуємо реалізацію
+      text: Інтегруємо погоджені рішення в дизайн та інженерні розділи. Формат авторського супроводу, монтажу й пусконалагодження визначаємо окремо для кожного об’єкта.
+  proof_title: Автоматизація в реалізованому проєкті
+  proof_text: У будинку в Брюховичах сторінка кейсу документує інтегровані сценарії освітлення, клімату, штор, безпеки та зовнішніх систем. Це приклад конкретного об’єкта, а не обіцянка однакового складу для кожного замовлення.
+  proof_link: Переглянути кейс будинку у Брюховичах
+  scope_note: Креслення, рекомендований сценарій, встановлене обладнання й перевірена система — різні рівні підтвердження. У портфоліо ми позначаємо їх відповідно до джерел конкретного проєкту.
+  contact_title: Почнімо з вашого сценарію
+  contact_text: Розкажіть, що має стати простішим у вашому домі чи робочому просторі. Разом визначимо, які рішення варто проєктувати, а які не потрібні.
+  contact_link: Обговорити проєкт
+  home: Головна
+  portfolio: Портфоліо
+  service: Автоматизація
+  nav_label: Основна навігація
+  skip: До змісту
+  language: Мова
+  footer: Інженерна автоматизація
+en:
+  eyebrow: Engineering automation
+  title: A space that works<br><span>with your rhythm.</span>
+  intro: We plan lighting, climate, security and other building systems as part of a coherent space. Scenarios start with how people use the property; the technical platform follows the building and the agreed scope.
+  approach_title: More than devices.<br>A coordinated system.
+  approach: First, we define what should happen in the space and how people can still control it manually. Then we coordinate those functions with electrical, heating, ventilation and equipment requirements. Automation should make everyday use easier without making the space depend on a single scene or app.
+  areas_title: What a project may cover
+  areas_intro: These are areas to consider, not a list of equipment installed in every property. The actual scope depends on the brief, system compatibility and agreed work.
+  areas:
+    - title: Lighting
+      text: Lighting groups, dimming, work and relaxation scenes, or control by presence and daylight where the layout and selected equipment support them.
+    - title: Climate and ventilation
+      text: Zoned control for heating, underfloor heating, air conditioning, ventilation and humidification, with clear modes and manual control.
+    - title: Safety and water
+      text: Integration of alarms, smoke, gas or leak detection, access control and water shut-off when specified and supported by compatible equipment.
+    - title: Shading and access
+      text: Control of curtains, blinds, gates or locks, with a manual fallback and checks for safe operating states.
+    - title: Energy and everyday routines
+      text: Home and all-off modes, load monitoring or control, and connections to household equipment where the selected devices support them.
+  process_title: From a daily habit<br>to a working scenario
+  process:
+    - title: Understand the brief and space
+      text: We map how each room is used and discuss routines, privacy, manual control and expected operation if a system is unavailable.
+    - title: Coordinate the system
+      text: We check compatibility with the layout and building services, define the automation scope and interfaces, and identify the drawings or specifications needed.
+    - title: Guide implementation
+      text: Agreed solutions are coordinated with the interior and engineering design. The role of design supervision, installation and commissioning is agreed for each project.
+  proof_title: Automation in a completed project
+  proof_text: The Briukhovychi house case documents integrated lighting, climate, shading, security and outdoor routines. It is evidence for that specific property, not a promise that every project includes the same scope.
+  proof_link: Explore the Briukhovychi house case
+  scope_note: Drawings, a recommended scenario, installed equipment and a tested system are different levels of evidence. Our portfolio labels them according to the sources for each project.
+  contact_title: Start with your routine
+  contact_text: Tell us what should become easier at home or in a working space. We can identify which systems are worth designing and which are not needed.
+  contact_link: Discuss your project
+  home: Home
+  portfolio: Portfolio
+  service: Automation
+  nav_label: Main navigation
+  skip: Skip to content
+  language: Language
+  footer: Engineering automation

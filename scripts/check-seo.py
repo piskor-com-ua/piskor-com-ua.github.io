@@ -76,6 +76,9 @@ for path in Path('_site').rglob('*.html'):
     assert len(graphs) == 1 and graphs[0]['@context'] == 'https://schema.org', path
     types = {node['@type'] for node in graphs[0]['@graph']}
     assert {'Organization', 'WebSite'} <= types, path
+    if path.parent.name == 'engineering-automation':
+        assert {'Service', 'BreadcrumbList'} <= types, path
+        assert 'id="automation-areas"' in text and 'id="contact"' in text, path
     if 'CollectionPage' in types:
         assert {'CollectionPage', 'BreadcrumbList'} <= types, path
     elif 'portfolio' in path.parts:

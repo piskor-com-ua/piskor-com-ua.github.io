@@ -239,14 +239,14 @@ test('bounded root HTML diagnostic adds only fixed Content-Type parameters, no a
 
 const bundle = process.env.PISKOR_WORKER_BUNDLE || 'output/markdown-worker/worker.mjs';
 const site = process.env.PISKOR_WORKER_SITE || '_site';
-test('actual generated artifact: every114 route/mode and direct MD matches exact saved bytes', {skip: !fs.existsSync(bundle) && !fs.existsSync(site)}, async () => {
+test('actual generated artifact: every generated route/mode and direct MD matches exact saved bytes', {skip: !fs.existsSync(bundle) && !fs.existsSync(site)}, async () => {
   assert.ok(fs.existsSync(bundle), 'Generate Worker first');
   assert.ok(fs.existsSync(site), 'Actual Pages artifact required');
   const module = await import(pathToFileURL(path.resolve(bundle)));
   const manifest = JSON.parse(fs.readFileSync(path.join(path.dirname(bundle), 'manifest.json')));
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(bundle)).digest('hex'), manifest.bundle_sha256);
   const rows = JSON.parse(fs.readFileSync(path.join(site, 'agent-markdown/routes.json'))).pages;
-  assert.equal(rows.length, 114);
+  assert.equal(rows.length, manifest.source_page_states);
   for (const row of rows) for (const method of ['GET', 'HEAD']) for (const direct of [false, true]) {
     const request = new Request(origin + (direct ? row.markdown : row.url), {method, headers: {Accept: direct ? '*/*' : 'text/markdown'}});
     const response = await module.default.fetch(request, {}, {});

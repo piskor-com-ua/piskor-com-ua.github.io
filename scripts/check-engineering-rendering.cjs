@@ -8,6 +8,34 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
   const results = [];
   for (const language of ['uk', 'en']) {
     const route = (language === 'en' ? '/en' : '') + '/engineering-automation/';
+    // Late story CSS used to expose the video's intrinsic 848px width. Mobile
+    // Chrome expanded its layout viewport before the stylesheet arrived, then
+    // repainted the hero and consent banner. Check the first paint, not just
+    // the settled layout after all styles have loaded.
+    const coldContext = await browser.newContext({ viewport: { width: 412, height: 823 }, isMobile: true, deviceScaleFactor: 1.75 });
+    try {
+      const cold = await coldContext.newPage();
+      const lateStyles = [];
+      await coldContext.route('**/engineering-story.css*', async request => {
+        lateStyles.push(request.request().url());
+        await request.abort();
+      });
+      await cold.addInitScript(() => {
+        window.__engineeringFirstPaint = [];
+        new PerformanceObserver(list => {
+          for (const entry of list.getEntries()) window.__engineeringFirstPaint.push({
+            name: entry.name, width: innerWidth, scroll: document.documentElement.scrollWidth
+          });
+        }).observe({ type: 'paint', buffered: true });
+      });
+      await cold.goto(origin + route);
+      await cold.waitForFunction(() => window.__engineeringFirstPaint.length > 0);
+      const firstPaint = await cold.evaluate(() => window.__engineeringFirstPaint);
+      assert.deepEqual(lateStyles, [], 'All story geometry must be available in the initial HTML');
+      assert.equal(await cold.locator('link[href*="engineering-story.css"]').count(), 0);
+      assert.ok(firstPaint.every(entry => entry.width === 412 && entry.scroll <= 412), JSON.stringify(firstPaint));
+      results.push({ language, firstPaint, noDeferredStoryGeometry: true });
+    } finally { await coldContext.close(); }
     for (const width of [390, 700, 701, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2 });
       const page = await context.newPage();

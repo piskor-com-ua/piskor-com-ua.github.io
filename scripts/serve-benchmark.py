@@ -1,6 +1,7 @@
 """Serve an artifact with text compression for repeatable Lighthouse comparisons."""
 import argparse
 import gzip
+import re
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from io import BytesIO
 from pathlib import Path
@@ -23,9 +24,45 @@ class Preview(SimpleHTTPRequestHandler):
         super().__init__(*request_args, directory=str(args.artifact), **kwargs)
 
     def send_head(self):
+        self.range_remaining = None
         path = Path(self.translate_path(self.path))
         if path.is_dir():
             path = path / 'index.html'
+        # Native video seeking uses single byte ranges, including on localhost.
+        # Keep this out of the compressed text branch: Content-Range describes
+        # the original MP4 bytes, not a compressed representation.
+        if path.is_file() and path.suffix.lower() in {'.mp4', '.webm', '.mov'}:
+            length = path.stat().st_size
+            requested = self.headers.get('Range')
+            start, end = 0, length - 1
+            if requested:
+                match = re.fullmatch(r'bytes=(\d*)-(\d*)', requested)
+                if match and any(match.groups()):
+                    first, last = match.groups()
+                    if first:
+                        start = int(first)
+                        end = min(int(last), length - 1) if last else length - 1
+                    else:
+                        start = max(0, length - int(last))
+                else:
+                    start = length
+                if start > end or start >= length:
+                    self.send_response(416)
+                    self.send_header('Content-Range', f'bytes */{length}')
+                    self.send_header('Content-Length', '0')
+                    self.end_headers()
+                    return None
+            source = path.open('rb')
+            source.seek(start)
+            self.range_remaining = end - start + 1
+            self.send_response(206 if requested else 200)
+            self.send_header('Content-Type', self.guess_type(str(path)))
+            self.send_header('Accept-Ranges', 'bytes')
+            self.send_header('Content-Length', str(self.range_remaining))
+            if requested:
+                self.send_header('Content-Range', f'bytes {start}-{end}/{length}')
+            self.end_headers()
+            return source
         accepted = self.headers.get('Accept-Encoding', '')
         supported = 'gzip' in accepted or args.compression == 'brotli' and 'br' in accepted
         if path.is_file() and path.suffix in {'.html', '.css', '.js', '.json', '.svg', '.txt', '.xml'} and supported:
@@ -45,6 +82,17 @@ class Preview(SimpleHTTPRequestHandler):
             self.end_headers()
             return BytesIO(payload)
         return super().send_head()
+
+    def copyfile(self, source, destination):
+        if self.range_remaining is None:
+            return super().copyfile(source, destination)
+        remaining = self.range_remaining
+        while remaining:
+            chunk = source.read(min(65536, remaining))
+            if not chunk:
+                break
+            destination.write(chunk)
+            remaining -= len(chunk)
 
     def log_message(self, *_):
         pass

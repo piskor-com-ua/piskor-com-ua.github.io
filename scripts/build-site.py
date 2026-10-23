@@ -19,6 +19,7 @@ from mobile_lcp_cover_delivery import (prepare_mobile_catalog_delivery_profiles,
                                        prepare_mobile_lcp_covers)
 from mobile_image_delivery import prepare_mobile_image_delivery
 from case_minification import minify_reviewed_cases
+from engineering_minification import minify_engineering_pages
 
 source = Path('concept')
 out = Path('_site')
@@ -47,6 +48,7 @@ print(f'Inline page styles: {inline_page_styles(out)} stylesheets')
 print(f'Zabava EN near-viewport gallery: {defer_zabava_gallery(out)}')
 print(f'Zabava EN critical assets: {optimize_zabava_en(out)}')
 print(f'Compiled reviewed cases: {minify_reviewed_cases(out)}')
+print(f'Compiled engineering service pages: {minify_engineering_pages(out)}')
 print(f'Canonical compatibility copies: {prepare_compatibility_pages(out)} pages')
 print(f'Mobile LCP cover profiles: {prepare_mobile_lcp_covers(out)}')
 print(f'Mobile critical catalog image profiles: {prepare_mobile_catalog_delivery_profiles(out)}')

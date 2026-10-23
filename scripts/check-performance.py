@@ -91,6 +91,9 @@ for page in output.rglob('*.html'):
     font_preloads = root.find(lambda n: n.tag == 'link' and n.attrs.get('rel') == 'preload' and n.attrs.get('as') == 'font')
     assert all(not n.attrs.get('media') for n in font_preloads), str(page) + ': original Roboto must remain available in both viewport modes'
     relative_page = page.relative_to(output).as_posix()
+    if relative_page in {'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+        from engineering_minification import validate_engineering_consent
+        validate_engineering_consent(output, html)
     if relative_page in top10_font_preload_routes:
         regular_font = [node for node in font_preloads
                         if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-regular-subset.woff2']
@@ -103,7 +106,8 @@ for page in output.rglob('*.html'):
                         if urlsplit(node.attrs.get('href', '')).path == '/assets/fonts/roboto-regular-subset.woff2']
         assert len(critical_light) == 1 and critical_light[0].attrs.get('fetchpriority') == 'high', (
             str(page) + ': LCP heading font must receive the only high-priority font preload')
-        assert not regular_font, str(page) + ': non-critical regular font must not compete with the LCP heading'
+        assert len(regular_font) == 1 and regular_font[0].attrs.get('fetchpriority') == 'low', (
+            str(page) + ': first-visit consent font must be discovered early without sharing the LCP font priority')
     images = root.find(lambda n: n.tag == 'img' and
                        (n.attrs.get('src', '').startswith('/assets/') or
                         n.attrs.get('data-piskor-src', '').startswith('/assets/')))

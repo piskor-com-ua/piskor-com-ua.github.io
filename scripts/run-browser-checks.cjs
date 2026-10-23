@@ -7,10 +7,11 @@ const checkCatalogRendering = require('./check-catalog-rendering.cjs');
 const checkHomeRendering = require('./check-home-rendering.cjs');
 const checkCompatibilityPages = require('./check-compatibility-pages.cjs');
 const checkNativeFonts = require('./check-native-fonts.cjs');
+const checkEngineeringRendering = require('./check-engineering-rendering.cjs');
 
 (async () => {
   const origin = 'http://127.0.0.1:4176';
-  const server = spawn('python3', ['-m', 'http.server', '4176', '--bind', '127.0.0.1', '--directory', '_site'], { stdio: 'ignore' });
+  const server = spawn('python3', ['scripts/serve-benchmark.py', '_site', '--port', '4176'], { stdio: 'ignore' });
   let browser, page;
   mkdirSync('output/browser', { recursive: true });
   try {
@@ -21,6 +22,7 @@ const checkNativeFonts = require('./check-native-fonts.cjs');
       }
     }
     browser = await chromium.launch({ headless: true });
+    await checkEngineeringRendering(browser, origin);
     const nativeFonts = await checkNativeFonts(browser, origin);
     const homeRendering = await checkHomeRendering(browser, origin);
     const catalogRendering = await checkCatalogRendering(browser, origin);

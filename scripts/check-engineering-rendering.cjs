@@ -6,6 +6,20 @@ const { mkdirSync, writeFileSync } = require('node:fs');
 async function checkEngineeringRendering(browser, origin, output = 'output/playwright/engineering-photorealistic') {
   mkdirSync(output, { recursive: true });
   const results = [];
+  const assertPhotoDensity = async image => {
+    const density = await image.evaluate(async element => {
+      const bitmap = new Image();
+      bitmap.src = element.currentSrc;
+      await bitmap.decode();
+      const box = element.getBoundingClientRect();
+      const ratio = Number(element.getAttribute('width')) / Number(element.getAttribute('height'));
+      const native = Math.max(...element.srcset.split(',').map(entry => Number(entry.trim().split(/\s+/).pop().replace(/w$/, ''))));
+      return { source: element.currentSrc, selected: bitmap.naturalWidth,
+        required: Math.min(native, Math.max(box.width, box.height * ratio) * devicePixelRatio) };
+    });
+    assert.ok(density.selected + 1 >= density.required, JSON.stringify(density));
+    return density;
+  };
   for (const language of ['uk', 'en']) {
     const route = (language === 'en' ? '/en' : '') + '/engineering-automation/';
     // Late story CSS used to expose the video's intrinsic 848px width. Mobile
@@ -39,7 +53,7 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
     for (const width of [390, 700, 701, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2 });
       const page = await context.newPage();
-      const errors = [], analytics = [];
+      const errors = [], analytics = [], photoDensity = [];
       page.on('pageerror', error => errors.push(error.message));
       page.on('response', response => { if (response.status() >= 400) errors.push(response.status() + ' ' + response.url()); });
       await context.route(/https:\/\/(?:www\.)?(?:googletagmanager\.com|google-analytics\.com)/, async request => {
@@ -124,6 +138,7 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
           assert.equal(await page.locator('.engineering-scene-panel:visible').count(), 1);
           assert.ok(await page.locator('#scene-' + mode).isVisible());
           await page.locator('#scene-' + mode + ' img').evaluate(image => image.decode());
+          photoDensity.push(await assertPhotoDensity(page.locator('#scene-' + mode + ' img')));
         }
         await page.locator('#mode-away').press('ArrowLeft');
         assert.ok(await page.locator('#mode-evening').isChecked());
@@ -131,6 +146,7 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
           await image.scrollIntoViewIfNeeded();
           await image.evaluate(image => image.decode());
           assert.ok(await image.getAttribute('alt'));
+          if (await image.getAttribute('data-engineering-photo') !== null) photoDensity.push(await assertPhotoDensity(image));
         }
         const areaMedia = [];
         for (const area of await page.locator('.engineering-area').all()) {
@@ -138,6 +154,7 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
           assert.equal(await page.locator('.engineering-area[open]').count(), 1);
           const image = area.locator('img');
           await image.evaluate(image => image.decode());
+          photoDensity.push(await assertPhotoDensity(image));
           areaMedia.push({ title: await area.locator('summary').textContent(), source: await image.getAttribute('src'), alt: await image.getAttribute('alt') });
         }
         assert.ok(areaMedia[4].source.includes('/garden-'));
@@ -188,7 +205,7 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
           await Promise.all([page.waitForEvent('load'), page.getByRole('button', { name: reject, exact: true }).click()]);
           assert.equal(await page.locator('script[src*="googletagmanager"]').count(), 0);
         }
-        results.push({ language, width, source, systemMedia, areaMedia, interactiveControls: true, video: videoState, errors });
+        results.push({ language, width, source, systemMedia, areaMedia, photoDensity, interactiveControls: true, video: videoState, errors });
       } finally { await context.close(); }
     }
     const context = await browser.newContext({ javaScriptEnabled: false });

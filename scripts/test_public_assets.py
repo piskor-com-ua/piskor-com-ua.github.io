@@ -99,6 +99,51 @@ class PublicAssetsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'outside the approved service routes'):
             prepare_public_assets(self.output)
 
+    def test_engineering_photos_reuse_mobile_avif_with_crop_aware_slots_only_on_approved_routes(self):
+        for size in (640, 960, 1440):
+            Image.new('RGB', (size, size * 5 // 4), '#806e55').save(self.output / f'assets/photo-{size}.webp')
+        original = (self.output / 'assets/photo-1440.webp').read_bytes()
+        image = ('<img src="/assets/photo-960.webp" srcset="/assets/photo-640.webp 640w, '
+                 '/assets/photo-960.webp 960w, /assets/photo-1440.webp 1440w" '
+                 'sizes="100vw" loading="lazy" decoding="async" alt="Bedroom" data-engineering-photo>')
+        markup = ('<head><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+                  '<article class="engineering-scene-panel"><figure>' + image + '</figure></article>'
+                  '<a class="engineering-project-link"><figure>' + image + '</figure></a>')
+        pages = [self.output / route / 'index.html' for route in ('engineering-automation', 'en/engineering-automation')]
+        for page in pages:
+            page.parent.mkdir(parents=True)
+            page.write_text(markup)
+        control = self.output / 'index.html'
+        control.write_text(image.replace(' data-engineering-photo', ''))
+        prepare_public_assets(self.output)
+        fingerprint_resources(self.output)
+        for page in pages:
+            root = Document(page.read_text()).root
+            self.assertEqual(len(root.find(lambda n: n.tag == 'link' and n.attrs.get('as') == 'image')), 0)
+            pictures = root.find(lambda n: n.tag == 'picture')
+            self.assertEqual(len(pictures), 2)
+            for picture, mobile, desktop in zip(pictures, (280, 208), (400, 248)):
+                source = picture.find(lambda n: n.tag == 'source')[0].attrs
+                fallback = picture.find(lambda n: n.tag == 'img')[0].attrs
+                self.assertEqual(source['type'], 'image/avif')
+                self.assertEqual(source['media'], '(max-width: 700px)')
+                self.assertIn('/case-media/', source['srcset'])
+                self.assertIn(f'max(calc(100vw - 48px), {mobile}px)', source['sizes'])
+                self.assertIn(f', {desktop}px)', source['sizes'])
+                self.assertEqual(source['sizes'], fallback['sizes'])
+                self.assertEqual((fallback['loading'], fallback['decoding']), ('lazy', 'async'))
+                self.assertEqual(fallback['src'].split('?')[0], '/assets/photo-960.webp')
+                for entry in source['srcset'].split(','):
+                    url, descriptor = entry.strip().split()
+                    with Image.open(self.output / url.split('?')[0].lstrip('/')) as encoded:
+                        self.assertEqual(encoded.width, int(descriptor[:-1]))
+                        self.assertLessEqual(encoded.width, 1440)
+        self.assertNotIn('<picture>', control.read_text())
+        self.assertEqual((self.output / 'assets/photo-1440.webp').read_bytes(), original)
+        control.write_text(image)
+        with self.assertRaisesRegex(ValueError, 'outside the approved service routes'):
+            prepare_public_assets(self.output)
+
     def test_actual_sizes_responsive_candidates_and_source_preservation(self):
         image = self.output / 'assets/cover-1440.webp'
         Image.new('RGB', (1080, 810), '#258878').save(image)

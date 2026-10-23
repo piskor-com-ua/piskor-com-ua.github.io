@@ -4,6 +4,7 @@
 .engineering-page .project-nav a:hover{color:var(--mint)}
 .engineering-page .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .engineering-page :where(main figure img){display:block;width:100%;height:100%;object-fit:cover}
+.engineering-page :where(main figure picture){display:block;width:100%;height:100%}
 .engineering-page figure{margin:0;min-width:0}
 .engineering-page .eyebrow{color:var(--mint)}
 .engineering-page .text-link{display:inline-flex;align-items:center;justify-content:space-between;gap:22px;border-bottom:1px solid var(--mint);padding:12px 0;color:var(--white);font-size:13px}

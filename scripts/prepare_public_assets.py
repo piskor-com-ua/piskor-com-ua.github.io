@@ -707,16 +707,35 @@ def prepare_public_assets(output):
                 for url, descriptor in entries:
                     unique.setdefault(descriptor, url)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + d for d, url in unique.items()))
-            if 'data-engineering-hero' in attrs or 'data-engineering-frame' in attrs:
+            if any(marker in attrs for marker in ('data-engineering-hero', 'data-engineering-frame', 'data-engineering-photo')):
                 if page.relative_to(output).as_posix() not in {
                         'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
                     raise ValueError('Engineering hero profile outside the approved service routes')
                 references = [entry.strip().split()[0] for entry in attrs['srcset'].split(',')]
                 largest = max(references, key=lambda url: dimensions(url)[0])
-                variants = avif_variants(largest, 'engineering-hero' if 'data-engineering-hero' in attrs else 'engineering-scene')
+                photo = 'data-engineering-photo' in attrs
+                if photo:
+                    classes = {name for node in image_contexts.paths[match.start()]
+                               for name in node['attrs'].get('class', '').split()}
+                    frame_heights = ((350, 500) if 'engineering-scene-panel' in classes else
+                                     (260, 310) if 'engineering-project-link' in classes else None)
+                    if frame_heights:
+                        native_width, native_height = dimensions(largest)
+                        ratio = native_width / native_height
+                        mobile_height, desktop_height = frame_heights
+                        column = 'calc((100vw - clamp(48px, 9vw, 176px) - clamp(24px, 4vw, 64px)) / 2)'
+                        sizes = (f'(max-width: 700px) max(calc(100vw - 48px), {mobile_height * ratio:g}px), '
+                                 f'max({column}, {desktop_height * ratio:g}px)')
+                        markup = attribute(markup, 'sizes', sizes)
+                        attrs['sizes'] = sizes
+                # Real portfolio photos reuse their existing q60 mobile recipe;
+                # neither their masters nor other case/gallery markup changes.
+                namespace = ('case-media' if photo else 'engineering-hero'
+                             if 'data-engineering-hero' in attrs else 'engineering-scene')
+                variants = avif_variants(largest, namespace)
                 srcset = escape(', '.join(url + ' ' + str(size) + 'w' for url, size in variants), quote=True)
                 sizes = escape(attrs['sizes'], quote=True)
-                markup = ('<picture><source type="image/avif" srcset="' + srcset +
+                markup = ('<picture><source type="image/avif"' + (' media="(max-width: 700px)"' if photo else '') + ' srcset="' + srcset +
                           '" sizes="' + sizes + '">' + markup + '</picture>')
                 if 'data-engineering-hero' in attrs:
                     cover_preload = ('<link rel="preload" as="image" type="image/avif" imagesrcset="' +

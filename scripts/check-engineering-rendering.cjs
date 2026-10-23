@@ -7,6 +7,8 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
   mkdirSync(output, { recursive: true });
   const results = [];
   const assertPhotoDensity = async image => {
+    await image.scrollIntoViewIfNeeded();
+    await image.page().waitForFunction(element => !element.hasAttribute('data-piskor-src'), await image.elementHandle());
     const density = await image.evaluate(async element => {
       const bitmap = new Image();
       bitmap.src = element.currentSrc;
@@ -30,6 +32,10 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
     try {
       const cold = await coldContext.newPage();
       const lateStyles = [];
+      const prematurePhotos = [];
+      cold.on('request', request => {
+        if (/\/assets\/(?:responsive\/case-media\/)?portfolio\//.test(request.url())) prematurePhotos.push(request.url());
+      });
       await coldContext.route('**/engineering-story.css*', async request => {
         lateStyles.push(request.request().url());
         await request.abort();
@@ -48,7 +54,9 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
       assert.deepEqual(lateStyles, [], 'All story geometry must be available in the initial HTML');
       assert.equal(await cold.locator('link[href*="engineering-story.css"]').count(), 0);
       assert.ok(firstPaint.every(entry => entry.width === 412 && entry.scroll <= 412), JSON.stringify(firstPaint));
-      results.push({ language, firstPaint, noDeferredStoryGeometry: true });
+      assert.ok(await cold.locator('picture[data-piskor-deferred-media] img[data-engineering-photo]').count() > 0);
+      assert.deepEqual(prematurePhotos, [], 'Below-fold project photos must not compete with the initial frame');
+      results.push({ language, firstPaint, noDeferredStoryGeometry: true, prematurePhotos });
     } finally { await coldContext.close(); }
     for (const width of [390, 700, 701, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2 });
@@ -137,23 +145,21 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
           assert.ok(await page.locator('#mode-' + mode).isChecked());
           assert.equal(await page.locator('.engineering-scene-panel:visible').count(), 1);
           assert.ok(await page.locator('#scene-' + mode).isVisible());
-          await page.locator('#scene-' + mode + ' img').evaluate(image => image.decode());
           photoDensity.push(await assertPhotoDensity(page.locator('#scene-' + mode + ' img')));
         }
         await page.locator('#mode-away').press('ArrowLeft');
         assert.ok(await page.locator('#mode-evening').isChecked());
         for (const image of await page.locator('main img:visible').all()) {
           await image.scrollIntoViewIfNeeded();
-          await image.evaluate(image => image.decode());
           assert.ok(await image.getAttribute('alt'));
           if (await image.getAttribute('data-engineering-photo') !== null) photoDensity.push(await assertPhotoDensity(image));
+          else await image.evaluate(image => image.decode());
         }
         const areaMedia = [];
         for (const area of await page.locator('.engineering-area').all()) {
           if (!(await area.evaluate(element => element.open))) await area.locator('summary').click();
           assert.equal(await page.locator('.engineering-area[open]').count(), 1);
           const image = area.locator('img');
-          await image.evaluate(image => image.decode());
           photoDensity.push(await assertPhotoDensity(image));
           areaMedia.push({ title: await area.locator('summary').textContent(), source: await image.getAttribute('src'), alt: await image.getAttribute('alt') });
         }
@@ -233,7 +239,15 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
       assert.ok(await page.locator('#scene-evening').isVisible());
       assert.equal(await page.locator('.engineering-scene-panel:visible').count(), 1);
       assert.ok(await page.locator('video[controls]').isVisible());
-      results.push({ language, noJavaScript: true, nativeSceneSwitching: true });
+      const nativePhotos = await page.locator('img[data-engineering-photo]:visible').all();
+      assert.ok(nativePhotos.length > 0);
+      for (const image of nativePhotos) {
+        await image.scrollIntoViewIfNeeded();
+        await image.evaluate(image => image.decode());
+        assert.equal(await image.getAttribute('data-piskor-src'), null);
+        assert.ok((await image.evaluate(image => image.currentSrc)).startsWith(origin + '/assets/'));
+      }
+      results.push({ language, noJavaScript: true, nativeSceneSwitching: true, nativePhotos: nativePhotos.length });
     } finally { await context.close(); }
     const reducedContext = await browser.newContext({ reducedMotion: 'reduce' });
     try {

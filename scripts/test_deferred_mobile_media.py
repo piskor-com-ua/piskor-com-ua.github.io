@@ -6,7 +6,7 @@ from agent_catalog import Document
 from agent_content import render
 from deferred_mobile_media import (
     FALLBACK_MARKER, PICTURE_MARKER, SCRIPT_MARKER, STYLE_MARKER,
-    CONTROLLER, current_si_target_routes, followup_target_routes, high_si_target_routes, top10_target_routes,
+    CONTROLLER, ENGINEERING_ROUTES, current_si_target_routes, followup_target_routes, high_si_target_routes, top10_target_routes,
     redirect_aliases, target_root_margin, target_routes,
     transform_page, validate_deferred_mobile_media,
 )
@@ -41,7 +41,7 @@ class DeferredMobileMediaTests(unittest.TestCase):
             '/en/portfolio/2024/markosoli-store/',
             '/en/portfolio/2025/vesteros-house/',
         }))
-        self.assertEqual(len(target_routes()), 54)
+        self.assertEqual(len(target_routes()), 56)
         self.assertTrue(followup.issubset(target_routes()))
 
     def test_high_speed_index_routes_are_exactly_scoped_and_use_zero_margin(self):
@@ -91,6 +91,39 @@ class DeferredMobileMediaTests(unittest.TestCase):
         self.assertEqual(amended.count('<script ' + SCRIPT_MARKER), 1)
         self.assertLess(amended.index(SCRIPT_MARKER), amended.index('data-inline-page-critical="agent-tools.js"'))
         self.assertTrue(amended.endswith('</body></html>'))
+
+    def test_engineering_photos_are_deferred_only_on_both_approved_service_routes(self):
+        photo = SOURCE.replace('loading="lazy"', 'loading="lazy" data-engineering-photo')
+        hero = SOURCE.replace('loading="lazy"', 'loading="eager" fetchpriority="high" data-engineering-hero')
+        frame = SOURCE.replace('loading="lazy"', 'loading="lazy" data-engineering-frame')
+        original = ('<!doctype html><html><head><title>Engineering</title></head><body><main>'
+                    + hero + frame + '<figure>' + photo + '</figure></main></body></html>')
+        self.assertEqual(ENGINEERING_ROUTES, frozenset({
+            '/engineering-automation/', '/en/engineering-automation/'}))
+        self.assertTrue(ENGINEERING_ROUTES.issubset(target_routes()))
+        for route in ENGINEERING_ROUTES:
+            amended, count = transform_page(original, CONTROLLER.read_text(), route)
+            self.assertEqual(count, 1)
+            self.assertIn(hero, amended, 'The high-priority initial frame must remain unchanged')
+            self.assertIn(frame, amended, 'Interactive scene frames use their existing intent loading')
+            self.assertIn('<noscript ' + FALLBACK_MARKER + '>' + photo + '</noscript>', amended)
+            self.assertIn('data-piskor-deferred-media-root-margin="250px 0px"', amended)
+            self.assertEqual(render(Document(amended).root, 'https://piskor.com.ua/'),
+                             render(Document(original).root, 'https://piskor.com.ua/'))
+            with TemporaryDirectory() as temporary:
+                output = Path(temporary)
+                (output / '.nojekyll').touch()
+                page = output / route.lstrip('/') / 'index.html'
+                page.parent.mkdir(parents=True)
+                validate_deferred_mobile_media(output, page, amended)
+        with self.assertRaisesRegex(ValueError, 'no eligible offscreen images'):
+            transform_page(original, CONTROLLER.read_text(), '/other-service/')
+
+    def test_engineering_photo_contract_rejects_nonlazy_photos_without_touching_hero(self):
+        photo = SOURCE.replace('loading="lazy"', 'loading="eager" data-engineering-photo')
+        original = '<html><head></head><body>' + photo + '</body></html>'
+        with self.assertRaisesRegex(ValueError, 'Unrecognized deferred image contract'):
+            transform_page(original, CONTROLLER.read_text(), '/engineering-automation/')
 
     def test_deferred_and_native_markup_keep_identical_agent_visible_content(self):
         amended, _ = transform_page(HTML, CONTROLLER.read_text())

@@ -18,6 +18,7 @@ FOLLOWUP_TARGETS_FILE = Path(__file__).with_name('mobile-si-followup-routes.json
 TOP10_TARGETS_FILE = Path(__file__).with_name('mobile-si-top10-routes.json')
 HIGH_SI_TARGETS_FILE = Path(__file__).with_name('mobile-si-high-routes.json')
 CURRENT_SI_TARGETS_FILE = Path(__file__).with_name('mobile-si-2s-routes.json')
+ENGINEERING_ROUTES = frozenset({'/engineering-automation/', '/en/engineering-automation/'})
 CONTROLLER = Path(__file__).with_name('deferred-mobile-media-controller.js')
 SCRIPT_MARKER = 'data-piskor-deferred-media-controller'
 PICTURE_MARKER = 'data-piskor-deferred-media'
@@ -167,7 +168,7 @@ def target_routes():
     media_top10 = top10_target_routes() - {'/', '/en/'}
     current_media = current_si_target_routes() - {'/', '/en/'}
     return (_base_target_routes() | followup_target_routes() | media_top10 |
-            high_si_target_routes() | current_media)
+            high_si_target_routes() | current_media | ENGINEERING_ROUTES)
 
 
 def lcp_target_routes():
@@ -196,7 +197,7 @@ def _route_for_page(output, page):
 
 
 class _Pictures(HTMLParser):
-    def __init__(self, html):
+    def __init__(self, html, engineering=False):
         super().__init__(convert_charrefs=False)
         self.html = html
         self.lines = [0]
@@ -205,6 +206,7 @@ class _Pictures(HTMLParser):
         self.stack = []
         self.current = None
         self.spans = []
+        self.engineering = engineering
 
     def _offset(self):
         line, column = self.getpos()
@@ -216,17 +218,22 @@ class _Pictures(HTMLParser):
         if tag == 'picture':
             gallery = any(names & {'gallery-grid', 'case-images'} for _, names in self.stack)
             catalog = any('portfolio-card-image' in names for _, names in self.stack)
-            if gallery or catalog:
+            if gallery or catalog or self.engineering:
                 if self.current is not None:
                     raise ValueError('Nested image pictures are unsupported')
-                self.current = {'start': self._offset(), 'kind': 'gallery' if gallery else 'catalog'}
+                kind = 'gallery' if gallery else 'catalog' if catalog else 'candidate'
+                self.current = {'start': self._offset(), 'kind': kind}
+        if (tag == 'img' and self.engineering and self.current is not None
+                and 'data-engineering-photo' in attrs):
+            self.current['kind'] = 'engineering'
         if tag not in VOID:
             self.stack.append((tag, classes))
 
     def handle_endtag(self, tag):
         if tag == 'picture' and self.current is not None:
             end = self.html.index('>', self._offset()) + 1
-            self.spans.append((self.current['start'], end, self.current['kind']))
+            if self.current['kind'] != 'candidate':
+                self.spans.append((self.current['start'], end, self.current['kind']))
             self.current = None
         if tag not in VOID:
             if not self.stack or self.stack[-1][0] != tag:
@@ -234,8 +241,8 @@ class _Pictures(HTMLParser):
             self.stack.pop()
 
 
-def _picture_spans(html):
-    parser = _Pictures(html)
+def _picture_spans(html, engineering=False):
+    parser = _Pictures(html, engineering)
     parser.feed(html)
     parser.close()
     if parser.current is not None or parser.stack:
@@ -326,14 +333,14 @@ def _validate_redirect_alias(html, route):
 def transform_page(html, controller, route=None):
     if SCRIPT_MARKER in html or PICTURE_MARKER in html:
         raise ValueError('Page already contains deferred-media markers')
-    spans = _picture_spans(html)
+    spans = _picture_spans(html, engineering=route in ENGINEERING_ROUTES)
     selected = []
     for start, end, kind in spans:
         original = html[start:end]
-        image, attrs = _picture_img(original, require_lazy=(kind == 'gallery'))
+        image, attrs = _picture_img(original, require_lazy=(kind != 'catalog'))
         # The first catalog cover is eager; all other lazy cards can wait until
         # they approach the viewport. Every story-gallery image is lazy.
-        if kind == 'gallery' or attrs.get('loading') == 'lazy':
+        if kind in {'gallery', 'engineering'} or attrs.get('loading') == 'lazy':
             selected.append((start, end, original, kind))
     if not selected and route and _validate_redirect_alias(html, route):
         return html, 0

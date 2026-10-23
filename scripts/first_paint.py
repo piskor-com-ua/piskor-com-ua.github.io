@@ -50,6 +50,7 @@ SCOPED_CONTROLLER_SHA256 = {
     'agent-tools.js': 'df7313413ea89c038d733102cb2b0d09e2547c51294d1a98d18170ec3de11d72',
     'portfolio.js': '82ceee047af3508289a0dba2b353d13691210f7e538b66bc75f022e1ce699290',
     'url-compat.js': '9c74c56d65c26cc6499daa6d12a1714a1307cce2b94743a7469a91171623efa0',
+    'engineering-automation.js': '3f422e22c43867c8b81069f5fed725ed48052cde9cbbc1867bca6fa270195079',
 }
 
 
@@ -91,12 +92,16 @@ def _scoped_style_classes(output, page):
     parser.feed(page.read_text())
     if parser.current is not None:
         return None
+    allowed_controllers = set(SCOPED_STYLE_CONTROLLERS)
+    if page.relative_to(output).as_posix() in {
+            'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+        allowed_controllers.add('engineering-automation.js')
     for attrs, parts in parser.scripts:
         body = ''.join(parts)
         if 'src' in attrs:
             url = urlsplit(attrs['src'])
             if (url.scheme or url.netloc or url.path not in
-                    {'/' + name for name in SCOPED_STYLE_CONTROLLERS}):
+                    {'/' + name for name in allowed_controllers}):
                 return None
             if not _reviewed_style_controller(output, url.path.lstrip('/')):
                 return None
@@ -285,6 +290,11 @@ def inline_page_styles(output):
                 # template link to a style would leave enhancement unstyled.
                 if family != 'home' or deferred[1] != 'automation' or parsed.path != '/automation.css':
                     raise ValueError('Unsupported deferred homepage stylesheet: ' + href[1])
+                return match[0]
+            if re.search(r'\bdata-engineering-deferred-style\b', match[0], re.I):
+                if family != 'engineering' or parsed.path != '/engineering-story.css':
+                    raise ValueError('Unsupported deferred engineering stylesheet: ' + href[1])
+                # Keep the native stylesheet fallback when JavaScript is off.
                 return match[0]
             key = (scope, target)
             if key not in cache:

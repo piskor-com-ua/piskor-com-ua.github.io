@@ -588,7 +588,8 @@ def prepare_public_assets(output):
         width, height = dimensions(reference)
         target = output / reference.split('?')[0].split('#')[0].lstrip('/')
         cover = namespace in {'case-cover', 'case-cover/catalog'}
-        quality = 50 if cover else 45 if namespace == 'home-media' and crop else 60
+        quality = (38 if namespace == 'engineering-hero' else 50 if namespace == 'engineering-scene' else
+                   50 if cover else 45 if namespace == 'home-media' and crop else 60)
         recipe = f'responsive-avif-v1:pillow-{PILLOW_VERSION}:quality-{quality}:speed-6:threads-2'
         if crop:
             if not (0 <= crop[0] < crop[2] <= width and 0 <= crop[1] < crop[3] <= height):
@@ -609,6 +610,8 @@ def prepare_public_assets(output):
         original = None
         # Retain a full-native candidate for high-DPR phones; never upscale.
         widths = ((width,) if crop else (960, 1280, 1440, width)) if namespace == 'home-media' else (640, 960, 1440, 2200, width)
+        if namespace == 'engineering-hero':
+            widths += (1280,)
         if cover:
             widths += (768,)
         for size in sorted({min(width, size) for size in widths}):
@@ -704,6 +707,21 @@ def prepare_public_assets(output):
                 for url, descriptor in entries:
                     unique.setdefault(descriptor, url)
                 markup = attribute(markup, 'srcset', ', '.join(url + ' ' + d for d, url in unique.items()))
+            if 'data-engineering-hero' in attrs or 'data-engineering-frame' in attrs:
+                if page.relative_to(output).as_posix() not in {
+                        'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+                    raise ValueError('Engineering hero profile outside the approved service routes')
+                references = [entry.strip().split()[0] for entry in attrs['srcset'].split(',')]
+                largest = max(references, key=lambda url: dimensions(url)[0])
+                variants = avif_variants(largest, 'engineering-hero' if 'data-engineering-hero' in attrs else 'engineering-scene')
+                srcset = escape(', '.join(url + ' ' + str(size) + 'w' for url, size in variants), quote=True)
+                sizes = escape(attrs['sizes'], quote=True)
+                markup = ('<picture><source type="image/avif" srcset="' + srcset +
+                          '" sizes="' + sizes + '">' + markup + '</picture>')
+                if 'data-engineering-hero' in attrs:
+                    cover_preload = ('<link rel="preload" as="image" type="image/avif" imagesrcset="' +
+                                     srcset + '" imagesizes="' + sizes +
+                                     '" fetchpriority="high" data-engineering-hero-preload>')
             context = case_contexts.get(match.start())
             if context:
                 references = [source]

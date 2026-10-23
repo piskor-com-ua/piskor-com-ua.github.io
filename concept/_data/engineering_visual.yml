@@ -1,0 +1,126 @@
+uk:
+  title: Відчуйте,<br><span>як дім реагує.</span>
+  intro: Світло для відпочинку. Тепло до вашого повернення. Менше звичних перевірок перед виходом. Проєктуємо автоматизацію навколо того, як ви живете.
+  explore: Спробувати керування
+  watch: Побачити світло в дії
+  area_photo_note: Простір для цього рішення
+  scenes_label: Сценарії щоденного життя
+  scenes_title: Що змінюється<br>однією дією?
+  scenes_intro: Оберіть момент дня й подивіться, як можуть взаємодіяти системи. Це приклади для обговорення вашого проєкту, а не пульт керування будинком.
+  scene_legend: Оберіть приклад сценарію
+  scene_note: Приклад сценарію
+  scenes:
+    - id: morning
+      label: Ранок
+      title: Прокидатися без поспіху.
+      text: Світло біля ліжка м’яко виводить спальню з нічного режиму. Опалення переходить на погоджене ранкове налаштування, а потрібні групи світла об’єднані в одну дію.
+      image: /assets/portfolio/briukhovychi-house/bedroom
+      alt: Спальня будинку у Брюховичах із м’яким узголів’ям і локальним освітленням
+      room: Спальня · Будинок у Брюховичах
+      systems: [{label: Світло, value: Делікатне пробудження}, {label: Опалення, value: Ранковий режим кімнати}, {label: Керування, value: Один сценарій біля ліжка}]
+    - id: evening
+      label: Вечір
+      title: Залишити день за дверима.
+      text: Загальне світло поступається локальним акцентам. Штори додають приватності, а клімат підтримує погоджений режим відпочинку.
+      image: /assets/portfolio/briukhovychi-house/living-detail
+      alt: Вітальня з теракотовим кріслом, диваном і шарами декоративного світла
+      room: Вітальня · Будинок у Брюховичах
+      systems: [{label: Світло, value: Акценти для відпочинку}, {label: Штори, value: Приватність увечері}, {label: Клімат, value: Комфорт у спільній зоні}]
+    - id: away
+      label: Поза домом
+      title: Вийти й не перевіряти кожну кімнату.
+      text: Погоджені групи світла вимикаються, опалення переходить у режим відсутності. Охорону й контроль води можна включити до сценарію за сумісного обладнання.
+      image: /assets/portfolio/briukhovychi-house/entrance
+      alt: Передпокій будинку з дзеркалом, консольними меблями та вхідними дверима
+      room: Передпокій · Будинок у Брюховичах
+      systems: [{label: Освітлення, value: Вимкнути погоджені групи}, {label: Опалення, value: Режим відсутності}, {label: Захист, value: Перевірка станів перед виходом}]
+  approach_title: Технології працюють.<br>Інтер’єр залишається вашим.
+  approach: Сценарії починаються з ваших звичок, а не з переліку гаджетів. Ми узгоджуємо керування з плануванням, електрикою та обладнанням. Звичайні вимикачі й ручний резервний спосіб залишаються частиною рішення.
+  areas_title: Комфорт складається<br>з узгоджених деталей.
+  areas_intro: Від світла над столом до захисту води. Добираємо потрібні функції під простір і бюджет, перевіряємо сумісність та визначаємо межі керування.
+  areas:
+    - {tag: Освітлення, title: Світло під заняття, text: 'Окремі групи, димування та сцени для роботи, вечері чи відпочинку. Датчики присутності й денного світла додаємо там, де вони справді корисні.', image: /assets/portfolio/briukhovychi-house/living-detail, alt: Локальне й контурне освітлення у вітальні}
+    - {tag: Клімат, title: Власний клімат у кожній зоні, text: 'Узгоджуємо опалення, теплу підлогу, кондиціонування та вентиляцію. Кімнати можуть мати різні режими відповідно до користування.', image: /assets/portfolio/briukhovychi-house/bedroom, alt: Приватна спальня як окрема зона комфорту}
+    - {tag: Штори, title: Денне світло й приватність, text: 'Штори та ролети можуть працювати разом зі світлом. Узгоджуємо приводи, спосіб керування й ручний резервний режим.', image: /assets/portfolio/briukhovychi-house/living, alt: Великі вікна й штори у спільному просторі будинку}
+    - {tag: Безпека та вода, title: Спокій перед виходом, text: 'Перевірка доступів, охорона, датчики диму, газу чи протікання та перекриття води. Склад захисту визначаємо окремим технічним завданням.', image: /assets/portfolio/briukhovychi-house/entrance, alt: Вхідна зона будинку зі зберіганням біля дверей}
+    - {tag: Зовнішні системи, title: Зручність за порогом, text: 'Освітлення підходів і тераси, ворота та зовнішні системи можна включити до спільного керування з перевіркою безпечних станів.', image: /assets/portfolio/briukhovychi-house/garden, alt: Подвір’я з басейном і вечірнім освітленням огорожі та саду}
+    - {tag: Енергія та побут, title: Контроль без зайвих дій, text: 'Сценарії «вдома» й «усе вимкнути», контроль погоджених навантажень та взаємодія з побутовою технікою, якщо її підтримують вибрані пристрої.', image: /assets/portfolio/briukhovychi-house/kitchen, alt: Кухня з інтегрованою побутовою технікою}
+  areas_note: Інтер’єри й подвір’я на зображеннях належать будинку у Брюховичах. Розділи пояснюють можливий склад послуги; конкретне обладнання й функції погоджуємо для кожного об’єкта.
+  video_eyebrow: Побачити різницю
+  video_title: Світло змінює кімнату.<br>Меблі залишаються на місці.
+  video_text: У відеовізуалізації дворівневої квартири світло розкриває нішу, напис над ліжком і відкриті полиці. Подивіться, як послідовність акцентів змінює атмосферу спальні.
+  video_alt: Відеовізуалізація зміни освітлення фіолетової спальні
+  video_caption: Дворівневий лофт у Львові · Проєктна відеовізуалізація, не запис встановленої системи
+  video_link: Повна історія квартири
+  proof_title: У кожного простору<br>свій сценарій.
+  proof_intro: Два приклади з портфоліо показують різні етапи роботи з автоматизацією.
+  proof_link: Переглянути кейс
+  projects:
+    - {path: /portfolio/2026/briukhovychi-house/, image: /assets/portfolio/briukhovychi-house/living, alt: Світла вітальня будинку з wellness-зоною у Брюховичах, label: Реалізований інтер’єр та автоматизація, title: Будинок із wellness-зоною, text: 'Освітлення, клімат, штори й захист у щоденних сценаріях великого будинку.'}
+    - {path: /portfolio/2021/two-level-loft-lviv/, image: /assets/portfolio/bedroom-lighting-automation/violet-bedroom, alt: Фіолетова спальня з написом і підвісним кріслом, label: Дизайн та світлова відеовізуалізація, title: Дворівневий лофт у Львові, text: Особистий характер кімнат і проєктний світловий сценарій однієї зі спалень.}
+  contact_title: Яким має бути<br>ваш звичайний день?
+  contact_text: Розкажіть, що хочете спростити вдома чи в робочому просторі. Почнемо з кількох щоденних ситуацій і визначимо потрібний склад проєкту.
+  contact_link: Обговорити мій простір
+en:
+  title: Feel your home<br><span>respond.</span>
+  intro: Light for winding down. A warm home when you return. Fewer checks before you leave. We design automation around the way you live.
+  explore: Try the controls
+  watch: See light in action
+  area_photo_note: The space behind the solution
+  scenes_label: Everyday routines
+  scenes_title: What changes<br>with one action?
+  scenes_intro: Choose a moment of the day to explore how systems can work together. These are examples for your brief, not a live home control panel.
+  scene_legend: Choose an example routine
+  scene_note: Example routine
+  scenes:
+    - id: morning
+      label: Morning
+      title: An unhurried start.
+      text: Light beside the bed gently brings the bedroom out of its night setting. Heating moves to an agreed morning setpoint, and the lighting groups you need are combined in one action.
+      image: /assets/portfolio/briukhovychi-house/bedroom
+      alt: Briukhovychi bedroom with a soft headboard and local lighting
+      room: Bedroom · Briukhovychi house
+      systems: [{label: Lighting, value: A gentle start}, {label: Heating, value: The room’s morning setting}, {label: Controls, value: One scene beside the bed}]
+    - id: evening
+      label: Evening
+      title: Leave the day at the door.
+      text: General lighting gives way to local accents. Curtains add privacy while climate control maintains the agreed setting for rest.
+      image: /assets/portfolio/briukhovychi-house/living-detail
+      alt: Living room with a terracotta chair, sofa and layered decorative lighting
+      room: Living room · Briukhovychi house
+      systems: [{label: Lighting, value: Accents for relaxation}, {label: Curtains, value: Evening privacy}, {label: Climate, value: Comfort in the shared space}]
+    - id: away
+      label: Away
+      title: Leave without checking every room.
+      text: Agreed lighting groups switch off and heating moves into an away setting. Security and water protection can join the routine with compatible equipment.
+      image: /assets/portfolio/briukhovychi-house/entrance
+      alt: House entrance hall with a mirror, console furniture and entrance doors
+      room: Entrance hall · Briukhovychi house
+      systems: [{label: Lighting, value: Switch off agreed groups}, {label: Heating, value: Away setting}, {label: Protection, value: Check states before leaving}]
+  approach_title: Technology at work.<br>Your interior stays yours.
+  approach: We start with your habits, not a device list. Controls are coordinated with the layout, electrical design and equipment. Familiar switches and a manual fallback remain part of the solution.
+  areas_title: Comfort comes from<br>details working together.
+  areas_intro: From light above the table to water protection. We choose functions around the space and budget, check compatibility and agree what each control should do.
+  areas:
+    - {tag: Lighting, title: Light for what you do, text: 'Separate groups, dimming and scenes for work, dinner or rest. Presence and daylight sensors belong where they add real value.', image: /assets/portfolio/briukhovychi-house/living-detail, alt: Local and perimeter lighting in the living room}
+    - {tag: Climate, title: Comfort room by room, text: 'We coordinate heating, underfloor heating, cooling and ventilation. Rooms can follow different settings according to how you use them.', image: /assets/portfolio/briukhovychi-house/bedroom, alt: Private bedroom as a separate comfort zone}
+    - {tag: Shading, title: Daylight and privacy, text: 'Curtains and blinds can work alongside lighting. We agree drives, controls and a manual fallback.', image: /assets/portfolio/briukhovychi-house/living, alt: Large windows and curtains in the shared living area}
+    - {tag: Safety and water, title: Peace of mind before you leave, text: 'Access checks, alarms, smoke, gas or leak detection and water shut-off. The scope of protection follows a separate technical brief.', image: /assets/portfolio/briukhovychi-house/entrance, alt: House entrance with storage beside the door}
+    - {tag: Outdoor systems, title: Convenience beyond the door, text: 'Approach and terrace lighting, gates and outdoor systems can share controls, with safe operating states checked in the design.', image: /assets/portfolio/briukhovychi-house/garden, alt: Garden and pool with evening lighting along the boundary and planting}
+    - {tag: Energy and daily routines, title: Fewer routine checks, text: 'Home and all-off modes, control of agreed loads and connections to household appliances where the chosen devices support them.', image: /assets/portfolio/briukhovychi-house/kitchen, alt: Kitchen with integrated household appliances}
+  areas_note: The interiors and garden shown belong to the Briukhovychi house. These sections explain possible service areas; specific equipment and functions are agreed for each property.
+  video_eyebrow: See the difference
+  video_title: Light changes the room.<br>The furniture stays put.
+  video_text: In the duplex apartment visualisation, light reveals the recess, statement above the bed and open shelves. Watch how the sequence of accents changes the bedroom’s atmosphere.
+  video_alt: Video visualisation of lighting changes in the violet bedroom
+  video_caption: Two-level loft in Lviv · Design visualisation, not a recording of an installed system
+  video_link: Explore the apartment story
+  proof_title: Each space has<br>its own routine.
+  proof_intro: Two portfolio examples show different stages of working with automation.
+  proof_link: Explore the case
+  projects:
+    - {path: /en/portfolio/2026/briukhovychi-house/, image: /assets/portfolio/briukhovychi-house/living, alt: Bright living room in the Briukhovychi house with a wellness area, label: Completed interior and automation, title: House with a wellness area, text: 'Lighting, climate, shading and protection within a large home’s daily routines.'}
+    - {path: /en/portfolio/2021/two-level-loft-lviv/, image: /assets/portfolio/bedroom-lighting-automation/violet-bedroom, alt: Violet bedroom with a statement and hanging chair, label: Interior design and lighting visualisation, title: A two-level loft in Lviv, text: Rooms with individual character and a designed lighting sequence for one bedroom.}
+  contact_title: What should your<br>ordinary day feel like?
+  contact_text: Tell us what you want to make easier at home or at work. We will start with a few daily situations and define the right design scope.
+  contact_link: Discuss my space

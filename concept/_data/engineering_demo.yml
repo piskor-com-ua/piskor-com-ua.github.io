@@ -1,0 +1,88 @@
+frames:
+  - {id: living-day, image: /assets/engineering-demo/living-day}
+  - {id: living-evening, image: /assets/engineering-demo/living-evening}
+  - {id: living-curtains-closed, image: /assets/engineering-demo/living-curtains-closed}
+  - {id: living-door-open, image: /assets/engineering-demo/living-door-open}
+  - {id: heating-detail, image: /assets/engineering-demo/heating-detail}
+  - {id: gate-closed, image: /assets/engineering-demo/gate-closed}
+  - {id: gate-open, image: /assets/engineering-demo/gate-open}
+uk:
+  choose_system: Оберіть, що змінити
+  stage_label: Інтерактивна візуалізація автоматизації
+  loading: Завантажуємо обраний стан…
+  error: Не вдалося завантажити цей стан. Оновіть сторінку й спробуйте знову.
+  temperature: Бажана температура
+  systems:
+    - id: lighting
+      label: Світло
+      title: Інший настрій тієї самої кімнати.
+      text: Перейдіть від денного світла до м’якого вечірнього освітлення.
+      states: [{id: day, label: День, frame: living-day}, {id: evening, label: Вечір, frame: living-evening}]
+    - id: shading
+      label: Штори
+      title: Світло або приватність — ваш вибір.
+      text: Відкрийте вид на сад або закрийте штори. Зміна відбудеться у візуалізації.
+      states: [{id: open, label: Відкрити, frame: living-day}, {id: closed, label: Закрити, frame: living-curtains-closed}]
+    - id: heating
+      label: Опалення
+      title: Тепло під ваш ритм.
+      text: Змініть бажану температуру — значення відобразиться на настінному термостаті.
+      states: [{id: comfort, label: Комфорт · 22°C, frame: heating-detail, temperature: 22}, {id: eco, label: Еко · 18°C, frame: heating-detail, temperature: 18}]
+    - id: doors
+      label: Двері
+      title: Простір зустрічає вас.
+      text: Порівняйте відчинений і зачинений вхід у тому самому інтер’єрі.
+      states: [{id: closed, label: Зачинити, frame: living-day}, {id: open, label: Відчинити, frame: living-door-open}]
+    - id: gates
+      label: Ворота
+      title: Зручний в’їзд додому.
+      text: Відчиніть ворота й побачте відкритий шлях до будинку.
+      states: [{id: closed, label: Зачинити, frame: gate-closed}, {id: open, label: Відчинити, frame: gate-open}]
+  alts:
+    living-day: Демонстраційна вітальня вдень із відкритими шторами й зачиненими дубовими дверима
+    living-evening: Та сама вітальня ввечері з увімкненим контурним світлом і лампою біля дивана
+    living-curtains-closed: Та сама вітальня із закритими шторами перед садовим вікном
+    living-door-open: Та сама вітальня з відчиненими дубовими дверима у передпокій
+    heating-detail: Настінний термостат на тлі світлого інтер’єру
+    gate-closed: Демонстраційний в’їзд до будинку із зачиненими воротами
+    gate-open: Той самий в’їзд із відчиненими стулками воріт
+en:
+  choose_system: Choose what to change
+  stage_label: Interactive automation visualisation
+  loading: Loading your chosen scene…
+  error: This scene could not load. Please reload the page and try again.
+  temperature: Target temperature
+  systems:
+    - id: lighting
+      label: Lighting
+      title: A different mood in the same room.
+      text: Move from daylight to soft, layered evening lighting.
+      states: [{id: day, label: Day, frame: living-day}, {id: evening, label: Evening, frame: living-evening}]
+    - id: shading
+      label: Curtains
+      title: Daylight or privacy. Your choice.
+      text: Open the garden view or close the curtains. See the change in the room itself.
+      states: [{id: open, label: Open, frame: living-day}, {id: closed, label: Close, frame: living-curtains-closed}]
+    - id: heating
+      label: Heating
+      title: Warmth that follows your routine.
+      text: Change the target temperature and watch the wall thermostat update.
+      states: [{id: comfort, label: Comfort · 22°C, frame: heating-detail, temperature: 22}, {id: eco, label: Eco · 18°C, frame: heating-detail, temperature: 18}]
+    - id: doors
+      label: Doors
+      title: A welcoming way in.
+      text: Compare the open and closed entrance in the same interior.
+      states: [{id: closed, label: Close, frame: living-day}, {id: open, label: Open, frame: living-door-open}]
+    - id: gates
+      label: Gates
+      title: An easy arrival home.
+      text: Open the gates to reveal the driveway leading to the house.
+      states: [{id: closed, label: Close, frame: gate-closed}, {id: open, label: Open, frame: gate-open}]
+  alts:
+    living-day: Demonstration living room in daylight with open curtains and a closed oak entrance door
+    living-evening: The same room in the evening with cove lighting and the reading lamp switched on
+    living-curtains-closed: The same living room with the curtains drawn across the garden window
+    living-door-open: The same living room with the oak door open to the entrance hall
+    heating-detail: Wall thermostat against a bright contemporary interior
+    gate-closed: Demonstration house entrance with closed driveway gates
+    gate-open: The same entrance with the driveway gates open

@@ -26,6 +26,79 @@ class PublicAssetsTest(unittest.TestCase):
         (self.output / '.nojekyll').touch()
         (self.output / 'assets').mkdir()
 
+    def test_engineering_hero_uses_matching_avif_preload_and_keeps_webp_fallback(self):
+        for size in (640, 1440, 2200):
+            Image.new('RGB', (size, size // 2), '#806e55').save(self.output / f'assets/room-{size}.webp')
+        original = (self.output / 'assets/room-2200.webp').read_bytes()
+        markup = ('<head><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+                  '<img src="/assets/room-1440.webp" srcset="/assets/room-640.webp 640w, '
+                  '/assets/room-1440.webp 1440w, /assets/room-2200.webp 2200w" '
+                  'sizes="max(821px,48vw)" loading="eager" fetchpriority="high" data-engineering-hero>')
+        pages = [self.output / route / 'index.html' for route in ('engineering-automation', 'en/engineering-automation')]
+        for page in pages:
+            page.parent.mkdir(parents=True)
+            page.write_text(markup)
+        prepare_public_assets(self.output)
+        fingerprint_resources(self.output)
+        for page in pages:
+            root = Document(page.read_text()).root
+            preload = root.find(lambda n: n.tag == 'link' and 'data-engineering-hero-preload' in n.attrs)[0].attrs
+            source = root.find(lambda n: n.tag == 'source')[0].attrs
+            fallback = root.find(lambda n: n.tag == 'img')[0].attrs
+            self.assertEqual(preload['imagesrcset'], source['srcset'])
+            self.assertEqual(preload['imagesizes'], source['sizes'])
+            self.assertNotIn('media', source)
+            self.assertEqual(source['type'], 'image/avif')
+            self.assertEqual(fallback['src'].split('?')[0], '/assets/room-1440.webp')
+            for entry in source['srcset'].split(','):
+                url, descriptor = entry.strip().split()
+                with Image.open(self.output / url.split('?')[0].lstrip('/')) as image:
+                    self.assertEqual(image.width, int(descriptor[:-1]))
+        self.assertEqual((self.output / 'assets/room-2200.webp').read_bytes(), original)
+        (self.output / 'index.html').write_text(markup)
+        with self.assertRaisesRegex(ValueError, 'outside the approved service routes'):
+            prepare_public_assets(self.output)
+
+    def test_engineering_secondary_frames_are_lazy_avif_without_extra_preloads(self):
+        for size in (640, 1440, 1536):
+            Image.new('RGB', (size, size * 2 // 3), '#806e55').save(self.output / f'assets/scene-{size}.webp')
+        original = (self.output / 'assets/scene-1536.webp').read_bytes()
+        head = '<head><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+        image = ('<img src="/assets/scene-1440.webp" srcset="/assets/scene-640.webp 640w, '
+                 '/assets/scene-1440.webp 1440w, /assets/scene-1536.webp 1536w" '
+                 'sizes="(max-width:700px) calc(100vw - 48px),91vw" alt="Same room">')
+        markup = (head + image.replace('alt=', 'loading="eager" fetchpriority="high" data-engineering-hero alt=')
+                  + image.replace('alt=', 'loading="lazy" decoding="async" data-engineering-frame alt='))
+        pages = [self.output / route / 'index.html' for route in ('engineering-automation', 'en/engineering-automation')]
+        for page in pages:
+            page.parent.mkdir(parents=True)
+            page.write_text(markup)
+        prepare_public_assets(self.output)
+        fingerprint_resources(self.output)
+        for page in pages:
+            root = Document(page.read_text()).root
+            self.assertEqual(len(root.find(lambda n: n.tag == 'link' and n.attrs.get('as') == 'image')), 1)
+            pictures = root.find(lambda n: n.tag == 'picture')
+            self.assertEqual(len(pictures), 2)
+            secondary = pictures[1]
+            source = secondary.find(lambda n: n.tag == 'source')[0].attrs
+            fallback = secondary.find(lambda n: n.tag == 'img')[0].attrs
+            self.assertIn('/engineering-scene/', source['srcset'])
+            self.assertEqual((fallback['loading'], fallback['decoding']), ('lazy', 'async'))
+            self.assertNotIn('fetchpriority', fallback)
+            self.assertEqual(source['type'], 'image/avif')
+            self.assertEqual(source['sizes'], fallback['sizes'])
+            for entry in source['srcset'].split(','):
+                url, width = entry.strip().split()
+                with Image.open(self.output / url.split('?')[0].lstrip('/')) as encoded:
+                    self.assertEqual(encoded.width, int(width[:-1]))
+                    self.assertLessEqual(encoded.width, 1536)
+                    self.assertAlmostEqual(encoded.width / encoded.height, 1.5, places=2)
+        self.assertEqual((self.output / 'assets/scene-1536.webp').read_bytes(), original)
+        (self.output / 'index.html').write_text(head + image.replace('alt=', 'data-engineering-frame alt='))
+        with self.assertRaisesRegex(ValueError, 'outside the approved service routes'):
+            prepare_public_assets(self.output)
+
     def test_actual_sizes_responsive_candidates_and_source_preservation(self):
         image = self.output / 'assets/cover-1440.webp'
         Image.new('RGB', (1080, 810), '#258878').save(image)

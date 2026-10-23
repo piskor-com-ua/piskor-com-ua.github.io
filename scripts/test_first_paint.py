@@ -236,6 +236,53 @@ class FirstPaintTests(unittest.TestCase):
             self.assertIn('.engineering-page{color:green}', html)
             self.assertNotIn('.other-route', html)
 
+    def test_engineering_secondary_style_retains_native_and_no_script_delivery(self):
+        (self.root / 'engineering-story.css').write_text('.engineering-area[open]{color:green}')
+        page = self.root / 'engineering-automation/index.html'
+        page.parent.mkdir(parents=True)
+        markup = ('<link rel="preload" as="style" href="/engineering-story.css" fetchpriority="low" '
+                  'onload="this.onload=null;this.rel=\'stylesheet\'" data-engineering-deferred-style>'
+                  '<noscript><link rel="stylesheet" href="/engineering-story.css" data-engineering-deferred-style></noscript>'
+                  '<body class="engineering-page">Service</body>')
+        page.write_text(markup)
+        inline_page_styles(self.root)
+        self.assertEqual(page.read_text(), markup)
+        unrelated = self.root / 'index.html'
+        unrelated.write_text(markup)
+        with self.assertRaisesRegex(ValueError, 'Unsupported deferred engineering'):
+            inline_page_styles(self.root)
+
+    def test_engineering_controller_preserves_all_photo_states_only_on_reviewed_routes(self):
+        controller = Path('concept/engineering-automation.js').read_bytes()
+        (self.root / 'engineering-automation.js').write_bytes(controller)
+        selectors = ('.is-active', '.is-preparing', '.is-retiring', '.is-eco', '.is-enhanced')
+        css = '.engineering-page{color:green}' + ''.join(selector + '{color:red}' for selector in selectors)
+        css += '.unrelated-page{color:blue}'
+        (self.root / 'shared.css').write_text(css)
+        markup = ('<link rel="stylesheet" href="/shared.css">'
+                  '<script src="/engineering-automation.js" defer></script>'
+                  '<body class="engineering-page">Photo demo</body>')
+        for route in ('engineering-automation/index.html', 'en/engineering-automation/index.html'):
+            page = self.root / route
+            page.parent.mkdir(parents=True)
+            page.write_text(markup)
+        inline_page_styles(self.root)
+        for page in self.root.glob('**/engineering-automation/index.html'):
+            for selector in selectors:
+                self.assertIn(selector + '{color:red}', page.read_text())
+            self.assertNotIn('.unrelated-page', page.read_text())
+        # A changed/unreviewed controller must fail closed rather than prune
+        # classes whose future mutations cannot be inferred from the old code.
+        (self.root / 'engineering-automation.js').write_bytes(controller + b'\nelement.className = computedName;')
+        page.write_text(markup)
+        inline_page_styles(self.root)
+        self.assertIn(css, page.read_text())
+        # Service-specific approval must not silently apply to case pages.
+        (self.root / 'engineering-automation.js').write_bytes(controller)
+        unrelated = self.scoped_case('<script src="/engineering-automation.js" defer></script>')
+        inline_page_styles(self.root)
+        self.assertIn(css, unrelated.read_text())
+
     def test_case_scope_preserves_shared_controllers_consent_and_native_dialog_states(self):
         for name in ('analytics-consent.js', 'portfolio.js', 'agent-tools.js', 'url-compat.js'):
             (self.root / name).write_bytes((Path('concept') / name).read_bytes())

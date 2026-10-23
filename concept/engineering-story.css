@@ -1,0 +1,99 @@
+.engineering-routines,.engineering-principle,.engineering-areas,.engineering-film,.engineering-process,.engineering-proof,.engineering-contact{padding:90px var(--pad);border-top:1px solid var(--line)}
+.engineering-section-head{align-items:end;margin-bottom:44px}
+.engineering-section-head .eyebrow,.engineering-contact>.eyebrow{margin-bottom:22px}
+.engineering-section-head h2,.engineering-principle h2,.engineering-contact h2{font-size:clamp(34px,4.3vw,64px);line-height:1.1;letter-spacing:-.04em}
+.engineering-section-head>p,.engineering-section-head>div>p:not(.eyebrow),.engineering-principle>div>p,.engineering-contact-row>p{color:#c3ceca;font-size:16px;line-height:1.8;max-width:610px}
+.engineering-routines{background:#eeeee7;color:#16232a}
+.engineering-routines .engineering-section-head>p{color:#40544f}
+.engineering-routines .eyebrow{color:#326c5f}
+.engineering-scenes{min-width:0;border:0;padding:0;margin:0}
+.engineering-scene-picker{display:flex;width:fit-content;max-width:100%;border:1px solid #b5c3ba;margin-bottom:30px;padding:5px;gap:5px}
+.engineering-scene-picker label{cursor:pointer;padding:13px 24px;color:#334c43;font-size:14px;border:1px solid transparent;transition:background .2s,color .2s}
+.engineering-scene-picker label:hover{background:#dce4dc}
+.engineering-scene-picker input:checked+label{background:#203932;color:#fff;border-color:#203932}
+.engineering-scene-picker input:focus-visible+label{outline:2px solid #326c5f;outline-offset:2px}
+.engineering-scene-panel{align-items:center;margin:0 0 36px}
+.engineering-scene-panel figure{position:relative;height:500px}
+.engineering-scene-panel img{object-position:center}
+.engineering-scene-panel figcaption{position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:#16232a;color:#fff;font-size:11px}
+.engineering-scene-copy h3{font-size:clamp(30px,3.4vw,49px);line-height:1.16;letter-spacing:-.03em;margin:18px 0}
+.engineering-scene-copy>p:not(.eyebrow){color:#40544f;font-size:15px;line-height:1.8}
+.engineering-scene-copy dl{margin-top:28px}
+.engineering-scene-copy dl>div{display:grid;grid-template-columns:1fr 1.5fr;gap:18px;padding:15px 0;border-top:1px solid #b5c3ba;font-size:13px}
+.engineering-scene-copy dt{color:#40544f}
+.engineering-scene-copy dd{margin:0;color:#16232a}
+@supports selector(:has(input:checked)){.engineering-scenes:has(input:checked) .engineering-scene-panel{display:none;margin-bottom:0}
+.engineering-scenes:has(#mode-morning:checked) #scene-morning,.engineering-scenes:has(#mode-evening:checked) #scene-evening,.engineering-scenes:has(#mode-away:checked) #scene-away{display:grid}}
+.engineering-principle{align-items:start;background:#23352f}
+.engineering-principle>.eyebrow{padding-top:10px}
+.engineering-principle>div>p{margin-top:26px}
+.engineering-areas{background:var(--deep)}
+.engineering-area-explorer{position:relative;min-height:600px;padding-right:calc(50% + var(--portfolio-gap)/2)}
+.engineering-area{border-top:1px solid #597068}
+.engineering-area:last-child{border-bottom:1px solid #597068}
+.engineering-area summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 0;font-size:clamp(20px,2.3vw,33px);letter-spacing:-.025em;cursor:pointer}
+.engineering-area summary::-webkit-details-marker{display:none}
+.engineering-area summary:hover,.engineering-area[open] summary{color:#bce1ce}
+.engineering-area-plus{width:18px;height:18px;position:relative;flex:none}
+.engineering-area-plus:before,.engineering-area-plus:after{content:"";position:absolute;background:currentColor;left:0;top:8px;width:18px;height:1px}
+.engineering-area-plus:after{transform:rotate(90deg);transition:transform .2s}
+.engineering-area[open] .engineering-area-plus:after{transform:rotate(0deg)}
+.engineering-area-copy{padding-bottom:23px}
+.engineering-area-copy h3{font-size:22px;font-weight:300;line-height:1.25;margin-bottom:15px}
+.engineering-area-copy p{font-size:14px;line-height:1.8;color:#c3ceca}
+.engineering-area figure{position:absolute;right:0;top:0;width:calc(50% - var(--portfolio-gap)/2);height:100%;min-height:600px;background:#23352f}
+.engineering-area figure img{object-position:center}
+.engineering-area figcaption{position:absolute;bottom:0;left:0;right:0;padding:24px;background:#16232af2;color:#f5f4ef;font-size:12px;line-height:1.6}
+.engineering-area figcaption span{display:block;color:#b7d2c5;font-size:10px;margin-bottom:6px;letter-spacing:.09em;text-transform:uppercase}
+.engineering-media-note{max-width:800px;font-size:12px;line-height:1.8;color:var(--muted);margin-top:30px}
+.engineering-film{background:#1c2b2f}
+.engineering-film .engineering-section-head .text-link{margin-top:15px}
+.engineering-film video{display:block;width:100%;height:auto;aspect-ratio:848/416;max-height:75vh;background:#101617;object-fit:contain}
+.engineering-film figcaption{color:var(--muted);font-size:12px;line-height:1.8;margin-top:16px}
+.engineering-process .engineering-section-head{align-items:start;margin-bottom:0}
+.engineering-steps article{padding:23px 0;border-top:1px solid var(--line)}
+.engineering-steps article:first-child{padding-top:0;border-top:0}
+.engineering-steps h3{font-size:23px;line-height:1.2;font-weight:300;margin:0 0 12px}
+.engineering-steps p{font-size:14px;line-height:1.8;color:#c3ceca}
+.engineering-proof{background:#eeeee7;color:#16232a}
+.engineering-proof .eyebrow{color:#326c5f}
+.engineering-proof .engineering-section-head>p{color:#40544f}
+.engineering-project-link{display:block;border-bottom:1px solid #b5c3ba;height:100%}
+.engineering-project-link figure{height:310px;overflow:hidden}
+.engineering-project-link img{transition:filter .2s;object-position:center 48%}
+.engineering-project-link:hover img{filter:brightness(1.07)}
+.engineering-project-link:focus-visible{outline-color:#326c5f}
+.engineering-project-copy{padding:25px 0 28px}
+.engineering-project-copy .eyebrow{font-size:10px;line-height:1.7}
+.engineering-project-copy h3{font-size:31px;line-height:1.2;font-weight:300;letter-spacing:-.02em;margin:14px 0}
+.engineering-project-copy>p:not(.eyebrow){color:#40544f;font-size:14px;line-height:1.8;max-width:520px}
+.engineering-proof .text-link{color:#203932;border-color:#326c5f;margin-top:15px}
+.engineering-contact h2{max-width:950px}
+.engineering-contact-row{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-top:34px}
+.engineering-contact-row>p{max-width:540px}
+.engineering-contact-row>div{display:grid;gap:20px;justify-items:start}
+.engineering-contact .contact-phone{font-size:clamp(22px,3vw,36px)}
+.engineering-page .footer .text-link{margin-left:auto}
+@media(max-width:1000px){.engineering-contact-row{align-items:start;flex-direction:column}}
+@media(max-width:900px){.engineering-area-explorer{padding-right:0;min-height:0}
+.engineering-area figure{position:relative;width:100%;height:300px;min-height:0;margin-bottom:24px}
+.engineering-area figcaption{padding:16px}
+.engineering-area summary{font-size:27px;padding:22px 0}}
+@media(max-width:700px){.engineering-routines,.engineering-principle,.engineering-areas,.engineering-film,.engineering-process,.engineering-proof,.engineering-contact{padding:56px var(--pad)}
+.engineering-section-head{gap:22px;margin-bottom:30px}
+.engineering-section-head h2,.engineering-principle h2,.engineering-contact h2{font-size:clamp(34px,8.7vw,49px)}
+.engineering-section-head>p,.engineering-section-head>div>p:not(.eyebrow),.engineering-principle>div>p,.engineering-contact-row>p{font-size:15px}
+.engineering-scene-picker{width:100%;padding:4px;gap:3px}
+.engineering-scene-picker label{flex:1;text-align:center;padding:12px 7px;font-size:13px}
+.engineering-scene-panel figure{height:350px}
+.engineering-scene-copy h3{font-size:32px}
+.engineering-scene-copy dl>div{font-size:12px}
+.engineering-principle{gap:20px}
+.engineering-principle>.eyebrow{padding-top:0}
+.engineering-principle>div>p{margin-top:20px}
+.engineering-project-link figure{height:260px}
+.engineering-project-copy h3{font-size:28px}
+.engineering-projects{gap:38px}
+.engineering-contact-row{margin-top:25px}
+.engineering-contact-row>div{width:100%}
+.engineering-page .footer .text-link{margin-left:0}}

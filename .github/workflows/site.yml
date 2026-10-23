@@ -15,7 +15,9 @@ concurrency:
 jobs:
   validate:
     name: Validate site
-    runs-on: ubuntu-latest
+    # Ruby 4.0.1 is published for this image; ubuntu-latest moved to 26.04
+    # before ruby-builder supplied a matching binary (main run 39929321907).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

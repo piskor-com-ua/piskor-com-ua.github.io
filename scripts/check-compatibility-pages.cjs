@@ -32,7 +32,7 @@ module.exports = async function checkCompatibilityPages(browser, origin, output 
         assert.equal(await page.locator('html').getAttribute('lang'), locale);
         assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://piskor.com.ua' + canonical);
         assert.equal(await page.locator('meta[http-equiv="refresh"]').count(), 0);
-        assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /^index,follow,max-image-preview:large$/);
+        assert.match(await page.locator('meta[name="robots"]').getAttribute('content'), /^noindex,nofollow$/);
         assert.equal(await page.locator('script[data-inline-page-critical="agent-tools.js"]').count(), 1);
         assert.equal(await page.locator('script[src^="/agent-tools.js?"]').count(), 0);
         assert.equal(await page.locator('script[src^="/url-compat.js?"]').count(), 1);

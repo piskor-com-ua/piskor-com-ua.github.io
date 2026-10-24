@@ -11,10 +11,19 @@ from mobile_lcp_cover_delivery import restore_mobile_lcp_cover
 
 
 ORIGIN = 'https://piskor.com.ua'
+INDEXABLE_ROBOTS = b'name="robots" content="index,follow,max-image-preview:large"'
+NONINDEXABLE_ROBOTS = b'name="robots" content="noindex,nofollow"'
 COMPATIBILITY_ROUTES = {
     '/portfolio/2026/bedroom-lighting-automation/': '/portfolio/2021/two-level-loft-lviv/',
     '/en/portfolio/2026/bedroom-lighting-automation/': '/en/portfolio/2021/two-level-loft-lviv/',
 }
+
+
+def _alias_copy(content, route):
+    """Keep the canonical document intact while excluding its legacy URL from Search."""
+    if content.count(INDEXABLE_ROBOTS) != 1:
+        raise ValueError('Canonical compatibility source must have one indexable robots directive: ' + route)
+    return content.replace(INDEXABLE_ROBOTS, NONINDEXABLE_ROBOTS, 1)
 
 
 def _root(output):
@@ -68,7 +77,7 @@ def prepare_compatibility_pages(output):
     for alias, target in COMPATIBILITY_ROUTES.items():
         if alias.startswith('/en/') != target.startswith('/en/'):
             raise ValueError('Compatibility mapping must preserve language')
-        path, content = _page(output, alias), _target(output, target)
+        path, content = _page(output, alias), _alias_copy(_target(output, target), alias)
         previous = path.read_bytes()
         if previous != content:
             # Do not replace an unrelated page if the declared legacy route changes.
@@ -89,7 +98,7 @@ def validate_compatibility_pages(output, markdown_alternatives=False):
     """Allow only reviewed delivery transforms and each route's Markdown link."""
     output = _root(output)
     for alias, target in COMPATIBILITY_ROUTES.items():
-        actual, expected = _page(output, alias).read_bytes(), _target(output, target)
+        actual, expected = _page(output, alias).read_bytes(), _alias_copy(_target(output, target), alias)
         actual_text = actual.decode('utf-8')
         actual_text = restore_mobile_lcp_cover(restore_deferred_mobile_media(actual_text))
         actual = actual_text.encode('utf-8')

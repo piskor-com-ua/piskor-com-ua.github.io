@@ -111,7 +111,7 @@ class Delivery(unittest.TestCase):
 
 
     def test_true404_policy_not200_and_exact_optional_directory_redirect(self):
-        body = b'<meta name="robots" content="index,follow,max-image-preview:large"><link rel="alternate" type="text/markdown" href="/agent-markdown/404.md">'
+        body = b'<meta name="robots" content="noindex,nofollow"><link rel="alternate" type="text/markdown" href="/agent-markdown/404.md">'
         case = dict(self.case, route='/missing/', kind='true-404', mime='text/html', status=404)
         case.pop('markdown')
         seen = []

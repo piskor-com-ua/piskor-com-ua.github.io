@@ -68,7 +68,11 @@ class CompatibilityPagesTests(unittest.TestCase):
         self.assertEqual(prepare_compatibility_pages(self.root), 2)
         self.assertEqual(validate_compatibility_pages(self.root), 2)
         for alias, target in COMPATIBILITY_ROUTES.items():
-            self.assertEqual(self.path(alias).read_bytes(), self.originals[target])
+            expected_alias = self.originals[target].replace(
+                b'name="robots" content="index,follow,max-image-preview:large"',
+                b'name="robots" content="noindex,nofollow"', 1)
+            self.assertEqual(self.path(alias).read_bytes(), expected_alias)
+            self.assertIn(b'name="robots" content="noindex,nofollow"', self.path(alias).read_bytes())
             self.assertEqual(self.path(target).read_bytes(), self.originals[target])
             self.assertNotIn(b'http-equiv="refresh"', self.path(alias).read_bytes())
         self.assertEqual((self.root / 'project-catalog.json').read_bytes(), catalog)
@@ -98,7 +102,10 @@ class CompatibilityPagesTests(unittest.TestCase):
         self.assertEqual(prepare_compatibility_pages(self.root), 2)
         self.assertEqual(validate_compatibility_pages(self.root), 2)
         for alias, target in COMPATIBILITY_ROUTES.items():
-            self.assertEqual(self.path(alias).read_bytes(), self.path(target).read_bytes())
+            expected_alias = self.path(target).read_bytes().replace(
+                b'name="robots" content="index,follow,max-image-preview:large"',
+                b'name="robots" content="noindex,nofollow"', 1)
+            self.assertEqual(self.path(alias).read_bytes(), expected_alias)
             self.assertIn('data-inline-page-critical="agent-tools.js"', self.path(alias).read_text())
 
     def test_per_route_markdown_is_the_only_allowed_final_html_difference(self):

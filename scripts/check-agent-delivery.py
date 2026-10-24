@@ -196,7 +196,7 @@ def verify(case, origin, expected, known=None, allow_redirects=False, timeout=20
         else:
             robots = MarkdownAlternates()
             robots.feed(expected.decode('utf-8'))
-            if robots.robots != {'index', 'follow', 'max-image-preview:large'}:
+            if robots.robots != {'noindex', 'nofollow'}:
                 issues.append('404-artifact-indexing-policy')
         if case['method'] == 'HEAD' and any(item['body'] for item in observations):
             issues.append('head-body-not-empty')

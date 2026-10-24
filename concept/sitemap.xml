@@ -6,7 +6,7 @@ permalink: /sitemap.xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 {% if site.indexing_enabled == true %}
 {% assign public_pages = site.pages | concat: site.projects | sort: 'url' %}
-{% for item in public_pages %}{% if item.uk_url and item.en_url and item.sitemap != false %}
+{% for item in public_pages %}{% if item.uk_url and item.en_url and item.sitemap != false and item.not_found != true and item.redirect_to == nil %}
   <url>
     <loc>{{ item.url | absolute_url | xml_escape }}</loc>
     {% if item.last_modified_at %}<lastmod>{{ item.last_modified_at | date_to_xmlschema }}</lastmod>{% endif %}

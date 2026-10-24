@@ -353,7 +353,9 @@ def transform_page(html, controller, route=None):
         raise ValueError('Expected one document head/body')
     html = html.replace('</head>', FALLBACK_STYLE + '</head>', 1)
     script = _controller_tag(controller, target_root_margin(route) if route else '250px 0px')
-    critical = re.search(r'<script\b[^>]*\bdata-inline-page-critical=["\']agent-tools\.js["\']', html)
+    # Keep each route's contiguous DOM-ready payload in its original order.
+    # Engineering runs its scene controller before registering agent tools.
+    critical = re.search(r'<script\b[^>]*\bdata-inline-page-critical=["\'](?:engineering-automation|agent-tools)\.js["\']', html)
     index = critical.start() if critical else html.index('</body>')
     return html[:index] + script + html[index:], len(selected)
 

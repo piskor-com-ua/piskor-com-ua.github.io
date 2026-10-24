@@ -283,6 +283,42 @@ class FirstPaintTests(unittest.TestCase):
         inline_page_styles(self.root)
         self.assertIn(css, unrelated.read_text())
 
+    def test_engineering_inline_controllers_keep_reviewed_dynamic_css_and_fail_closed(self):
+        names = ('analytics-consent.js', 'engineering-automation.js', 'agent-tools.js')
+        for name in names:
+            (self.root / name).write_bytes((Path('concept') / name).read_bytes())
+        selectors = ('.is-active', '.is-preparing', '.is-retiring', '.is-eco', '.is-enhanced',
+                     '.analytics-consent', '.analytics-preferences')
+        css = ''.join(selector + '{color:red}' for selector in selectors) + '.unrelated-page{color:blue}'
+        (self.root / 'shared.css').write_text(css)
+        scripts = '<script src="/analytics-consent.js" data-measurement-id="G-TEST123" defer></script>'
+        for name in names[1:]:
+            digest = hashlib.sha256((self.root / name).read_bytes()).hexdigest()[:12]
+            hint = ' fetchpriority="low"' if name == 'engineering-automation.js' else ''
+            scripts += '<script src="/' + name + '?v=' + digest + '" defer' + hint + '></script>'
+        pages = []
+        for route in ('engineering-automation/index.html', 'en/engineering-automation/index.html'):
+            page = self.root / route
+            page.parent.mkdir(parents=True)
+            page.write_text('<html><head><link rel="stylesheet" href="/shared.css">' + scripts
+                            + '</head><body class="engineering-page">Photo demo</body></html>')
+            pages.append(page)
+        inline_consent(self.root)
+        inline_page_critical_scripts(self.root)
+        before_styles = {page: page.read_text() for page in pages}
+        inline_page_styles(self.root)
+        for page in pages:
+            for selector in selectors:
+                self.assertIn(selector + '{color:red}', page.read_text())
+            self.assertNotIn('.unrelated-page', page.read_text())
+        controller = self.root / 'engineering-automation.js'
+        controller.write_text(controller.read_text() + '\nelement.className = computedName;')
+        for page in pages:
+            page.write_text(before_styles[page])
+        inline_page_styles(self.root)
+        for page in pages:
+            self.assertIn(css, page.read_text())
+
     def test_case_scope_preserves_shared_controllers_consent_and_native_dialog_states(self):
         for name in ('analytics-consent.js', 'portfolio.js', 'agent-tools.js', 'url-compat.js'):
             (self.root / name).write_bytes((Path('concept') / name).read_bytes())

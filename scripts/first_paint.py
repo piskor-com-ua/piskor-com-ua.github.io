@@ -12,6 +12,9 @@ from catalog_css import catalog_classes, prune_catalog_css
 
 
 FONT_NAMES = ('roboto-light', 'roboto-regular')
+ENGINEERING_INLINE_PAGES = frozenset({
+    'engineering-automation/index.html', 'en/engineering-automation/index.html',
+})
 CONSENT_SCRIPT = re.compile(r'<script\b(?=[^>]*\bsrc=["\']/analytics-consent\.js["\'])[^>]*>\s*</script>', re.I)
 CATALOG_SHEET = re.compile(r'<link\b[^>]*\bhref=["\']/catalog-bundle\.css(?:\?[^"\']*)?["\'][^>]*>', re.I)
 BODY = re.compile(r'<body\b[^>]*>', re.I)
@@ -93,8 +96,8 @@ def _scoped_style_classes(output, page):
     if parser.current is not None:
         return None
     allowed_controllers = set(SCOPED_STYLE_CONTROLLERS)
-    if page.relative_to(output).as_posix() in {
-            'engineering-automation/index.html', 'en/engineering-automation/index.html'}:
+    engineering = page.relative_to(output).as_posix() in ENGINEERING_INLINE_PAGES
+    if engineering:
         allowed_controllers.add('engineering-automation.js')
     for attrs, parts in parser.scripts:
         body = ''.join(parts)
@@ -113,7 +116,10 @@ def _scoped_style_classes(output, page):
             expected = (output / name).read_text() if (output / name).is_file() else None
         else:
             name = attrs.get('data-inline-page-critical')
-            if name not in {'agent-tools.js', 'portfolio.js'} or not (output / name).is_file():
+            inline_names = {'agent-tools.js', 'portfolio.js'}
+            if engineering:
+                inline_names.add('engineering-automation.js')
+            if name not in inline_names or not (output / name).is_file():
                 return None
             source = (output / name).read_text()
             if attrs.get('data-source-sha256') != hashlib.sha256(source.encode()).hexdigest():
@@ -436,7 +442,19 @@ PAGE_CRITICAL_PROFILES = {
     'case': ('agent-tools.js', 'portfolio.js'),
     'catalog': ('agent-tools.js',),
     'not-found': ('agent-tools.js',),
+    'engineering': ('engineering-automation.js', 'agent-tools.js'),
 }
+
+
+def _page_script_attributes_reviewed(profile, name, attributes):
+    """The service controller alone has the reviewed low-priority hint."""
+    attrs = dict(attributes)
+    expected = {'src', 'defer'}
+    if profile == 'engineering' and name == 'engineering-automation.js':
+        expected.add('fetchpriority')
+        if attrs.get('fetchpriority') != 'low':
+            return False
+    return set(attrs) == expected and len(attributes) == len(expected)
 
 
 def _page_script_tags(html):
@@ -490,7 +508,7 @@ def _validate_page_external_scripts(output, html, profile, before_inline=False):
         name = reference.path.lstrip('/')
         if (name not in {name for inventory in allowed for name in inventory}
                 or reference.scheme or reference.netloc or reference.path != '/' + name
-                or set(attrs) != {'src', 'defer'} or len(attributes) != 2
+                or not _page_script_attributes_reviewed(profile, name, attributes)
                 or ancestry != ('html', 'head') or inert):
             raise ValueError('Unsupported page external dependency/context: ' + attrs['src'])
         source = output / name
@@ -524,6 +542,8 @@ def page_critical_profile(output, page, html):
     if parser.redirect:
         return None
     relative = Path(page).relative_to(output).as_posix()
+    if relative in ENGINEERING_INLINE_PAGES and parser.classes == {'engineering-page'}:
+        return 'engineering'
     if relative == '404.html' and 'not-found-page' in parser.classes:
         return 'not-found'
     if ('catalog-page' in parser.classes and 'project-page' in parser.classes
@@ -555,7 +575,7 @@ def validate_page_inline_scripts(output, page, html):
     expected = payload
     if len(closing) == 1 and not html[:closing[0].start()].endswith(expected):
         from case_minification import MINIFIED_CASES, minify_fragment
-        if Path(page).relative_to(output).as_posix() in MINIFIED_CASES:
+        if Path(page).relative_to(output).as_posix() in MINIFIED_CASES | ENGINEERING_INLINE_PAGES:
             # The source hashes and once/DOM-ready wrapper remain part of the
             # exact canonical transform; never accept a caller-supplied digest.
             expected = minify_fragment(payload)
@@ -602,7 +622,7 @@ def _plan_page_critical_scripts(output):
             if name not in names:
                 return match[0]
             if (reference.scheme or reference.netloc or reference.path != '/' + name
-                    or set(attrs) != {'src', 'defer'} or len(parser.attributes) != 2
+                    or not _page_script_attributes_reviewed(profile, name, parser.attributes)
                     or body is None or match.start() >= body.start()):
                 raise ValueError('Unsupported page script attributes/location: ' + name)
             if reference.query != 'v=' + sources[name][1][:12] or reference.fragment:
@@ -624,7 +644,7 @@ def _plan_page_critical_scripts(output):
 
 
 def inline_page_critical_scripts(output):
-    """Inline known cases/catalogs/404; unknown pages and external assets remain."""
+    """Inline approved profiles; unknown pages and external assets remain."""
     plans = _plan_page_critical_scripts(output)
     for page, updated in plans:
         page.write_bytes(updated.encode('utf-8'))

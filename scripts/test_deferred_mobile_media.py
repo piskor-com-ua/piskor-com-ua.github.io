@@ -125,6 +125,17 @@ class DeferredMobileMediaTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unrecognized deferred image contract'):
             transform_page(original, CONTROLLER.read_text(), '/engineering-automation/')
 
+    def test_engineering_controller_payload_stays_contiguous_after_photo_deferral(self):
+        photo = SOURCE.replace('loading="lazy"', 'loading="lazy" data-engineering-photo')
+        critical = ('<script data-inline-page-critical="engineering-automation.js">scene()</script>'
+                    '<script data-inline-page-critical="agent-tools.js">tools()</script>')
+        original = '<html><head></head><body>' + photo + critical + '</body></html>'
+        for route in ENGINEERING_ROUTES:
+            amended, count = transform_page(original, CONTROLLER.read_text(), route)
+            self.assertEqual(count, 1)
+            self.assertIn(critical, amended)
+            self.assertLess(amended.index(SCRIPT_MARKER), amended.index(critical))
+
     def test_deferred_and_native_markup_keep_identical_agent_visible_content(self):
         amended, _ = transform_page(HTML, CONTROLLER.read_text())
         before = render(Document(HTML).root, 'https://piskor.com.ua/')

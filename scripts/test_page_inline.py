@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 from first_paint import (HOME_CRITICAL_SCRIPTS, PAGE_CRITICAL_PROFILES,
+                         ENGINEERING_INLINE_PAGES,
                          inline_critical_scripts, inline_page_critical_scripts,
                          page_critical_profile, validate_page_inline_scripts)
 
@@ -59,6 +60,77 @@ class PageCriticalInlineTests(unittest.TestCase):
                                 capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         return result.stdout
+
+    def engineering_pages(self):
+        name = 'engineering-automation.js'
+        (self.root / name).write_bytes((Path('concept') / name).read_bytes())
+        pages = []
+        for relative in sorted(ENGINEERING_INLINE_PAGES):
+            self.write_page(relative, 'engineering-page', [name, 'agent-tools.js'],
+                            language='en' if relative.startswith('en/') else 'uk')
+            page = self.root / relative
+            page.write_text(page.read_text().replace('defer></script>', 'defer fetchpriority="low"></script>', 1))
+            pages.append(page)
+        return pages
+
+    def test_engineering_exact_sources_order_minification_and_route_scope(self):
+        from case_minification import minify_fragment
+        pages = self.engineering_pages()
+        unknown = self.root / 'engineering-other/index.html'
+        unknown.parent.mkdir()
+        unknown.write_bytes(pages[0].read_bytes())
+        original = unknown.read_bytes()
+        source = (self.root / 'engineering-automation.js').read_bytes()
+        self.assertEqual(inline_page_critical_scripts(self.root), 7)
+        self.assertEqual(unknown.read_bytes(), original)
+        self.assertEqual((self.root / 'engineering-automation.js').read_bytes(), source)
+        for page in pages:
+            html = page.read_text()
+            self.assertEqual(page_critical_profile(self.root, page, html), 'engineering')
+            self.assertNotIn('src="/engineering-automation.js', html)
+            self.assertNotIn('src="/agent-tools.js', html)
+            self.assertIn('Visible case/gallery/contact content', html)
+            self.assertIn('<noscript>Native navigation</noscript>', html)
+            self.assertLess(html.index('data-inline-page-critical="engineering-automation.js"'),
+                            html.index('data-inline-page-critical="agent-tools.js"'))
+            validate_page_inline_scripts(self.root, page, html)
+            compact = minify_fragment(html)
+            validate_page_inline_scripts(self.root, page, compact)
+            scripts = re.findall(r'<script\b[^>]*>(.*?)</script>', compact, re.S)
+            self.run_node('const vm=require("node:vm");let s="";process.stdin.on("data",v=>s+=v);'
+                          'process.stdin.on("end",()=>JSON.parse(s).forEach(code=>new vm.Script(code)));', scripts)
+            with self.assertRaisesRegex(ValueError, 'source/hash'):
+                validate_page_inline_scripts(self.root, page, compact.replace('data-source-sha256="', 'data-source-sha256="0', 1))
+
+    def test_engineering_rejects_unreviewed_hints_order_inert_and_duplicate_dependencies_atomically(self):
+        pages = self.engineering_pages()
+        original = pages[-1].read_text()
+        script = self.script('agent-tools.js')
+        changes = {
+            'priority': lambda html: html.replace('fetchpriority="low"', 'fetchpriority="high"'),
+            'async': lambda html: html.replace('fetchpriority="low"', 'fetchpriority="low" async'),
+            'duplicate': lambda html: html.replace('</head>', script + '</head>'),
+            'inert': lambda html: html.replace('<head>', '<head><template>').replace('</head>', '</template></head>'),
+            'order': lambda html: html.replace(script, '').replace('<head>', '<head>' + script),
+        }
+        for label, change in changes.items():
+            with self.subTest(label=label):
+                pages[-1].write_text(change(original))
+                before = self.snapshots()
+                with self.assertRaisesRegex(ValueError, 'dependency'):
+                    inline_page_critical_scripts(self.root)
+                self.assertEqual(self.snapshots(), before)
+        pages[-1].write_text(original)
+        controller = self.root / 'engineering-automation.js'
+        old_digest = hashlib.sha256(controller.read_bytes()).hexdigest()[:12]
+        controller.write_text('document.currentScript.remove();')
+        new_digest = hashlib.sha256(controller.read_bytes()).hexdigest()[:12]
+        for page in pages:
+            page.write_text(page.read_text().replace(old_digest, new_digest))
+        before = self.snapshots()
+        with self.assertRaisesRegex(ValueError, 'timing review'):
+            inline_page_critical_scripts(self.root)
+        self.assertEqual(self.snapshots(), before)
 
     def test_known_profiles_exact_payloads_keep_retained_scripts_unknown_pages_and_source_assets(self):
         before = self.snapshots()

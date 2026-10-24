@@ -10,6 +10,9 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
     await image.scrollIntoViewIfNeeded();
     await image.page().waitForFunction(element => !element.hasAttribute('data-piskor-src'), await image.elementHandle());
     const density = await image.evaluate(async element => {
+      // Restoring srcset is synchronous, but native candidate selection is not.
+      // Wait for the real image rather than decoding an empty/stale currentSrc.
+      await element.decode();
       const bitmap = new Image();
       bitmap.src = element.currentSrc;
       await bitmap.decode();
@@ -33,8 +36,10 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
       const cold = await coldContext.newPage();
       const lateStyles = [];
       const prematurePhotos = [];
+      const externalControllers = [];
       cold.on('request', request => {
         if (/\/assets\/(?:responsive\/case-media\/)?portfolio\//.test(request.url())) prematurePhotos.push(request.url());
+        if (/\/(?:engineering-automation|agent-tools)\.js(?:\?|$)/.test(request.url())) externalControllers.push(request.url());
       });
       await coldContext.route('**/engineering-story.css*', async request => {
         lateStyles.push(request.request().url());
@@ -56,7 +61,8 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
       assert.ok(firstPaint.every(entry => entry.width === 412 && entry.scroll <= 412), JSON.stringify(firstPaint));
       assert.ok(await cold.locator('picture[data-piskor-deferred-media] img[data-engineering-photo]').count() > 0);
       assert.deepEqual(prematurePhotos, [], 'Below-fold project photos must not compete with the initial frame');
-      results.push({ language, firstPaint, noDeferredStoryGeometry: true, prematurePhotos });
+      assert.deepEqual(externalControllers, [], 'Approved DOM-ready controllers must not add initial requests');
+      results.push({ language, firstPaint, noDeferredStoryGeometry: true, prematurePhotos, externalControllers });
     } finally { await coldContext.close(); }
     for (const width of [390, 700, 701, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2 });
@@ -311,6 +317,6 @@ async function checkEngineeringRendering(browser, origin, output = 'output/playw
 module.exports = checkEngineeringRendering;
 if (require.main === module) (async () => {
   const browser = await chromium.launch({ headless: true });
-  try { console.log(JSON.stringify(await checkEngineeringRendering(browser, process.argv[2] || 'http://127.0.0.1:4195'), null, 2)); }
+  try { console.log(JSON.stringify(await checkEngineeringRendering(browser, process.argv[2] || 'http://127.0.0.1:4195', process.argv[3]), null, 2)); }
   finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

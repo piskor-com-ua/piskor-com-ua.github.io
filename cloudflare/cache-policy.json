@@ -11,7 +11,7 @@
     "id": "942b1ff9db244530aa0af5fd81c34ae1",
     "previous_name": "Portfolio HTML — respect origin TTL",
     "description": "Public resources — month edge, browser revalidation",
-    "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\" \"PURGE\"} and http.request.uri.query eq \"\" and not has_key(http.request.headers, \"authorization\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and http.request.uri.path ne \"/mcp\" and not starts_with(http.request.uri.path, \"/mcp/\"))",
+    "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\" \"PURGE\"} and http.request.uri.query eq \"\" and not has_key(http.request.headers, \"authorization\") and not (starts_with(http.request.uri.path, \"/agent-markdown/\") and ends_with(http.request.uri.path, \".md\")) and http.request.uri.path ne \"/mcp\" and not starts_with(http.request.uri.path, \"/mcp/\"))",
     "patch_action_parameters": {
       "cache": true,
       "edge_ttl": {
@@ -23,6 +23,13 @@
       },
       "browser_ttl": {"mode": "bypass"}
     }
+  },
+  "markdown_origin_rule": {
+    "id": "43c0a00053924fde965e504847bcd87b",
+    "description": "PISKOR agent Markdown: bypass edge cache",
+    "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\"} and starts_with(http.request.uri.path, \"/agent-markdown/\") and ends_with(http.request.uri.path, \".md\"))",
+    "patch_action_parameters": {"cache": false},
+    "scope": "Only origin Markdown files; public routes.json uses the monthly public-resource rule"
   },
   "preserve": {
     "versioned_static_rule": "91509ab48a714ae5879a3ae57108e728",

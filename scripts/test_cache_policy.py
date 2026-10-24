@@ -122,6 +122,16 @@ class CachePolicyTest(unittest.TestCase):
         worker = (POLICY.parent / 'markdown-worker.mjs').read_text()
         self.assertIn('PUBLIC_EDGE_TTL = ' + str(policy['edge_min_ttl']), worker)
 
+    def test_public_json_catalog_cannot_inherit_the_markdown_origin_bypass(self):
+        policy = json.loads(POLICY.read_text())
+        markdown_path = 'starts_with(http.request.uri.path, "/agent-markdown/") and ends_with(http.request.uri.path, ".md")'
+        self.assertIn('not (' + markdown_path + ')', policy['public_rule']['expression'])
+        bypass = policy['markdown_origin_rule']
+        self.assertIn(markdown_path, bypass['expression'])
+        self.assertEqual(bypass['id'], policy['preserve']['markdown_origin_bypass_rule'])
+        self.assertEqual(bypass['patch_action_parameters'], {'cache': False})
+        self.assertNotIn('routes.json', bypass['expression'])
+
     def test_report_does_not_leak_into_the_public_artifact_and_rejects_wrong_previous_origin(self):
         with self.assertRaisesRegex(ValueError, 'outside'):
             write_report(self.site, self.site / 'report')

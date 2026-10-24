@@ -3,6 +3,70 @@ import {handleMcp} from './mcp-server.mjs';
 const DISCOVERY = '</.well-known/ard.json>; rel="ard"; type="application/ard+json", </.well-known/agent-skills/index.json>; rel="agent-skills"; type="application/json", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </llms.txt>; rel="describedby"; type="text/plain"';
 const HTML_ROUTE = '/en/portfolio/2022/zabava-restaurant-sambir/';
 const decodedHtml = new WeakMap();
+export const PUBLIC_EDGE_TTL = 2678400;
+
+// The cached object is the public document, never an HTML negotiation URL or
+// an RPC response. Rebuild client headers from the current release after a hit.
+// Content-hash keys reuse unchanged documents without retaining old revisions.
+export async function publicDocumentResponse(request, env, document, headers, cache) {
+  const clientHeaders = new Headers(headers);
+  const respond = body => new Response(request.method === 'HEAD' ? null : body,
+    {status: 200, headers: clientHeaders});
+  if (env.PUBLIC_EDGE_CACHE_ENABLED !== 'true' || request.headers.has('Authorization') ||
+      !['GET', 'HEAD'].includes(request.method)) return respond(document.body);
+  if (!cache || typeof cache.match !== 'function' || typeof cache.put !== 'function') {
+    clientHeaders.set('X-Piskor-Edge-Cache', 'UNAVAILABLE');
+    return respond(document.body);
+  }
+  try {
+    const bytes = new TextEncoder().encode(document.body);
+    const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))]
+      .map(value => value.toString(16).padStart(2, '0')).join('');
+    const url = new URL(document.path, 'https://piskor.com.ua');
+    if (url.origin !== 'https://piskor.com.ua' || url.search || url.hash ||
+        !document.path.startsWith('/') || document.path.startsWith('//') ||
+        (!/\.(?:md|json)$/.test(url.pathname) && url.pathname !== '/.well-known/api-catalog')) {
+      throw Error('Unsupported public document cache key');
+    }
+    url.searchParams.set('v', digest);
+    const key = new Request(url, {method: 'GET'});
+    const cached = await cache.match(key);
+    let state = 'MISS';
+    let selectedBody = document.body;
+    if (cached) {
+      const body = await cached.text();
+      const storedTtl = /(?:^|,)\s*max-age=(\d+)\s*(?:,|$)/.exec(cached.headers.get('Cache-Control') || '');
+      if (cached.status === 200 && cached.headers.get('ETag') === `"sha256-${digest}"` &&
+          storedTtl && Number(storedTtl[1]) >= PUBLIC_EDGE_TTL && body === document.body) {
+        state = 'HIT';
+        selectedBody = body;
+      } else {
+        state = 'REPAIRED';
+        await cache.delete?.(key);
+      }
+    }
+    if (state !== 'HIT') {
+      // Only this storage copy has a long max-age. Browser no-store and the
+      // protocol's current version/negotiation headers remain unchanged.
+      await cache.put(key, new Response(document.body, {status: 200, headers: {
+        'Content-Type': clientHeaders.get('Content-Type'),
+        'Content-Length': String(bytes.byteLength),
+        'Cache-Control': `public, max-age=${PUBLIC_EDGE_TTL}`,
+        'ETag': `"sha256-${digest}"`,
+      }}));
+    }
+    clientHeaders.set('X-Piskor-Edge-Cache', state);
+    clientHeaders.set('X-Piskor-Edge-TTL', String(PUBLIC_EDGE_TTL));
+    clientHeaders.set('X-Piskor-Edge-Key', url.pathname + url.search);
+    // Prefix purge is required for Cache API keys; do not claim that ordinary
+    // single-URL purge can invalidate a Worker-created custom cache key.
+    clientHeaders.set('X-Piskor-Edge-Purge-Prefix', url.host + url.pathname);
+    return respond(selectedBody);
+  } catch {
+    clientHeaders.set('X-Piskor-Edge-Cache', 'ERROR');
+    return respond(document.body);
+  }
+}
 
 function explicitlyAcceptsBrotli(value) {
   if (typeof value !== 'string' || !value) return false;
@@ -73,8 +137,17 @@ export function diagnosticParameters(request, env, revision, nowSeconds) {
 
 export async function handle(request, env, context, data, dependencies = {}) {
   context?.passThroughOnException?.();
+  const documentCache = dependencies.cache ?? globalThis.caches?.default;
   const mcp = await handleMcp(request, data, env);
-  if (mcp) return mcp;
+  if (mcp) {
+    const url = new URL(request.url);
+    const publication = data.mcp?.publications?.[url.pathname];
+    if (mcp.status === 200 && !url.search && publication && ['GET', 'HEAD'].includes(request.method)) {
+      return publicDocumentResponse(request, env, {path: url.pathname, body: publication.body},
+        mcp.headers, documentCache);
+    }
+    return mcp;
+  }
   const originFetch = dependencies.fetch ?? fetch;
   const nowSeconds = dependencies.nowSeconds ?? Date.now() / 1000;
   const url = new URL(request.url);
@@ -107,7 +180,8 @@ export async function handle(request, env, context, data, dependencies = {}) {
       'Link': DISCOVERY,
       'X-Piskor-Markdown-Version': data.revision,
     });
-    return new Response(request.method === 'HEAD' ? null : document.body, {status: 200, headers});
+    return publicDocumentResponse(request, env, {path: markdown, body: document.body},
+      headers, documentCache);
   }
   const html = precompressedHtml(request, data, env);
   if (html) return html;

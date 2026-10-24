@@ -5,7 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {brotliCompressSync, brotliDecompressSync, constants} from 'node:zlib';
 import {pathToFileURL} from 'node:url';
-import {handle, diagnosticParameters} from '../cloudflare/markdown-worker.mjs';
+import {handle, diagnosticParameters, PUBLIC_EDGE_TTL, publicDocumentResponse} from '../cloudflare/markdown-worker.mjs';
 
 const origin = 'https://piskor.com.ua';
 const data = {revision: '1'.repeat(40), pages: {'/': {markdown: '/agent-markdown/index.md'}, '/en/': {markdown: '/agent-markdown/en/index.md'}, '/404.html?lang=en': {markdown: '/agent-markdown/404-en.md'}, '/404.html?lang=uk': {markdown: '/agent-markdown/404.md'}}, documents: {}};
@@ -237,6 +237,139 @@ test('bounded root HTML diagnostic adds only fixed Content-Type parameters, no a
   assert.equal(diagnosticParameters(new Request(origin + '/'), {MD_DIAGNOSTIC_START: 'invalid'}, data.revision, 1800000001), null);
 });
 
+class PublicDocumentCache {
+  entries = new Map();
+  matches = 0;
+  writes = 0;
+  async match(request) {this.matches++; return this.entries.get(request.url)?.clone();}
+  async put(request, response) {this.writes++; this.entries.set(request.url, response.clone());}
+  async delete(request) {return this.entries.delete(request.url);}
+}
+const edgeEnv = {PUBLIC_EDGE_CACHE_ENABLED: 'true', HTML_PRECOMPRESSED_DISABLED: 'true'};
+
+test('public Markdown uses a month edge copy, shared GET/HEAD key and fresh release headers', async () => {
+  const cache = new PublicDocumentCache();
+  assert.equal(PUBLIC_EDGE_TTL, 2678400);
+  const request = new Request(origin + '/', {headers: {Accept: 'text/markdown'}});
+  const first = await handle(request, edgeEnv, {}, data, {cache});
+  assert.equal(first.headers.get('X-Piskor-Edge-Cache'), 'MISS');
+  assert.equal(first.headers.get('X-Piskor-Edge-TTL'), String(PUBLIC_EDGE_TTL));
+  assert.equal(first.headers.get('Cache-Control'), 'no-store');
+  assert.equal(await first.text(), '# Простір\n');
+  const key = first.headers.get('X-Piskor-Edge-Key');
+  assert.equal(key, '/agent-markdown/index.md?v=' + digest(Buffer.from('# Простір\n')));
+  assert.equal(first.headers.get('X-Piskor-Edge-Purge-Prefix'), 'piskor.com.ua/agent-markdown/index.md');
+  const stored = cache.entries.get(origin + key);
+  assert.equal(stored.headers.get('Cache-Control'), 'public, max-age=2678400');
+  assert.equal(stored.headers.has('X-Piskor-Markdown-Version'), false);
+  assert.equal(stored.headers.has('Vary'), false);
+  const updated = {...data, revision: '2'.repeat(40)};
+  const head = await handle(new Request(origin + '/agent-markdown/index.md', {method: 'HEAD'}), edgeEnv, {}, updated, {cache});
+  assert.equal(head.headers.get('X-Piskor-Edge-Cache'), 'HIT');
+  assert.equal(head.headers.get('X-Piskor-Markdown-Version'), updated.revision);
+  assert.equal(head.headers.get('Content-Length'), String(Buffer.byteLength('# Простір\n')));
+  assert.equal(await head.text(), '');
+  assert.equal(cache.writes, 1);
+});
+
+test('languages, document paths and changed content cannot collide; old cache never supplies new facts', async () => {
+  const cache = new PublicDocumentCache();
+  const get = (route, current = data) => handle(new Request(origin + route, {headers: {Accept: 'text/markdown'}}), edgeEnv, {}, current, {cache});
+  const uk = await get('/');
+  const en = await get('/en/');
+  assert.notEqual(uk.headers.get('X-Piskor-Edge-Key'), en.headers.get('X-Piskor-Edge-Key'));
+  const changedBody = '# Оновлений простір\n';
+  const changed = {...data, documents: {...data.documents, '/agent-markdown/index.md': {
+    body: changedBody, language: 'uk', bytes: Buffer.byteLength(changedBody),
+  }}};
+  const next = await get('/', changed);
+  assert.equal(next.headers.get('X-Piskor-Edge-Cache'), 'MISS');
+  assert.notEqual(next.headers.get('X-Piskor-Edge-Key'), uk.headers.get('X-Piskor-Edge-Key'));
+  assert.equal(await next.text(), changedBody);
+  const sameText = {...data, documents: {...data.documents, '/agent-markdown/en/index.md': {...data.documents['/agent-markdown/index.md'], language: 'en'}}};
+  const same = await get('/en/', sameText);
+  assert.notEqual(same.headers.get('X-Piskor-Edge-Key'), uk.headers.get('X-Piskor-Edge-Key'));
+  assert.equal(same.headers.get('Content-Language'), 'en');
+});
+
+test('a poisoned or corrupt cache entry is repaired instead of being reported as a valid HIT', async () => {
+  const cache = new PublicDocumentCache();
+  const request = new Request(origin + '/', {headers: {Accept: 'text/markdown'}});
+  const first = await handle(request, edgeEnv, {}, data, {cache});
+  const key = origin + first.headers.get('X-Piskor-Edge-Key');
+  const headers = new Headers(cache.entries.get(key).headers);
+  cache.entries.set(key, new Response('# Incorrect content\n', {headers}));
+  const repaired = await handle(request, edgeEnv, {}, data, {cache});
+  assert.equal(repaired.headers.get('X-Piskor-Edge-Cache'), 'REPAIRED');
+  assert.equal(await repaired.text(), '# Простір\n');
+  assert.equal(await cache.entries.get(key).clone().text(), '# Простір\n');
+});
+
+test('cache outage, unavailable API, kill switch and authorization preserve the exact public response', async () => {
+  const request = new Request(origin + '/', {headers: {Accept: 'text/markdown'}});
+  const failing = {match: async () => {throw Error('Cache unavailable');}, put: async () => {throw Error('Must not write');}};
+  for (const [cache, expected] of [[failing, 'ERROR'], [{}, 'UNAVAILABLE']]) {
+    const response = await handle(request, edgeEnv, {}, data, {cache});
+    assert.equal(response.headers.get('X-Piskor-Edge-Cache'), expected);
+    assert.equal(await response.text(), '# Простір\n');
+    assert.equal(response.headers.get('Cache-Control'), 'no-store');
+  }
+  const cache = new PublicDocumentCache();
+  for (const [headers, env] of [[{Accept: 'text/markdown', Authorization: 'Bearer test-only'}, edgeEnv], [{Accept: 'text/markdown'}, {}]]) {
+    const response = await handle(new Request(origin + '/', {headers}), env, {}, data, {cache});
+    assert.equal(response.headers.get('X-Piskor-Edge-Cache'), null);
+    assert.equal(await response.text(), '# Простір\n');
+  }
+  assert.equal(cache.matches, 0);
+  assert.equal(cache.writes, 0);
+});
+
+test('strict negotiation runs before caching; negative Accept and query variants remain origin responses', async () => {
+  const cache = new PublicDocumentCache();
+  for (const [route, accept] of [['/', 'text/markdown;q=1'], ['/', 'text/markdown, text/markdown'], ['/portfolio/?x=1', 'text/markdown']]) {
+    const original = new Response('<html>Origin</html>');
+    const response = await handle(new Request(origin + route, {headers: {Accept: accept}}), edgeEnv, {}, data, {cache, fetch: () => original});
+    assert.equal(response, original);
+  }
+  assert.equal(cache.matches, 0);
+});
+
+test('public MCP documents can cache, while RPC POST, errors and preflight never use the document cache', async () => {
+  const publications = {
+    '/.well-known/mcp/server-card.json': {body: '{"public":true}', contentType: 'application/mcp-server-card+json'},
+    '/agent-api/mcp.md': {body: '# Public MCP guide\n', contentType: 'text/markdown; charset=utf-8'},
+    '/.well-known/api-catalog': {body: '{"linkset":[]}', contentType: 'application/linkset+json'},
+  };
+  const current = {...data, mcp: {publications}};
+  const cache = new PublicDocumentCache();
+  for (const [route, item] of Object.entries(publications)) {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await handle(new Request(origin + route, {method}), edgeEnv, {}, current, {cache});
+      assert.equal(response.headers.get('X-Piskor-Edge-Cache'), method === 'GET' ? 'MISS' : 'HIT');
+      assert.equal(response.headers.get('Cache-Control'), 'no-store');
+      assert.equal(await response.text(), method === 'HEAD' ? '' : item.body);
+    }
+  }
+  const before = cache.matches;
+  for (const [route, method] of [['/mcp', 'POST'], ['/mcp', 'GET'], ['/mcp', 'OPTIONS'], ['/agent-api/mcp.md', 'POST']]) {
+    const response = await handle(new Request(origin + route, {method}), edgeEnv, {}, current, {cache});
+    assert.ok(response.status >= 400);
+    assert.equal(response.headers.get('Cache-Control'), 'no-store');
+    assert.equal(response.headers.get('X-Piskor-Edge-Cache'), null);
+  }
+  assert.equal(cache.matches, before);
+});
+
+test('unreviewed cache paths cannot introduce foreign-origin or HTML cache entries', async () => {
+  const cache = new PublicDocumentCache();
+  for (const path of ['https://other.test/a.md', '//other.test/a.md', '/index.html', '/a.md?x=1', '/a.md#x']) {
+    const response = await publicDocumentResponse(new Request(origin + '/'), edgeEnv, {path, body: 'public'}, {'Content-Type': 'text/markdown'}, cache);
+    assert.equal(response.headers.get('X-Piskor-Edge-Cache'), 'ERROR');
+    assert.equal(await response.text(), 'public');
+  }
+  assert.equal(cache.matches, 0);
+});
+
 const bundle = process.env.PISKOR_WORKER_BUNDLE || 'output/markdown-worker/worker.mjs';
 const site = process.env.PISKOR_WORKER_SITE || '_site';
 test('actual generated artifact: every generated route/mode and direct MD matches exact saved bytes', {skip: !fs.existsSync(bundle) && !fs.existsSync(site)}, async () => {
@@ -255,6 +388,23 @@ test('actual generated artifact: every generated route/mode and direct MD matche
     assert.equal(response.headers.get('Content-Language'), row.language);
     assert.equal(response.headers.get('X-Piskor-Markdown-Version'), manifest.revision);
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === 'HEAD' ? Buffer.alloc(0) : expected);
+  }
+  const cache = new PublicDocumentCache();
+  for (const row of rows) for (const method of ['GET', 'HEAD']) {
+    // The generated default export owns its data; inject the cache through the
+    // public platform API rather than constructing a second content fixture.
+    const originalCaches = globalThis.caches;
+    globalThis.caches = {default: cache};
+    try {
+      const cached = await module.default.fetch(new Request(origin + row.url,
+        {method, headers: {Accept: 'text/markdown'}}), edgeEnv, {});
+      assert.equal(cached.headers.get('X-Piskor-Edge-Cache'), method === 'GET' ? 'MISS' : 'HIT');
+      assert.equal(cached.headers.get('X-Piskor-Markdown-Version'), manifest.revision);
+      assert.deepEqual(Buffer.from(await cached.arrayBuffer()), method === 'HEAD' ? Buffer.alloc(0) : fs.readFileSync(path.join(site, row.markdown)));
+    } finally {
+      if (originalCaches === undefined) delete globalThis.caches;
+      else globalThis.caches = originalCaches;
+    }
   }
   for (const root of ['/', '/en/']) for (const method of ['GET', 'HEAD']) {
     const request = new Request(origin + root + '?arbitrary=opaque&another=1', {method, headers: {Accept: 'text/markdown'}});

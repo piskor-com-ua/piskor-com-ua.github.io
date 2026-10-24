@@ -156,7 +156,8 @@ def build(site, out, revision):
                     'mcp_discovery': MCP_DISCOVERY, 'mcp_contract': CONTRACT_PATH,
                     'worker_builder': Path(__file__).resolve(),
                     'mcp_design_contract': ROOT / 'docs/public-http-mcp.md',
-                    'wrangler_config': ROOT / 'cloudflare/wrangler.jsonc'}
+                    'wrangler_config': ROOT / 'cloudflare/wrangler.jsonc',
+                    'cache_policy': ROOT / 'cloudflare/cache-policy.json'}
     source_hashes = {name: sha(path.read_bytes()) for name, path in source_paths.items()}
     artifact_hashes = {name: sha((site / name).read_bytes()) for name in
                        ('project-catalog.json', 'index.html', '.well-known/api-catalog')}
@@ -165,6 +166,11 @@ def build(site, out, revision):
     for representation in html.values():
         artifact_hashes[representation['sourcePath']] = representation['sha256']
     manifest = {'version': 1, 'revision': revision, 'routes_sha256': sha(route_file.read_bytes()),
+                'public_document_cache': {'enabled_variable': 'PUBLIC_EDGE_CACHE_ENABLED',
+                                          'edge_ttl': 2678400, 'mechanism': 'Cache API',
+                                          'key': 'document-path-and-content-sha256',
+                                          'global_purge': 'document-path-prefix',
+                                          'browser_cache_control': 'no-store', 'mcp_post_cache': False},
                 'source_sha256': source_hashes, 'artifact_source_sha256': artifact_hashes,
                 'mcp_data_sha256': sha(canonical(mcp)),
                 'mcp_server_version': mcp['contract']['serverInfo']['version'] + '+' + revision,

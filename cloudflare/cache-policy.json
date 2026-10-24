@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "origin": "https://piskor.com.ua",
+  "edge_min_ttl": 2678400,
+  "versioned_browser_ttl": 2678400,
+  "public_markdown_edge_cache": true,
+  "mcp_post_cache": false,
+  "mutable_browser_policy": "revalidate",
+  "purge_batch_size": 30,
+  "public_rule": {
+    "id": "942b1ff9db244530aa0af5fd81c34ae1",
+    "previous_name": "Portfolio HTML — respect origin TTL",
+    "description": "Public resources — month edge, browser revalidation",
+    "expression": "(http.host eq \"piskor.com.ua\" and http.request.method in {\"GET\" \"HEAD\" \"PURGE\"} and http.request.uri.query eq \"\" and not has_key(http.request.headers, \"authorization\") and not starts_with(http.request.uri.path, \"/agent-markdown/\") and http.request.uri.path ne \"/mcp\" and not starts_with(http.request.uri.path, \"/mcp/\"))",
+    "patch_action_parameters": {
+      "cache": true,
+      "edge_ttl": {
+        "mode": "override_origin",
+        "default": 2678400,
+        "status_code_ttl": [
+          {"status_code_range": {"from": 300}, "value": -1}
+        ]
+      },
+      "browser_ttl": {"mode": "bypass"}
+    }
+  },
+  "preserve": {
+    "versioned_static_rule": "91509ab48a714ae5879a3ae57108e728",
+    "markdown_origin_bypass_rule": "43c0a00053924fde965e504847bcd87b",
+    "full_query_cache_key": true,
+    "worker_front_cache": "disabled",
+    "html_precompressed_disabled": "true",
+    "dns_security_consent_indexing_logs_preview": "unchanged"
+  },
+  "markdown_storage": {
+    "mechanism": "Workers Cache API public document copies",
+    "key": "document path and full SHA-256 query v; never negotiated HTML URL",
+    "headers": "rebuild current revision and language after every validated hit",
+    "purge": "global prefix purge of the document path, not unsupported single-URL custom-key purge",
+    "browser_cache_control": "no-store"
+  }
+}

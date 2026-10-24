@@ -1,5 +1,6 @@
 """Build with locked Jekyll, fingerprint resources and validate the public artifact."""
 from pathlib import Path
+import os
 import re
 import subprocess
 import sys
@@ -20,6 +21,7 @@ from mobile_lcp_cover_delivery import (prepare_mobile_catalog_delivery_profiles,
 from mobile_image_delivery import prepare_mobile_image_delivery
 from case_minification import minify_reviewed_cases
 from engineering_minification import minify_engineering_pages
+from cache_policy import write_report as write_cache_report
 
 source = Path('concept')
 out = Path('_site')
@@ -89,3 +91,5 @@ print(f'Publication contains {sum(p.is_file() for p in out.rglob("*"))} files')
 subprocess.run([sys.executable, 'scripts/check-seo.py'], check=True)
 
 subprocess.run([sys.executable, 'scripts/check-performance.py'], check=True)
+print('Cache coverage and exact purge plan: ' + str(write_cache_report(
+    out, Path('output/cache-policy'), os.environ.get('GITHUB_SHA', 'local'))))

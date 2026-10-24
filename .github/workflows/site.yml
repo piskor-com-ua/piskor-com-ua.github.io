@@ -74,28 +74,28 @@ jobs:
         run: npm run test:discovery
       - name: Save Markdown Worker deployment bundle
         if: github.event_name != 'schedule'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: markdown-worker
           path: output/markdown-worker
           retention-days: 7
       - name: Save agent API verification
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: agent-api-verification
           path: output/agent-api-gate
           retention-days: 7
       - name: Save cache coverage and exact release invalidation plan
         if: github.event_name != 'schedule'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: cache-policy
           path: output/cache-policy
           retention-days: 30
       - name: Save browser verification
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: browser-verification
           path: output/browser

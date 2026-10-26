@@ -81,6 +81,20 @@
       ]
     }
     {% endif %}
+    {% for video in page.video_seo %}{% if video.upload_date %},
+    {
+      "@type": "VideoObject",
+      "@id": {{ page.url | absolute_url | append: '#video-' | append: forloop.index | jsonify }},
+      "name": {{ video.title | jsonify }},
+      "description": {{ video.description | jsonify }},
+      "thumbnailUrl": {{ video.thumbnail | absolute_url | jsonify }},
+      "contentUrl": {{ video.content | absolute_url | jsonify }},
+      "uploadDate": {{ video.upload_date | jsonify }},
+      "inLanguage": {{ page.lang | jsonify }},
+      "mainEntityOfPage": {{ page.url | absolute_url | jsonify }},
+      "publisher": {"@id": {{ '/#organization' | absolute_url | jsonify }}}
+    }
+    {% endif %}{% endfor %}
   ]
 }
 </script>

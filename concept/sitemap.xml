@@ -3,7 +3,7 @@ layout: null
 permalink: /sitemap.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 {% if site.indexing_enabled == true %}
 {% assign public_pages = site.pages | concat: site.projects | sort: 'url' %}
 {% for item in public_pages %}{% if item.uk_url and item.en_url and item.sitemap != false and item.not_found != true and item.redirect_to == nil %}
@@ -13,6 +13,14 @@ permalink: /sitemap.xml
     <xhtml:link rel="alternate" hreflang="uk" href="{{ item.uk_url | absolute_url | xml_escape }}" />
     <xhtml:link rel="alternate" hreflang="en" href="{{ item.en_url | absolute_url | xml_escape }}" />
     <xhtml:link rel="alternate" hreflang="x-default" href="{{ item.uk_url | absolute_url | xml_escape }}" />
+    {% for video in item.video_seo %}
+    <video:video>
+      <video:thumbnail_loc>{{ video.thumbnail | absolute_url | xml_escape }}</video:thumbnail_loc>
+      <video:title>{{ video.title | xml_escape }}</video:title>
+      <video:description>{{ video.description | xml_escape }}</video:description>
+      <video:content_loc>{{ video.content | absolute_url | xml_escape }}</video:content_loc>
+    </video:video>
+    {% endfor %}
   </url>
 {% endif %}{% endfor %}
 {% endif %}

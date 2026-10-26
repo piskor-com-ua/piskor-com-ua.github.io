@@ -79,6 +79,8 @@ for path in Path('_site').rglob('*.html'):
     assert len(graphs) == 1 and graphs[0]['@context'] == 'https://schema.org', path
     types = {node['@type'] for node in graphs[0]['@graph']}
     assert {'Organization', 'WebSite'} <= types, path
+    for video in (node for node in graphs[0]['@graph'] if node.get('@type') == 'VideoObject'):
+        assert all(video.get(key) for key in ('name', 'description', 'thumbnailUrl', 'uploadDate', 'contentUrl')), path
     if path.parent.name == 'engineering-automation':
         assert {'Service', 'BreadcrumbList'} <= types, path
         assert 'id="automation-areas"' in text and 'id="contact"' in text, path
@@ -94,11 +96,33 @@ for agent in ['Googlebot', 'bingbot', 'OAI-SearchBot', 'Claude-SearchBot']:
 assert robots.site_maps() == ['https://piskor.com.ua/sitemap.xml'], 'Advertise the public sitemap'
 tree = ET.parse('_site/sitemap.xml')
 assert tree.getroot().tag == '{http://www.sitemaps.org/schemas/sitemap/0.9}urlset'
+video_ns = '{http://www.google.com/schemas/sitemap-video/1.1}'
 locations = [item.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text for item in tree.getroot()]
 expected_locations = {'https://piskor.com.ua' + route for route in routes if route not in COMPATIBILITY_ROUTES}
 assert set(locations) == expected_locations, 'Sitemap must contain canonical routes only'
 assert all(url.startswith('https://piskor.com.ua/') for url in locations)
 assert not any(url.endswith('/404.html') for url in locations)
+video_page_count = 0
+for item in tree.getroot():
+    page_url = item.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc').text
+    route = urlsplit(page_url).path
+    page_file = Path('_site') / route.lstrip('/') / 'index.html' if route.endswith('/') else Path('_site') / route.lstrip('/')
+    page_text = page_file.read_text()
+    parsed_page = Page(page_text)
+    video_tags = [attrs for tag, attrs in parsed_page.tags if tag == 'video']
+    video_entries = item.findall(f'{video_ns}video')
+    assert len(video_entries) == len(video_tags), f'Every public HTML video needs exactly one sitemap entry: {page_url}'
+    video_page_count += bool(video_entries)
+    for video in video_entries:
+        title = video.findtext(f'{video_ns}title')
+        description = video.findtext(f'{video_ns}description')
+        thumbnail = video.findtext(f'{video_ns}thumbnail_loc')
+        content = video.findtext(f'{video_ns}content_loc')
+        assert title and len(title) <= 100, f'Invalid video title: {page_url}'
+        assert description and len(description) <= 2048, f'Invalid video description: {page_url}'
+        assert thumbnail and urlsplit(thumbnail).path in page_text, f'Video poster missing from page: {page_url}'
+        assert content and urlsplit(content).path in page_text, f'Video file missing from page: {page_url}'
+assert video_page_count > 0, 'Expected video entries in the video sitemap'
 error_page = Page(Path('_site/404.html').read_text())
 error_robots = [attrs['content'] for tag, attrs in error_page.tags if tag == 'meta' and attrs.get('name') == 'robots']
 assert error_robots == ['noindex,nofollow'], 'Not-found page must stay out of the index'

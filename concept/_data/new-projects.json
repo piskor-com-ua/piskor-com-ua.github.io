@@ -1,4 +1,323 @@
 {
+  "gloss-nail-bar-lviv":
+{
+  "uk": {
+    "eyebrow": "Дизайн-проєкт · GLOSS Nail Bar",
+    "title": "GLOSS Nail Bar<br><span>простір турботи.</span>",
+    "summary": "Дизайн nail-студії площею 47 м² у Львові: робочий зал, педикюрна зона, приватні кімнати процедур і місце очікування.",
+    "location": "Львів, Україна",
+    "area": "47 м²",
+    "property": "Nail-студія",
+    "cover": "gloss-nail-bar-lviv-01",
+    "cover_alt": "Робочий зал GLOSS Nail Bar із nail-столами, світлими меблями та фірмовою стіною",
+    "cover_width": 1955,
+    "cover_height": 2933,
+    "intro_title": "Відкритий зал.<br>Приватні процедури.",
+    "intro": "Планування об’єднує nail-зал із педикюрними місцями, а дві окремі кімнати відводить для процедур. У зоні очікування клієнт може перепочити до або після візиту. Тепла світла палітра, золотисті металеві деталі та кільцеві світильники підтримують впізнаваний образ GLOSS.",
+    "technical_note": "Публічна площа 47 м² — округлення погоджених 46,8 м². Її складають nail-зал 15,2 м², зона відпочинку 10,4 м² та дві кімнати процедур 10,2 м² і 11,0 м². Рік і статус дизайн-проєкту підтверджені замовником. Креслення передбачають групи освітлення, розетки, сантехнічні підключення та місця для кондиціонерів; це проєктні рішення, не підтвердження монтажу. Автоматизацію не заявляємо.",
+    "chapters": [
+      {
+        "anchor": "nail-studio-brand-and-workstations",
+        "nav": "Nail-зал",
+        "title": "Робочі місця<br>впізнавані з першого погляду.",
+        "context": "Основний зал приймає клієнтів на манікюр і формує перше враження про студію.",
+        "decision": "Світлі столи й посадкові місця зібрані перед виразною фірмовою стіною GLOSS. Вертикальний рельєф, золотисті акценти та кільцеві світильники додають глибини, не перевантажуючи компактний інтер’єр.",
+        "benefit": "Композиція одразу показує характер студії, а акуратне зберігання та зрозуміле розташування робочих місць підтримують спокійний ритм прийому.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-02",
+            "alt": "Робочий nail-стіл на тлі фірмової стіни GLOSS і вертикального рельєфу",
+            "caption": "Фірмова стіна збирає робочий зал у цілісну композицію.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-03",
+            "alt": "Nail-стіл і крісла клієнта під кільцевими світильниками",
+            "caption": "Кільцеві світильники підтримують центральну вісь залу.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "pedicure-stations-and-privacy",
+        "nav": "Педикюрна зона",
+        "title": "Окрема зона<br>для розслабленого догляду.",
+        "context": "Педикюрні місця мають працювати поруч із основним залом, але з відчуттям особистого простору.",
+        "decision": "Крісла розташовані біля вбудованих полиць для засобів. Дзеркальні площини та легкі металеві конструкції зберігають огляд кімнати, а декоративне світло задає м’якший настрій.",
+        "benefit": "Потрібні матеріали залишаються поблизу майстра, а клієнт має визначене місце для процедури та відпочинку.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-04",
+            "alt": "Педикюрне крісло й підставка для ніг біля полиць із засобами",
+            "caption": "Робочі матеріали зібрані поруч із педикюрним місцем.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-05",
+            "alt": "Друге ракурсне зображення педикюрної зони з кріслом і круглим столиком",
+            "caption": "Окреме місце для догляду залишається частиною спільної палітри.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "workstations-and-treatment-room",
+        "nav": "Робочі зони",
+        "title": "Робочий зал<br>і приватний догляд.",
+        "context": "План поєднує відкриті робочі місця з двома відокремленими кімнатами для процедур.",
+        "decision": "У nail-залі світлі столи та кільцеві світильники формують спільну робочу зону. Візуалізація процедурної кімнати показує кушетку, зберігання та м’який текстиль.",
+        "benefit": "Відкритий зал і закриті кімнати підтримують різні формати роботи та потреби клієнтів.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-06",
+            "alt": "Манікюрні столи з кріслами та кільцевим освітленням у залі GLOSS",
+            "caption": "Робочі місця розміщені у спільному залі.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-07",
+            "alt": "Кушетка та робоча поверхня в окремій кімнаті процедур",
+            "caption": "Робоча поверхня розташована біля місця проведення процедури.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "client-lounge-and-waiting",
+        "nav": "Місце очікування",
+        "title": "Пауза між візитами<br>має власне місце.",
+        "context": "Зона відпочинку відділяє очікування від робочих процесів студії.",
+        "decision": "М’яке крісло, компактний столик і дзеркальна площина формують невелику лаунж-композицію. Світлі поверхні, зелений акцент і вбудоване світло зберігають відчуття простору.",
+        "benefit": "Клієнт може комфортно дочекатися візиту або перепочити після нього, не займаючи робочі місця майстрів.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-08",
+            "alt": "Крісло й столик у зоні очікування біля дзеркала та фірмової стіни",
+            "caption": "Компактна лаунж-зона відділяє очікування від робочого процесу.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-09",
+            "alt": "Зона очікування з кріслом і графічним лінійним освітленням стелі",
+            "caption": "Лінійне світло підтримує напрям руху до кімнат.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "custom-storage-and-interior-details",
+        "nav": "Зберігання та деталі",
+        "title": "Зберігання інтегроване<br>у спокійний інтер’єр.",
+        "context": "Закриті фасади допомагають прибрати з поля зору повсякденні речі та запаси.",
+        "decision": "Високі вбудовані шафи використали стіну по всій висоті. Тонкі вертикальні ручки й рівні світлі фасади підтримують чисту геометрію, а м’яке підсвічування пов’язує меблі з рештою інтер’єру.",
+        "benefit": "Робочі матеріали можна зберігати поруч із зонами користування, не захаращуючи відкриті поверхні.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-10",
+            "alt": "Вбудована шафа від підлоги до стелі поруч із кріслом у зоні очікування",
+            "caption": "Високі фасади використовують стіну для закритого зберігання.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-11",
+            "alt": "Світлі фасади вбудованої шафи з тонкими вертикальними ручками",
+            "caption": "Лаконічні ручки підтримують спокійний ритм фасадів.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      }
+    ],
+    "outcome": "GLOSS Nail Bar спроєктований як компактна студія з чітким поділом на nail-зал, педикюр, приватні процедури та відпочинок. Фірмова стіна формує впізнаваний центр, а вбудоване зберігання допомагає підтримувати порядок у щоденній роботі.",
+    "source_note": "Площа публічно округлена до 47 м² з погоджених 46,8 м²: 15,2 + 10,4 + 10,2 + 11,0 м² за експлікацією. Назва, рік 2026, статус дизайн-проєкту та дозвіл на використання рендерів підтверджені замовником. Вулицю й номер будинку не публікувати. Креслення підтверджують проєктні електричні, світлові, сантехнічні та кліматичні рішення, але не їх реалізацію."
+  },
+  "en": {
+    "eyebrow": "Interior design project · GLOSS Nail Bar",
+    "title": "GLOSS Nail Bar<br><span>a space for care.</span>",
+    "summary": "A 47 m² nail studio in Lviv, planned around manicure, pedicure, private treatments and a client lounge.",
+    "location": "Lviv, Ukraine",
+    "area": "47 m²",
+    "property": "Nail studio",
+    "cover": "gloss-nail-bar-lviv-01",
+    "cover_alt": "GLOSS Nail Bar manicure stations with light cabinetry and the branded feature wall",
+    "cover_width": 1955,
+    "cover_height": 2933,
+    "intro_title": "An open studio.<br>Private treatments.",
+    "intro": "The plan brings manicure stations and pedicure chairs into the main studio, with two separate rooms for private treatments. A lounge gives clients a place to pause before or after an appointment. Warm light tones, golden metal details and ring pendants carry GLOSS’s visual identity throughout.",
+    "technical_note": "The public area is rounded to 47 m² from the confirmed 46.8 m²: manicure studio 15.2 m², lounge 10.4 m² and two treatment rooms of 10.2 m² and 11.0 m². The client confirmed the 2026 project year, design-project status and permission to use the visualisations. Drawings show planned lighting groups, outlets, plumbing connections and air-conditioning locations; they do not confirm installation. No automation is claimed.",
+    "chapters": [
+      {
+        "anchor": "nail-studio-brand-and-workstations",
+        "nav": "Manicure studio",
+        "title": "Workstations<br>with a clear identity.",
+        "context": "The main studio welcomes manicure clients and sets the first impression.",
+        "decision": "Light tables and client chairs sit in front of GLOSS’s branded feature wall. Vertical texture, warm metallic accents and ring pendants add depth without crowding the compact interior.",
+        "benefit": "The composition makes the studio recognisable, while considered storage and a clear workstation layout support a calm appointment flow.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-02",
+            "alt": "Manicure table against the GLOSS feature wall and vertical textured panels",
+            "caption": "The branded wall gives the working studio a clear centre.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-03",
+            "alt": "Manicure table and client chairs beneath ring pendant lights",
+            "caption": "Ring pendants reinforce the central line of the studio.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "pedicure-stations-and-privacy",
+        "nav": "Pedicure area",
+        "title": "A dedicated area<br>for relaxed care.",
+        "context": "Pedicure stations sit beside the main studio while retaining a more personal feel.",
+        "decision": "The chairs are set near built-in product shelves. Mirrored surfaces and light metal frames keep the room visually open, while decorative lighting creates a softer mood.",
+        "benefit": "Supplies stay close to the treatment, and clients have a defined place to settle in and relax.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-04",
+            "alt": "Pedicure chair and footrest beside shelves of care products",
+            "caption": "Working materials are kept beside the pedicure station.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-05",
+            "alt": "Second view of the pedicure area with a chair and round side table",
+            "caption": "The dedicated care area follows the studio’s shared palette.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "workstations-and-treatment-room",
+        "nav": "Work and care",
+        "title": "Shared workstations<br>and private care.",
+        "context": "The layout combines open workstations with two separate treatment rooms.",
+        "decision": "Light tables and ring lights define the shared nail studio. The treatment-room visualisation shows a bed, storage and soft textiles.",
+        "benefit": "The open studio and enclosed rooms accommodate different services and client needs.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-06",
+            "alt": "Manicure tables, chairs and ring lighting in the GLOSS studio",
+            "caption": "Workstations occupy the shared studio.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-07",
+            "alt": "Treatment bed and work surface in a separate care room",
+            "caption": "The work surface sits close to the treatment area.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "client-lounge-and-waiting",
+        "nav": "Client lounge",
+        "title": "A pause between appointments<br>has its own place.",
+        "context": "The lounge keeps waiting separate from the studio’s work areas.",
+        "decision": "An upholstered chair, compact side table and mirrored surface form a small lounge setting. Light finishes, a green accent and integrated lighting preserve a sense of openness.",
+        "benefit": "Clients can wait comfortably or pause after an appointment without occupying the artists’ workstations.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-08",
+            "alt": "Lounge chair and side table beside a mirror and branded wall",
+            "caption": "A compact lounge separates waiting from active work.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-09",
+            "alt": "Waiting area with a lounge chair and linear ceiling lighting",
+            "caption": "Linear lighting guides movement toward the rooms.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      },
+      {
+        "anchor": "custom-storage-and-interior-details",
+        "nav": "Storage and details",
+        "title": "Storage is built<br>into the calm interior.",
+        "context": "Closed fronts keep everyday supplies and stock out of view.",
+        "decision": "Full-height built-in cabinets make use of an entire wall. Slim vertical handles and even light fronts maintain a clean geometry, while subtle lighting connects the cabinetry to the rest of the interior.",
+        "benefit": "Supplies can stay close to the areas where they are used without cluttering open surfaces.",
+        "images": [
+          {
+            "file": "gloss-nail-bar-lviv-10",
+            "alt": "Full-height built-in cabinet beside a chair in the lounge",
+            "caption": "Tall fronts use the wall for concealed storage.",
+            "width": 1955,
+            "height": 2933
+          },
+          {
+            "file": "gloss-nail-bar-lviv-11",
+            "alt": "Light built-in cabinet fronts with slim vertical handles",
+            "caption": "Restrained handles keep the cabinet rhythm quiet.",
+            "width": 1955,
+            "height": 2933
+          }
+        ]
+      }
+    ],
+    "outcome": "GLOSS Nail Bar is planned as a compact studio with distinct manicure, pedicure, private treatment and lounge areas. The branded wall creates a recognisable centre, while integrated storage supports an orderly everyday workflow.",
+    "source_note": "Public area is rounded to 47 m² from the confirmed 46.8 m²: 15.2 + 10.4 + 10.2 + 11.0 m² per the room schedule. The client confirmed the name, 2026 project year, design-project status and image permission. Do not publish the street address. Drawings support planned electrical, lighting, plumbing and climate provisions, not their installation."
+  }
+},
+  "vienna-classic-apartment": {
+    "uk": {
+      "eyebrow": "Житловий інтер’єр · Відень", "title": "Віденська<br><span>класика.</span>",
+      "summary": "Квартира у Відні площею 159 м², де класичні деталі поєднуються з продуманим простором для щоденного життя.", "location": "Відень, Австрія", "area": "159 м²", "property": "Квартира", "cover": "view-16", "cover_alt": "Їдальня і вітальня з класичними деталями та каміном",
+      "intro_title": "Класичні пропорції.<br>Сучасний комфорт.", "intro": "Простора кухня-вітальня об’єднує спільне життя квартири, а дві спальні, гардеробні та кабінет мають власні місця. Білі стінові панелі, темне дерево, виразний камінь і теплі металеві акценти пов’язують кімнати в цілісний інтер’єр.",
+      "chapters": [
+        {"anchor":"kitchen-and-island","nav":"Кухня", "title":"Кухня, зібрана<br>навколо острова.", "context":"Кухня є частиною великого спільного простору поруч з їдальнею та вітальнею.", "decision":"Високі пенали обрамляють робочу поверхню; острів із заокругленим завершенням додає місце для підготовки. Кам’яний рисунок на фартусі та острові поєднується з темними фасадами.", "benefit":"Робоча зона залишається зручною і водночас підтримує представницький характер кімнати.", "images":[{"file":"view-00","alt":"Кухонний острів із кам’яним оздобленням і темними фасадами","caption":"Острів формує окрему робочу поверхню."},{"file":"view-04","alt":"Кухня з високими шафами, островом та підвісним світильником","caption":"Пенали збирають техніку й зберігання в єдину композицію."}]},
+        {"anchor":"living-and-dining","nav":"Вітальня й їдальня", "title":"Спільний простір<br>для зустрічей і відпочинку.", "context":"Їдальня розташована між кухнею та вітальнею, зберігаючи зв’язок між ними.", "decision":"Обідню групу підкреслює світла кам’яна площина, а диван і журнальні столики формують окреме місце для відпочинку. Молдинги й світильники задають масштаб відкритій кімнаті.", "benefit":"Обід, розмова й відпочинок мають власні зони в одному просторі.", "images":[{"file":"view-12","alt":"Вітальня з диваном, журнальними столиками та телевізійною стіною","caption":"М’яка група організована навколо телевізійної стіни."},{"file":"view-16","alt":"Їдальня з обіднім столом поруч із зоною вітальні","caption":"Їдальня продовжує спільну композицію кімнати."}]},
+        {"anchor":"primary-bedroom","nav":"Майстер-спальня", "title":"Спальня<br>з м’яким світлом.", "context":"Майстер-спальня відокремлена від спільної частини квартири та має власну гардеробну.", "decision":"Високе м’яке узголів’я врівноважує світлі панелі стін. Центральний світильник і приліжкове світло доповнюють штори та текстиль у спокійній палітрі.", "benefit":"Кімната поєднує виразну класичну композицію з комфортом відпочинку.", "images":[{"file":"view-28","alt":"Майстер-спальня з м’яким узголів’ям і люстрою","caption":"Ліжко стає центром симетричної композиції."},{"file":"view-29","alt":"Інший ракурс майстер-спальні з приліжковим світлом","caption":"Приліжкове світло доповнює центральний світильник."}]},
+        {"anchor":"dressing-room","nav":"Гардеробна", "title":"Зберігання<br>з власним місцем.", "context":"Окрема гардеробна доповнює майстер-спальню.", "decision":"Відкриті секції для одягу й освітлені полиці поєднані з островом у центрі. Темні матеріали та дзеркальні поверхні надають приміщенню глибини.", "benefit":"Одяг і аксесуари зібрані в одному просторі, не перевантажуючи спальню шафами.", "images":[{"file":"view-36","alt":"Гардеробна з відкритим зберіганням і центральним островом","caption":"Острів доповнює секції для одягу."},{"file":"view-39","alt":"Гардеробна з підсвіченими полицями та дзеркальними дверима","caption":"Світло допомагає роздивитися вміст полиць."}]},
+        {"anchor":"second-bedroom","nav":"Друга спальня", "title":"Світла кімната<br>для відпочинку.", "context":"Друга спальня має власний характер, зберігаючи спільну мову оздоблення квартири.", "decision":"Світлі панелі, м’яке узголів’я та темні штори поєднані з компактним туалетним столиком і вбудованим зберіганням.", "benefit":"Кімната залишається спокійною та функціональною, не втрачаючи індивідуальності.", "images":[{"file":"view-49","alt":"Друга спальня зі світлими стінами та туалетним столиком","caption":"Столик розміщений біля вбудованих меблів."},{"file":"view-51","alt":"Ліжко у світлій спальні з люстрою та темними шторами","caption":"Текстиль пом’якшує класичні лінії кімнати."}]},
+        {"anchor":"bathroom-finishes","nav":"Ванна кімната", "title":"Камінь і світло<br>у ванній кімнаті.", "context":"Ванна кімната доповнює приватні приміщення квартири.", "decision":"Окрема ванна стоїть на тлі виразної кам’яної поверхні; дерев’яна тумба та металеві деталі додають теплоти світлому оздобленню.", "benefit":"Матеріали створюють цілісний простір, у якому практичні елементи виглядають частиною інтер’єру.", "images":[{"file":"view-54","alt":"Окрема ванна на тлі світлого каменю з виразним рисунком","caption":"Кам’яна площина обрамляє окрему ванну."},{"file":"view-56","alt":"Ванна кімната з вікном і окремою ванною","caption":"Природне світло підкреслює фактуру оздоблення."}]},
+        {"anchor":"entrance-and-hallway","nav":"Передпокій", "title":"Послідовний вхід<br>до квартири.", "context":"Передпокій з’єднує вхід із приватними та спільними приміщеннями.", "decision":"Світлі двері та настінні панелі продовжують ритм коридору; рисунок підлоги акцентує напрямок руху.", "benefit":"Перехід між кімнатами залишається впорядкованим і візуально цілісним.", "images":[{"file":"view-59","alt":"Світлі класичні двері в передпокої квартири","caption":"Двері інтегровані в композицію стін."},{"file":"view-60","alt":"Коридор з молдингами та декоративним рисунком підлоги","caption":"Рисунок підлоги веде крізь простір."}]},
+        {"anchor":"home-office","nav":"Кабінет", "title":"Кабінет<br>для зосередженої роботи.", "context":"Окремий кабінет доповнює житлові кімнати.", "decision":"Робочий стіл поєднаний з відкритими полицями та темними меблями, які контрастують зі світлими панелями стін.", "benefit":"Робота має власне місце, відділене від зон відпочинку.", "images":[{"file":"view-64","alt":"Кабінет з робочим столом і темними книжковими полицями","caption":"Полиці й робочий стіл зібрані в одній зоні."},{"file":"view-66","alt":"Інший ракурс кабінету з кріслом і робочим столом","caption":"Темне дерево додає кабінету виразності."}]},
+        {"anchor":"lighting-heating-and-control","nav":"Світло й комфорт", "title":"Інженерія,<br>узгоджена з інтер’єром.", "context":"Робочий альбом містить плани світильників, вимикачів, розеток і теплої підлоги.", "decision":"Розміщення освітлення та електроточок узгоджене з меблями й плануванням. Групи світла та тепла підлога можуть стати основою для окремо спроєктованого керування сценаріями і температурою.", "benefit":"Такі рішення допомагають передбачити комфортні щоденні сценарії; встановлення автоматизації альбом не підтверджує."}
+      ],
+      "outcome":"Проєкт поєднує планування квартири, візуалізації, робочі креслення меблів, освітлення та інженерних точок.",
+      "faq":[{"question":"Яка площа та локація квартири?","answer":"Квартира розташована у Відні. Площа за експлікацією — 159,2 м², у кейсі округлена до 159 м². Рік проєкту — 2026."},{"question":"Що входить до проєкту?","answer":"Планування, візуалізації, розгортки приміщень, креслення меблів та плани освітлення, електрики й теплої підлоги."},{"question":"Чи передбачена автоматизація?","answer":"Групи освітлення та тепла підлога дають можливість окремо розробити сценарії керування. Встановленої системи автоматизації матеріали не підтверджують."}],
+      "source_note":"Client confirmed Vienna and 2026; PDF sheet 2 gives 159.2 m². The drawing title block says Lviv; user-provided location takes precedence. Images extracted from visualisation sheets. No installed automation or construction claimed."
+    },
+    "en": {
+      "eyebrow":"Residential interior · Vienna", "title":"Vienna<br><span>Classic.</span>", "summary":"A 159 m² Vienna apartment where classic detail meets a considered plan for everyday living.", "location":"Vienna, Austria", "area":"159 m²", "property":"Apartment", "cover":"view-16", "cover_alt":"Dining and living area with classic detailing and fireplace", "intro_title":"Classic proportions.<br>Contemporary comfort.", "intro":"A generous kitchen and living area brings daily life together, while two bedrooms, dressing rooms and a study each have their own place. White panelling, dark timber, expressive stone and warm metal accents connect the rooms.",
+      "chapters":[
+        {"anchor":"kitchen-and-island","nav":"Kitchen","title":"A kitchen centred<br>on the island.","context":"The kitchen forms part of the shared space beside the dining and living areas.","decision":"Tall cabinets frame the worktop; a rounded island adds preparation space. Stone pattern on the splashback and island balances the dark cabinetry.","benefit":"The workspace remains practical while contributing to the room’s elegant character.","images":[{"file":"view-00","alt":"Kitchen island with stone finish and dark cabinetry","caption":"The island creates an additional work surface."},{"file":"view-04","alt":"Kitchen with tall cabinetry, island and pendant light","caption":"Tall cabinets bring appliances and storage together."}]},
+        {"anchor":"living-and-dining","nav":"Living and dining","title":"Space to gather<br>and unwind.","context":"The dining table sits between the kitchen and living area, keeping both connected.","decision":"A pale stone feature frames the dining area, while a sofa and low tables establish the lounge. Mouldings and lighting give the open room its scale.","benefit":"Meals, conversation and rest each have a place within one shared room.","images":[{"file":"view-12","alt":"Living room with sofa, coffee tables and media wall","caption":"The seating area faces the media wall."},{"file":"view-16","alt":"Dining table beside the living area","caption":"Dining and living share a coherent composition."}]},
+        {"anchor":"primary-bedroom","nav":"Primary bedroom","title":"A bedroom<br>with gentle light.","context":"The primary bedroom is separate from the shared rooms and has its own dressing room.","decision":"A tall upholstered headboard balances the light wall panelling. A central chandelier and bedside lights complement the curtains and restrained textiles.","benefit":"The room combines a distinctive classic composition with a restful atmosphere.","images":[{"file":"view-28","alt":"Primary bedroom with upholstered headboard and chandelier","caption":"The bed anchors the symmetrical composition."},{"file":"view-29","alt":"Another view of the primary bedroom and bedside lighting","caption":"Bedside lights complement the central fixture."}]},
+        {"anchor":"dressing-room","nav":"Dressing room","title":"A place<br>for everything.","context":"A separate dressing room complements the primary bedroom.","decision":"Open clothing sections and lit shelving are arranged around a central island. Dark finishes and mirrors give the room depth.","benefit":"Clothes and accessories are gathered in one room, leaving the bedroom free of extra wardrobes.","images":[{"file":"view-36","alt":"Dressing room with open storage and central island","caption":"The island complements the clothing sections."},{"file":"view-39","alt":"Dressing room with lit shelves and mirrored doors","caption":"Lighting makes the shelves easy to use."}]},
+        {"anchor":"second-bedroom","nav":"Second bedroom","title":"A light room<br>for rest.","context":"The second bedroom has its own character while sharing the apartment’s design language.","decision":"Light panelling, an upholstered headboard and dark curtains sit alongside a compact dressing table and fitted storage.","benefit":"The room feels calm and functional while retaining its own identity.","images":[{"file":"view-49","alt":"Second bedroom with light walls and dressing table","caption":"The dressing table sits alongside fitted furniture."},{"file":"view-51","alt":"Bed in a light bedroom with chandelier and dark curtains","caption":"Textiles soften the room’s classic lines."}]},
+        {"anchor":"bathroom-finishes","nav":"Bathroom","title":"Stone and light<br>in the bathroom.","context":"The bathroom serves the private rooms of the apartment.","decision":"A freestanding bath sits against expressive stone; a timber vanity and metal details bring warmth to the light finishes.","benefit":"Practical elements become part of a coherent interior.","images":[{"file":"view-54","alt":"Freestanding bath against expressive light stone","caption":"A stone feature frames the bath."},{"file":"view-56","alt":"Bathroom with window and freestanding bath","caption":"Daylight reveals the texture of the finishes."}]},
+        {"anchor":"entrance-and-hallway","nav":"Entrance","title":"A considered<br>arrival.","context":"The entrance connects the front door with the shared and private rooms.","decision":"Light doors and wall panels continue the corridor’s rhythm; the floor pattern marks the route through the apartment.","benefit":"The transition between rooms feels ordered and cohesive.","images":[{"file":"view-59","alt":"Light classic door in the apartment entrance","caption":"Doors are integrated into the wall composition."},{"file":"view-60","alt":"Hallway with mouldings and patterned floor","caption":"The floor pattern leads through the space."}]},
+        {"anchor":"home-office","nav":"Study","title":"A study<br>for focused work.","context":"A separate study complements the living spaces.","decision":"A desk and open shelving in dark timber contrast with the light wall panels.","benefit":"Work has its own place, separate from the spaces for rest.","images":[{"file":"view-64","alt":"Study with desk and dark bookshelves","caption":"The desk and shelving share one work zone."},{"file":"view-66","alt":"Another view of the study with desk and chair","caption":"Dark timber gives the study its character."}]},
+        {"anchor":"lighting-heating-and-control","nav":"Light and comfort","title":"Services coordinated<br>with the interior.","context":"The working album includes plans for lighting, switches, sockets and underfloor heating.","decision":"Lighting and electrical points are coordinated with the furniture and layout. Lighting groups and underfloor heating could support separately designed scene and temperature control.","benefit":"The plans provide a basis for comfortable daily routines; the album does not confirm installed automation."}
+      ],
+      "outcome":"The project brings together the apartment layout, visualisations, working furniture drawings and plans for lighting and service points.",
+      "faq":[{"question":"Where is the apartment and how large is it?","answer":"The apartment is in Vienna. The room schedule totals 159.2 m², rounded to 159 m² for the case. The project year is 2026."},{"question":"What does the design project include?","answer":"The layout, visualisations, room elevations, furniture drawings and plans for lighting, electrical points and underfloor heating."},{"question":"Is automation included?","answer":"Lighting groups and underfloor heating offer a basis for separately designed controls. The supplied materials do not confirm an installed automation system."}],
+      "source_note":"See Ukrainian source note for confirmed location, year, area and image provenance. No installed automation or construction claimed."
+    }
+  },
   "green-accent-loft-apartment": {
     "uk": {
       "eyebrow": "Дизайн інтер’єру · Компактна квартира",

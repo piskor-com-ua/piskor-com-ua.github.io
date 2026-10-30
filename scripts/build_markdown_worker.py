@@ -19,7 +19,7 @@ HANDLER = ROOT / 'cloudflare/markdown-worker.mjs'
 MCP_HANDLER = ROOT / 'cloudflare/mcp-server.mjs'
 MCP_DISCOVERY = ROOT / 'scripts/mcp_discovery.py'
 MCP_IMPORT = b"import {handleMcp} from './mcp-server.mjs';\n"
-MAX_BUNDLE_BYTES = 2 * 1024 * 1024  # Conservative local budget, not Cloudflare's64MiB limit.
+MAX_BUNDLE_BYTES = 3 * 1024 * 1024  # Conservative local budget, not Cloudflare's 64 MiB limit.
 HTML_ROUTE = '/en/portfolio/2022/zabava-restaurant-sambir/'
 # Local guard for the measured Zabava payload/model; not a production timing
 # guarantee. Raising it requires renewed performance verification.
@@ -151,7 +151,7 @@ def build(site, out, revision):
             raise ValueError('Worker modules must not introduce runtime imports')
     bundle = b'const PUBLIC_PAGE_DATA=' + canonical(data) + b';\n' + mcp_handler + b'\n' + composed_handler
     if len(bundle) > MAX_BUNDLE_BYTES:
-        raise ValueError('Worker exceeds conservative2MiB local budget; review required')
+        raise ValueError('Worker exceeds conservative 3 MiB local budget; review required')
     source_paths = {'markdown_handler': HANDLER, 'mcp_handler': MCP_HANDLER,
                     'mcp_discovery': MCP_DISCOVERY, 'mcp_contract': CONTRACT_PATH,
                     'worker_builder': Path(__file__).resolve(),

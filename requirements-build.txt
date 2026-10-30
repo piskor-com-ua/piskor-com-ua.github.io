@@ -1,5 +1,5 @@
-Pillow==12.2.0
+Pillow==13.0.0
 fonttools[woff]==4.67.0
-brotli==1.2.0
+brotli==1.2.1
 tinycss2==1.5.1
 jsonschema==4.26.0

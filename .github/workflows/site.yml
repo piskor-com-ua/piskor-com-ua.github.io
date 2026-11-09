@@ -42,7 +42,7 @@ jobs:
         run: |
           for file in concept/*.js; do node --check "$file"; done
       - name: Set up Ruby and locked gems
-        uses: ruby/setup-ruby@b1da4809b005e0178fe08a1d57317bffc00b7b4c # v1
+        uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1
         with:
           bundler-cache: true
       - name: Install image build dependency
